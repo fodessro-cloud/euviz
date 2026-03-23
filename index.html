@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUViz — European Stock Screener</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">EU<span>Viz</span></div>
+  <nav class="nav-links">
+    <a class="nav-link active" href="index.html"    data-page="screener">Screener</a>
+    <a class="nav-link"        href="map.html"      data-page="map">Maps</a>
+    <a class="nav-link"        href="groups.html"   data-page="groups">Groups</a>
+    <a class="nav-link"        href="news.html"     data-page="news">News</a>
+  </nav>
+  <div class="header-right">
+    <div class="market-status">
+      <div class="status-dot"></div>
+      <span>Market Open</span>
+    </div>
+    <span style="color:var(--text2);font-size:11px;" id="clock"></span>
+  </div>
+</header>
+
+<!-- INDICES BAR -->
+<div class="indices-bar" id="indices-bar"></div>
+
+<!-- NEWS TICKER -->
+<div class="news-bar">
+  <div id="news-ticker"></div>
+</div>
+
+<!-- OVERVIEW STATS -->
+<div class="overview-bar" id="overview-bar"></div>
+
+<!-- MAIN LAYOUT -->
+<div class="page-wrap">
+  <div class="page-content">
+
+    <!-- FILTER SIDEBAR -->
+    <aside class="filter-sidebar">
+      <h3>Filters</h3>
+      <div id="filter-panel"></div>
+      <div class="filter-actions">
+        <button class="btn btn-secondary" onclick="resetFilters()">Reset</button>
+      </div>
+    </aside>
+
+    <!-- SCREENER TABLE AREA -->
+    <div class="screener-main">
+      <div class="screener-toolbar">
+        <span class="result-count" id="result-count">Loading…</span>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span style="font-size:11px;color:var(--text2)">Columns:</span>
+          <button class="btn btn-secondary" style="font-size:10.5px;" onclick="toggleColumns()">Customize</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="screener-table"></table>
+      </div>
+      <div id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STOCK DETAIL MODAL -->
+<div id="stock-modal">
+  <div class="modal-box" id="modal-content"></div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/screener.js"></script>
+<script>
+  // Clock
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' }) +
+      ' CET';
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Overview stats
+  function renderOverview() {
+    const bar = document.getElementById('overview-bar');
+    if (!bar) return;
+    const total = STOCKS.reduce((s, x) => s + x.marketCap, 0);
+    const gainers = STOCKS.filter(s => s.change > 0).length;
+    const losers  = STOCKS.filter(s => s.change < 0).length;
+    const avgChange = (STOCKS.reduce((s,x)=>s+x.change,0)/STOCKS.length).toFixed(2);
+    const sign = avgChange >= 0 ? '+' : '';
+
+    bar.innerHTML = `
+      <div class="overview-card">
+        <div class="overview-label">Total Market Cap</div>
+        <div class="overview-val">${formatMarketCap(total)}</div>
+        <div class="overview-sub" style="color:var(--text2)">EU Markets</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-label">Stocks Covered</div>
+        <div class="overview-val">${STOCKS.length}</div>
+        <div class="overview-sub" style="color:var(--text2)">${[...new Set(STOCKS.map(s=>s.country))].length} Countries</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-label">Avg. Change</div>
+        <div class="overview-val ${avgChange >= 0 ? 'pos' : 'neg'}">${sign}${avgChange}%</div>
+        <div class="overview-sub" style="color:var(--text2)">Today</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-label">Gainers / Losers</div>
+        <div class="overview-val"><span class="pos">${gainers}</span> / <span class="neg">${losers}</span></div>
+        <div class="overview-sub" style="color:var(--text2)">Out of ${STOCKS.length}</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-label">Largest Cap</div>
+        <div class="overview-val" style="font-size:13px;">${STOCKS.sort((a,b)=>b.marketCap-a.marketCap)[0].ticker}</div>
+        <div class="overview-sub" style="color:var(--text2)">${formatMarketCap(STOCKS[0].marketCap)}</div>
+      </div>
+    `;
+  }
+  renderOverview();
+
+  function toggleColumns() {
+    // placeholder for column chooser
+  }
+</script>
+</body>
+</html>
