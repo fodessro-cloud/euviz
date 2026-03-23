@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUViz — News</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #0a0a14;
+      --bg2:     #12121e;
+      --bg3:     #1a1a2c;
+      --bg4:     #222238;
+      --border:  #2a2a44;
+      --border2: #363658;
+      --text:    #e0e0f0;
+      --dim:     #8080a0;
+      --dim2:    #5a5a7a;
+      --accent:  #5865f2;
+      --accent2: #7c8af7;
+      --pos:     #22c55e;
+      --neg:     #f43f5e;
+      --pos-bg:  rgba(34,197,94,.13);
+      --neg-bg:  rgba(244,63,94,.13);
+      --radius:  7px;
+    }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 12.5px;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--accent2); text-decoration: none; }
+
+    /* ── HEADER ── */
+    .site-header {
+      height: 46px;
+      background: linear-gradient(90deg, #0e0e1e 0%, #12121e 100%);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 28px;
+      flex-shrink: 0;
+    }
+    .logo { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
+    .logo span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 2px; }
+    .nav-link {
+      padding: 5px 14px;
+      border-radius: 6px;
+      color: var(--dim);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s;
+      text-decoration: none;
+    }
+    .nav-link:hover { background: var(--bg3); color: var(--text); }
+    .nav-link.active { background: var(--accent); color: #fff; }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+    .market-status { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--dim); }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pos); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+    #clock { font-size: 11.5px; color: var(--dim); font-variant-numeric: tabular-nums; }
+
+    /* ── INDICES BAR ── */
+    .indices-bar {
+      height: 36px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      overflow: hidden;
+      gap: 0;
+      flex-shrink: 0;
+    }
+    .idx-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 12px;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+      font-size: 11.5px;
+      height: 100%;
+    }
+    .idx-name { color: var(--dim); font-weight: 600; }
+    .idx-val  { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .pos { color: var(--pos); } .neg { color: var(--neg); }
+
+    /* ── NEWS TICKER ── */
+    .news-bar {
+      height: 28px;
+      background: #0d0d1a;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .news-bar-label {
+      background: var(--accent);
+      color: #fff;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 0 10px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .news-scroll {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 90s linear infinite;
+      font-size: 11px;
+      color: var(--dim);
+      padding-left: 16px;
+    }
+    .news-scroll:hover { animation-play-state: paused; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── PAGE BODY ── */
+    .page-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .summary-card {
+      background: var(--bg2);
+      padding: 14px 18px;
+      transition: background .15s;
+    }
+    .summary-card:hover { background: var(--bg3); }
+    .s-label { font-size: 10.5px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+    .s-val   { font-size: 22px; font-weight: 800; line-height: 1; }
+    .s-sub   { font-size: 10.5px; color: var(--dim); margin-top: 4px; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-label { font-size: 10.5px; color: var(--dim); font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-right: 4px; }
+    .pill {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border2);
+      background: var(--bg3);
+      color: var(--dim);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .pill:hover { border-color: var(--accent2); color: var(--text); }
+    .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .pill.positive.active { background: var(--pos); border-color: var(--pos); }
+    .pill.negative.active { background: var(--neg); border-color: var(--neg); }
+
+    .source-select {
+      margin-left: auto;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 24px 0 14px;
+      color: var(--dim);
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── NEWS GRID ── */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .news-card {
+      background: var(--bg2);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: background .15s;
+      border-left: 3px solid transparent;
+      position: relative;
+    }
+    .news-card:hover { background: var(--bg3); }
+    .news-card.positive { border-left-color: var(--pos); }
+    .news-card.negative { border-left-color: var(--neg); }
+    .news-card.neutral  { border-left-color: var(--dim2); }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+    .source-badge {
+      font-size: 9.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+      background: var(--accent);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .source-badge.reuters   { background: #e04e00; }
+    .source-badge.bloomberg { background: #1e3a5f; }
+    .source-badge.ft        { background: #c00000; }
+    .source-badge.wsj       { background: #222; }
+    .news-time { font-size: 11px; color: var(--dim); font-variant-numeric: tabular-nums; }
+    .ticker-tag {
+      margin-left: auto;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--accent2);
+      background: rgba(88,101,242,.12);
+      border: 1px solid rgba(88,101,242,.3);
+      padding: 1px 8px;
+      border-radius: 4px;
+    }
+    .card-headline {
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.55;
+      font-weight: 500;
+    }
+
+    /* ── SECTOR NEWS ── */
+    .sector-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 10px;
+    }
+    .sector-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      transition: border-color .15s;
+    }
+    .sector-card:hover { border-color: var(--accent); }
+    .sector-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .sector-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .sector-change { font-size: 13px; font-weight: 700; }
+    .sector-count { margin-left: auto; font-size: 11px; color: var(--dim); }
+    .sector-top-mover {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+    .sector-top-ticker { font-weight: 700; color: var(--accent2); }
+    .adv-dec-bar {
+      height: 5px;
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--bg4);
+      display: flex;
+    }
+    .adv-fill { background: var(--pos); }
+    .dec-fill { background: var(--neg); }
+    .adv-dec-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--dim);
+      margin-top: 5px;
+    }
+    .adv-label { color: var(--pos); }
+    .dec-label { color: var(--neg); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      padding: 48px;
+      text-align: center;
+      color: var(--dim);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .empty-icon { font-size: 36px; margin-bottom: 12px; }
+    .empty-text { font-size: 14px; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">EU<span>Viz</span></div>
+  <nav class="nav-links">
+    <a class="nav-link"        href="index.html">Screener</a>
+    <a class="nav-link"        href="map.html">Maps</a>
+    <a class="nav-link"        href="groups.html">Groups</a>
+    <a class="nav-link active" href="news.html">News</a>
+  </nav>
+  <div class="header-right">
+    <div class="market-status"><div class="status-dot"></div><span>Market Open</span></div>
+    <span id="clock"></span>
+  </div>
+</header>
+
+<!-- INDICES BAR -->
+<div class="indices-bar" id="indices-bar"></div>
+
+<!-- NEWS TICKER -->
+<div class="news-bar">
+  <div class="news-bar-label">NEWS</div>
+  <div id="news-ticker"></div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <!-- SUMMARY -->
+  <div class="summary-strip" id="news-summary"></div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">Sentiment</span>
+    <button class="pill active"    data-sentiment="all">All</button>
+    <button class="pill positive"  data-sentiment="positive">● Positive</button>
+    <button class="pill negative"  data-sentiment="negative">● Negative</button>
+    <button class="pill neutral"   data-sentiment="neutral">● Neutral</button>
+    <select class="source-select" id="source-filter">
+      <option value="all">All Sources</option>
+      <option>Reuters</option>
+      <option>Bloomberg</option>
+      <option>FT</option>
+      <option>WSJ</option>
+    </select>
+  </div>
+
+  <!-- HEADLINES -->
+  <div class="section-header">Latest Headlines</div>
+  <div id="news-grid"></div>
+
+  <!-- SECTOR NEWS -->
+  <div class="section-header">By Sector</div>
+  <div class="sector-grid" id="sector-news"></div>
+
+</div>
+
+<script>
+// ── INLINE DATA ─────────────────────────────────────────────────────────────
+const INDICES = [
+  { name:'DAX',     value:22847.12, change:0.64  },
+  { name:'CAC 40',  value:8142.48,  change:0.28  },
+  { name:'FTSE 100',value:8621.34,  change:-0.14 },
+  { name:'IBEX 35', value:12841.20, change:1.12  },
+  { name:'AEX',     value:924.18,   change:0.84  },
+  { name:'SMI',     value:12284.50, change:0.24  },
+  { name:'FTSE MIB',value:38124.80, change:1.24  },
+  { name:'OMX 30',  value:2584.42,  change:0.44  },
+  { name:'BEL 20',  value:4284.18,  change:0.34  },
+  { name:'OBX',     value:1284.24,  change:-0.24 },
+];
+
+const NEWS = [
+  { time:'08:42', source:'Reuters',   headline:'ASML raises guidance as AI chip demand drives record order book',           ticker:'ASML',  sentiment:'positive', sector:'Technology' },
+  { time:'08:31', source:'Bloomberg', headline:'ECB signals further rate cuts as eurozone inflation cools to 2.1%',          ticker:null,    sentiment:'positive', sector:null },
+  { time:'08:18', source:'FT',        headline:'LVMH sees slowdown in Asia sales as Chinese luxury spending contracts',      ticker:'MC',    sentiment:'negative', sector:'Consumer Cyclical' },
+  { time:'08:05', source:'Reuters',   headline:'Novo Nordisk obesity drug pipeline fuels analyst upgrades across sector',    ticker:'NOVO',  sentiment:'positive', sector:'Healthcare' },
+  { time:'07:54', source:'WSJ',       headline:'Airbus wins €12bn order from Air India for 250 next-generation aircraft',   ticker:'AIR',   sentiment:'positive', sector:'Industrials' },
+  { time:'07:41', source:'FT',        headline:'German recession fears mount as industrial output falls for 5th straight month', ticker:null,sentinel:'negative', sentiment:'negative', sector:null },
+  { time:'07:28', source:'Bloomberg', headline:'Ferrari raises annual outlook citing strong order backlog and pricing power', ticker:'RACE',  sentiment:'positive', sector:'Consumer Cyclical' },
+  { time:'07:15', source:'Reuters',   headline:'Shell restarts Pernis refinery after maintenance, crude throughput to normalise', ticker:'SHEL', sentiment:'neutral',sector:'Energy' },
+  { time:'06:52', source:'FT',        headline:'UniCredit profit beats estimates on higher net interest income',             ticker:'UCG',   sentiment:'positive', sector:'Finance' },
+  { time:'06:38', source:'Bloomberg', headline:'Volkswagen announces 35,000 job cuts amid EV transition losses',             ticker:'VOW3',  sentiment:'negative', sector:'Consumer Cyclical' },
+  { time:'06:24', source:'Reuters',   headline:'SAP cloud revenue growth accelerates, AI copilot users triple year-on-year', ticker:'SAP',   sentiment:'positive', sector:'Technology' },
+  { time:'06:10', source:'FT',        headline:'Bayer faces €12bn liability as US courts rule against Roundup weedkiller',   ticker:'BAYN',  sentiment:'negative', sector:'Healthcare' },
+  { time:'05:47', source:'Bloomberg', headline:'AstraZeneca oncology pipeline drives record Q1 revenues, raises full-year guidance', ticker:'AZN', sentiment:'positive', sector:'Healthcare' },
+  { time:'05:32', source:'Reuters',   headline:'Santander reports record profit, raises dividend by 50%',                    ticker:'SAN',   sentiment:'positive', sector:'Finance' },
+  { time:'05:18', source:'FT',        headline:'Hermès posts 14% revenue growth as aspirational buyers squeeze demand',      ticker:'RMS',   sentiment:'positive', sector:'Consumer Cyclical' },
+];
+
+const STOCKS_BRIEF = [
+  { ticker:'ASML',  name:'ASML Holding',     country:'Netherlands', sector:'Technology',        industry:'Semiconductors', marketCap:285000, price:720.50, change:2.34 },
+  { ticker:'SAP',   name:'SAP SE',            country:'Germany',     sector:'Technology',        industry:'Software',       marketCap:208000, price:178.34, change:1.24 },
+  { ticker:'MC',    name:'LVMH',              country:'France',      sector:'Consumer Cyclical', industry:'Luxury Goods',   marketCap:295000, price:588.40, change:1.82 },
+  { ticker:'NOVO',  name:'Novo Nordisk',      country:'Denmark',     sector:'Healthcare',        industry:'Pharmaceuticals',marketCap:412000, price:91.24,  change:1.44 },
+  { ticker:'AZN',   name:'AstraZeneca',       country:'UK',          sector:'Healthcare',        industry:'Pharmaceuticals',marketCap:248000, price:118.42, change:0.84 },
+  { ticker:'AIR',   name:'Airbus SE',         country:'France',      sector:'Industrials',       industry:'Aerospace',      marketCap:130000, price:160.84, change:2.14 },
+  { ticker:'NESN',  name:'Nestlé SA',         country:'Switzerland', sector:'Consumer Defensive',industry:'Food Products',  marketCap:230000, price:79.58,  change:-0.34 },
+  { ticker:'RACE',  name:'Ferrari NV',        country:'Italy',       sector:'Consumer Cyclical', industry:'Auto',           marketCap:82000,  price:424.80, change:1.24 },
+  { ticker:'UCG',   name:'UniCredit SpA',     country:'Italy',       sector:'Finance',           industry:'Banks',          marketCap:64000,  price:40.68,  change:2.14 },
+  { ticker:'VOW3',  name:'Volkswagen AG',     country:'Germany',     sector:'Consumer Cyclical', industry:'Auto',           marketCap:49000,  price:103.20, change:-0.44 },
+  { ticker:'SAN',   name:'Santander SA',      country:'Spain',       sector:'Finance',           industry:'Banks',          marketCap:78000,  price:4.68,   change:1.14 },
+  { ticker:'BAYN',  name:'Bayer AG',          country:'Germany',     sector:'Healthcare',        industry:'Pharma',         marketCap:27000,  price:27.42,  change:-2.14 },
+  { ticker:'SHEL',  name:'Shell PLC',         country:'Netherlands', sector:'Energy',            industry:'Oil & Gas',      marketCap:196000, price:31.82,  change:-0.24 },
+  { ticker:'RMS',   name:'Hermès International',country:'France',    sector:'Consumer Cyclical', industry:'Luxury Goods',   marketCap:205000, price:1948.00,change:1.14 },
+];
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+const fmt2 = n => n === null || n === undefined ? '-' : Number(n).toFixed(2);
+const fmtK = n => n >= 1e6 ? (n/1e6).toFixed(2)+'T' : n >= 1e3 ? (n/1e3).toFixed(1)+'B' : n+'M';
+const fmtPct = n => (n >= 0 ? '+' : '') + Number(n).toFixed(2) + '%';
+const cls = n => n >= 0 ? 'pos' : 'neg';
+
+function sourceClass(s) {
+  return { Reuters:'reuters', Bloomberg:'bloomberg', FT:'ft', WSJ:'wsj' }[s] || '';
+}
+
+// ── RENDER INDICES ────────────────────────────────────────────────────────────
+function renderIndices() {
+  const bar = document.getElementById('indices-bar');
+  if (!bar) return;
+  bar.innerHTML = INDICES.map(idx => {
+    const c = idx.change >= 0 ? 'pos' : 'neg';
+    const arrow = idx.change >= 0 ? '▲' : '▼';
+    return `<span class="idx-item">
+      <span class="idx-name">${idx.name}</span>
+      <span class="idx-val">${idx.value.toLocaleString('en-EU',{minimumFractionDigits:2})}</span>
+      <span class="${c}">${arrow} ${Math.abs(idx.change).toFixed(2)}%</span>
+    </span>`;
+  }).join('');
+}
+
+// ── RENDER TICKER ─────────────────────────────────────────────────────────────
+function renderTicker() {
+  const el = document.getElementById('news-ticker');
+  if (!el) return;
+  const items = NEWS.map(n =>
+    `<span style="margin:0 12px;color:var(--dim);">${n.time} &nbsp;<b style="color:var(--text)">${n.source}</b>: ${n.headline}</span>`
+  ).join('<span style="color:var(--border2);margin:0 8px;">●</span>');
+  el.innerHTML = `<div class="news-scroll">${items}&nbsp;&nbsp;&nbsp;${items}</div>`;
+}
+
+// ── RENDER SUMMARY ────────────────────────────────────────────────────────────
+function renderSummary() {
+  const el = document.getElementById('news-summary');
+  if (!el) return;
+  const pos = NEWS.filter(n=>n.sentiment==='positive').length;
+  const neg = NEWS.filter(n=>n.sentiment==='negative').length;
+  const neu = NEWS.filter(n=>n.sentiment==='neutral').length;
+  const withTicker = NEWS.filter(n=>n.ticker).length;
+  const sources = new Set(NEWS.map(n=>n.source)).size;
+  el.innerHTML = [
+    { label:'Total Headlines', val:NEWS.length,                 sub:'Today',             valColor:'var(--text)' },
+    { label:'Positive',        val:pos,                         sub:`${Math.round(pos/NEWS.length*100)}% bullish`, valColor:'var(--pos)' },
+    { label:'Negative',        val:neg,                         sub:`${Math.round(neg/NEWS.length*100)}% bearish`, valColor:'var(--neg)' },
+    { label:'Neutral',         val:neu,                         sub:`${Math.round(neu/NEWS.length*100)}% mixed`,   valColor:'var(--dim)' },
+    { label:'Stock Mentions',  val:withTicker+' / '+NEWS.length,sub:`${sources} sources`, valColor:'var(--accent2)' },
+  ].map(c => `
+    <div class="summary-card">
+      <div class="s-label">${c.label}</div>
+      <div class="s-val" style="color:${c.valColor}">${c.val}</div>
+      <div class="s-sub">${c.sub}</div>
+    </div>
+  `).join('');
+}
+
+// ── FILTER STATE ──────────────────────────────────────────────────────────────
+let activeSentiment = 'all';
+let activeSource    = 'all';
+
+function filteredNews() {
+  return NEWS.filter(n => {
+    const s = activeSentiment === 'all' || n.sentiment === activeSentiment;
+    const r = activeSource === 'all' || n.source === activeSource;
+    return s && r;
+  });
+}
+
+// ── RENDER NEWS GRID ──────────────────────────────────────────────────────────
+function renderNewsGrid() {
+  const grid = document.getElementById('news-grid');
+  if (!grid) return;
+  const items = filteredNews();
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">No headlines match your filters.</div></div>`;
+    return;
+  }
+  grid.innerHTML = `<div class="news-grid">${items.map(n => `
+    <div class="news-card ${n.sentiment}">
+      <div class="card-top">
+        <span class="source-badge ${sourceClass(n.source)}">${n.source}</span>
+        <span class="news-time">${n.time}</span>
+        ${n.ticker ? `<span class="ticker-tag">${n.ticker}</span>` : ''}
+      </div>
+      <div class="card-headline">${n.headline}</div>
+    </div>
+  `).join('')}</div>`;
+}
+
+// ── RENDER SECTOR NEWS ────────────────────────────────────────────────────────
+function renderSectorNews() {
+  const el = document.getElementById('sector-news');
+  if (!el) return;
+  const sectors = [...new Set(STOCKS_BRIEF.map(s=>s.sector))];
+  el.innerHTML = sectors.map(sec => {
+    const stocks = STOCKS_BRIEF.filter(s=>s.sector===sec);
+    const avg = (stocks.reduce((a,s)=>a+s.change,0)/stocks.length);
+    const top = stocks.sort((a,b)=>Math.abs(b.change)-Math.abs(a.change))[0];
+    const adv = stocks.filter(s=>s.change>0).length;
+    const dec = stocks.filter(s=>s.change<0).length;
+    const advPct = Math.round(adv/stocks.length*100);
+    const sign = avg >= 0 ? '+' : '';
+    const c = avg >= 0 ? 'pos' : 'neg';
+    return `
+      <div class="sector-card">
+        <div class="sector-top">
+          <span class="sector-name">${sec}</span>
+          <span class="sector-change ${c}">${sign}${avg.toFixed(2)}%</span>
+          <span class="sector-count">${stocks.length} stocks</span>
+        </div>
+        <div class="sector-top-mover">
+          Top mover:&nbsp;<span class="sector-top-ticker">${top.ticker}</span>
+          <span class="${cls(top.change)}" style="font-weight:700">${fmtPct(top.change)}</span>
+          &nbsp;·&nbsp;<span style="color:var(--dim)">${top.name}</span>
+        </div>
+        <div class="adv-dec-bar">
+          <div class="adv-fill" style="width:${advPct}%"></div>
+          <div class="dec-fill" style="width:${100-advPct}%"></div>
+        </div>
+        <div class="adv-dec-labels">
+          <span class="adv-label">▲ ${adv} advancing</span>
+          <span class="dec-label">${dec} declining ▼</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── CLOCK ─────────────────────────────────────────────────────────────────────
+function updateClock() {
+  const el = document.getElementById('clock');
+  if (el) el.textContent = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' CET';
+}
+
+// ── EVENTS ────────────────────────────────────────────────────────────────────
+document.querySelectorAll('[data-sentiment]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-sentiment]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeSentiment = btn.dataset.sentiment;
+    renderNewsGrid();
+  });
+});
+document.getElementById('source-filter').addEventListener('change', e => {
+  activeSource = e.target.value;
+  renderNewsGrid();
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderIndices();
+renderTicker();
+renderSummary();
+renderNewsGrid();
+renderSectorNews();
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

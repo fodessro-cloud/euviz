@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUViz — Groups</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">EU<span>Viz</span></div>
+  <nav class="nav-links">
+    <a class="nav-link"        href="index.html"  data-page="screener">Screener</a>
+    <a class="nav-link"        href="map.html"    data-page="map">Maps</a>
+    <a class="nav-link active" href="groups.html" data-page="groups">Groups</a>
+    <a class="nav-link"        href="news.html"   data-page="news">News</a>
+  </nav>
+  <div class="header-right">
+    <div class="market-status"><div class="status-dot"></div><span>Market Open</span></div>
+    <span style="color:var(--text2);font-size:11px;" id="clock"></span>
+  </div>
+</header>
+
+<div class="indices-bar" id="indices-bar"></div>
+<div class="news-bar"><div id="news-ticker"></div></div>
+
+<!-- GROUPS TOOLBAR -->
+<div class="groups-toolbar">
+  <label>Group By</label>
+  <button class="hm-btn active" data-group-by="sector">Sector</button>
+  <button class="hm-btn" data-group-by="country">Country</button>
+  <button class="hm-btn" data-group-by="exchange">Exchange</button>
+  <button class="hm-btn" data-group-by="industry">Industry</button>
+  <span style="margin-left:auto;font-size:11px;color:var(--text2)">Click a row to expand stocks</span>
+</div>
+
+<!-- TABLE -->
+<div style="overflow:auto;height:calc(100vh - 42px - 36px - 30px - 44px);">
+  <table id="groups-table">
+    <thead>
+      <tr>
+        <th onclick="onGroupSortClick('name')">#</th>
+        <th onclick="onGroupSortClick('name')">Group</th>
+        <th onclick="onGroupSortClick('count')">#Stocks</th>
+        <th onclick="onGroupSortClick('marketCap')">Mkt Cap</th>
+        <th onclick="onGroupSortClick('avgChange')">Avg Chg%</th>
+        <th onclick="onGroupSortClick('avgPE')">Avg P/E</th>
+        <th onclick="onGroupSortClick('avgDividend')">Avg Div%</th>
+        <th onclick="onGroupSortClick('avgROE')">Avg ROE</th>
+        <th onclick="onGroupSortClick('avgRevGrowth')">Rev Growth</th>
+        <th onclick="onGroupSortClick('avgMargin')">Net Margin</th>
+        <th onclick="onGroupSortClick('avgBeta')">Avg Beta</th>
+        <th>Adv/Dec</th>
+      </tr>
+    </thead>
+    <tbody id="groups-tbody"></tbody>
+  </table>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/groups.js"></script>
+<script>
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' CET';
+  }
+  updateClock(); setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
