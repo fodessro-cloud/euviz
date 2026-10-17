@@ -174,7 +174,7 @@ read 21 reports this run
 4904 listed companies with an LEI on Wikidata
 18568 issuers with listed shares (FIRDS); 1926 of them file reports here
 1844 companies with figures, 105 without usable figures
-with ticker: 434, with sector: 406
+with ticker: 434, with sector: 403
 with F-score: 1541, F-score 8-9: 83, with dividend cover: 769
 by country: GB 454, SE 308, FR 152, NO 133, FI 107, ES 106, IT 97, DK 89, NL 87, BE 49, AT 45, GR 37, LU 31, MT 27, IS 22, HU 18, LT 18, HR 16, IE 13, PT 6, SI 6, SK 6, CY 5, PL 5, CH 4, EE 3
 
@@ -200,7 +200,7 @@ ArcelorMittal                      LU MT       Materials              2024-12-31
 Anheuser-Busch InBev               BE ABI      Consumer Staples       2025-12-31 rev€=52714.8 ebitda=21057.0 fcf=11227.0 roe=7.8 F=8 111111110
 AstraZeneca                        GB AZN      Healthcare             2025-12-31 rev€=52198.5 ebitda=19476.0 fcf=8670.0 roe=21.0 F=8 111111110
 Rio Tinto plc                      GB RIO      -                      2025-12-31 rev€=51220.1 ebitda=21513.0 fcf=4497.0 roe=16.0 F=4 11010-1-0
-Unilever                           GB UNA      Industrials            2025-12-31 rev€=50503.0 ebitda=10390.0 fcf=6759.0 roe=61.0 F=6 1110-11-1
+Unilever                           GB UNA      Consumer Staples       2025-12-31 rev€=50503.0 ebitda=10390.0 fcf=6759.0 roe=61.0 F=6 1110-11-1
 Maersk                             DK MAERSK A Industrials            2025-12-31 rev€=47976.5 ebitda=10171.0 fcf=4962.0 roe=4.9 F=None None
 AB Volvo                           SE -        Consumer Discretionary 2024-12-31 rev€=47269.3 ebitda=None fcf=None roe=26.0 F=5 1100-1110
 Saint-Gobain                       FR SGO      Materials              2025-12-31 rev€=46483.0 ebitda=None fcf=3464.0 roe=11.7 F=7 1111101-1
@@ -212,7 +212,7 @@ Telefónica                         ES TEF      Communication          2024-12-3
 Compass Group                      GB CPG      Consumer Staples       2025-09-30 rev€=40940.2 ebitda=None fcf=2474.0 roe=24.4 F=5 1111001-0
 Vodafone                           GB VOD      Communication          2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8 F=6 01111-101
 Schneider Electric                 FR SU       Utilities              2025-12-31 rev€=40152.0 ebitda=None fcf=4588.0 roe=17.2 F=6 111100101
-Sainsbury's                        GB SBRY     Consumer Staples       2026-02-28 rev€=39873.2 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
+J Sainsbury                        GB SBRY     Consumer Staples       2026-02-28 rev€=39873.2 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
 GSK                                GB GSK      Healthcare             2025-12-31 rev€=38711.9 ebitda=None fcf=4756.0 roe=34.9 F=9 111111111
 Inditex                            ES ITX      Consumer Discretionary 2025-01-31 rev€=38632.0 ebitda=10728.0 fcf=6616.0 roe=29.8 F=8 111110111
 Imperial Brands                    GB IMB      Consumer Staples       2025-09-30 rev€=38124.1 ebitda=4271.0 fcf=3429.0 roe=42.9 F=6 110101110
