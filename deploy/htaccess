@@ -9,6 +9,20 @@ RewriteBase /
 RewriteRule \.php$ - [F,L]
 RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]
 
+# Links inside the archive point to /archiv/...: send visitors to the original
+# address instead (/archiv/blog/index.html -> /blog/). Images, scripts and the
+# archive's own home page (/archiv/) stay where they are.
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/archiv/wp-(content|includes)/
+RewriteRule ^archiv/(.+/)(index\.html)?$ /$1 [R=301,L]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^archiv/index\.html$ /archiv/ [R=301,L]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^archiv/([^/]+\.html)$ /$1 [R=301,L]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+/)index\.html$ /$1 [R=301,L]
+
 # Old addresses (e.g. /blog/) keep working and show their copy from /archiv/
 # without changing the address in the browser.
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
