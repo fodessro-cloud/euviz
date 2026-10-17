@@ -35,7 +35,7 @@ jobs:
         env:
           MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'nasadit' && 'deploy' || 'check' }}
           FTP_SERVER: ${{ vars.FTP_SERVER || 'sftp://ftp.finila.com:222' }}
-          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'FOD0001' }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'finila.com' }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_DIR: ${{ vars.FTP_DIR || '/' }}
           FTP_INSECURE_TLS: ${{ vars.FTP_INSECURE_TLS || '0' }}
