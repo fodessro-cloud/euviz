@@ -6,7 +6,7 @@ position of 0.5 % of a company's shares or more. Each regulator keeps a public r
   IT  Consob              XLSX (current + historic)
   SE  Finansinspektionen  ODS (current + historic)
   NO  Finanstilsynet      JSON API (events per share)
-  UK  FCA                 XLSX (individual positions until July 2026, aggregated per company since)
+  UK  FCA                 XLSX (one aggregated position per company, no fund names)
 Writes js/shorts.json for the site. Every country is fetched on its own; a failing register
 keeps its rows from the previous run so the page never loses a whole country.
 """
@@ -26,7 +26,7 @@ SOURCES = {
     "IT": ("Consob (Italy)", "https://www.consob.it/web/area-pubblica/pnc"),
     "SE": ("Finansinspektionen (Sweden)", "https://www.fi.se/en/our-registers/net-short-positions/"),
     "NO": ("Finanstilsynet (Norway)", "https://ssr.finanstilsynet.no/"),
-    "UK": ("FCA (United Kingdom)", "https://www.fca.org.uk/markets/short-selling"),
+    "UK": ("FCA (United Kingdom)", "https://www.fca.org.uk/markets/short-selling"),   # aggregated per company
 }
 
 
@@ -154,10 +154,7 @@ def nl():
 
 
 def it():
-    page = fetch(SOURCES["IT"][1]).decode("utf-8", "replace")
-    m = re.search(r'href="([^"]*PncPubbl\.xlsx[^"]*)"', page)
-    url = ("https://www.consob.it" + m.group(1)) if m and m.group(1).startswith("/") else (
-        m.group(1) if m else "https://www.consob.it/documents/11973/395154/PncPubbl.xlsx/fbefe0a2-795b-bad3-9369-beccbeb14f27")
+    url = "https://www.consob.it/documents/11973/395154/PncPubbl.xlsx/fbefe0a2-795b-bad3-9369-beccbeb14f27"
     current, events = [], []
     for name, rows in xlsx_sheets(fetch(url)).items():
         try:
@@ -191,23 +188,26 @@ def no():
     return None, events
 
 
+AGGREGATE = "All funds together (UK publishes no names)"
+
+
 def uk():
-    """FCA: the individual-positions file stopped in July 2026 when the UK moved to aggregated
-    disclosure. We read whatever xlsx files the FCA short selling page links to and log them."""
-    page = fetch(SOURCES["UK"][1]).decode("utf-8", "replace")
-    links = sorted(set(re.findall(r'href="([^"]+\.xlsx)"', page)))
-    print("UK links:", links)
-    out = []
-    for link in links:
-        url = link if link.startswith("http") else "https://www.fca.org.uk" + link
-        for name, rows in xlsx_sheets(fetch(url)).items():
-            print("UK sheet", name, rows[:3])
-            try:
-                body = table(rows, "position holder")
-            except ValueError:
-                continue
-            out += [event(*r[:5]) for r in body if len(r) >= 5]
-    return None, out
+    """Since the Short Selling Regulations 2025 the FCA publishes one aggregated net short
+    position per company instead of each fund's position."""
+    sheets = xlsx_sheets(fetch("https://www.fca.org.uk/publication/documents/aggregated-net-short-positions.xlsx"))
+    current, events = [], []
+    for name, rows in sheets.items():
+        try:
+            body = table(rows, "name of company")
+        except ValueError:
+            continue
+        if name.lower().startswith("current"):
+            current += [event(AGGREGATE, r[0], r[1], r[2], r[3]) for r in body if len(r) >= 4]
+        else:   # historical: the value held from its position date until the date it became historical
+            events += [event(AGGREGATE, r[0], r[1], 0, r[4]) for r in body if len(r) >= 5]
+            events += [event(AGGREGATE, r[0], r[1], r[2], r[3]) for r in body if len(r) >= 4]
+    events = [e for e in events if e]
+    return current, events + current
 
 
 def positions_at(events, day):
