@@ -16,7 +16,9 @@
 # one DirectoryIndex line in .htaccess are added.
 set -euo pipefail
 
-: "${FTP_SERVER:?missing FTP_SERVER}" "${FTP_USERNAME:?missing FTP_USERNAME}" "${FTP_PASSWORD:?missing FTP_PASSWORD}"
+for v in FTP_SERVER FTP_USERNAME FTP_PASSWORD; do
+  [ -n "${!v:-}" ] || { echo "::error title=Missing setting::$v is not set"; exit 1; }
+done
 MODE="${MODE:-check}"
 FTP_DIR="${FTP_DIR:-/}"
 OLD_SITE_URL="${OLD_SITE_URL:-https://www.finila.com/}"
@@ -29,8 +31,15 @@ LFTP_SETTINGS="set net:max-retries 3; set net:timeout 30; set ftp:ssl-allow yes;
 LFTP_SETTINGS="$LFTP_SETTINGS; set sftp:auto-confirm yes"
 if [ "${FTP_INSECURE_TLS:-0}" = "1" ]; then LFTP_SETTINGS="$LFTP_SETTINGS; set ssl:verify-certificate no"; fi
 
+# Errors also go out as workflow annotations, which stay readable when the log is not.
 ftp() {
-  lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -e "$LFTP_SETTINGS; $1; bye" "$FTP_SERVER"
+  local err="$WORK/lftp.err" rc=0
+  lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -e "$LFTP_SETTINGS; $1; bye" "$FTP_SERVER" 2>"$err" || rc=$?
+  cat "$err" >&2
+  if [ "$rc" != 0 ]; then
+    echo "::error title=Server connection failed::$(tail -n 5 "$err" | tr '\n' ' ' | sed "s/$FTP_PASSWORD/***/g")"
+  fi
+  return "$rc"
 }
 
 echo "== Web root ($FTP_DIR) on $FTP_SERVER"
@@ -40,7 +49,7 @@ if ! grep -qxE '(wp-config\.php|index\.php|index\.html)' "$WORK/root-listing.txt
   echo "::error::$FTP_DIR does not look like the web root (no index.php/index.html/wp-config.php). Set FTP_DIR to the folder FileZilla shows the site files in."
   exit 1
 fi
-[ "$MODE" = "check" ] && { echo "Check OK, nothing changed."; exit 0; }
+[ "$MODE" = "check" ] && { echo "::notice title=Server check OK::$FTP_DIR contains: $(tr '\n' ' ' < "$WORK/root-listing.txt")"; exit 0; }
 [ "$MODE" = "deploy" ] || { echo "Unknown MODE=$MODE"; exit 1; }
 
 echo "== Archive of the old site"
