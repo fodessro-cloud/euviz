@@ -22,11 +22,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Map stocks to LEI / XBRL filings
-        run: python scripts/data/map_leis.py
+      - name: Map stocks to their XBRL filer
+        run: |
+          set -o pipefail
+          mkdir -p data
+          python scripts/data/map_leis.py 2>&1 | tee data/run.log || { echo "::error::map_leis: $(tail -3 data/run.log | tr '\n' ' ')"; exit 1; }
       - name: Read latest annual reports
-        run: python scripts/data/fundamentals.py
+        run: |
+          set -o pipefail
+          python scripts/data/fundamentals.py 2>&1 | tee -a data/run.log || { echo "::error::fundamentals: $(tail -3 data/run.log | tr '\n' ' ')"; exit 1; }
       - name: Commit results
+        if: always()
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
