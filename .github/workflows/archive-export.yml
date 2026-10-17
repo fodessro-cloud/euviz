@@ -4,8 +4,6 @@ name: Export archívu (len čítanie)
 # archive-snapshot branch so the pages can be rebuilt in the FINILA design.
 # Read-only on the server.
 on:
-  push:
-    branches: [finila-archive-design]
   workflow_dispatch:
 
 permissions:
