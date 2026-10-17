@@ -1,0 +1,18 @@
+FAIL  gold_eur     https://api.statistiken.bundesbank.de/rest/data/BBEX3/M.XAU.EUR.EA.AC.C06?startPeriod=1999-01: HTTP Error 404: Not Found; https://api.statistiken.bundesbank.de/rest/data/BBEX3/D.XAU.EUR.EA.AC.C04?startPeriod=1999-01: HTTP Error 400: Bad Request
+FAIL  gold_usd     https://api.statistiken.bundesbank.de/rest/data/BBEX3/M.XAU.USD.EA.AC.C06?startPeriod=1999-01: HTTP Error 404: Not Found; https://api.statistiken.bundesbank.de/rest/data/BBEX3/D.XAU.USD.EA.AC.C05?startPeriod=1999-01: HTTP Error 400: Bad Request
+ok    dfr            64 months, last 2026-09 = 2.500
+ok    stoxx50       333 months, last 2026-09 = 6316.389
+ok    eurusd        333 months, last 2026-09 = 1.151
+ok    hicp_SK       324 months, last 2025-12 = 150.360
+ok    infl_SK       324 months, last 2025-12 = 4.100
+ok    dep1y_SK      224 months, last 2026-08 = 2.180
+ok    depon_SK      224 months, last 2026-08 = 0.070
+ok    bond10_SK     309 months, last 2026-09 = 4.164
+ok    house_SK       82 months, last 2026-05 = 225.910
+ok    hicp_U2       324 months, last 2025-12 = 129.540
+ok    infl_U2       324 months, last 2025-12 = 1.900
+ok    dep1y_U2      320 months, last 2026-08 = 2.130
+ok    depon_U2      320 months, last 2026-08 = 0.290
+ok    bond10_U2     333 months, last 2026-09 = 3.928
+ok    house_U2       86 months, last 2026-05 = 158.810
+wrote js/invest.json (139 KB), failed: ['gold_eur', 'gold_usd']
