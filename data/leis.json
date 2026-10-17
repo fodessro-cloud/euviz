@@ -1,308 +1,309 @@
 {
- "SAP": {
+ "SAP@Germany": {
   "lei": "529900D6BF99LW9R2E68",
   "legal_name": "SAP SE",
   "match": "exact"
  },
- "SIE": {
+ "SIE@Germany": {
   "lei": "W38RGI023J3WT1HWRP32",
   "legal_name": "Siemens Aktiengesellschaft",
   "match": "exact"
  },
- "ALV": {
+ "ALV@Germany": {
   "lei": "529900K9B0N5BT694847",
   "legal_name": "Allianz SE",
   "match": "exact"
  },
- "BASF": {
+ "BASF@Germany": {
   "lei": "529900PM64WH8AF1E917",
   "legal_name": "BASF SE",
   "match": "exact"
  },
- "BMW": null,
- "MBG": null,
- "DTE": {
+ "BMW@Germany": null,
+ "MBG@Germany": null,
+ "DTE@Germany": {
   "lei": "549300V9QSIG4WX4GJ96",
   "legal_name": "Deutsche Telekom AG",
   "match": "exact"
  },
- "DBK": {
+ "DBK@Germany": {
   "lei": "7LTWFZYICNSX8D621K86",
   "legal_name": "DEUTSCHE BANK AKTIENGESELLSCHAFT",
   "match": "exact"
  },
- "BAYN": {
+ "BAYN@Germany": {
   "lei": "549300J4U55H3WP1XT59",
   "legal_name": "Bayer Aktiengesellschaft",
   "match": "exact"
  },
- "VOW3": {
+ "VOW3@Germany": {
   "lei": "529900NNUPAGGOMPXZ31",
   "legal_name": "VOLKSWAGEN AKTIENGESELLSCHAFT",
   "match": "exact"
  },
- "IFX": null,
- "ADS": {
+ "IFX@Germany": null,
+ "ADS@Germany": {
   "lei": "549300JSX0Z4CW0V5023",
   "legal_name": "adidas AG",
   "match": "exact"
  },
- "MUV2": null,
- "HEN3": null,
- "RWE": null,
- "CON": null,
- "MC": {
+ "MUV2@Germany": null,
+ "HEN3@Germany": null,
+ "RWE@Germany": null,
+ "CON@Germany": null,
+ "MC@France": {
   "lei": "IOG4E947OATN0KJYSD45",
   "legal_name": "LVMH MOET HENNESSY LOUIS VUITTON",
   "match": "exact"
  },
- "TTE": {
+ "TTE@France": {
   "lei": "529900S21EQ1BO4ESM68",
   "legal_name": "TotalEnergies SE",
   "match": "exact"
  },
- "OR": {
+ "OR@France": {
   "lei": "529900JI1GG6F7RKVI53",
   "legal_name": "L'OREAL",
   "match": "exact"
  },
- "AIR": {
+ "AIR@France": {
   "lei": "MINO79WLOO247M1IL051",
   "legal_name": "AIRBUS SE",
   "match": "exact"
  },
- "BNP": {
+ "BNP@France": {
   "lei": "R0MUWSFPU8MPRO8K5P83",
   "legal_name": "BNP PARIBAS",
   "match": "exact"
  },
- "SAN": {
-  "lei": "5493006QMFDDMYWIAM13",
-  "legal_name": "BANCO SANTANDER S.A.",
+ "SAN@France": {
+  "lei": "549300E9PC51EN656011",
+  "legal_name": "SANOFI",
   "match": "exact"
  },
- "CS": {
+ "CS@France": {
   "lei": "F5WCUMTUM4RKZ1MAIE39",
   "legal_name": "AXA",
   "match": "exact"
  },
- "RMS": {
+ "RMS@France": {
   "lei": "969500Y4IJGHJE2MTJ13",
   "legal_name": "HERMES INTERNATIONAL",
   "match": "exact"
  },
- "KER": {
+ "KER@France": {
   "lei": "549300VGEJKB7SVUZR78",
   "legal_name": "KERING",
   "match": "exact"
  },
- "DG": {
+ "DG@France": {
   "lei": "213800WFQ334R8UXUG83",
   "legal_name": "VINCI",
   "match": "exact"
  },
- "CAP": {
+ "CAP@France": {
   "lei": "96950077L0TN7BAROX36",
   "legal_name": "CAPGEMINI",
   "match": "exact"
  },
- "RI": {
+ "RI@France": {
   "lei": "52990097YFPX9J0H5D87",
   "legal_name": "PERNOD RICARD",
   "match": "exact"
  },
- "ORA": {
+ "ORA@France": {
   "lei": "969500MCOONR8990S771",
   "legal_name": "ORANGE",
   "match": "exact"
  },
- "ASML": {
+ "ASML@Netherlands": {
   "lei": "724500Y6DUVHQD6OXN27",
   "legal_name": "ASML Holding N.V.",
   "match": "exact"
  },
- "SHEL": {
+ "SHEL@Netherlands": {
   "lei": "21380068P1DRHMJ8KU70",
   "legal_name": "SHELL PLC",
   "match": "exact"
  },
- "INGA": {
+ "INGA@Netherlands": {
   "lei": "549300NYKK9MWM7GGW15",
   "legal_name": "ING GROEP N.V.",
   "match": "exact"
  },
- "HEIA": {
+ "HEIA@Netherlands": {
   "lei": "724500M1WJLFM9TYBS04",
   "legal_name": "Heineken Holding N.V.",
   "match": "exact"
  },
- "PHIA": {
+ "PHIA@Netherlands": {
   "lei": "H1FJE8H61JGM1JSGM897",
   "legal_name": "Koninklijke Philips N.V.",
   "match": "exact"
  },
- "UNA": {
+ "UNA@Netherlands": {
   "lei": "549300MKFYEKVRWML317",
   "legal_name": "UNILEVER PLC",
   "match": "exact"
  },
- "STLAM": {
+ "STLAM@Netherlands": {
   "lei": "549300LKT9PW7ZIBDF31",
   "legal_name": "STELLANTIS N.V.",
   "match": "exact"
  },
- "NESN": {
-  "lei": "549300EAEU8YV8MQXP30",
-  "legal_name": "NESTLE HOLDINGS, INC.",
-  "match": "exact"
- },
- "ROG": null,
- "NOVN": null,
- "ABBN": null,
- "ZURN": null,
- "UBSG": null,
- "GIVN": null,
- "AZN": {
+ "NESN@Switzerland": null,
+ "ROG@Switzerland": null,
+ "NOVN@Switzerland": null,
+ "ABBN@Switzerland": null,
+ "ZURN@Switzerland": null,
+ "UBSG@Switzerland": null,
+ "GIVN@Switzerland": null,
+ "AZN@UK": {
   "lei": "PY6ZZQWO2IZFZC3IOL08",
   "legal_name": "ASTRAZENECA PLC",
   "match": "exact"
  },
- "HSBA": {
+ "HSBA@UK": {
   "lei": "MLU0ZO3ML4LN2LL2TL39",
   "legal_name": "HSBC HOLDINGS PLC",
   "match": "exact"
  },
- "BP": {
+ "BP@UK": {
   "lei": "213800LH1BZH3DI6G760",
   "legal_name": "BP P.L.C.",
   "match": "exact"
  },
- "GLEN": {
+ "GLEN@UK": {
   "lei": "2138002658CPO9NBH955",
   "legal_name": "GLENCORE PLC",
   "match": "exact"
  },
- "RIO": {
+ "RIO@UK": {
   "lei": "213800YOEO5OQ72G2R82",
   "legal_name": "RIO TINTO PLC",
   "match": "exact"
  },
- "GSK": {
+ "GSK@UK": {
   "lei": "5493000HZTVUYLO1D793",
   "legal_name": "GSK PLC",
   "match": "exact"
  },
- "ULVR": {
+ "ULVR@UK": {
   "lei": "549300MKFYEKVRWML317",
   "legal_name": "UNILEVER PLC",
   "match": "exact"
  },
- "DGE": {
+ "DGE@UK": {
   "lei": "213800ZVIELEA55JMJ32",
   "legal_name": "DIAGEO PLC",
   "match": "exact"
  },
- "BARC": {
+ "BARC@UK": {
   "lei": "213800LBQA1Y9L22JB70",
   "legal_name": "BARCLAYS PLC",
   "match": "exact"
  },
- "LLOY": {
+ "LLOY@UK": {
   "lei": "549300PPXHEU2JF0AM85",
   "legal_name": "LLOYDS BANKING GROUP PLC",
   "match": "exact"
  },
- "ITX": {
+ "ITX@Spain": {
   "lei": "549300TTCXZOGZM2EY83",
   "legal_name": "INDUSTRIA DE DISEÑO TEXTIL, S.A.",
   "match": "exact"
  },
- "IBE": {
+ "IBE@Spain": {
   "lei": "5QK37QC7NWOJ8D7WVQ45",
   "legal_name": "IBERDROLA SA",
   "match": "exact"
  },
- "BBVA": null,
- "TEF": {
+ "SAN@Spain": {
+  "lei": "5493006QMFDDMYWIAM13",
+  "legal_name": "BANCO SANTANDER S.A.",
+  "match": "exact"
+ },
+ "BBVA@Spain": null,
+ "TEF@Spain": {
   "lei": "549300EEJH4FEPDBBR25",
   "legal_name": "TELEFONICA SA",
   "match": "exact"
  },
- "ENEL": {
+ "ENEL@Italy": {
   "lei": "WOCMU6HCI0OJWNPRZS33",
   "legal_name": "ENEL - SPA",
   "match": "exact"
  },
- "ENI": {
+ "ENI@Italy": {
   "lei": "BUCRF72VH5RBN7X3VL35",
   "legal_name": "ENI S.P.A.",
   "match": "exact"
  },
- "RACE": {
+ "RACE@Italy": {
   "lei": "549300RIVY5EX8RCON76",
   "legal_name": "FERRARI N.V.",
   "match": "exact"
  },
- "UCG": null,
- "ISP": {
+ "UCG@Italy": null,
+ "ISP@Italy": {
   "lei": "2W8N8UU78PMDQKZENC08",
   "legal_name": "INTESA SANPAOLO SPA",
   "match": "exact"
  },
- "ATCO": {
+ "ATCO@Sweden": {
   "lei": "213800T8PC8Q4FYJZR07",
   "legal_name": "ATLAS COPCO AKTIEBOLAG",
   "match": "exact"
  },
- "VOLV": {
+ "VOLV@Sweden": {
   "lei": "549300HGV012CNC8JD22",
   "legal_name": "Aktiebolaget Volvo",
   "match": "exact"
  },
- "ERICB": {
+ "ERICB@Sweden": {
   "lei": "549300W9JLPW15XIFM52",
   "legal_name": "Telefonaktiebolaget LM Ericsson",
   "match": "exact"
  },
- "HMB": {
+ "HMB@Sweden": {
   "lei": "529900O5RR7R39FRDM42",
   "legal_name": "H & M Hennes & Mauritz AB",
   "match": "exact"
  },
- "NOVO": {
+ "NOVO@Denmark": {
   "lei": "549300DAQ1CVT6CXN342",
   "legal_name": "NOVO NORDISK A/S",
   "match": "exact"
  },
- "MAERSK": {
+ "MAERSK@Denmark": {
   "lei": "549300D2K6PKKKXVNN73",
   "legal_name": "A.P. MØLLER - MÆRSK A/S",
   "match": "exact"
  },
- "NOKIA": {
+ "NOKIA@Finland": {
   "lei": "549300A0JPRWG1KI7U06",
   "legal_name": "Nokia Oyj",
   "match": "exact"
  },
- "UCB": null,
- "ABI": {
+ "UCB@Belgium": null,
+ "ABI@Belgium": {
   "lei": "5493008H3828EMEXB082",
   "legal_name": "ANHEUSER-BUSCH INBEV",
   "match": "exact"
  },
- "CRH": null,
- "EQNR": {
+ "CRH@Ireland": null,
+ "EQNR@Norway": {
   "lei": "OW6OFBNCKXC4US5C7523",
   "legal_name": "EQUINOR ASA",
   "match": "exact"
  },
- "OMV": {
+ "OMV@Austria": {
   "lei": "549300V62YJ9HTLRI486",
   "legal_name": "OMV AKTIENGESELLSCHAFT",
   "match": "exact"
  },
- "EDP": null,
- "PKN": {
+ "EDP@Portugal": null,
+ "PKN@Poland": {
   "lei": "259400VVMM70CQREJT74",
   "legal_name": "ORLEN SPÓŁKA AKCYJNA",
   "match": "exact"

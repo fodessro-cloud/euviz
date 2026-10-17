@@ -1,5 +1,5 @@
 {
- "MC": {
+ "MC@France": {
   "revenue": 84683.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -26,7 +26,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/IOG4E947OATN0KJYSD45/2024-12-31/ESEF/FR/0/IOG4E947OATN0KJYSD45-2024-12-31-0-fr/reports/ixbrlviewer.html"
  },
- "TTE": {
+ "TTE@France": {
   "revenue": 201196.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -53,7 +53,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/529900S21EQ1BO4ESM68/2025-12-31/ESEF/FR/0/529900S21EQ1BO4ESM68-2025-12-31-1-fr/reports/ixbrlviewer.html"
  },
- "OR": {
+ "OR@France": {
   "revenue": 44052.0,
   "ebitda": null,
   "operatingProfit": 8386.5,
@@ -80,7 +80,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/529900JI1GG6F7RKVI53/2025-12-31/ESEF/FR/0/loreal-2025-12-31-1-fr/reports/ixbrlviewer.html"
  },
- "AIR": {
+ "AIR@France": {
   "revenue": 73420.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -107,7 +107,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/MINO79WLOO247M1IL051/2025-12-31/ESEF/NL/0/MINO79WLOO247M1IL051-2025-12-31-1-en/reports/ixbrlviewer.html"
  },
- "BNP": {
+ "BNP@France": {
   "revenue": null,
   "ebitda": 24351.0,
   "operatingProfit": 16296.0,
@@ -134,34 +134,34 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/R0MUWSFPU8MPRO8K5P83/2025-12-31/ESEF/FR/1/bnp-2025-12-31-1/reports/ixbrlviewer.html"
  },
- "SAN": {
-  "revenue": null,
-  "ebitda": null,
-  "operatingProfit": null,
-  "netIncome": 14101.0,
-  "operatingCashFlow": -14835.0,
-  "capex": 7659.0,
-  "fcf": -22494.0,
-  "dividendsPaid": 3341.0,
-  "equity": 112748.0,
-  "assets": 1867515.0,
-  "cash": 152281.0,
-  "debt": null,
-  "netDebt": null,
+ "SAN@France": {
+  "revenue": 43626.0,
+  "ebitda": 8120.0,
+  "operatingProfit": 6344.0,
+  "netIncome": 7813.0,
+  "operatingCashFlow": 10750.0,
+  "capex": 3538.0,
+  "fcf": 7212.0,
+  "dividendsPaid": null,
+  "equity": 71376.0,
+  "assets": 126805.0,
+  "cash": 7657.0,
+  "debt": 14248.0,
+  "netDebt": 6591.0,
   "eps": null,
-  "roe": 12.5,
-  "ebitdaMargin": null,
-  "operatingMargin": null,
-  "netMargin": null,
-  "fcfMargin": null,
-  "netDebtToEbitda": null,
-  "revenueGrowth": null,
-  "netIncomeGrowth": 12.1,
+  "roe": 10.9,
+  "ebitdaMargin": 18.6,
+  "operatingMargin": 14.5,
+  "netMargin": 17.9,
+  "fcfMargin": 16.5,
+  "netDebtToEbitda": 0.81,
+  "revenueGrowth": 6.2,
+  "netIncomeGrowth": 40.5,
   "currency": "EUR",
   "periodEnd": "2025-12-31",
-  "source": "https://filings.xbrl.org/5493006QMFDDMYWIAM13/2025-12-31/ESEF/GB/0/5493006QMFDDMYWIAM13-2025-12-31/reports/ixbrlviewer.html"
+  "source": "https://filings.xbrl.org/549300E9PC51EN656011/2025-12-31/ESEF/FR/0/sny-2025-12-31-2-fr/reports/ixbrlviewer.html"
  },
- "CS": {
+ "CS@France": {
   "revenue": 91139.0,
   "ebitda": null,
   "operatingProfit": 10368.0,
@@ -188,34 +188,34 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/F5WCUMTUM4RKZ1MAIE39/2025-12-31/ESEF/FR/0/axa-2025-12-31-1-fr/reports/ixbrlviewer.html"
  },
- "RMS": {
-  "revenue": 15170.0,
+ "RMS@France": {
+  "revenue": 16002.0,
   "ebitda": null,
-  "operatingProfit": 6150.0,
-  "netIncome": 4603.0,
-  "operatingCashFlow": 5139.0,
-  "capex": null,
-  "fcf": null,
-  "dividendsPaid": 2705.0,
-  "equity": 17327.0,
-  "assets": 23084.0,
-  "cash": 11642.0,
-  "debt": 61.0,
-  "netDebt": -11581.0,
+  "operatingProfit": 6569.0,
+  "netIncome": 4524.0,
+  "operatingCashFlow": 5374.0,
+  "capex": 1161.0,
+  "fcf": 4213.0,
+  "dividendsPaid": 2796.0,
+  "equity": 18840.0,
+  "assets": 24322.0,
+  "cash": 12239.0,
+  "debt": 34.0,
+  "netDebt": -12205.0,
   "eps": null,
-  "roe": 26.6,
+  "roe": 24.0,
   "ebitdaMargin": null,
-  "operatingMargin": 40.5,
-  "netMargin": 30.3,
-  "fcfMargin": null,
+  "operatingMargin": 41.1,
+  "netMargin": 28.3,
+  "fcfMargin": 26.3,
   "netDebtToEbitda": null,
-  "revenueGrowth": 13.0,
-  "netIncomeGrowth": 6.8,
+  "revenueGrowth": 5.5,
+  "netIncomeGrowth": -1.7,
   "currency": "EUR",
-  "periodEnd": "2024-12-31",
-  "source": "https://filings.xbrl.org/969500Y4IJGHJE2MTJ13/2024-12-31/ESEF/FR/0/hermes-2024-12-31-0-fr/reports/ixbrlviewer.html"
+  "periodEnd": "2025-12-31",
+  "source": "https://filings.xbrl.org/969500Y4IJGHJE2MTJ13/2026-12-31/ESEF/FR/0/hermes-2025-12-31-1/reports/ixbrlviewer.html"
  },
- "KER": {
+ "KER@France": {
   "revenue": 19566.0,
   "ebitda": null,
   "operatingProfit": 4643.0,
@@ -242,7 +242,7 @@
   "periodEnd": "2023-12-31",
   "source": "https://filings.xbrl.org/549300VGEJKB7SVUZR78/2023-12-31/ESEF/FR/0/kering-2023-12-31-fr/reports/ixbrlviewer.html"
  },
- "DG": {
+ "DG@France": {
   "revenue": 75372.0,
   "ebitda": 13570.0,
   "operatingProfit": 9364.0,
@@ -269,14 +269,14 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/213800WFQ334R8UXUG83/2025-12-31/ESEF/FR/0/VINCI-2025-12-31-1-fr/reports/ixbrlviewer.html"
  },
- "CAP": {
+ "CAP@France": {
   "revenue": 22096.0,
   "ebitda": 3039.0,
   "operatingProfit": 2356.0,
   "netIncome": 1671.0,
   "operatingCashFlow": 2526.0,
-  "capex": null,
-  "fcf": null,
+  "capex": 315.0,
+  "fcf": 2211.0,
   "dividendsPaid": 584.0,
   "equity": 11775.0,
   "assets": 25660.0,
@@ -288,7 +288,7 @@
   "ebitdaMargin": 13.8,
   "operatingMargin": 10.7,
   "netMargin": 7.6,
-  "fcfMargin": null,
+  "fcfMargin": 10.0,
   "netDebtToEbitda": null,
   "revenueGrowth": -1.9,
   "netIncomeGrowth": 0.5,
@@ -296,7 +296,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/96950077L0TN7BAROX36/2024-12-31/ESEF/FR/0/capg-2024-12-31-fr/reports/ixbrlviewer.html"
  },
- "RI": {
+ "RI@France": {
   "revenue": 10959.0,
   "ebitda": 3165.0,
   "operatingProfit": 2743.0,
@@ -323,7 +323,7 @@
   "periodEnd": "2025-06-30",
   "source": "https://filings.xbrl.org/52990097YFPX9J0H5D87/2025-06-30/ESEF/FR/0/pernod-2025-06-30-1-fr/reports/ixbrlviewer.html"
  },
- "ORA": {
+ "ORA@France": {
   "revenue": 40260.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -350,7 +350,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/969500MCOONR8990S771/2024-12-31/ESEF/FR/0/ORAN-2024-12-31-0-fr/reports/ixbrlviewer.html"
  },
- "ASML": {
+ "ASML@Netherlands": {
   "revenue": 32667.3,
   "ebitda": 13486.8,
   "operatingProfit": 12054.0,
@@ -377,7 +377,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/724500Y6DUVHQD6OXN27/2025-12-31/ESEF/NL/0/asml-2025-12-31-1-en/reports/ixbrlviewer.html"
  },
- "SHEL": {
+ "SHEL@Netherlands": {
   "revenue": 266886.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -404,7 +404,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/21380068P1DRHMJ8KU70/2025-12-31/ESEF/NL/0/shel-2025-12-31-en/reports/ixbrlviewer.html"
  },
- "INGA": {
+ "INGA@Netherlands": {
   "revenue": 23035.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -431,7 +431,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/549300NYKK9MWM7GGW15/2025-12-31/ESEF/NL/0/ing-2025-12-31-en/reports/ixbrlviewer.html"
  },
- "HEIA": {
+ "HEIA@Netherlands": {
   "revenue": 34257.0,
   "ebitda": 6015.0,
   "operatingProfit": 3406.0,
@@ -458,7 +458,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/724500M1WJLFM9TYBS04/2025-12-31/ESEF/NL/0/heiho-2025-12-31-1-en/reports/ixbrlviewer.html"
  },
- "PHIA": {
+ "PHIA@Netherlands": {
   "revenue": 17834.0,
   "ebitda": null,
   "operatingProfit": 1424.0,
@@ -485,7 +485,34 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/H1FJE8H61JGM1JSGM897/2025-12-31/ESEF/NL/0/phia-2025-12-31-1-en/reports/ixbrlviewer.html"
  },
- "STLAM": {
+ "UNA@Netherlands": {
+  "revenue": 50503.0,
+  "ebitda": null,
+  "operatingProfit": 9037.0,
+  "netIncome": 9469.0,
+  "operatingCashFlow": 8350.0,
+  "capex": 1591.0,
+  "fcf": 6759.0,
+  "dividendsPaid": 4453.0,
+  "equity": 15530.0,
+  "assets": 70471.0,
+  "cash": 3941.0,
+  "debt": null,
+  "netDebt": null,
+  "eps": null,
+  "roe": 61.0,
+  "ebitdaMargin": null,
+  "operatingMargin": 17.9,
+  "netMargin": 18.7,
+  "fcfMargin": 13.4,
+  "netDebtToEbitda": null,
+  "revenueGrowth": -3.8,
+  "netIncomeGrowth": 64.9,
+  "currency": "EUR",
+  "periodEnd": "2025-12-31",
+  "source": "https://filings.xbrl.org/549300MKFYEKVRWML317/2026-02-12/ESEF/NL/0/ul-2025-12-31-1-en/reports/ixbrlviewer.html"
+ },
+ "STLAM@Netherlands": {
   "revenue": 153508.0,
   "ebitda": -19273.0,
   "operatingProfit": -26254.0,
@@ -512,34 +539,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/549300LKT9PW7ZIBDF31/2025-12-31/ESEF/NL/0/stellantis-2025-12-31-en/reports/ixbrlviewer.html"
  },
- "NESN": {
-  "revenue": 31466.0,
-  "ebitda": 3344.0,
-  "operatingProfit": 2495.0,
-  "netIncome": 1741.0,
-  "operatingCashFlow": 3140.0,
-  "capex": 2505.0,
-  "fcf": 635.0,
-  "dividendsPaid": null,
-  "equity": 25273.0,
-  "assets": 70249.0,
-  "cash": 330.0,
-  "debt": 28116.0,
-  "netDebt": 27786.0,
-  "eps": null,
-  "roe": 6.9,
-  "ebitdaMargin": 10.6,
-  "operatingMargin": 7.9,
-  "netMargin": 5.5,
-  "fcfMargin": 2.0,
-  "netDebtToEbitda": 8.31,
-  "revenueGrowth": 5.4,
-  "netIncomeGrowth": 54.5,
-  "currency": "USD",
-  "periodEnd": "2023-12-31",
-  "source": "https://filings.xbrl.org/549300EAEU8YV8MQXP30/2023-12-31/ESEF/GB/0/549300EAEU8YV8MQXP30-2023-12-31-en/reports/ixbrlviewer.html"
- },
- "AZN": {
+ "AZN@UK": {
   "revenue": 58739.0,
   "ebitda": null,
   "operatingProfit": 13743.0,
@@ -566,9 +566,9 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/PY6ZZQWO2IZFZC3IOL08/2025-12-31/ESEF/GB/0/PY6ZZQWO2IZFZC3IOL08-2025-12-31/reports/ixbrlviewer.html"
  },
- "HSBA": {
+ "HSBA@UK": {
   "revenue": null,
-  "ebitda": null,
+  "ebitda": 30667.0,
   "operatingProfit": 27996.0,
   "netIncome": 23131.0,
   "operatingCashFlow": 29766.0,
@@ -593,14 +593,14 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/MLU0ZO3ML4LN2LL2TL39/2025-12-31/ESEF/GB/0/MLU0ZO3ML4LN2LL2TL39-2025-12-31/reports/ixbrlviewer.html"
  },
- "BP": {
+ "BP@UK": {
   "revenue": 192549.0,
   "ebitda": 30464.0,
   "operatingProfit": 12642.0,
   "netIncome": 55.0,
   "operatingCashFlow": 24493.0,
-  "capex": null,
-  "fcf": null,
+  "capex": 13221.0,
+  "fcf": 11272.0,
   "dividendsPaid": 5611.0,
   "equity": 53052.0,
   "assets": 278526.0,
@@ -612,7 +612,7 @@
   "ebitdaMargin": 15.8,
   "operatingMargin": 6.6,
   "netMargin": 0.0,
-  "fcfMargin": null,
+  "fcfMargin": 5.9,
   "netDebtToEbitda": 0.7,
   "revenueGrowth": -1.1,
   "netIncomeGrowth": -85.6,
@@ -620,7 +620,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/213800LH1BZH3DI6G760/2025-12-31/ESEF/GB/0/213800LH1BZH3DI6G760-2025-12-31/reports/ixbrlviewer.html"
  },
- "GLEN": {
+ "GLEN@UK": {
   "revenue": 247535.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -647,14 +647,14 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/2138002658CPO9NBH955/2025-12-31/ESEF/GB/0/2138002658CPO9NBH955-2025-12-31/reports/ixbrlviewer.html"
  },
- "RIO": {
+ "RIO@UK": {
   "revenue": 57638.0,
   "ebitda": 21513.0,
   "operatingProfit": 14936.0,
   "netIncome": 9966.0,
   "operatingCashFlow": 16832.0,
-  "capex": null,
-  "fcf": null,
+  "capex": 12335.0,
+  "fcf": 4497.0,
   "dividendsPaid": 6410.0,
   "equity": 62203.0,
   "assets": 128102.0,
@@ -666,7 +666,7 @@
   "ebitdaMargin": 37.3,
   "operatingMargin": 25.9,
   "netMargin": 17.3,
-  "fcfMargin": null,
+  "fcfMargin": 7.8,
   "netDebtToEbitda": 0.61,
   "revenueGrowth": 7.4,
   "netIncomeGrowth": -13.7,
@@ -674,8 +674,8 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/213800YOEO5OQ72G2R82/2025-12-31/ESEF/GB/0/213800YOEO5OQ72G2R82-2025-12-31/reports/ixbrlviewer.html"
  },
- "GSK": {
-  "revenue": null,
+ "GSK@UK": {
+  "revenue": 32667.0,
   "ebitda": null,
   "operatingProfit": 7932.0,
   "netIncome": 5716.0,
@@ -691,17 +691,44 @@
   "eps": null,
   "roe": 34.9,
   "ebitdaMargin": null,
-  "operatingMargin": null,
-  "netMargin": null,
-  "fcfMargin": null,
+  "operatingMargin": 24.3,
+  "netMargin": 17.5,
+  "fcfMargin": 14.6,
   "netDebtToEbitda": null,
-  "revenueGrowth": null,
+  "revenueGrowth": 4.1,
   "netIncomeGrowth": 122.0,
   "currency": "GBP",
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/5493000HZTVUYLO1D793/2025-12-31/ESEF/GB/0/5493000HZTVUYLO1D793-2025-12-31/reports/ixbrlviewer.html"
  },
- "DGE": {
+ "ULVR@UK": {
+  "revenue": 50503.0,
+  "ebitda": null,
+  "operatingProfit": 9037.0,
+  "netIncome": 9469.0,
+  "operatingCashFlow": 8350.0,
+  "capex": 1591.0,
+  "fcf": 6759.0,
+  "dividendsPaid": 4453.0,
+  "equity": 15530.0,
+  "assets": 70471.0,
+  "cash": 3941.0,
+  "debt": null,
+  "netDebt": null,
+  "eps": null,
+  "roe": 61.0,
+  "ebitdaMargin": null,
+  "operatingMargin": 17.9,
+  "netMargin": 18.7,
+  "fcfMargin": 13.4,
+  "netDebtToEbitda": null,
+  "revenueGrowth": -3.8,
+  "netIncomeGrowth": 64.9,
+  "currency": "EUR",
+  "periodEnd": "2025-12-31",
+  "source": "https://filings.xbrl.org/549300MKFYEKVRWML317/2026-02-12/ESEF/NL/0/ul-2025-12-31-1-en/reports/ixbrlviewer.html"
+ },
+ "DGE@UK": {
   "revenue": 27762.0,
   "ebitda": null,
   "operatingProfit": 3156.0,
@@ -728,14 +755,14 @@
   "periodEnd": "2026-06-30",
   "source": "https://filings.xbrl.org/213800ZVIELEA55JMJ32/2026-06-30/ESEF/GB/0/213800ZVIELEA55JMJ32-2026-06-30/reports/ixbrlviewer.html"
  },
- "BARC": {
+ "BARC@UK": {
   "revenue": null,
   "ebitda": null,
   "operatingProfit": null,
   "netIncome": 7172.0,
   "operatingCashFlow": 18739.0,
-  "capex": null,
-  "fcf": null,
+  "capex": 1859.0,
+  "fcf": 16880.0,
   "dividendsPaid": 1254.0,
   "equity": 77784.0,
   "assets": 1544165.0,
@@ -755,7 +782,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/213800LBQA1Y9L22JB70/2025-12-31/ESEF/GB/0/213800LBQA1Y9L22JB70-2025-12-31/reports/ixbrlviewer.html"
  },
- "LLOY": {
+ "LLOY@UK": {
   "revenue": 19422.0,
   "ebitda": null,
   "operatingProfit": null,
@@ -782,7 +809,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/549300PPXHEU2JF0AM85/2025-12-31/ESEF/GB/0/549300PPXHEU2JF0AM85-2025-12-31/reports/ixbrlviewer.html"
  },
- "ITX": {
+ "ITX@Spain": {
   "revenue": 38632.0,
   "ebitda": 10728.0,
   "operatingProfit": 7554.0,
@@ -809,7 +836,7 @@
   "periodEnd": "2025-01-31",
   "source": "https://filings.xbrl.org/549300TTCXZOGZM2EY83/2025-01-31/ESEF/ES/0/549300TTCXZOGZM2EY83-20250131-0-en/reports/ixbrlviewer.html"
  },
- "IBE": {
+ "IBE@Spain": {
   "revenue": 44739.0,
   "ebitda": 16377.0,
   "operatingProfit": 9729.0,
@@ -836,7 +863,34 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/5QK37QC7NWOJ8D7WVQ45/2024-12-31/ESEF/ES/0/5QK37QC7NWOJ8D7WVQ45-20241231-es/reports/ixbrlviewer.html"
  },
- "TEF": {
+ "SAN@Spain": {
+  "revenue": null,
+  "ebitda": null,
+  "operatingProfit": null,
+  "netIncome": 14101.0,
+  "operatingCashFlow": -14835.0,
+  "capex": 7659.0,
+  "fcf": -22494.0,
+  "dividendsPaid": 3341.0,
+  "equity": 112748.0,
+  "assets": 1867515.0,
+  "cash": 152281.0,
+  "debt": null,
+  "netDebt": null,
+  "eps": null,
+  "roe": 12.5,
+  "ebitdaMargin": null,
+  "operatingMargin": null,
+  "netMargin": null,
+  "fcfMargin": null,
+  "netDebtToEbitda": null,
+  "revenueGrowth": null,
+  "netIncomeGrowth": 12.1,
+  "currency": "EUR",
+  "periodEnd": "2025-12-31",
+  "source": "https://filings.xbrl.org/5493006QMFDDMYWIAM13/2025-12-31/ESEF/GB/0/5493006QMFDDMYWIAM13-2025-12-31/reports/ixbrlviewer.html"
+ },
+ "TEF@Spain": {
   "revenue": 41315.0,
   "ebitda": 11194.0,
   "operatingProfit": 2395.0,
@@ -863,7 +917,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/549300EEJH4FEPDBBR25/2024-12-31/ESEF/ES/0/549300EEJH4FEPDBBR25-20241231-en/reports/ixbrlviewer.html"
  },
- "ENEL": {
+ "ENEL@Italy": {
   "revenue": 73914.0,
   "ebitda": 22743.0,
   "operatingProfit": 15494.0,
@@ -890,7 +944,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/WOCMU6HCI0OJWNPRZS33/2024-12-31/ESEF/IT/1/WOCMU6HCI0OJWNPRZS33-2024-12-31-0-it/reports/ixbrlviewer.html"
  },
- "ENI": {
+ "ENI@Italy": {
   "revenue": 82151.0,
   "ebitda": 12359.0,
   "operatingProfit": 5010.0,
@@ -917,7 +971,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/BUCRF72VH5RBN7X3VL35/2025-12-31/ESEF/IT/0/BUCRF72VH5RBN7X3VL35-2025-12-31-1-it/reports/ixbrlviewer.html"
  },
- "RACE": {
+ "RACE@Italy": {
   "revenue": 7145.8,
   "ebitda": 2771.7,
   "operatingProfit": 2109.7,
@@ -944,7 +998,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/549300RIVY5EX8RCON76/2025-12-31/ESEF/NL/0/race-2025-12-31-1-en/reports/ixbrlviewer.html"
  },
- "ISP": {
+ "ISP@Italy": {
   "revenue": null,
   "ebitda": null,
   "operatingProfit": null,
@@ -971,7 +1025,7 @@
   "periodEnd": "2022-12-31",
   "source": "https://filings.xbrl.org/2W8N8UU78PMDQKZENC08/2022-12-31/ESEF/IT/1/2W8N8UU78PMDQKZENC08-2022-12-31-it/reports/ixbrlviewer.html"
  },
- "ATCO": {
+ "ATCO@Sweden": {
   "revenue": 176771.0,
   "ebitda": null,
   "operatingProfit": 38166.0,
@@ -998,7 +1052,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/213800T8PC8Q4FYJZR07/2024-12-31/ESEF/SE/1/atla-2024-12-31-0-en/reports/ixbrlviewer.html"
  },
- "VOLV": {
+ "VOLV@Sweden": {
   "revenue": 526816.0,
   "ebitda": null,
   "operatingProfit": 66611.0,
@@ -1025,7 +1079,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/549300HGV012CNC8JD22/2024-12-31/ESEF/SE/0/abvolvo-2024-12-31-sv/reports/ixbrlviewer.html"
  },
- "ERICB": {
+ "ERICB@Sweden": {
   "revenue": 247880.0,
   "ebitda": null,
   "operatingProfit": 4313.0,
@@ -1052,7 +1106,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/549300W9JLPW15XIFM52/2024-12-31/ESEF/SE/0/549300W9JLPW15XIFM52-2024-12-31-0-sv/reports/ixbrlviewer.html"
  },
- "HMB": {
+ "HMB@Sweden": {
   "revenue": 234478.0,
   "ebitda": null,
   "operatingProfit": 17306.0,
@@ -1079,7 +1133,7 @@
   "periodEnd": "2024-11-30",
   "source": "https://filings.xbrl.org/529900O5RR7R39FRDM42/2024-11-30/ESEF/SE/0/hm-2024-11-30-0-sv/reports/ixbrlviewer.html"
  },
- "NOVO": {
+ "NOVO@Denmark": {
   "revenue": 309064.0,
   "ebitda": null,
   "operatingProfit": 127658.0,
@@ -1106,7 +1160,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/549300DAQ1CVT6CXN342/2025-12-31/ESEF/DK/0/NOVO-2025-12-31-1-en/reports/ixbrlviewer.html"
  },
- "MAERSK": {
+ "MAERSK@Denmark": {
   "revenue": 53988.0,
   "ebitda": 10171.0,
   "operatingProfit": 3500.0,
@@ -1114,7 +1168,7 @@
   "operatingCashFlow": 9761.0,
   "capex": null,
   "fcf": null,
-  "dividendsPaid": 2662.0,
+  "dividendsPaid": null,
   "equity": 55581.0,
   "assets": 88352.0,
   "cash": 9042.0,
@@ -1127,20 +1181,20 @@
   "netMargin": 5.0,
   "fcfMargin": null,
   "netDebtToEbitda": -0.31,
-  "revenueGrowth": -2.7,
-  "netIncomeGrowth": -55.4,
+  "revenueGrowth": null,
+  "netIncomeGrowth": null,
   "currency": "USD",
   "periodEnd": "2025-12-31",
-  "source": "https://filings.xbrl.org/549300D2K6PKKKXVNN73/2025-12-31/ESEF/DK/0/APMM-2025-12-31-en/reports/ixbrlviewer.html"
+  "source": "https://filings.xbrl.org/549300D2K6PKKKXVNN73/2026-06-30/ESEF/DK/0/APMM-2026-06-30-1-en/reports/ixbrlviewer.html"
  },
- "NOKIA": {
+ "NOKIA@Finland": {
   "revenue": 19889.0,
   "ebitda": null,
   "operatingProfit": 885.0,
   "netIncome": 651.0,
   "operatingCashFlow": 2071.0,
-  "capex": null,
-  "fcf": null,
+  "capex": 606.0,
+  "fcf": 1465.0,
   "dividendsPaid": 759.0,
   "equity": 20967.0,
   "assets": 37597.0,
@@ -1152,7 +1206,7 @@
   "ebitdaMargin": null,
   "operatingMargin": 4.4,
   "netMargin": 3.3,
-  "fcfMargin": null,
+  "fcfMargin": 7.4,
   "netDebtToEbitda": null,
   "revenueGrowth": 3.5,
   "netIncomeGrowth": -49.0,
@@ -1160,7 +1214,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/549300A0JPRWG1KI7U06/2025-12-31/ESEF/FI/0/549300A0JPRWG1KI7U06-2025-12-31-1-fi/reports/ixbrlviewer.html"
  },
- "ABI": {
+ "ABI@Belgium": {
   "revenue": 59320.0,
   "ebitda": null,
   "operatingProfit": 15405.0,
@@ -1187,7 +1241,7 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/5493008H3828EMEXB082/2025-12-31/ESEF/BE/0/5493008H3828EMEXB082-2025-12-31-1-en/reports/ixbrlviewer.html"
  },
- "EQNR": {
+ "EQNR@Norway": {
   "revenue": 103774.0,
   "ebitda": 40762.0,
   "operatingProfit": 30927.0,
@@ -1214,7 +1268,7 @@
   "periodEnd": "2024-12-31",
   "source": "https://filings.xbrl.org/OW6OFBNCKXC4US5C7523/2024-12-31/ESEF/NO/0/eqnr-2024-12-31-0-nb/reports/ixbrlviewer.html"
  },
- "OMV": {
+ "OMV@Austria": {
   "revenue": 24308.0,
   "ebitda": 5421.0,
   "operatingProfit": 3110.0,
@@ -1241,14 +1295,14 @@
   "periodEnd": "2025-12-31",
   "source": "https://filings.xbrl.org/549300V62YJ9HTLRI486/2025-12-31/ESEF/AT/0/omvag-2025-12-31-1-de/reports/ixbrlviewer.html"
  },
- "PKN": {
+ "PKN@Poland": {
   "revenue": 372767.0,
   "ebitda": 42256.0,
   "operatingProfit": 28056.0,
   "netIncome": 20680.0,
   "operatingCashFlow": 41914.0,
-  "capex": null,
-  "fcf": null,
+  "capex": 36187.0,
+  "fcf": 5727.0,
   "dividendsPaid": 6385.0,
   "equity": 152082.0,
   "assets": 264178.0,
@@ -1260,7 +1314,7 @@
   "ebitdaMargin": 11.3,
   "operatingMargin": 7.5,
   "netMargin": 5.5,
-  "fcfMargin": null,
+  "fcfMargin": 1.5,
   "netDebtToEbitda": -0.06,
   "revenueGrowth": 32.0,
   "netIncomeGrowth": -47.9,

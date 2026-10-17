@@ -34,13 +34,13 @@ HEIA    Netherlands  Heineken NV                      [HEINEKEN] -> 724500M1WJLF
 PHIA    Netherlands  Philips NV                       [KONINKLIJKE PHILIPS] -> H1FJE8H61JGM1JSGM897 Koninklijke Philips N.V. (exact)
 UNA     Netherlands  Unilever PLC                     [UNILEVER] -> 549300MKFYEKVRWML317 UNILEVER PLC (exact)
 STLAM   Netherlands  Stellantis NV                    [STELLANTIS] -> 549300LKT9PW7ZIBDF31 STELLANTIS N.V. (exact)
-NESN    Switzerland  Nestlé SA                        [NESTLE] -> 549300EAEU8YV8MQXP30 NESTLE HOLDINGS, INC. (exact)
-ROG     Switzerland  Roche Holding AG                 [ROCHE] -> none
-NOVN    Switzerland  Novartis AG                      [NOVARTIS] -> none
-ABBN    Switzerland  ABB Ltd                          [ABB] -> none
-ZURN    Switzerland  Zurich Insurance Group           [ZURICH INSURANCE] -> none
-UBSG    Switzerland  UBS Group AG                     [UBS] -> none
-GIVN    Switzerland  Givaudan SA                      [GIVAUDAN] -> none
+NESN    Switzerland  Nestlé SA                        -> skipped (no ESEF in Switzerland)
+ROG     Switzerland  Roche Holding AG                 -> skipped (no ESEF in Switzerland)
+NOVN    Switzerland  Novartis AG                      -> skipped (no ESEF in Switzerland)
+ABBN    Switzerland  ABB Ltd                          -> skipped (no ESEF in Switzerland)
+ZURN    Switzerland  Zurich Insurance Group           -> skipped (no ESEF in Switzerland)
+UBSG    Switzerland  UBS Group AG                     -> skipped (no ESEF in Switzerland)
+GIVN    Switzerland  Givaudan SA                      -> skipped (no ESEF in Switzerland)
 AZN     UK           AstraZeneca PLC                  [ASTRAZENECA] -> PY6ZZQWO2IZFZC3IOL08 ASTRAZENECA PLC (exact)
 HSBA    UK           HSBC Holdings PLC                [HSBC] -> MLU0ZO3ML4LN2LL2TL39 HSBC HOLDINGS PLC (exact)
 BP      UK           BP PLC                           [BP] -> 213800LH1BZH3DI6G760 BP P.L.C. (exact)
