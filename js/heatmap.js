@@ -210,9 +210,13 @@ function setActive(sel, btn) {
   document.querySelectorAll(sel).forEach(b => b.classList.toggle('active', b === btn));
 }
 
+// Company page addresses (/stock/<name>) by LEI, from scripts/build-stock-pages.py.
+let HM_SLUGS = {};
+
 async function initHeatmap() {
   const load = async url => { try { return await (await fetch(url, { cache: 'no-cache' })).json(); } catch { return null; } };
-  const [cos, prices] = await Promise.all([load('js/companies.json'), load('js/company-prices.json')]);
+  const [cos, prices, slugs] = await Promise.all([load('js/companies.json'), load('js/company-prices.json'), load('js/stock-slugs.json')]);
+  HM_SLUGS = slugs || {};
   if (!cos || !prices) { document.getElementById('hm-note').textContent = 'Could not load company data.'; return; }
   HM = buildCompanies(cos, prices);
   // Without a day change yet (weekend, or only one trading day so far), start with revenue growth.
@@ -248,7 +252,7 @@ async function initHeatmap() {
     if (!t) return hideHover();
     const touch = e.pointerType ? e.pointerType !== 'mouse' : matchMedia('(hover: none)').matches;
     if (touch && hmPinned !== t.c) { showHover(t, e); hmPinned = t.c; return; }
-    location.href = `/companies?lei=${encodeURIComponent(t.c.lei)}`;
+    location.href = HM_SLUGS[t.c.lei] ? `/stock/${HM_SLUGS[t.c.lei]}` : `/companies?lei=${encodeURIComponent(t.c.lei)}`;
   });
   window.addEventListener('scroll', () => { if (hmPinned) hideHover(); }, { passive: true });
   let timer;

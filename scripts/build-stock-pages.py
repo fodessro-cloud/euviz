@@ -359,6 +359,7 @@ def page(c, peers, updated):
   {f'<section class="sp-peers"><h2>{peer_title}</h2><ul>{peer_html}</ul></section>' if peer_html else ''}
 </main>
 {FOOTER}<script src="/js/stock-page.js" defer></script>
+<script src="/js/analytics.js" defer></script>
 </body>
 </html>
 '''
@@ -384,7 +385,8 @@ def index_page(rows, updated):
   <p class="sp-letters">{nav}</p>
   {body}
 </main>
-{FOOTER}</body>
+{FOOTER}<script src="/js/analytics.js" defer></script>
+</body>
 </html>
 '''
 
