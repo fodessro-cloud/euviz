@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FINILA — News</title>
+  <link rel="icon" href="css/logo.svg" type="image/svg+xml">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -48,7 +49,7 @@
       gap: 28px;
       flex-shrink: 0;
     }
-    .logo { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; letter-spacing: 0.06em; color: #fff; text-decoration: none; }
     .logo span { color: var(--accent2); }
     .nav-links { display: flex; gap: 2px; }
     .nav-link {
@@ -346,9 +347,9 @@
 
 <!-- HEADER -->
 <header class="site-header">
-  <a class="logo" href="index.html" style="text-decoration:none">FIN<span>ILA</span></a>
+  <a class="logo" href="index.html" aria-label="FINILA, domov"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
   <nav class="nav-links">
-    <a class="nav-link"        href="index.html">Screener</a>
+    <a class="nav-link"        href="screener.html">Screener</a>
     <a class="nav-link"        href="map.html">Maps</a>
     <a class="nav-link"        href="groups.html">Groups</a>
     <a class="nav-link active" href="news.html">News</a>

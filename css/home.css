@@ -1,0 +1,193 @@
+/* ═══════════════════════════════════════════════
+   FINILA — homepage
+   ═══════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg:      #0A0F1C;
+  --bg-alt:  #0D1424;
+  --card:    #111A2E;
+  --card2:   #17223A;
+  --line:    #1E2A44;
+  --line2:   #2C3A5A;
+  --text:    #E8EDF7;
+  --text2:   #B4C0D6;
+  --muted:   #9AA8C2;
+  --blue:    #5B9BFF;
+  --blue2:   #8DB8FF;
+  --amber:   #F2B33D;
+  --up:      #34C38F;
+  --down:    #FF7A7A;
+  --mono:    'IBM Plex Mono', ui-monospace, monospace;
+}
+
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
+a { color: var(--blue2); text-decoration: none; }
+a:hover { color: #C4DAFF; }
+h1, h2, h3, p { margin: 0; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.h-wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+/* ── Header ─────────────────────────────────── */
+.h-header { border-bottom: 1px solid var(--line); }
+.h-header-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding-top: 14px; padding-bottom: 14px; }
+.h-logo { display: flex; align-items: center; gap: 12px; color: var(--text); font-size: 30px; font-weight: 700; letter-spacing: 0.06em; }
+.h-logo:hover { color: var(--text); }
+.h-logo.small { font-size: 20px; gap: 10px; margin-bottom: 10px; }
+.h-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: 15px; font-weight: 500; }
+.h-nav a { color: var(--text2); padding: 10px 0; }
+.h-nav a:hover { color: var(--text); }
+
+.demo-banner { background: #3a2a00; color: #ffd27a; font-size: 13px; text-align: center; padding: 6px 12px; border-bottom: 1px solid #5a4300; }
+
+/* ── Ticker bar ─────────────────────────────── */
+.h-ticker { background: var(--bg-alt); border-bottom: 1px solid var(--line); overflow-x: auto; }
+.h-ticker-row { display: flex; gap: 28px; padding-top: 10px; padding-bottom: 10px; font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+.h-ticker-row .name { color: var(--muted); margin-right: 8px; }
+.h-ticker-row .chg { margin-left: 8px; }
+
+.up { color: var(--up); }
+.down { color: var(--down); }
+
+/* ── Cards & sections ───────────────────────── */
+.h-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.h-card-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+.h-card-head h2 { font-size: 18px; font-weight: 600; }
+.h-card-head a { font-size: 14px; }
+.h-section { padding-bottom: 56px; }
+.h-section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 18px; }
+.h-section-head h2 { font-size: 26px; font-weight: 700; }
+.h-section-head a { font-size: 15px; }
+.h-eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--amber); margin-bottom: 8px; }
+.h-eyebrow.blue { color: var(--blue2); }
+.h-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+/* ── Top: search, chips, indices, map ───────── */
+.h-top { display: flex; flex-wrap: wrap; gap: 24px; padding: 24px 0 48px; }
+.h-top-left { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.h-map { flex: 1 1 420px; min-width: 0; }
+
+.h-search { display: flex; flex-wrap: wrap; gap: 10px; }
+.h-search input {
+  flex: 1 1 300px; min-width: 0; height: 52px; padding: 0 18px;
+  border-radius: 10px; border: 1px solid var(--line2); background: var(--card);
+  color: var(--text); font: inherit; font-size: 16px;
+}
+.h-search input::placeholder { color: #7C8AA6; }
+.h-search input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+.h-search button {
+  height: 52px; padding: 0 24px; border-radius: 10px; border: 0;
+  background: var(--blue); color: #06101F; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer;
+}
+
+.h-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.h-chips span { font-size: 14px; color: var(--muted); }
+.h-chips a { font-size: 14px; color: #D5DEEE; border: 1px solid var(--line2); border-radius: 999px; padding: 9px 14px; }
+.h-chips a:hover { border-color: var(--blue); color: var(--text); }
+
+.h-index-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; flex-grow: 1; }
+.h-index-cards a { display: flex; flex-direction: column; justify-content: space-between; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; color: var(--text); }
+.h-index-cards a:hover { border-color: var(--line2); }
+.h-index-cards .name { font-size: 13px; color: var(--muted); }
+.h-index-cards .val { font-family: var(--mono); font-size: 20px; font-weight: 600; }
+.h-index-cards .chg { font-family: var(--mono); font-size: 14px; }
+
+.h-map-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 54px; gap: 4px; }
+.h-map-grid a { border-radius: 4px; padding: 8px; font-size: 12px; font-weight: 600; overflow: hidden; color: #08110C; }
+.h-map-grid a.neg { color: #200606; }
+.h-map-grid a span { display: block; font-family: var(--mono); }
+.h-map-grid .big { grid-column: span 3; grid-row: span 2; }
+.h-map-grid .mid { grid-column: span 2; grid-row: span 2; }
+.h-map-grid .sm  { grid-column: span 2; }
+
+/* ── Presets ────────────────────────────────── */
+.h-presets { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.h-preset { display: flex; flex-direction: column; gap: 14px; }
+.h-preset h3 { font-size: 19px; font-weight: 600; }
+.h-preset .rule { font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+.h-preset ul { list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: 14px; }
+.h-preset li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+.h-preset li a { color: var(--text); }
+.h-preset li .nm { color: var(--muted); font-family: 'IBM Plex Sans', sans-serif; margin-left: 6px; }
+.h-preset li .metric { color: var(--amber); white-space: nowrap; }
+.h-preset .more { font-size: 15px; font-weight: 500; margin-top: auto; }
+.h-preset.flash { border-color: var(--amber); }
+
+/* ── Comparison ─────────────────────────────── */
+.h-compare { display: flex; flex-wrap: wrap; gap: 36px; padding: 32px; border-radius: 18px; }
+.h-compare-intro { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.h-compare-intro h2 { font-size: 30px; line-height: 1.15; font-weight: 700; }
+.h-compare-intro p { font-size: 16px; line-height: 1.55; color: var(--text2); }
+.h-compare-bars { flex: 2 1 480px; min-width: 0; }
+.h-periods { display: flex; gap: 8px; flex-wrap: wrap; }
+.h-periods button, .h-tabs button {
+  height: 44px; padding: 0 16px; border-radius: 8px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--line2); background: transparent; color: #D5DEEE;
+}
+.h-periods button.on { background: var(--blue); border-color: var(--blue); color: #06101F; }
+.h-bar { display: grid; grid-template-columns: 170px minmax(0, 1fr) 100px; gap: 14px; align-items: center; font-size: 15px; margin-bottom: 12px; }
+.h-bar .label { color: #D5DEEE; }
+.h-bar .track { height: 26px; background: var(--bg); border-radius: 6px; overflow: hidden; }
+.h-bar .fill { height: 100%; border-radius: 6px; transition: width .35s ease; }
+.h-bar .val { font-family: var(--mono); text-align: right; }
+
+/* ── Movers + data ──────────────────────────── */
+.h-split { display: flex; flex-wrap: wrap; gap: 24px; }
+.h-movers { flex: 3 1 560px; min-width: 0; }
+.h-data { flex: 2 1 320px; min-width: 0; }
+.h-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.h-tabs button { border: 0; font-size: 14px; padding: 0 14px; color: var(--text2); }
+.h-tabs button.on { background: #24314D; color: var(--text); }
+.h-table-wrap { overflow-x: auto; }
+.h-movers table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 14px; }
+.h-movers th { text-align: left; color: var(--muted); font-weight: 500; padding: 10px 8px; }
+.h-movers td { padding: 10px 8px; border-top: 1px solid var(--line); }
+.h-movers .r { text-align: right; }
+.h-movers .m { font-family: var(--mono); }
+.h-movers td a { font-family: var(--mono); font-weight: 600; }
+.h-movers .c { color: var(--text2); }
+
+.h-data h2 { font-size: 19px; font-weight: 600; margin-bottom: 14px; }
+.h-data ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.h-data li { padding: 12px 14px; border-radius: 10px; background: var(--card2); }
+.h-data li strong { display: block; font-weight: 600; }
+.h-data li span { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+
+/* ── Tiles ──────────────────────────────────── */
+.h-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.h-tile { display: flex; flex-direction: column; gap: 6px; padding: 24px; color: var(--text); }
+.h-tile:hover { border-color: var(--line2); color: var(--text); }
+.h-tile h3 { font-size: 20px; font-weight: 600; }
+.h-tile p { font-size: 15px; color: var(--text2); line-height: 1.5; }
+
+/* ── Footer ─────────────────────────────────── */
+.h-footer { border-top: 1px solid var(--line); background: var(--bg-alt); }
+.h-footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px 40px; padding-top: 32px; padding-bottom: 32px; font-size: 14px; color: var(--muted); }
+.h-footer-brand { flex: 1 1 360px; min-width: 0; line-height: 1.55; }
+.h-footer-nav { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+
+/* ── Phone ──────────────────────────────────── */
+@media (max-width: 640px) {
+  .h-wrap { padding: 0 16px; }
+  .h-logo { font-size: 24px; }
+  .h-logo svg { width: 30px; height: 30px; }
+  .h-nav { gap: 0 16px; font-size: 14px; }
+  .h-top { padding-top: 16px; }
+  .h-index-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .h-compare { padding: 20px; }
+  .h-compare-intro h2 { font-size: 24px; }
+  .h-bar { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; }
+  .h-bar .label { grid-column: 1; }
+  .h-bar .val { grid-column: 2; grid-row: 1; }
+  .h-bar .track { grid-column: 1 / -1; height: 12px; }
+  .h-section-head h2 { font-size: 22px; }
+}

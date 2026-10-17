@@ -12,7 +12,7 @@
 # $WORK/htaccess.original (the repo is public, so wp-config.php and other site
 # files are never copied into the workflow's artifacts).
 # Nothing on the server is deleted: WordPress stays in place and keeps serving
-# its old URLs; only index.html, map.html, groups.html, css/, js/, archiv/ and
+# its old URLs; only index.html, screener.html, map.html, groups.html, css/, js/, archiv/ and
 # one DirectoryIndex line in .htaccess are added.
 set -euo pipefail
 
@@ -72,7 +72,7 @@ fi
 
 echo "== Preparing FINILA"
 mkdir -p "$WORK/site"
-cp "$SRC"/index.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
+cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
 cp -r "$SRC/css" "$SRC/js" "$WORK/site/"
 
 # Make "/" open FINILA's index.html before WordPress's index.php.
