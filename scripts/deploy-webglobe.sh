@@ -87,7 +87,7 @@ grep -q '^# BEGIN FINILA' "$WORK/htaccess.original" || SAVE_WP_HTACCESS=1
 echo "== Uploading"
 cmds="cd '$FTP_DIR'"
 [ "$SAVE_WP_HTACCESS" = 1 ] && cmds="$cmds && put '$WORK/htaccess.original' -o .htaccess-wordpress-zaloha"
-cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose --exclude-glob insiders.json --exclude-glob shorts.json --exclude-glob invest.json --exclude-glob companies.json --exclude-glob fundamentals.js '$WORK/site' ."
+cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose --exclude-glob insiders.json --exclude-glob shorts.json --exclude-glob invest.json --exclude-glob companies.json --exclude-glob fundamentals.js --exclude-glob prices.js '$WORK/site' ."
 [ "$ARCHIVE" = 1 ] && cmds="$cmds && mirror -R --parallel=4 --no-perms '$WORK/archiv' archiv"
 # Archive pages rebuilt in the FINILA design (scripts/build-archive.py) replace the
 # WordPress HTML; the images under archiv/wp-content stay as they are.

@@ -6,9 +6,12 @@ the "daily" Xetra post-trade file holds every Xetra trade of the last trading da
 Xetra also trades many non-German European shares (ASML, Nestlé, Novo Nordisk ...), so one
 file covers most of the screener.
 
-Writes js/prices.js (last close, change against the previous close, day range, volume per
+They also publish every minute's trades (15 minutes late), so an hourly run shows prices
+during the trading day; the daily file then fixes the official close.
+
+Writes js/prices.js (last price, change against the previous close, day range, volume per
 TICKER@Country) and keeps data/prices-history.json (ISIN -> {date: close}) so the daily
-change can be computed. Stocks that did not trade on Xetra keep their illustrative figures.
+change can be computed. Stocks that traded on neither venue keep their illustrative figures.
 """
 import gzip, json, sys, tempfile, urllib.request
 from datetime import datetime, timezone
@@ -17,12 +20,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "js" / "prices.js"
 HISTORY = ROOT / "data" / "prices-history.json"
+STATE = ROOT / "data" / "prices-state.json"      # last closed day + the day in progress
 LIST_URL = "https://mfs.deutsche-boerse.com/api/{}-posttrade"
 # Xetra first; Börse Frankfurt (floor/Specialist trading) fills in shares Xetra does not trade.
 VENUES = [("DETR", "Xetra"), ("DFRA", "Börse Frankfurt")]
 FILE_URL = "https://mfs.deutsche-boerse.com/api/download/"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
 KEEP_DAYS = 400      # enough history for 52-week ranges later
+MAX_MINUTE_FILES = 600   # per venue and run; a trading day has about 900
 
 # ISIN of the share class each screener stock (js/data.js) stands for.
 ISINS = {
@@ -63,21 +68,37 @@ def fetch(url, timeout=180):
         return r.read()
 
 
-def latest_daily_file(venue):
-    listing = json.loads(fetch(LIST_URL.format(venue)))
-    daily = sorted(f for f in listing.get("CurrentFiles", []) if "-daily-" in f)
-    if not daily:
-        sys.exit(f"No daily {venue} file listed")
-    name = daily[-1]
-    return name, name.split("-daily-")[1][:10]
+def list_files(venue):
+    """(daily files, minute files) currently offered for a venue, oldest first."""
+    files = json.loads(fetch(LIST_URL.format(venue))).get("CurrentFiles", [])
+    return sorted(f for f in files if "-daily-" in f), sorted(f for f in files if "-daily-" not in f)
+
+
+def file_day(name):
+    return name.split("-daily-")[1][:10] if "-daily-" in name else name.split("-posttrade-")[1][:10]
 
 
 def download_summary(name, wanted):
     with tempfile.NamedTemporaryFile(suffix=".json.gz") as tmp:
         tmp.write(fetch(FILE_URL + name))
         tmp.flush()
-        print(f"Downloaded {name}: {tmp.tell() / 1e6:.1f} MB")
         return day_summary(tmp.name, wanted)
+
+
+def merge(into, more):
+    """Add one batch of per-ISIN aggregates to another (both from the same day)."""
+    for isin, b in more.items():
+        a = into.get(isin)
+        if not a:
+            into[isin] = b
+            continue
+        if b["first"] < a["first"]:
+            a["first"], a["open"] = b["first"], b["open"]
+        if b["last"] >= a["last"]:
+            a["last"], a["close"] = b["last"], b["close"]
+        a["high"], a["low"] = max(a["high"], b["high"]), min(a["low"], b["low"])
+        a["volume"] += b["volume"]
+        a["trades"] += b["trades"]
 
 
 def day_summary(path, wanted):
@@ -108,56 +129,90 @@ def day_summary(path, wanted):
     return days
 
 
+def pick(per_venue):
+    """One aggregate per ISIN: Xetra where it traded, otherwise Börse Frankfurt."""
+    rows = {}
+    for venue, label in reversed(VENUES):
+        for isin, a in per_venue.get(venue, {}).items():
+            rows[isin] = {**a, "venue": label}
+    return rows
+
+
 def main():
-    name, day = latest_daily_file("DETR")
+    wanted = set(ISINS.values())
     history = json.loads(HISTORY.read_text()) if HISTORY.exists() else {}
-    if OUT.exists() and f"PRICES_DATE = '{day}'" in OUT.read_text():
-        print(f"{day} already processed, nothing to do")
-        return
-    days, venue_of = {}, {}
+    state = json.loads(STATE.read_text()) if STATE.exists() else {}
+    final = state.get("final", {"day": "", "rows": {}})
+    live = state.get("live", {"day": "", "seen": {}, "agg": {}})
+    listings = {venue: list_files(venue) for venue, _ in VENUES}
+
+    # 1. A new consolidated daily file closes the day: its last prices become the official closes.
+    daily = {venue: {file_day(f): f for f in listings[venue][0]} for venue, _ in VENUES}
+    day = max(daily["DETR"], default="")
+    if day > final["day"]:
+        per_venue = {}
+        for venue, label in VENUES:
+            if day in daily[venue]:
+                per_venue[venue] = download_summary(daily[venue][day], wanted)
+                print(f"Daily {label} file for {day}: {len(per_venue[venue])} of our shares traded")
+        closed = {isin: {**a, "day": day} for isin, a in pick(per_venue).items()}
+        # A share that did not trade that day keeps its last real close.
+        final = {"day": day, "rows": {**final["rows"], **closed}}
+        for isin, a in closed.items():
+            past = history.setdefault(isin, {})
+            past[day] = round(a["close"], 4)
+            history[isin] = dict(sorted(past.items())[-KEEP_DAYS:])
+
+    # 2. Minute files of a later day (the trading day in progress) give prices during the day.
+    minutes = {venue: [f for f in listings[venue][1] if file_day(f) > final["day"]] for venue, _ in VENUES}
+    today = max((file_day(f) for fs in minutes.values() for f in fs), default="")
+    if live["day"] != today:
+        live = {"day": today, "seen": {}, "agg": {}}
     for venue, label in VENUES:
-        wanted = set(ISINS.values()) - set(days)
-        if not wanted:
-            break
-        vname, vday = (name, day) if venue == "DETR" else latest_daily_file(venue)
-        if vday != day:
-            print(f"{label} file is for {vday}, not {day}; skipped")
-            continue
-        for isin, d in download_summary(vname, wanted).items():
-            days[isin], venue_of[isin] = d, label
+        new = [f for f in minutes[venue] if file_day(f) == today and f > live["seen"].get(venue, "")][:MAX_MINUTE_FILES]
+        agg = live["agg"].setdefault(venue, {})
+        for f in new:
+            merge(agg, download_summary(f, wanted))
+        if new:
+            live["seen"][venue] = new[-1]
+            print(f"{label} {today}: read {len(new)} new minute files, up to {new[-1]}")
+    live_rows = pick(live["agg"]) if today else {}
 
     prices, missing = {}, []
     for key, isin in ISINS.items():
-        d = days.get(isin)
-        if not d:
+        a = live_rows.get(isin) or final["rows"].get(isin)
+        if not a:
             missing.append(key)
             continue
+        d = today if isin in live_rows else a["day"]
         past = history.get(isin, {})
-        prev = max((k for k in past if k < day), default=None)
+        prev = max((k for k in past if k < d), default=None)
         prev_close = past[prev] if prev else None
         prices[key] = {
-            "isin": isin, "venue": venue_of[isin], "price": round(d["close"], 4), "open": round(d["open"], 4),
-            "high": round(d["high"], 4), "low": round(d["low"], 4),
-            "volume": int(d["volume"]), "trades": d["trades"],
+            "isin": isin, "venue": a["venue"], "date": d, "time": a["last"][11:16],
+            "final": isin not in live_rows,
+            "price": round(a["close"], 4), "open": round(a["open"], 4),
+            "high": round(a["high"], 4), "low": round(a["low"], 4),
+            "volume": int(a["volume"]), "trades": a["trades"],
             "prevClose": prev_close,
-            "change": round((d["close"] / prev_close - 1) * 100, 2) if prev_close else None,
+            "change": round((a["close"] / prev_close - 1) * 100, 2) if prev_close else None,
         }
-        past[day] = round(d["close"], 4)
-        history[isin] = dict(sorted(past.items())[-KEEP_DAYS:])
 
     HISTORY.parent.mkdir(exist_ok=True)
     HISTORY.write_text(json.dumps(history, separators=(",", ":"), sort_keys=True))
+    STATE.write_text(json.dumps({"final": final, "live": live}, separators=(",", ":"), sort_keys=True))
+    shown = max((p["date"] for p in prices.values()), default="")
     OUT.write_text(
         "// Generated by scripts/data/prices.py from Deutsche Börse's free delayed data (Xetra, Börse Frankfurt). Do not edit by hand.\n"
-        f"const PRICES_DATE = '{day}';\n"
+        f"const PRICES_DATE = '{shown}';\n"
         f"const PRICES_UPDATED = '{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC';\n"
         f"const PRICES = {json.dumps(prices, separators=(',', ':'), ensure_ascii=False)};\n"
     )
-    print(f"{day}: prices for {len(prices)} of {len(ISINS)} stocks")
-    for k in missing:
-        print(f"  no trades on Xetra or Frankfurt: {k} ({ISINS[k]})")
+    print(f"Prices for {len(prices)} of {len(ISINS)} stocks (closed day {final['day'] or '-'}, day in progress {today or '-'})")
+    if missing:
+        print(f"  no trades on Xetra or Frankfurt: {', '.join(missing)}")
     for k, p in prices.items():
-        print(f"  {k:20} {p['isin']} {p['venue']:16} close {p['price']:>10} trades {p['trades']:>6} change {p['change']}")
+        print(f"  {k:20} {p['isin']} {p['venue']:16} {p['date']} {p['time']} {p['price']:>10} trades {p['trades']:>6} change {p['change']}")
 
 
 if __name__ == "__main__":

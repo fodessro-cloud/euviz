@@ -145,7 +145,7 @@ const COLUMNS = [
   { key: 'eps',           label: 'EPS',        fmt: s => formatNumber(s.eps,2) },
   { key: 'dividend',      label: 'Div %',      fmt: s => formatNumber(s.dividend,2) + '%' },
   { key: 'price',         label: 'Price',      fmt: s => '€' + formatNumber(s.price,2) },
-  { key: 'change',        label: 'Chg %',      fmt: s => `<span class="${changeColor(s.change)}">${formatPct(s.change)}</span>` },
+  { key: 'change',        label: 'Chg %',      fmt: s => s.changeKnown === false ? '-' : `<span class="${changeColor(s.change)}">${formatPct(s.change)}</span>` },
   { key: 'volume',        label: 'Volume',     fmt: s => formatVol(s.volume) },
   { key: 'high52',        label: '52W Hi',     fmt: s => formatNumber(s.high52,2) },
   { key: 'low52',         label: '52W Lo',     fmt: s => formatNumber(s.low52,2) },
@@ -250,8 +250,9 @@ function openStock(ticker) {
     </div>
     <div class="modal-price-row">
       <span class="modal-price">€${formatNumber(s.price,2)}</span>
-      <span class="modal-change ${changeColor(s.change)}">${formatPct(s.change)}</span>
+      <span class="modal-change ${changeColor(s.change)}">${s.changeKnown === false ? '' : formatPct(s.change)}</span>
       <span class="modal-vol">Vol: ${formatVol(s.volume)}</span>
+      ${s.realPrice ? `<span class="real-badge" title="Real price from Deutsche Börse's free delayed data">Real price · ${realPriceLabel(s)}</span>` : ''}
     </div>
     <div class="modal-sparkline">${sparklineHTML(s.ticker)}</div>
     ${annualReportHTML(s)}

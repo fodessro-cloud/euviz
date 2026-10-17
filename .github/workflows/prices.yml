@@ -5,7 +5,8 @@ on:
     branches: [feat/xetra-prices]
     paths: ['scripts/data/prices.py', '.github/workflows/prices.yml']
   schedule:
-    - cron: '15 5 * * *'   # every day at 05:15 UTC; Xetra's file for the previous trading day is ready by then
+    - cron: '15 5 * * *'      # 05:15 UTC: official closes from the previous trading day's daily file
+    - cron: '20 7-17 * * 1-5' # hourly while Xetra trades (09:00-17:30 CET), prices 15 minutes late
   workflow_dispatch:
 
 permissions:
@@ -24,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Read Xetra closing prices
+      - name: Read Xetra and Frankfurt prices
         run: |
           set -o pipefail
           mkdir -p data
@@ -33,7 +34,7 @@ jobs:
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/prices-history.json data/prices.log js/prices.js
+          git add data/prices-history.json data/prices-state.json data/prices.log js/prices.js
           git diff --cached --quiet || git commit -m "Update Xetra prices [data refresh]"
           git pull --rebase -X theirs || true
           git push
