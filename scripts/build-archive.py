@@ -66,6 +66,7 @@ PAGE = """<!DOCTYPE html>
     <a class="fh-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
       <a href="/screener">Stocks</a>
+      <a href="/companies">Fundamentals</a>
       <a href="/insiders">Insider trades</a>
       <a href="/shorts">Short positions</a>
       <a href="/map">Market map</a>

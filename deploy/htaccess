@@ -14,9 +14,9 @@ RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]
 # A new page needs its name added to both lists.
 RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
 RewriteRule ^index\.html$ / [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+(screener|insiders|shorts|invest|map|groups)\.html[\s?]
-RewriteRule ^(screener|insiders|shorts|invest|map|groups)\.html$ /$1 [R=301,L]
-RewriteRule ^(screener|insiders|shorts|invest|map|groups)$ $1.html [L]
+RewriteCond %{THE_REQUEST} \s/+(screener|companies|insiders|shorts|invest|map|groups)\.html[\s?]
+RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)\.html$ /$1 [R=301,L]
+RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)$ $1.html [L]
 
 # Links inside the archive point to /archiv/...: send visitors to the original
 # address instead (/archiv/blog/index.html -> /blog/). Images, scripts and the

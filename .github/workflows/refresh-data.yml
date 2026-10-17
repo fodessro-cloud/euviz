@@ -2,8 +2,10 @@ name: Obnoviť dáta FINILA
 
 on:
   push:
-    branches: [claude/project-thread-tvs3mb]
+    branches: [claude/project-thread-ms2i2k]
     paths: ['scripts/data/**', '.github/workflows/refresh-data.yml']
+  schedule:
+    - cron: '30 4 * * *'   # every day at 04:30 UTC
   workflow_dispatch:
 
 permissions:
@@ -16,7 +18,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,11 +33,45 @@ jobs:
         run: |
           set -o pipefail
           python scripts/data/fundamentals.py 2>&1 | tee -a data/run.log || { echo "::error::fundamentals: $(tail -3 data/run.log | tr '\n' ' ')"; exit 1; }
+      - name: List issuers with shares on European venues (ESMA and FCA FIRDS)
+        run: |
+          set -o pipefail
+          python scripts/data/listed.py 2>&1 | tee -a data/run.log || echo "::warning::listed: $(tail -3 data/run.log | tr '\n' ' ')"
+      - name: Read reports of all European issuers
+        env:
+          FINILA_BUDGET_MIN: '290'
+        run: |
+          set -o pipefail
+          python scripts/data/universe.py 2>&1 | tee -a data/run.log || { echo "::error::universe: $(tail -3 data/run.log | tr '\n' ' ')"; exit 1; }
       - name: Commit results
         if: always()
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/ js/fundamentals.js
+          git add data/ js/fundamentals.js js/companies.json
           git diff --cached --quiet || git commit -m "Update FINILA data [data refresh]"
+          git pull --rebase -X theirs || true
           git push
+
+  upload:
+    needs: refresh
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Same lock as deploy-finila.yml, so a data upload never overlaps a site deploy.
+    concurrency:
+      group: finila-webglobe
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Upload data files to finila.com
+        env:
+          FTP_SERVER: ${{ vars.FTP_SERVER || 'sftp://ftp.finila.com:222' }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'finila.com' }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_DIR: ${{ vars.FTP_DIR || '/' }}
+        run: scripts/upload-data.sh
