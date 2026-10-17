@@ -23,7 +23,7 @@ my $server = IO::Socket::INET->new(
     Proto     => 'tcp',
 ) or die "Cannot bind $port: $!";
 
-print "EUViz at http://localhost:$port\n";
+print "FINILA at http://localhost:$port\n";
 $| = 1;
 
 while (my $client = $server->accept) {

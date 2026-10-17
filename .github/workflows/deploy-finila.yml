@@ -1,0 +1,53 @@
+name: Nasadiť na finila.com (Webglobe)
+
+# Publishing runs only when started by hand: Actions → "Nasadiť na finila.com" → Run workflow.
+# "kontrola" only connects and lists the server; "nasadit" publishes.
+# Pushes to the finila-webglobe branch run "kontrola" only.
+on:
+  push:
+    branches: [finila-webglobe]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'kontrola = len overí FTP, nasadit = zverejní FINILA'
+        type: choice
+        options: [kontrola, nasadit]
+        default: kontrola
+
+permissions:
+  contents: read
+
+concurrency:
+  group: finila-webglobe
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: finila-com
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Upload over FTPS
+        env:
+          MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'nasadit' && 'deploy' || 'check' }}
+          FTP_SERVER: ${{ vars.FTP_SERVER || 'sftp://ftp.finila.com:222' }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'finila.com' }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_DIR: ${{ vars.FTP_DIR || '/' }}
+          FTP_INSECURE_TLS: ${{ vars.FTP_INSECURE_TLS || '0' }}
+        run: scripts/deploy-webglobe.sh
+
+      - name: Keep original .htaccess and server listing
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: webglobe-pred-nasadenim
+          path: |
+            _deploy/htaccess.original
+            _deploy/root-listing.txt
+          if-no-files-found: ignore
+          retention-days: 90

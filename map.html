@@ -3,31 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EUViz — Market Maps</title>
+  <title>FINILA — Market Maps</title>
   <link rel="stylesheet" href="css/main.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <header class="site-header">
-  <div class="logo">EU<span>Viz</span></div>
+  <a class="logo" href="index.html" style="text-decoration:none">FIN<span>ILA</span></a>
   <nav class="nav-links">
     <a class="nav-link" href="index.html"  data-page="screener">Screener</a>
     <a class="nav-link active" href="map.html"   data-page="map">Maps</a>
     <a class="nav-link" href="groups.html" data-page="groups">Groups</a>
-    <a class="nav-link" href="news.html"   data-page="news">News</a>
+    <a class="nav-link" href="/archiv/">Archív</a>
   </nav>
   <div class="header-right">
     <div class="market-status">
       <div class="status-dot"></div>
-      <span>Market Open</span>
+      <span>Demo</span>
     </div>
     <span style="color:var(--text2);font-size:11px;" id="clock"></span>
   </div>
 </header>
+<div class="demo-banner" style="background:#3a2a00;color:#ffd27a;font-size:12px;text-align:center;padding:5px 12px;border-bottom:1px solid #5a4300;flex-shrink:0;">Ukážková verzia FINILA: čísla na tejto stránke sú ilustračné, nie skutočné trhové dáta. Nejde o investičné odporúčanie.</div>
 
 <div class="indices-bar" id="indices-bar"></div>
-<div class="news-bar"><div id="news-ticker"></div></div>
 
 <!-- HEATMAP CONTROLS -->
 <div class="hm-controls">
