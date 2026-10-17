@@ -1,0 +1,89 @@
+++ curl -sS https://mfs.deutsche-boerse.com/api/DETR-posttrade
+++ python3 -c 'import json,sys;print([f for f in json.load(sys.stdin)['\''CurrentFiles'\''] if '\''daily'\'' in f][0])'
++ F=DETR-posttrade-daily-2026-10-16.json.gz
++ echo FILE DETR-posttrade-daily-2026-10-16.json.gz
+FILE DETR-posttrade-daily-2026-10-16.json.gz
++ curl -sS -D - -o /dev/null https://mfs.deutsche-boerse.com/api/download/DETR-posttrade-daily-2026-10-16.json.gz
++ head -20
+HTTP/2 301 
+location: https://storage.googleapis.com/mv-cef-prod-europe-west3-private-min-by-min-files/DETR/daily/DETR-posttrade-daily-2026-10-16.json.gz?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=sa-mv-cloud-function%40dbg-cef-dds-prod-22.iam.gserviceaccount.com%2F20261017%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20261017T135326Z&X-Goog-Expires=2&X-Goog-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22DETR-posttrade-daily-2026-10-16.json.gz%22&X-Goog-Signature=8c9b658b40f84b4a30112c3a2b39b515389011efb4690d65fe8df4752caa918ac6393cdd81f3ce421650f739b3053990a850e2eaadb7d5bab36d2539e483305afda28504d5647d70052c227cc74e1b4eebb1cc57114ccdae75699ab29180be73d04b95cf6267869fe11fd295ada3707797f077d60b934e01095809d3e24dfb290b05f1cd3ca3c738e0bddbb33e588493c657ac603102b42e9db793a03b81239da73380c88962fc3bb8faf27c39093748828713dba16fc1f9fece1d3b587eb9bceedc2be2c65df07c998d18fca40f7d7cf10fe1af1f7aae77c0909dce9ca2363b5cbb26955b7d7c895af2915c830636e90220b2503c84eadbd4ad833a6eebee3b
+vary: Accept
+content-type: text/plain; charset=utf-8
+x-cloud-trace-context: 542b88ee00ce4dcaefccb5a04e72dc45
+date: Sat, 17 Oct 2026 13:53:27 GMT
+server: Google Frontend
+content-length: 1032
+via: 1.1 google
+strict-transport-security: max-age=31536000; includeSubDomains
+alt-svc: h3=":443"; ma=2592000
+
++ curl -sS https://mfs.deutsche-boerse.com/DETR-posttrade
++ grep -oiE '[a-z_./-]*\.js[^"]*'
++ head
+WT.js=No&amp;dcssip=deutsche-boerse.com
+.min.js
+.min.js
+app.js
+++ curl -sS https://mfs.deutsche-boerse.com/DETR-posttrade
+++ grep -oE 'src="[^"]+\.js"'
+++ cut '-d"' -f2
++ for J in $(curl -sS https://mfs.deutsche-boerse.com/DETR-posttrade | grep -oE 'src="[^"]+\.js"' | cut -d'"' -f2)
++ echo JS blueprint/frontend/js/jquery-3.7.1.min.js
+JS blueprint/frontend/js/jquery-3.7.1.min.js
++ curl -sS https://mfs.deutsche-boerse.com/blueprint/frontend/js/jquery-3.7.1.min.js
++ grep -oE '.{0,120}(download|href).{0,120}'
++ head -8
+tsByClassName&&C)return t.getElementsByClassName(e)},d=[],$(function(e){var t;r.appendChild(e).innerHTML="<a id='"+S+"' href='' disabled='disabled'></a><select id='"+S+"-\r\\' disabled='disabled'><option selected=''></option></select>",e.queryS
+urn e===r},focus:function(e){return e===function(){try{return T.activeElement}catch(e){}}()&&T.hasFocus()&&!!(e.type||e.href||~e.tabIndex)},enabled:z(!1),disabled:z(!0),checked:function(e){return fe(e,"input")&&!!e.checked||fe(e,"option")&&!!e.
+x:{get:function(e){var t=ce.find.attr(e,"tabindex");return t?parseInt(t,10):bt.test(e.nodeName)||wt.test(e.nodeName)&&e.href?0:-1}}},propFix:{"for":"htmlFor","class":"className"}}),le.optSelected||(ce.propHooks.selected={get:function(e){var t=e
+ce.ajaxSettings.flatOptions||{};for(n in t)void 0!==t[n]&&((i[n]?e:r||(r={}))[n]=t[n]);return r&&ce.extend(!0,e,r),e}Xt.href=Et.href,ce.extend({active:0,lastModified:{},etag:{},ajaxSettings:{url:Et.href,type:"GET",isLocal:/^(?:about|app|app-sto
+e[t]];return this},abort:function(e){var t=e||u;return c&&c.abort(t),l(0,t),this}};if(x.promise(T),v.url=((e||v.url||Et.href)+"").replace($t,Et.protocol+"//"),v.type=t.method||t.type||v.method||v.type,v.dataTypes=(v.dataType||"*").toLowerCase()
+.match(D)||[""],null==v.crossDomain){r=C.createElement("a");try{r.href=v.url,r.href=r.href,v.crossDomain=Xt.protocol+"//"+Xt.host!=r.protocol+"//"+r.host}catch(e){v.crossDomain=!0}}if(v.data&&v.processData&&"st
+==typeof t&&(n=t,t=!1),t||(le.createHTMLDocument?((r=(t=C.implementation.createHTMLDocument("")).createElement("base")).href=C.location.href,t.head.appendChild(r)):t=C),o=!n&&[],(i=w.exec(e))?[t.createElement(i[1])]:(i=Ae([e],t,o),o&&o.length&&
++ for J in $(curl -sS https://mfs.deutsche-boerse.com/DETR-posttrade | grep -oE 'src="[^"]+\.js"' | cut -d'"' -f2)
++ echo JS blueprint/frontend/js/jquery-ui-1.14.2.min.js
+JS blueprint/frontend/js/jquery-ui-1.14.2.min.js
++ curl -sS https://mfs.deutsche-boerse.com/blueprint/frontend/js/jquery-ui-1.14.2.min.js
++ grep -oE '.{0,120}(download|href).{0,120}'
++ head -8
+)}),t.ui.focusable=function(e,i){var s,n,o,a,r,l=e.nodeName.toLowerCase();return"area"===l?(n=(s=e.parentNode).name,!!e.href&&!!n&&"map"===s.nodeName.toLowerCase()&&(o=t("img[usemap='#"+n+"']")).length>0&&o.is(":visible")):(/^(input|select|text
+area|button|object)$/.test(l)?(a=!e.disabled)&&(r=t(e).closest("fieldset")[0])&&(a=!r.disabled):a="a"===l&&e.href||i,a&&t(e).is(":visible")&&"visible"===t(e).css("visibility"))},t.extend(t.expr.pseudos,{focusable:function(e){return t
+etTime()?" ui-state-highlight":"")+(E.getTime()===Q.getTime()?" ui-state-active":"")+(L?" ui-priority-secondary":"")+"' href='#' aria-current='"+(E.getTime()===Q.getTime()?"true":"false")+"' data-date='"+E.getDate()+"'>"+E.getDate()+"</a>")+"</
+",hide:null,show:null,activate:null,beforeActivate:null,beforeLoad:null,load:null},_isLocal:function(t){var e=new URL(t.href),i=new URL(location.href);return t.hash.length>1&&e.origin===i.origin&&e.pathname===i.pathname&&e.search===i.search},_c
+(e),"heightStyle"===t&&this._setupHeightStyle(e)},refresh:function(){var e=this.options,i=this.tablist.children(":has(a[href])");e.disabled=t.map(i.filter(".ui-state-disabled"),function(t){return i.index(t)}),this._processTabs(),!1!==e.active&&
+space,"> li",function(e){t(this).is(".ui-state-disabled")&&e.preventDefault()}),this.tabs=this.tablist.find("> li:has(a[href])").attr({role:"tab",tabIndex:-1}),this._addClass(this.tabs,"ui-tabs-tab","ui-state-default"),this.anchors=this.tabs.ma
+!1===e?t():this.tabs.eq(e)},_getIndex:function(t){return"string"==typeof t&&(t=this.anchors.index(this.anchors.filter("[href$='"+CSS.escape(t)+"']"))),t},_destroy:function(){this.xhr&&this.xhr.abort(),this.tablist.removeAttr("role").off(this.ev
+trigger("load",i,r),l(n,e)}).fail(function(t,e){l(t,e)})))},_ajaxSettings:function(e,i,s){var n=this;return{url:e.attr("href"),beforeSend:function(e,o){return n._trigger("beforeLoad",i,t.extend({jqXHR:e,ajaxSettings:o},s))}}},_getPanelForTab:fu
++ for J in $(curl -sS https://mfs.deutsche-boerse.com/DETR-posttrade | grep -oE 'src="[^"]+\.js"' | cut -d'"' -f2)
++ echo JS app.js
+JS app.js
++ curl -sS https://mfs.deutsche-boerse.com/app.js
++ grep -oE '.{0,120}(download|href).{0,120}'
++ head -8
+ accessible market information to all participants. In order to access the daily consolidated post-trade file, click <a href="#" id="showDailyLink">here</a>.';
+      $("#homeLink").attr("href", data.homeAddress);
+        "window.location.href='" + data.backAddress + "';",
+          '<li><a href="/api/download/' +
+          '<li><a href="/api/download/' +
++ curl -sSL -o d.json.gz https://mfs.deutsche-boerse.com/api/download/DETR-posttrade-daily-2026-10-16.json.gz -w 'HTTP %{http_code} %{size_download} %{url_effective}\n'
+HTTP 200 14943998 https://storage.googleapis.com/mv-cef-prod-europe-west3-private-min-by-min-files/DETR/daily/DETR-posttrade-daily-2026-10-16.json.gz?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=sa-mv-cloud-function%40dbg-cef-dds-prod-22.iam.gserviceaccount.com%2F20261017%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20261017T135341Z&X-Goog-Expires=2&X-Goog-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22DETR-posttrade-daily-2026-10-16.json.gz%22&X-Goog-Signature=35fe4d64c2aa57257af03594fdb4b9da1aa4866820e0cccfe86a3475107e0b18a680f2cf714f66b41400c74ee64f31b66e63b16b95243b9136bf85c69faa3d4238464ec42a7c04a254c20b363dbf90e4a804f2a17c566c5226564b0af68c2110881f0906b0ad4f618e1a803944ef31ef8387cd9ff6ef2ce13d51cd92d6ab5785f2e340b61fb9d806d632be36f24951f287113f7d4f6e96bd22270792d754fddca4c7c3ad8e367b054ecb6f4f9ce8926dabdd5f8f54d9c1c9ef52822e7f1c7a1ebec405e22c90511a33b5cda3e90589a7ecc76d8faf4c95765ff863165cf79ed679eb5835f3b0bf25d352b8b8680da0043beb80d2338fdfc86aeb5ca304b5c7a5
++ file d.json.gz
+d.json.gz: gzip compressed data, from Unix, original size modulo 2^32 0
++ ls -la d.json.gz
+-rw-r--r-- 1 runner runner 14943998 Oct 17 13:53 d.json.gz
++ python3 -
+bytes 213798803
+{"messageId":"posttrade","instrumentIdentificationCode":"DE0005313704","priceCurrency":"EUR","lastTradeIndicator":"R","tradingSystem":"1","mmtTradingMode":"4","mmtModificationInd":"-","mmtBenchmarkRefprcInd":"-","mmtPubModeDefReason":"-","mmtAlgoInd":"-","priceNotation":1,"quantity":150.00,"price":32.98,"tradingDateAndTime":"2026-10-16T06:00:00.803073379Z","publicationDateAndTime":"2026-10-16T06:00:00.806792000Z","transactionIdentificationCode":"1000000000000025049220179213040080307337900000000001","venueOfExecution":"XETA","venueOfPublication":"XCEF"}
+{"messageId":"posttrade","instrumentIdentificationCode":"DE0006231004","priceCurrency":"EUR","lastTradeIndicator":"R","tradingSystem":"1","mmtTradingMode":"4","mmtModificationInd":"-","mmtBenchmarkRefprcInd":"-","mmtPubModeDefReason":"-","mmtAlgoInd":"-","priceNotation":1,"quantity":548.00,"price":53.43,"tradingDateAndTime":"2026-10-16T06:00:00.925264635Z","publicationDateAndTime":"2026-10-16T06:00:00.926622000Z","transactionIdentificationCode":"1000000000000025050240179213040092526463500000000001","venueOfExecution":"XETA","venueOfPublication":"XCEF"}
+{"messageId":"posttrade","instrumentIdentificationCode":"DE000A0WMPJ6","priceCurrency":"EUR","lastTradeIndicator":"R","tradingSystem":"1","mmtTradingMode":"4","mmtModificationInd":"-","mmtBenchmarkRefprcInd":"-","mmtPubModeDefReason":"-","mmtAlgoInd":"-","priceNotation":1,"quantity":300.00,"price":34.20,"tradingDateAndTime":"2026-10-16T06:00:00.994073897Z","publicationDateAndTime
+lines 399321
+records 200000
+[{"messageId": "posttrade", "instrumentIdentificationCode": "DE0005313704", "priceCurrency": "EUR", "lastTradeIndicator": "R", "tradingSystem": "1", "mmtTradingMode": "4", "mmtModificationInd": "-", "mmtBenchmarkRefprcInd": "-", "mmtPubModeDefReason": "-", "mmtAlgoInd": "-", "priceNotation": 1, "quantity": 150.0, "price": 32.98, "tradingDateAndTime": "2026-10-16T06:00:00.803073379Z", "publicationDateAndTime": "2026-10-16T06:00:00.806792000Z", "transactionIdentificationCode": "1000000000000025049220179213040080307337900000000001", "venueOfExecution": "XETA", "venueOfPublication": "XCEF"}, {"messageId": "posttrade", "instrumentIdentificationCode": "DE0006231004", "priceCurrency": "EUR", "lastTradeIndicator": "R", "tradingSystem": "1", "mmtTradingMode": "4", "mmtModificationInd": "-", "mmtBenchmarkRefprcInd": "-", "mmtPubModeDefReason": "-", "mmtAlgoInd": "-", "priceNotation": 1, "quantity": 548.0, "price": 53.43, "tradingDateAndTime": "2026-10-16T06:00:00.925264635Z", "publicationDateAndTime": "2026-10-16T06:00:00.926622000Z", "transactionIdentificationCode": "1000000000000025050240179213040092526463500000000001", "venueOfExecution": "XETA", "venueOfPublication": "XCEF"}]
+DE0007164600 4348
+CH0038863350 62
+NL0010273215 204
+FR0000121014 144
+DK0062498333 243
+GB0009895292 0
+ES0148396007 7
+IT0003128367 65
