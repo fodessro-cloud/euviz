@@ -1,0 +1,184 @@
+=================== https://mfs.deutsche-boerse.com/DETR-posttrade
+HTTP 200 13874B text/html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex" />
+    <title>Deutsche Börse Market Data + Services -MiFID II delayed data</title>
+
+    <!-- Style dependencies -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./blueprint/src/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./blueprint/frontend/styles/compiled-css/main.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./blueprint/frontend/styles/jquery-ui.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./blueprint/frontend/styles/disclaimer-styling.css"
+    />
+
+    <style type="text/css">
+      .fancybox-margin {
+        margin-right: 17px;
+      }
+    </style>
+  </head>
+
+  <body class="js">
+    <div class="page">
+      <div id="page-header">
+        <div id="header-logo">
+          <a href="https://www.mds.deutsche-boerse.com/mds-en/"
+            ><img src="resource/mds-logo.png" alt=""
+          /></a>
+        </div>
+
+        <div id="header-serviceBar">
+          <h2 class="aural">Service Menu</h2>
+          <div class="slogan">Market Data + Services</div>
+        </div>
+
+        <!--
+			<div id="header-search">
+				<h2 class="aural"><a id="Search">Search</a></h2>
+				<div class="dropdown-btn visible-sm">
+					<span class="title">Search</span>
+				</div>
+			
+				<form id="quicksearch" action="/search/mds-en/global-search/1331536" method="get">
+					<fieldset>
+						<input id="searchterm" title="Search" type="text" name="query" placeholder="Search" class="placeholder ui-autocomplete-input" autocomplete="off">
+						<input id="searchbutton" class="button hidden-sm" type="submit" title="Search" value="Search">
+					</fieldset>
+					<div></div>
+				</form>
+			</div>
+			-->
+      </div>
+
+      <div id="page-nav">
+        <div id="navPrimary" class="size-m">
+          <h2 class="aural">Main Menu</h2>
+
+          <ul class="level-1">
+            <li class="first home hidden-sm">
+              <a
+                href="https://www.mds.deutsche-boerse.com/mds-en"
+                class=""
+                id="homeLink"
+              >
+                <span class="icon icon-home" title="Home"></span>
+                <span class="label">Home</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          id="imgSection"
+          class="hidden-sm"
+          style="
+            background-image: url(resource/blob/1332742/e94ca9c1d20a5f47e80b53897ce9e5a4/data/information.jpg);
+          "
+        >
+          <p id="imgSectionTitle">Data services</p>
+        </div>
+      </div>
+
+      <!-- The content of the page should be placed after this comment line. -->
+      <div id="page-main" class="content-page-3-col">
+        <div id="row1" class="row">
+          <div id="col1" class="col main">
+            <h1 class="aural">Content</h1>
+
+            <div class="product content">
+              <h1 id="dynTitle" class="title">MiFID II delayed file service </h1>
+
+              <div class="introduction rte-text">
+                <h2 id="dynAvailableDays">
+                  Available files for the past
+                </h2>
+              </div>
+
+              <div id="dynPageGenerated" class="introduction rte-text">
+                Page automatically generated at
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="row3" class="row">
+          <div class="col main">
+            <div class="product content">
+              <h2 id="dynNumberOfFiles">
+                files
+              </h2>
+              <div class="introduction rte-text">
+                <div id="dynFileList">
+                  <!-- The file list will be added here dynamically. -->
+             
+=================== https://mfs.deutsche-boerse.com/api/DETR-posttrade
+HTTP 200 55701B text/html; charset=utf-8
+{"SourcePrefix":"DETR-posttrade","SrcText":"Xetra - Post-Trade","DaysToKeepOnWebpage":"1","FileCount":"1322","GenerationDatetime":"2026-10-17 13:47:27.941 UTC","CurrentFiles":["DETR-posttrade-daily-2026-10-16.json.gz","DETR-posttrade-2026-10-16T21_00.json.gz","DETR-posttrade-2026-10-16T20_59.json.gz","DETR-posttrade-2026-10-16T20_58.json.gz","DETR-posttrade-2026-10-16T20_57.json.gz","DETR-posttrade-2026-10-16T20_56.json.gz","DETR-posttrade-2026-10-16T20_55.json.gz","DETR-posttrade-2026-10-16T20_54.json.gz","DETR-posttrade-2026-10-16T20_53.json.gz","DETR-posttrade-2026-10-16T20_52.json.gz","DETR-posttrade-2026-10-16T20_51.json.gz","DETR-posttrade-2026-10-16T20_50.json.gz","DETR-posttrade-2026-10-16T20_49.json.gz","DETR-posttrade-2026-10-16T20_48.json.gz","DETR-posttrade-2026-10-16T20_47.json.gz","DETR-posttrade-2026-10-16T20_46.json.gz","DETR-posttrade-2026-10-16T20_45.json.gz","DETR-posttrade-2026-10-16T20_44.json.gz","DETR-posttrade-2026-10-16T20_43.json.gz","DETR-posttrade-2026-10-16T20_42.json.gz","DETR-posttrade-2026-10-16T20_41.json.gz","DETR-posttrade-2026-10-16T20_40.json.gz","DETR-posttrade-2026-10-16T20_39.json.gz","DETR-posttrade-2026-10-16T20_38.json.gz","DETR-posttrade-2026-10-16T20_37.json.gz","DETR-posttrade-2026-10-16T20_36.json.gz","DETR-posttrade-2026-10-16T20_35.json.gz","DETR-posttrade-2026-10-16T20_34.json.gz","DETR-posttrade-2026-10-16T20_33.json.gz","DETR-posttrade-2026-10-16T20_32.json.gz","DETR-posttrade-2026-10-16T20_31.json.gz","DETR-posttrade-2026-10-16T20_30.json.gz","DETR-posttrade-2026-10-16T20_29.json.gz","DETR-posttrade-2026-10-16T20_28.json.gz","DETR-posttrade-2026-10-16T20_27.json.gz","DETR-posttrade-2026-10-16T20_26.json.gz","DETR-posttrade-2026-10-16T20_25.json.gz","DETR-posttrade-2026-10-16T20_24.json.gz","DETR-posttrade-2026-10-16T20_23.json.gz","DETR-posttrade-2026-10-16T20_22.json.gz","DETR-posttrade-2026-10-16T20_21.json.gz","DETR-posttrade-2026-10-16T20_20.json.gz","DETR-posttrade-2026-10-16T20_19.json.gz","DETR-posttrade-2026-10-16T20_18.json.gz","DETR-posttrade-2026-10-16T20_17.json.gz","DETR-posttrade-2026-10-16T20_16.json.gz","DETR-posttrade-2026-10-16T20_15.json.gz","DETR-posttrade-2026-10-16T20_14.json.gz","DETR-posttrade-2026-10-16T20_13.json.gz","DETR-posttrade-2026-10-16T20_12.json.gz","DETR-posttrade-2026-10-16T20_11.json.gz","DETR-posttrade-2026-10-16T20_10.json.gz","DETR-posttrade-2026-10-16T20_09.json.gz","DETR-posttrade-2026-10-16T20_08.json.gz","DETR-posttrade-2026-10-16T20_07.json.gz","DETR-posttrade-2026-10-16T20_06.json.gz","DETR-posttrade-2026-10-16T20_05.json.gz","DETR-posttrade-2026-10-16T20_04.json.gz","DETR-posttrade-2026-10-16T20_03.json.gz","DETR-posttrade-2026-10-16T20_02.json.gz","DETR-posttrade-2026-10-16T20_01.json.gz","DETR-posttrade-2026-10-16T20_00.json.gz","DETR-posttrade-2026-10-16T19_59.json.gz","DETR-posttrade-2026-10-16T19_58.json.gz","DETR-posttrade-2026-10-16T19_57.json.gz","DETR-posttrade-2026-10-16T19_56.json.gz","DETR-posttrade-2026-10-16T19_55.json.gz","DETR-post
+=================== https://www.nasdaqomxnordic.com/shares
+HTTP 200 652426B text/html; charset=UTF-8
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#" class="nef-dark">
+  <head>
+    <link rel="preconnect" href="https://geolocation.onetrust.com/" crossorigin>
+    <link rel="dns-prefetch" href="https://geolocation.onetrust.com/">
+    <link rel="preload" href="/themes/custom/nsdq_mercury/dist_mercury/assets/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin="anonymous"/>
+    <link rel="preload" href="/themes/custom/nsdq_mercury/dist_mercury/assets/fonts/material-symbols-outlined-foundations.woff2" type="font/woff2" as="font" crossorigin/>
+    <script type="text/javascript">
+        // Make these globally accessible for body scripts
+        window.consentBoxClosedCookie = null;
+        window.consentCookie = null;
+
+        // Grab OptanonConsent cookie for fast
+=================== https://api.nasdaq.com/api/nordic/search?searchText=Novo
+HTTP 200 14883B application/json; charset=utf-8
+{"data":[{"group":"Shares Main Market","instruments":[{"orderbookId":"TX2178","fullName":"Novo Nordisk B","isin":"DK0062498333","symbol":"NOVO B","assetClass":"SHARES","currency":"DKK"},{"orderbookId":"TX2376","fullName":"Novonesis (Novozymes) B","isin":"DK0060336014","symbol":"NSIS B","assetClass":"SHARES","currency":"DKK"},{"orderbookId":"TX296","fullName":"NOVOTEK B","isin":"SE0000567752","symbol":"NTEK B","assetClass":"SHARES","currency":"SEK"}]},{"group":"Shares First North","instruments":[{"orderbookId":"TX2653426","fullName":"Iconovo","isin":"SE0010868943","symbol":"ICO","assetClass":"SHARES","currency":"SEK"}]},{"group":"Options\u0026Futures","instruments":[{"orderbookId":"TX240215","fullName":"NOVOB6X270-6V280","isin":"","symbol":"NOVOB6X270-6V280","assetClass":"COMBINATION","currency":""},{"orderbookId":"TX7737986","fullName":"NOVOB 06NOV26 195C","isin":"SE0030577540","symbol":"NOVOB6K06Y195","assetClass":"OPTIONS","currency":"DKK"},{"orderbookId":"TX7737996","fullName":"NOVOB 06NOV26 195P","isin":"SE0030577599","symbol":"NOVOB6W06Y195","assetClass":"OPTIONS","currency":"DKK"},{"orderbookId":"TX7709932","fullName":"NOVOB 06NOV26 200C","isin":"SE0030540761","symbol":"NOVOB6K06Y200","assetClass":"OPTIONS","currency":"DKK"},{"orderbookId":"TX7710308","fullName":"NOVOB 06NOV26 200P","isin":"SE0030541348","symbol":"NOVOB6W06Y200","assetClass":"OPTIONS","currency":"DKK"},{"orderbookId":"TX7709934","fullName":"NOVOB 06NOV26 205C","isin":"SE0030540779","symbol":"NOVOB6K06Y2
+=================== https://api.nasdaq.com/api/nordic/instruments/CSE1158/chart/download?assetClass=SHARES&fromDate=2026-10-01&toDate=2026-10-16
+HTTP 400 183B application/json; charset=utf-8
+{"data":null,"messages":null,"status":{"timestamp":"2026-10-17T15:47:32+0200","rCode":400,"bCodeMessage":[{"code":10003,"errorMessage":"Instrument not found"}],"developerMessage":""}}
+=================== https://api.londonstockexchange.com/api/gw/lse/instruments/alldata/AZN
+HTTP 200 1624B application/json;charset=UTF-8
+{"description":"ASTRAZENECA PLC ORD SHS $0.25","name":"ORD SHS $0.25","tidm":"AZN","topic":"TIT.AZN.LD","isin":"GB0009895292","sedol":"0989529","category":"EQUITY","mifir":"SHRS","country":"GB","csm":"MAINMARKET.SET1.LSEUK","market":"MAINMARKET","segment":"SET1","lipperId":"20000063","marketvolume":null,"tradingdate":null,"fundsType":"NONE","mifid":null,"currency":"GBX","suspend":null,"bid":12446,"offer":12448,"volume":2901046,"turnover":26715249847,"fiftyTwoWeeksMin":9892,"fiftyTwoWeeksMax":15732,"high":12576,"low":1.242E+4,"midPrice":1.250E+4,"underlying":null,"issuercode":"ASAZN","issuername":"ASTRAZENECA PLC","shortname":"ASTRAZENECA","instrumenttype":"STOCK","marketsize":150,"tradingstatuscode":"N c","tradingstatus":"N","periodcode":"c","openingprice":12506,"specialconditions":"","ismidprice":false,"lastvolume":null,"lastturnover":null,"fourwaykey":"GB0009895292GBGBXSET1","marketcapitalization":196952746637,"listingadmissiondate":"2006-01-13","sectorcode":"201030","subsectorcode":"20103015","datelastnews":null,"presentnews":true,"istodaynews":false,"idnews":17820452,"sectioncodenews":null,"subjectnews":"AstraZeneca completes equity investment in Summit","previoussectioncodenews":"BRK","annualreportweeklyurl":null,"netchangesign":"-1","datepreviousnews":"2026-10-05T11:00:04.000","previousreferenceprice":12698,"netchange":-252,"percentualchange":-1.984564498346196,"cwtype":null,"strikeprice":null,"strikepricecurrency":null,"maturitydate":null,"subSearchTags":null,"islse":t
+=================== https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc/company-page
+HTTP 200 54995B text/html; charset=utf-8
+<!DOCTYPE html><html lang="en" data-critters-container><head><!-- FE commit hash: f3c96f7ad --><!-- Release number: 1.113.0 -->
+    <meta charset="utf-8">
+    <title>London Stock Exchange | London Stock Exchange</title>
+    <base href="/">
+    <meta name="viewport" content>
+    <meta name="msvalidate.01" content="1703499E93B0477E0BC3380E8DB64303">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <!-- Dory SDK (required) -
+=================== https://mfs.deutsche-boerse.com/robots.txt
+HTTP 200 25B text/plain
+User-agent: *
+Disallow: /
+=================== https://api.nasdaq.com/robots.txt
+HTTP 200 187B text/plain
+
+# This robots.txt file disallows all web crawlers from indexing any pages
+# in this API application to prevent search engine indexing of API endpoints
+
+
+User-agent: *
+Disallow: /
+
