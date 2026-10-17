@@ -10,7 +10,7 @@ const PALETTE = {
   light: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300'],
 };
 const ASSETS = [
-  { key: 'stocks',  label: 'Stocks' },
+  { key: 'stocks',  label: 'Stocks' },  // EURO STOXX 50 incl. estimated dividends
   { key: 'bonds',   label: 'Government bonds' },
   { key: 'house',   label: 'Property' },
   { key: 'gold',    label: 'Gold' },
@@ -71,7 +71,7 @@ function renderNow() {
     ['savings', 'Savings account', n.savings, 'average rate on overnight deposits'],
     ['deposit', 'Term deposit', n.deposit1y, 'new deposits up to 1 year'],
     ['bonds', 'Government bond', n.bond10, '10-year yield'],
-    ['stocks', 'Stocks', n.stocks_12m, 'EURO STOXX 50, last 12 months'],
+    ['stocks', 'Stocks', n.stocks_12m, 'EURO STOXX 50 incl. dividends, last 12 months'],
     ['gold', 'Gold', n.gold_12m, 'last 12 months'],
     ['house', 'Property', n.house_12m, 'house prices, last 12 months'],
   ];
