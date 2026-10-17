@@ -1,7 +1,7 @@
 name: Kam s peniazmi (denne)
 
 # Downloads deposit rates, bond yields, inflation, house prices, stocks and gold from the
-# ECB, Eurostat and the Bundesbank once a day. On main it also uploads the data file
+# ECB, Eurostat and the World Bank once a day. On main it also uploads the data file
 # (js/invest.json) to finila.com; pages are published only by deploy-finila.yml.
 on:
   schedule:
@@ -27,10 +27,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Discover series (temporary)
-        if: github.ref != 'refs/heads/main'
-        run: python scripts/data/invest_discover.py > data/invest-discover.log 2>&1 || true
-      - name: Download ECB, Eurostat and Bundesbank series
+      - name: Download ECB, Eurostat and World Bank series
         run: |
           set -o pipefail
           mkdir -p data
@@ -41,7 +38,7 @@ jobs:
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/invest.log data/invest-discover.log js/invest.json 2>/dev/null || true
+          git add data/invest.log data/invest-raw.json js/invest.json 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -m "Update investment comparison data [data refresh]"
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done

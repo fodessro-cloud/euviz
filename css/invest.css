@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════════════
+   FINILA — Where to put money (on top of home.css)
+   ═══════════════════════════════════════════════ */
+
+.h-nav a.on { color: var(--text); box-shadow: inset 0 -2px 0 var(--amber); }
+.i-banner { background: #0d2a1c; color: #8fe3b5; font-size: 13px; text-align: center; padding: 6px 12px; border-bottom: 1px solid #1f5a3c; }
+.i-main { padding-top: 32px; }
+.i-sub { font-size: 14px; color: var(--muted); }
+.i-sub b { color: var(--text); font-family: var(--mono); font-weight: 600; }
+.i-note { font-size: 12px; color: var(--muted); }
+.m { font-family: var(--mono); }
+.r { text-align: right; }
+
+.i-intro { display: flex; flex-direction: column; gap: 12px; padding-bottom: 36px; max-width: 760px; }
+.i-intro h1 { font-size: 34px; line-height: 1.15; font-weight: 700; margin: 0; }
+.i-intro p { font-size: 17px; line-height: 1.55; color: var(--text2); }
+.i-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 6px; }
+.i-updated { font-size: 13px; color: var(--muted); }
+
+.i-country { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+.i-country select, .i-amount input {
+  height: 44px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--line2);
+  background: var(--card); color: var(--text); font: inherit; font-size: 16px;
+}
+.i-country select { min-width: 220px; }
+.i-country select:focus, .i-amount input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+
+.i-seg { display: flex; gap: 6px; flex-wrap: wrap; }
+.i-seg button {
+  height: 44px; min-width: 52px; padding: 0 14px; border-radius: 8px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--line2); background: transparent; color: #D5DEEE;
+}
+.i-seg button.on { background: var(--blue); border-color: var(--blue); color: #06101F; }
+
+/* Today tiles */
+.i-now { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.i-tile { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.i-tile-head { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--text2); }
+.i-tile-real { font-family: var(--mono); font-size: 26px; font-weight: 600; margin-top: 6px; }
+.i-tile-real span { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--muted); margin-left: 8px; }
+.i-tile-nom { font-size: 14px; color: var(--text2); font-family: var(--mono); }
+.i-tile-sub { font-size: 12px; color: var(--muted); }
+.i-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 0; flex-shrink: 0; }
+.i-tile-head .i-dot { margin-right: 0; }
+
+/* Calculator */
+.i-calc { padding: 28px; border-radius: 18px; }
+.i-calc-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 24px; margin-bottom: 20px; }
+.i-calc-head h2 { font-size: 24px; line-height: 1.2; font-weight: 700; margin-bottom: 6px; }
+.i-calc-inputs { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.i-amount { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+.i-amount input { width: 140px; font-family: var(--mono); }
+.i-calc-body { display: flex; flex-wrap: wrap; gap: 28px; }
+.i-chart-wrap { flex: 3 1 520px; min-width: 0; position: relative; }
+.i-chart { width: 100%; }
+.i-chart svg { display: block; overflow: visible; }
+.i-chart .g { stroke: var(--line); stroke-width: 1; }
+.i-chart .base { stroke: var(--line2); stroke-width: 1.5; stroke-dasharray: 2 4; }
+.i-chart .ax { fill: var(--muted); font: 12px var(--mono); }
+.i-chart .lb { fill: var(--text2); font: 500 12.5px 'IBM Plex Sans', sans-serif; }
+.i-chart .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.i-chart .ln.dash { stroke-dasharray: 6 5; }
+.i-chart .xh { stroke: var(--line2); stroke-width: 1; }
+.i-chart .dt { stroke: var(--card); stroke-width: 2; }
+.i-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--text2); margin-bottom: 10px; }
+.i-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.i-legend i { display: inline-block; width: 16px; height: 3px; border-radius: 2px; }
+.i-legend i.dash { background: repeating-linear-gradient(90deg, #9AA8C2 0 5px, transparent 5px 8px) !important; }
+.i-legend i.base { background: repeating-linear-gradient(90deg, var(--line2) 0 2px, transparent 2px 5px); }
+.i-tip {
+  position: absolute; top: 40px; pointer-events: none; z-index: 5; min-width: 190px;
+  background: #0B1222; border: 1px solid var(--line2); border-radius: 10px; padding: 10px 12px; font-size: 13px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.i-tip b { display: block; margin-bottom: 6px; }
+.i-tip div { display: flex; align-items: center; gap: 8px; padding: 2px 0; color: var(--text2); }
+.i-tip i { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.i-tip span { margin-left: auto; padding-left: 12px; font-family: var(--mono); color: var(--text); }
+
+.i-rank { flex: 2 1 340px; min-width: 0; }
+.i-rank table, .i-eu table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.i-rank th, .i-eu th { text-align: left; color: var(--muted); font-weight: 500; padding: 8px 6px; white-space: nowrap; }
+.i-rank th.r, .i-eu th.r { text-align: right; }
+.i-rank td, .i-eu td { padding: 10px 6px; border-top: 1px solid var(--line); white-space: nowrap; }
+.i-rank tr.i-prices td { color: var(--muted); border-top: 1px dashed var(--line2); }
+.i-dash { display: inline-block; width: 12px; height: 2px; margin-right: 10px; vertical-align: 3px; background: repeating-linear-gradient(90deg, #9AA8C2 0 4px, transparent 4px 6px); }
+
+/* Europe table */
+.i-eu { padding: 8px 12px 16px; }
+.i-eu table { min-width: 760px; }
+.i-eu th button { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+.i-eu th.on { color: var(--text); }
+.i-eu tbody tr { cursor: pointer; }
+.i-eu tbody tr:hover td { background: var(--card2); }
+.i-eu tr.sel td { background: #1B2A48; }
+.i-eu tr.agg td { font-weight: 600; }
+.i-eu td a { color: var(--text); }
+
+.i-split { display: flex; flex-wrap: wrap; gap: 24px; }
+.i-method { flex: 1 1 360px; min-width: 0; }
+.i-method h2 { font-size: 19px; font-weight: 600; margin-bottom: 12px; }
+.i-method ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5; color: var(--text2); }
+.i-method strong { color: var(--text); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .i-main { padding-top: 20px; }
+  .i-intro h1 { font-size: 26px; }
+  .i-calc { padding: 18px; }
+  .i-calc-head h2 { font-size: 20px; }
+  .i-country select { min-width: 0; flex: 1; }
+  .i-country { width: 100%; }
+  .i-seg button { min-width: 44px; padding: 0 10px; }
+  .i-tile-real { font-size: 22px; }
+  .i-now { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .i-rank { overflow-x: auto; }
+}

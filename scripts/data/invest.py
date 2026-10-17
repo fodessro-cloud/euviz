@@ -1,142 +1,226 @@
-"""Where to put money: real returns of savings and investments in Slovakia and the euro area.
+"""Where to put money: real returns of savings and investments in every European country.
 
-Free official sources, all monthly:
-  ECB Data Portal   HICP inflation, bank deposit rates (MIR), 10-year government bond yields (IRS),
-                    ECB deposit facility rate, EURO STOXX 50 index, EUR/USD
-  Eurostat          house price index (quarterly, interpolated to months)
-  Bundesbank        gold price (London fixing)
-Writes js/invest.json: monthly series plus a "wealth index" per asset (what 1 euro became),
-which the page turns into "EUR 10,000 invested N years ago". Every series is fetched on its own;
-one that fails keeps its values from the previous run.
+Free official sources, monthly:
+  ECB Data Portal  bank deposit rates (MIR), 10-year government bond yields (IRS), HICP index up to
+                   2025, ECB deposit facility rate, EURO STOXX 50 index, euro exchange rates
+  Eurostat         HICP annual inflation (COICOP 2018 series, from 2026), house price index (quarterly)
+  World Bank       gold price (Pink Sheet, monthly averages)
+Writes js/invest.json: per country a "wealth index" per asset (what 1 unit of local currency became),
+which the page turns into "10,000 put away N years ago", plus the latest rates.
+Every source is fetched on its own; one that fails keeps its values from the previous run
+(data/invest-raw.json).
 """
-import csv, io, json, sys, urllib.request
+import csv, io, json, re, sys, urllib.error, urllib.request, zipfile
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "js" / "invest.json"
+RAW = ROOT / "data" / "invest-raw.json"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
 START = "1999-01"
-REGIONS = {"SK": "Slovakia", "U2": "Euro area"}
-EUROSTAT_GEO = {"SK": "SK", "U2": "EA20"}
 
-ECB = "https://data-api.ecb.europa.eu/service/data/{}?format=csvdata&startPeriod=" + START
-BBK = "https://api.statistiken.bundesbank.de/rest/data/{}?startPeriod=" + START
-ESTAT = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/{}"
-
-# Each series: list of candidate URLs (first that works wins), monthly values "YYYY-MM" -> float.
-def ecb(key):
-    return ECB.format(key.replace(".", "/", 1))
-
-SERIES = {
-    "dfr": [ecb("FM.B.U2.EUR.4F.KR.DFR.LEV"), ecb("FM.D.U2.EUR.4F.KR.DFR.LEV")],
-    "stoxx50": [ecb("FM.M.U2.EUR.DS.EI.DJES50I.HSTA")],
-    "eurusd": [ecb("EXR.M.USD.EUR.SP00.A")],
-    "gold_eur": [BBK.format("BBEX3/M.XAU.EUR.EA.AC.C06"), BBK.format("BBEX3/D.XAU.EUR.EA.AC.C04")],
-    "gold_usd": [BBK.format("BBEX3/M.XAU.USD.EA.AC.C06"), BBK.format("BBEX3/D.XAU.USD.EA.AC.C05")],
+# code: (name, currency, euro member). U2 = euro area as a whole.
+COUNTRIES = {
+    "U2": ("Euro area", "EUR", True),
+    "AT": ("Austria", "EUR", True), "BE": ("Belgium", "EUR", True), "BG": ("Bulgaria", "EUR", True),
+    "HR": ("Croatia", "EUR", True), "CY": ("Cyprus", "EUR", True), "EE": ("Estonia", "EUR", True),
+    "FI": ("Finland", "EUR", True), "FR": ("France", "EUR", True), "DE": ("Germany", "EUR", True),
+    "GR": ("Greece", "EUR", True), "IE": ("Ireland", "EUR", True), "IT": ("Italy", "EUR", True),
+    "LV": ("Latvia", "EUR", True), "LT": ("Lithuania", "EUR", True), "LU": ("Luxembourg", "EUR", True),
+    "MT": ("Malta", "EUR", True), "NL": ("Netherlands", "EUR", True), "PT": ("Portugal", "EUR", True),
+    "SK": ("Slovakia", "EUR", True), "SI": ("Slovenia", "EUR", True), "ES": ("Spain", "EUR", True),
+    "CZ": ("Czechia", "CZK", False), "DK": ("Denmark", "DKK", False), "HU": ("Hungary", "HUF", False),
+    "PL": ("Poland", "PLN", False), "RO": ("Romania", "RON", False), "SE": ("Sweden", "SEK", False),
+    "NO": ("Norway", "NOK", False), "CH": ("Switzerland", "CHF", False), "GB": ("United Kingdom", "GBP", False),
+    "IS": ("Iceland", "ISK", False),
 }
-for r in REGIONS:
-    SERIES[f"hicp_{r}"] = [ecb(f"ICP.M.{r}.N.000000.4.INX")]
-    SERIES[f"infl_{r}"] = [ecb(f"ICP.M.{r}.N.000000.4.ANR")]
-    SERIES[f"dep1y_{r}"] = [ecb(f"MIR.M.{r}.B.L22.F.R.A.2250.EUR.N")]      # households, agreed maturity up to 1 year, new business
-    SERIES[f"depon_{r}"] = [ecb(f"MIR.M.{r}.B.L21.A.R.A.2250.EUR.N")]      # households, overnight (current/savings account)
-    SERIES[f"bond10_{r}"] = [ecb(f"IRS.M.{r}.L.L40.CI.0000.EUR.N.Z")]      # 10-year government bond yield
-    SERIES[f"house_{r}"] = [ESTAT.format(f"prc_hpi_q?geo={EUROSTAT_GEO[r]}&purchase=TOTAL&unit=I15_Q")]
+ESTAT_GEO = {"U2": "EA20", "GR": "EL", "GB": "UK"}
+CURRENCIES = sorted({c[1] for c in COUNTRIES.values()} - {"EUR"})
+
+ECB = "https://data-api.ecb.europa.eu/service/data/"
+ESTAT = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
+WB_PAGE = "https://www.worldbank.org/en/research/commodity-markets"
 
 SOURCES = [
-    ["ECB Data Portal", "https://data.ecb.europa.eu/", "inflation (HICP), bank deposit rates, government bond yields, ECB rate, EURO STOXX 50, EUR/USD"],
-    ["Eurostat", "https://ec.europa.eu/eurostat/databrowser/view/prc_hpi_q/default/table", "house price index"],
-    ["Deutsche Bundesbank", "https://www.bundesbank.de/en/statistics/time-series-databases", "gold price (London fixing)"],
+    ["ECB Data Portal", "https://data.ecb.europa.eu/", "bank deposit rates, 10-year government bond yields, inflation index to 2025, ECB rate, EURO STOXX 50, exchange rates"],
+    ["Eurostat", "https://ec.europa.eu/eurostat/web/hicp", "inflation (HICP) and house price index"],
+    ["World Bank Pink Sheet", WB_PAGE, "gold price (monthly average)"],
 ]
 
 
-def fetch(url, accept=None):
-    h = dict(UA)
-    if accept:
-        h["Accept"] = accept
-    with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=120) as r:
-        return r.read().decode("utf-8-sig")
+def fetch(url, binary=False):
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=180) as r:
+        b = r.read()
+    return b if binary else b.decode("utf-8-sig")
 
 
 def month_avg(points):
-    """[(period, value)] with daily/business/monthly periods -> {"YYYY-MM": monthly mean}."""
     acc = {}
     for p, v in points:
         acc.setdefault(p[:7], []).append(v)
     return {m: sum(v) / len(v) for m, v in sorted(acc.items())}
 
 
-def parse_csv(text):
-    rows = csv.DictReader(io.StringIO(text))
-    out = []
-    for row in rows:
-        p = row.get("TIME_PERIOD") or row.get("TIME_PERIOD ") or ""
-        v = row.get("OBS_VALUE")
+def ecb_multi(flow, key, area_pos=1, cur_pos=None, want_cur=None):
+    """One ECB request for many countries: {area: {month: value}}; for MIR/IRS keeps the series in the
+    country's own currency (EUR for euro countries)."""
+    text = fetch(f"{ECB}{flow}/{key}?format=csvdata&startPeriod={START}")
+    series = {}
+    for row in csv.DictReader(io.StringIO(text)):
+        parts = row["KEY"].split(".")[1:]
         try:
-            out.append((p.strip(), float(v)))
+            v = float(row["OBS_VALUE"])
         except (TypeError, ValueError):
-            pass
-    return out
-
-
-def parse_jsonstat(text):
-    """Eurostat JSON-stat with one value per time period; quarters become their middle month."""
-    d = json.loads(text)
-    times = d["dimension"]["time"]["category"]["index"]
-    stride = 1
-    ids, sizes = d["id"], d["size"]
-    for dim, size in zip(reversed(ids), reversed(sizes)):
-        if dim == "time":
-            break
-        stride *= size
-    out = []
-    for t, i in times.items():
-        v = d["value"].get(str(i * stride))
-        if v is None:
             continue
-        if "-Q" in t:
-            y, q = t.split("-Q")
-            t = f"{y}-{int(q) * 3 - 1:02d}"
-        out.append((t, float(v)))
+        area = parts[area_pos]
+        if cur_pos is not None and want_cur and parts[cur_pos] != want_cur(area):
+            continue
+        series.setdefault(area, []).append((row["TIME_PERIOD"], v))
+    return {a: month_avg(p) for a, p in series.items()}
+
+
+def estat_multi(dataset, query):
+    """Eurostat JSON-stat for many geos; quarters become their middle month. {geo: {month: value}}
+    If Eurostat refuses the whole list (one unknown geo), asks for each geo on its own."""
+    try:
+        return estat_parse(fetch(f"{ESTAT}{dataset}?{query}"))
+    except urllib.error.HTTPError:
+        geos = re.findall(r"geo=([A-Z0-9]+)", query)
+        rest = re.sub(r"geo=[A-Z0-9]+&?", "", query)
+        out = {}
+        for g in geos:
+            try:
+                out.update(estat_parse(fetch(f"{ESTAT}{dataset}?geo={g}&{rest}")))
+            except Exception as e:  # noqa: BLE001
+                print(f"      {dataset} {g}: {e}", file=sys.stderr)
+        return out
+
+
+def estat_parse(text):
+    d = json.loads(text)
+    ids, sizes = d["id"], d["size"]
+    cat = {k: d["dimension"][k]["category"]["index"] for k in ids}
+    for k in ids:
+        if k not in ("geo", "time") and len(cat[k]) != 1:
+            raise RuntimeError(f"dimension {k} has {len(cat[k])} values")
+    strides, s = {}, 1
+    for k, n in zip(reversed(ids), reversed(sizes)):
+        strides[k] = s
+        s *= n
+    out = {}
+    for g, gi in cat["geo"].items():
+        pts = {}
+        for t, ti in cat["time"].items():
+            v = d["value"].get(str(gi * strides["geo"] + ti * strides["time"]))
+            if v is None:
+                continue
+            if "-Q" in t:
+                y, q = t.split("-Q")
+                t = f"{y}-{int(q) * 3 - 1:02d}"
+            pts[t] = float(v)
+        if pts:
+            out[g] = dict(sorted(pts.items()))
     return out
 
 
-def get(name, urls):
-    errors = []
-    for url in urls:
-        try:
-            if "bundesbank" in url:
-                pts = parse_csv(fetch(url, "application/vnd.sdmx.data+csv;version=1.0.0"))
-            elif "eurostat" in url:
-                pts = parse_jsonstat(fetch(url))
+def xlsx_sheet(raw, name):
+    """Rows of one sheet of an .xlsx file (standard library only)."""
+    z = zipfile.ZipFile(io.BytesIO(raw))
+    ns = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+          "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
+    shared = []
+    if "xl/sharedStrings.xml" in z.namelist():
+        for si in ET.fromstring(z.read("xl/sharedStrings.xml")).findall("m:si", ns):
+            shared.append("".join(t.text or "" for t in si.iter(f"{{{ns['m']}}}t")))
+    wb = ET.fromstring(z.read("xl/workbook.xml"))
+    rels = ET.fromstring(z.read("xl/_rels/workbook.xml.rels"))
+    target = None
+    for sh in wb.find("m:sheets", ns):
+        if sh.get("name").strip().lower() == name.lower():
+            rid = sh.get(f"{{{ns['r']}}}id")
+            for rel in rels:
+                if rel.get("Id") == rid:
+                    target = "xl/" + rel.get("Target").lstrip("/").removeprefix("xl/")
+    if not target:
+        raise RuntimeError(f"sheet {name} not found")
+    rows = []
+    for row in ET.fromstring(z.read(target)).iter(f"{{{ns['m']}}}row"):
+        cells = {}
+        for c in row.findall("m:c", ns):
+            col = re.match(r"[A-Z]+", c.get("r")).group()
+            v = c.find("m:v", ns)
+            if v is None:
+                t = c.find("m:is/m:t", ns)
+                cells[col] = t.text if t is not None else None
+            elif c.get("t") == "s":
+                cells[col] = shared[int(v.text)]
             else:
-                pts = parse_csv(fetch(url))
-            if pts:
-                return month_avg(pts)
-            errors.append(f"{url}: no data")
-        except Exception as e:  # noqa: BLE001 - each source fails on its own
-            errors.append(f"{url}: {e}")
-    raise RuntimeError("; ".join(errors))
+                cells[col] = v.text
+        rows.append(cells)
+    return rows
+
+
+def gold_usd():
+    page = fetch(WB_PAGE)
+    links = re.findall(r'href="([^"]*CMO-Historical-Data-Monthly\.xlsx)"', page)
+    if not links:
+        raise RuntimeError("Pink Sheet link not found on the World Bank page")
+    url = links[0] if links[0].startswith("http") else "https://www.worldbank.org" + links[0]
+    rows = xlsx_sheet(fetch(url, binary=True), "Monthly Prices")
+    col = None
+    for r in rows[:10]:
+        for k, v in r.items():
+            if isinstance(v, str) and v.strip().lower() == "gold":
+                col = k
+    if not col:
+        raise RuntimeError("gold column not found in the Pink Sheet")
+    out = {}
+    for r in rows:
+        m = re.fullmatch(r"(\d{4})M(\d{2})", str(r.get("A") or "").strip())
+        if m and r.get(col):
+            try:
+                out[f"{m.group(1)}-{m.group(2)}"] = float(r[col])
+            except ValueError:
+                pass
+    return {k: v for k, v in out.items() if k >= START}
 
 
 def fill_months(s):
     """Linear interpolation between known months (quarterly house prices -> monthly)."""
-    if not s:
-        return s
     keys = sorted(s)
-    def idx(m):
-        return int(m[:4]) * 12 + int(m[5:7]) - 1
     out = {}
     for a, b in zip(keys, keys[1:]):
-        ia, ib = idx(a), idx(b)
+        ia, ib = midx(a), midx(b)
         for i in range(ia, ib):
-            out[f"{i // 12}-{i % 12 + 1:02d}"] = s[a] + (s[b] - s[a]) * (i - ia) / (ib - ia)
-    out[keys[-1]] = s[keys[-1]]
+            out[mstr(i)] = s[a] + (s[b] - s[a]) * (i - ia) / (ib - ia)
+    if keys:
+        out[keys[-1]] = s[keys[-1]]
     return out
 
 
+def midx(m):
+    return int(m[:4]) * 12 + int(m[5:7]) - 1
+
+
+def mstr(i):
+    return f"{i // 12}-{i % 12 + 1:02d}"
+
+
+def chain_prices(index, annual):
+    """HICP index up to 2025 (ECB) extended month by month with the new annual rates (Eurostat)."""
+    idx = dict(index)
+    if not idx:
+        return idx
+    for m in sorted(annual):
+        prev = mstr(midx(m) - 12)
+        if m > max(idx) and prev in idx:
+            idx[m] = idx[prev] * (1 + annual[m] / 100)
+    return idx
+
+
 def wealth_from_rate(rates):
-    """Money kept on a deposit, rate (% p.a.) of each month earned for that month."""
     w, out = 1.0, {}
     for m in sorted(rates):
         out[m] = w
@@ -145,11 +229,13 @@ def wealth_from_rate(rates):
 
 
 def wealth_from_bond_yield(yields, years=10):
-    """Constant-maturity 10-year government bond fund: coupon carry plus price change from the
-    yield move (modified duration of a par bond). A standard approximation of a bond index."""
+    """Constant-maturity 10-year government bond fund: interest plus the price change from the yield
+    move (modified duration of a par bond). A standard approximation of a bond index."""
     ms = sorted(yields)
-    w, out = 1.0, {ms[0]: 1.0} if ms else {}
+    out, w = ({ms[0]: 1.0} if ms else {}), 1.0
     for a, b in zip(ms, ms[1:]):
+        if midx(b) - midx(a) != 1:
+            break
         y0, y1 = yields[a] / 100, yields[b] / 100
         dur = (1 - (1 + y0) ** -years) / y0 if abs(y0) > 1e-6 else years
         w *= 1 + y0 / 12 - dur * (y1 - y0)
@@ -157,89 +243,130 @@ def wealth_from_bond_yield(yields, years=10):
     return out
 
 
-def normalise(s):
+def contiguous_tail(s):
+    """The latest unbroken run of months (series with a gap would compound wrongly)."""
     ms = sorted(s)
-    return {m: s[m] / s[ms[0]] for m in ms} if ms else {}
+    start = 0
+    for j in range(1, len(ms)):
+        if midx(ms[j]) - midx(ms[j - 1]) != 1:
+            start = j
+    return {m: s[m] for m in ms[start:]}
 
 
-def rnd(s, n=5):
-    return [[m, round(v, n)] for m, v in sorted(s.items()) if m >= START]
+def pack(s, digits=4):
+    """{month: v} -> [first month, [v...]] normalised to 1 at the first month."""
+    s = contiguous_tail({m: v for m, v in s.items() if m >= START})
+    if not s:
+        return None
+    ms = sorted(s)
+    base = s[ms[0]]
+    return [ms[0], [round(s[m] / base, digits) for m in ms]]
 
 
 def main():
-    old = {}
-    if OUT.exists():
-        try:
-            old = {k: dict(v) for k, v in json.loads(OUT.read_text())["raw"].items()}
-        except Exception:  # noqa: BLE001
-            old = {}
+    try:
+        old = json.loads(RAW.read_text()) if RAW.exists() else {}
+    except Exception:  # noqa: BLE001
+        old = {}
     raw, failed = {}, []
-    for name, urls in SERIES.items():
+    areas = "+".join(COUNTRIES)
+    local = lambda a: COUNTRIES.get(a, ("", "EUR"))[1]  # noqa: E731
+    geos = "&".join(f"geo={ESTAT_GEO.get(c, c)}" for c in COUNTRIES)
+    back = {ESTAT_GEO.get(c, c): c for c in COUNTRIES}
+    jobs = {
+        "hicp": lambda: ecb_multi("ICP", f"M.{areas}.N.000000.4.INX"),
+        "infl_old": lambda: ecb_multi("ICP", f"M.{areas}.N.000000.4.ANR"),
+        "infl": lambda: {back[g]: v for g, v in estat_multi("prc_hicp_minr", f"{geos}&coicop18=TOTAL&unit=RCH_A&sinceTimePeriod=2024-01").items()},
+        "dep1y": lambda: ecb_multi("MIR", f"M.{areas}.B.L22.F.R.A.2250..N", cur_pos=8, want_cur=local),
+        "depon": lambda: ecb_multi("MIR", f"M.{areas}.B.L21.A.R.A.2250..N", cur_pos=8, want_cur=local),
+        "bond10": lambda: ecb_multi("IRS", f"M.{areas}.L.L40.CI.0000..N.Z", cur_pos=6, want_cur=local),
+        "house": lambda: {back[g]: fill_months(v) for g, v in estat_multi("prc_hpi_q", f"{geos}&purchase=TOTAL&unit=I15_Q").items()},
+        "fx": lambda: ecb_multi("EXR", f"M.{'+'.join(CURRENCIES)}.EUR.SP00.A", area_pos=1),
+        "dfr": lambda: ecb_multi("FM", "B.U2.EUR.4F.KR.DFR.LEV"),
+        "stoxx50": lambda: ecb_multi("FM", "M.U2.EUR.DS.EI.DJES50I.HSTA"),
+        "gold_usd": lambda: {"W": gold_usd()},
+    }
+    for name, job in jobs.items():
         try:
-            raw[name] = get(name, urls)
-            print(f"ok    {name:12} {len(raw[name]):4} months, last {max(raw[name])} = {raw[name][max(raw[name])]:.3f}")
-        except Exception as e:  # noqa: BLE001
+            raw[name] = job()
+            n = sum(len(v) for v in raw[name].values())
+            print(f"ok    {name:9} {len(raw[name]):3} series, {n:6} months, newest {max(max(v) for v in raw[name].values() if v)}")
+        except Exception as e:  # noqa: BLE001 - each source fails on its own
             failed.append(name)
-            print(f"FAIL  {name:12} {e}", file=sys.stderr)
+            print(f"FAIL  {name:9} {e}", file=sys.stderr)
             if name in old:
                 raw[name] = old[name]
-    if "gold_eur" not in raw and "gold_usd" in raw and "eurusd" in raw:
-        raw["gold_eur"] = {m: v / raw["eurusd"][m] for m, v in raw["gold_usd"].items() if m in raw["eurusd"]}
-        print("gold_eur computed from gold_usd / eurusd")
+    RAW.write_text(json.dumps(raw, separators=(",", ":")))
 
-    assets = {}
-    for r in REGIONS:
-        a = {}
-        if f"dep1y_{r}" in raw:
-            a["deposit"] = wealth_from_rate(raw[f"dep1y_{r}"])
-        if f"depon_{r}" in raw:
-            a["savings"] = wealth_from_rate(raw[f"depon_{r}"])
-        if f"bond10_{r}" in raw:
-            a["bonds"] = wealth_from_bond_yield(raw[f"bond10_{r}"])
-        if "stoxx50" in raw:
-            a["stocks"] = normalise(raw["stoxx50"])
-        if "gold_eur" in raw:
-            a["gold"] = normalise(raw["gold_eur"])
-        if f"house_{r}" in raw:
-            a["house"] = normalise(fill_months(raw[f"house_{r}"]))
-        if f"hicp_{r}" in raw:
-            a["prices"] = normalise(raw[f"hicp_{r}"])
-        assets[r] = {k: rnd(v) for k, v in a.items()}
+    fx = raw.get("fx", {})
+    usd = fx.get("USD") or {}
+    stoxx = raw.get("stoxx50", {}).get("U2", {})
+    gold = {m: v / usd[m] for m, v in raw.get("gold_usd", {}).get("W", {}).items() if m in usd} if usd else {}
+    if not usd:
+        try:  # gold needs EUR/USD, fetched only when gold is
+            usd = ecb_multi("EXR", "M.USD.EUR.SP00.A").get("USD", {})
+            gold = {m: v / usd[m] for m, v in raw.get("gold_usd", {}).get("W", {}).items() if m in usd}
+        except Exception as e:  # noqa: BLE001
+            print(f"FAIL  eurusd    {e}", file=sys.stderr)
 
-    def last(name):
-        s = raw.get(name)
+    def in_cur(s, c):
+        if c == "EUR":
+            return s
+        r = fx.get(c, {})
+        return {m: v * r[m] for m, v in s.items() if m in r}
+
+    assets, now, countries = {}, {"c": {}}, {}
+    for c in ["EUR"] + CURRENCIES:
+        a = {"stocks": pack(in_cur(stoxx, c)), "gold": pack(in_cur(gold, c))}
+        assets[c] = {k: v for k, v in a.items() if v}
+
+    def last(s):
         if not s:
             return None
         m = max(s)
         return {"month": m, "value": round(s[m], 3)}
 
-    def yoy(name):
-        s = raw.get(name)
+    def yoy(s):
         if not s:
             return None
         m = max(s)
-        y, mo = int(m[:4]), m[5:7]
-        prev = f"{y - 1}-{mo}"
-        if prev not in s:
-            return None
-        return {"month": m, "value": round((s[m] / s[prev] - 1) * 100, 2)}
+        p = mstr(midx(m) - 12)
+        return {"month": m, "value": round((s[m] / s[p] - 1) * 100, 2)} if p in s else None
 
-    now = {"dfr": last("dfr"), "stocks_12m": yoy("stoxx50"), "gold_12m": yoy("gold_eur") if "gold_eur" in raw else None}
-    for r in REGIONS:
-        now[r] = {
-            "inflation": last(f"infl_{r}"), "deposit1y": last(f"dep1y_{r}"), "savings": last(f"depon_{r}"),
-            "bond10": last(f"bond10_{r}"), "house_12m": yoy(f"house_{r}"),
+    for code, (name, cur, euro) in COUNTRIES.items():
+        g = lambda k: raw.get(k, {}).get(code) or {}  # noqa: E731
+        infl = {**g("infl_old"), **g("infl")}
+        prices = chain_prices(g("hicp"), infl)
+        a = {
+            "deposit": pack(wealth_from_rate(contiguous_tail(g("dep1y")))) if g("dep1y") else None,
+            "savings": pack(wealth_from_rate(contiguous_tail(g("depon")))) if g("depon") else None,
+            "bonds": pack(wealth_from_bond_yield(contiguous_tail(g("bond10")))) if g("bond10") else None,
+            "house": pack(g("house")) if g("house") else None,
+            "prices": pack(prices) if prices else None,
         }
+        a = {k: v for k, v in a.items() if v}
+        if "prices" not in a and not infl:
+            print(f"skip  {code}: no inflation data")
+            continue
+        countries[code] = {"name": name, "cur": cur, "euro": euro}
+        assets[code] = a
+        now["c"][code] = {
+            "inflation": last(infl), "deposit1y": last(g("dep1y")), "savings": last(g("depon")),
+            "bond10": last(g("bond10")), "house_12m": yoy(g("house")),
+            "stocks_12m": yoy(in_cur(stoxx, cur)), "gold_12m": yoy(in_cur(gold, cur)),
+        }
+    now["dfr"] = last(raw.get("dfr", {}).get("U2"))
 
     out = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
-        "regions": REGIONS, "sources": SOURCES, "failed": failed,
-        "now": now, "assets": assets,
-        "raw": {k: rnd(v, 4) for k, v in raw.items()},
+        "sources": SOURCES, "failed": failed, "countries": countries, "now": now, "assets": assets,
     }
     OUT.write_text(json.dumps(out, separators=(",", ":")))
-    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB), failed: {failed or 'none'}")
-    if len(failed) > len(SERIES) // 2:
+    print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB), {len(countries)} countries, failed: {failed or 'none'}")
+    for code in countries:
+        n = now["c"][code]
+        print(f"  {code} infl {n['inflation']} dep {n['deposit1y']} bond {n['bond10']} house {n['house_12m']} assets {sorted(assets[code])}")
+    if len(failed) > len(jobs) // 2:
         sys.exit(1)
 
 

@@ -36,12 +36,11 @@
   <section class="i-intro">
     <div class="h-eyebrow">WHERE TO PUT MONEY</div>
     <h1>Does your money beat inflation?</h1>
-    <p>Bank deposits, government bonds, stocks, gold and property side by side, measured against what prices did in the same time.</p>
+    <p>Bank deposits, government bonds, stocks, gold and property in every European country, side by side and measured against what prices did in the same time.</p>
     <div class="i-controls">
-      <div class="i-seg" role="group" aria-label="Country" id="region">
-        <button type="button" data-region="SK" class="on">Slovakia</button>
-        <button type="button" data-region="U2">Euro area</button>
-      </div>
+      <label class="i-country">Country
+        <select id="region" aria-label="Country"><option>Euro area</option></select>
+      </label>
       <span class="i-updated" id="updated"></span>
     </div>
   </section>
@@ -55,7 +54,7 @@
     <p class="h-note">Real return = nominal yield or 12-month change minus current annual inflation (HICP). Deposit rates are averages of new bank deposits by households; the best offers on the market are higher.</p>
   </section>
 
-  <section class="h-section">
+  <section class="h-section" id="calc">
     <div class="h-card i-calc">
       <div class="i-calc-head">
         <div>
@@ -63,7 +62,7 @@
           <p class="i-sub" id="calc-sub"></p>
         </div>
         <div class="i-calc-inputs">
-          <label class="i-amount">Amount (€)
+          <label class="i-amount">Amount <span id="amount-cur">(€)</span>
             <input id="amount" type="number" min="100" step="100" value="10000" inputmode="numeric">
           </label>
           <div class="i-seg" role="group" aria-label="Period" id="years">
@@ -88,7 +87,24 @@
           </table>
         </div>
       </div>
-      <p class="h-note" id="calc-note">Stocks = EURO STOXX 50 price index, dividends not included (they have added roughly 3 % a year). Property = house price index, rent not included. Bonds = a fund holding 10-year government bonds (estimated from yields). Past returns do not guarantee future results.</p>
+      <p class="h-note" id="calc-missing"></p>
+      <p class="h-note" id="calc-note">Stocks = EURO STOXX 50 price index (in local currency outside the euro), dividends not included (they have added roughly 3 % a year). Property = house price index, rent not included. Bonds = a fund holding 10-year government bonds (estimated from yields). Past returns do not guarantee future results.</p>
+    </div>
+  </section>
+
+  <section class="h-section">
+    <div class="h-section-head">
+      <h2>All of Europe side by side</h2>
+      <span class="i-sub">Click a country to see its history. Click a column to sort.</span>
+    </div>
+    <div class="h-card i-eu">
+      <div class="h-table-wrap">
+        <table>
+          <thead id="eu-head"></thead>
+          <tbody id="eu-body"></tbody>
+        </table>
+      </div>
+      <p class="h-note">Latest month each source has published. Countries outside the euro: rates and returns in their own currency, against their own inflation; bank deposit rates are collected by the ECB for euro countries only.</p>
     </div>
   </section>
 
