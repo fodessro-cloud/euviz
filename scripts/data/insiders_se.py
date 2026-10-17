@@ -80,7 +80,7 @@ def main():
     first = text.splitlines()[0] if text else ""
     print(f"downloaded {len(raw)} bytes; header: {first[:300]}")
     delim = ";" if first.count(";") >= first.count(",") else ","
-    rows = list(csv.DictReader(io.StringIO(text), delimiter=delim))
+    rows = list(csv.DictReader(io.StringIO(text, newline=""), delimiter=delim))
     unknown = [h for h in (rows[0].keys() if rows else []) if h and h.strip() not in COLUMNS]
     if unknown:
         print(f"  unmapped columns: {unknown}")
