@@ -17,8 +17,7 @@
   <div class="fh-row">
     <a class="fh-logo" href="/" aria-label="FINILA home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
-      <a href="/screener">Stocks</a>
-      <a href="/companies">Fundamentals</a>
+      <a href="/companies">Stocks</a>
       <a href="/insiders">Insider trades</a>
       <a href="/shorts">Short positions</a>
       <a href="/map">Market map</a>
@@ -28,7 +27,7 @@
     </nav>
   </div>
 </header>
-<div class="demo-banner">FINILA preview: figures on this page are illustrative, not real market data. Not investment advice.</div>
+<div class="h-real-banner">Real data: share prices from Deutsche Börse (15 minutes delayed), company figures from annual reports, returns from the ECB, Eurostat and the World Bank. Not investment advice.</div>
 
 <div class="h-ticker"><div class="h-wrap h-ticker-row" id="ticker"></div></div>
 
@@ -37,17 +36,17 @@
 
   <section class="h-top">
     <div class="h-top-left">
-      <form class="h-search" action="/screener" method="get" role="search">
-        <label for="q" class="sr-only">Search stocks</label>
-        <input id="q" name="q" type="search" list="stock-list" autocomplete="off" placeholder="Search a company or ticker, e.g. SAP, ASML, LVMH">
+      <form class="h-search" action="/companies" method="get" role="search">
+        <label for="q" class="sr-only">Search companies</label>
+        <input id="q" name="q" type="search" list="stock-list" autocomplete="off" placeholder="Search 1,800 companies, e.g. ASML">
         <datalist id="stock-list"></datalist>
         <button type="submit">Search</button>
       </form>
       <div class="h-chips">
         <span>Quick filters:</span>
-        <a href="#filtre" data-preset="buffett">ROE above 15%</a>
-        <a href="#filtre" data-preset="cheap">P/E below 10</a>
-        <a href="#filtre" data-preset="dividend">Dividend above 4%</a>
+        <a href="#filtre" data-preset="quality">Quality at a fair price</a>
+        <a href="#filtre" data-preset="dividend">Covered dividends</a>
+        <a href="#filtre" data-preset="cash">Cash machines</a>
       </div>
       <div class="h-index-cards" id="index-cards"></div>
     </div>
@@ -58,14 +57,14 @@
         <a href="/map">Full map</a>
       </div>
       <div class="h-map-grid" id="sector-map"></div>
-      <p class="h-note">Illustrative data; average daily change weighted by market cap.</p>
+      <p class="h-note" id="map-note">Daily change of European companies by sector, weighted by market value.</p>
     </div>
   </section>
 
   <section class="h-section" id="filtre">
     <div class="h-section-head">
       <h2>Ready-made value investor screens</h2>
-      <a href="/screener">Open screener</a>
+      <a href="/companies">Open screener</a>
     </div>
     <div class="h-presets" id="presets"></div>
   </section>
@@ -74,8 +73,8 @@
     <div class="h-card h-compare">
       <div class="h-compare-intro">
         <div class="h-eyebrow">COMPARE INVESTMENTS</div>
-        <h2>What would €10,000 be worth today?</h2>
-        <p>Stocks, gold, bonds, real estate and a term deposit on one chart, including the purchasing power lost by holding cash.</p>
+        <h2>What did each investment return?</h2>
+        <p>Total return of stocks, gold, property, bonds and deposits in the euro area, and how much value cash lost to inflation.</p>
         <div class="h-periods" role="group" aria-label="Period" id="periods">
           <button type="button" data-years="5">5 years</button>
           <button type="button" data-years="10" class="on">10 years</button>
@@ -85,7 +84,7 @@
       </div>
       <div class="h-compare-bars">
         <div id="compare"></div>
-        <p class="h-note">Illustrative figures, not actual historical returns. Past performance does not guarantee future results.</p>
+        <p class="h-note" id="compare-note">Euro area, from the ECB, Eurostat and the World Bank. Past performance does not guarantee future results.</p>
       </div>
     </div>
   </section>
@@ -97,24 +96,24 @@
         <div class="h-tabs" role="tablist" aria-label="Market movers" id="tabs">
           <button type="button" role="tab" data-tab="up" class="on" aria-selected="true">Top gainers</button>
           <button type="button" role="tab" data-tab="down" aria-selected="false">Top losers</button>
-          <button type="button" role="tab" data-tab="vol" aria-selected="false">Most traded</button>
+          <button type="button" role="tab" data-tab="big" aria-selected="false">Largest</button>
         </div>
       </div>
       <div class="h-table-wrap">
         <table>
-          <thead><tr><th>Ticker</th><th>Company</th><th>Country</th><th class="r">Price</th><th class="r">Change</th><th class="r">P/E</th></tr></thead>
+          <thead><tr><th>Ticker</th><th>Company</th><th>Country</th><th class="r">Price €</th><th class="r">Change</th><th class="r">P/E</th></tr></thead>
           <tbody id="movers"></tbody>
         </table>
       </div>
     </div>
     <div class="h-card h-data">
-      <div class="h-eyebrow">COMING SOON</div>
-      <h2>FINILA Data</h2>
-      <ul>
-        <li><strong>European insider buying</strong><span>Which executives are buying their own company’s shares</span></li>
-        <li><strong>Dividend calendar</strong><span>European dividend payments month by month</span></li>
-        <li><strong>Central European companies</strong><span>Warsaw, Prague, Budapest and Bratislava in one place</span></li>
-      </ul>
+      <div class="h-card-head">
+        <h2>FINILA Data</h2>
+      </div>
+      <h3 class="h-data-h">Managers buying their own shares <a href="/insiders">All</a></h3>
+      <ul class="h-list" id="insider-list"></ul>
+      <h3 class="h-data-h">Most shorted by funds <a href="/shorts">All</a></h3>
+      <ul class="h-list" id="short-list"></ul>
     </div>
   </section>
 
@@ -147,17 +146,15 @@
       <p>Information on FINILA is for education only and is not investment advice.</p>
     </div>
     <nav class="h-footer-nav" aria-label="Footer">
-      <a href="/screener">Stocks</a>
-      <a href="/map">Market map</a>
-      <a href="/groups">Sectors &amp; countries</a>
+      <a href="/companies">Stocks</a>
+      <a href="/insiders">Insider trades</a>
+      <a href="/shorts">Short positions</a>
+      <a href="/invest">Where to put money</a>
       <a href="/archiv/">Archive</a>
     </nav>
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/prices.js"></script>
-<script src="js/live-prices.js"></script>
 <script src="js/home.js"></script>
 <script src="js/analytics.js" defer></script>
 </body>

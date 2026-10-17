@@ -1,25 +1,66 @@
-// FINILA homepage: renders the data blocks from js/data.js
+// FINILA homepage: every block shows real data from the subpages' data files
+// (js/companies.json + js/company-prices.json, js/invest.json, js/insiders.json, js/shorts.json).
 
 const fmt = (n, d = 2) => Number(n).toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
-const pct = n => (n >= 0 ? '+' : '−') + fmt(Math.abs(n)) + '%';
-const dir = n => (n >= 0 ? 'up' : 'down');
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const stockLink = t => `/screener?stock=${encodeURIComponent(t)}`;
+const isNum = v => typeof v === 'number' && isFinite(v);
+const pct = n => isNum(n) ? (n >= 0 ? '+' : '−') + fmt(Math.abs(n)) + '%' : '—';
+const pct1 = n => isNum(n) ? (n >= 0 ? '+' : '−') + fmt(Math.abs(n), 1) + '%' : '—';
+const dir = n => (!isNum(n) ? '' : n >= 0 ? 'up' : 'down');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const bnEur = v => isNum(v) ? `€${fmt(v / 1000, v >= 100000 ? 0 : 1)}B` : '—';
+const coLink = c => `/companies?lei=${encodeURIComponent(c.lei)}`;
+const load = async url => { try { return await (await fetch(url, { cache: 'no-cache' })).json(); } catch { return null; } };
 
+let COS = [];
 
-// ── Ticker bar + index cards ──────────────────────
-function renderIndices() {
-  document.getElementById('ticker').innerHTML = INDICES.map(i =>
-    `<span><span class="name">${i.name}</span>${fmt(i.value)}<span class="chg ${dir(i.change)}">${pct(i.change)}</span></span>`
-  ).join('');
-  document.getElementById('index-cards').innerHTML = INDICES.slice(0, 6).map(i =>
-    `<a href="/groups"><span class="name">${i.name} · ${i.country}</span>
-      <span class="val">${fmt(i.value)}</span><span class="chg ${dir(i.change)}">${pct(i.change)}</span></a>`
-  ).join('');
+// Companies with their last price. Market value, P/E and dividend yield are estimated the same
+// way as on /companies (js/companies.js): shares = net income / EPS, implausible values dropped.
+function buildCompanies(cos, prices) {
+  const list = cos.rows.map(r => Object.fromEntries(cos.fields.map((f, i) => [f, r[i]])));
+  if (!prices) return list;
+  const [iP, iC] = ['price', 'change'].map(f => prices.fields.indexOf(f));
+  list.forEach(c => {
+    if (isNum(c.fscore)) c.quality = c.fscore / ((c.fscoreTests || '').replace(/-/g, '').length || 9);
+    const q = prices.rows[c.isin];
+    if (!q) return;
+    c.price = q[iP]; c.change = q[iC];
+    const fx = isNum(c.revenueEur) && isNum(c.revenue) && c.revenue ? c.revenueEur / c.revenue : c.currency === 'EUR' ? 1 : null;
+    const shares = isNum(c.eps) && Math.abs(c.eps) >= 0.01 && isNum(c.netIncome) && c.eps * c.netIncome > 0 ? c.netIncome / c.eps : null;
+    if (!fx || !shares) return;
+    const mcap = c.price * shares, pe = c.eps > 0 ? c.price / (c.eps * fx) : null;
+    const ps = isNum(c.revenueEur) && c.revenueEur > 0 ? mcap / c.revenueEur : null;
+    if ((pe !== null && (pe < 1 || pe > 150)) || (ps !== null && (ps < 0.02 || ps > 60))) return;
+    c.mcap = mcap;
+    if (pe !== null) c.pe = pe;
+    if (c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; if (y < 25) c.divYield = y; }
+  });
+  return list;
 }
 
-// ── Sector map: market-cap weighted average change ─
+// ── Ticker bar + market cards (ECB, Eurostat, World Bank via /invest) ─
+function renderMarket(inv) {
+  const n = inv?.now?.c?.U2 || {}, dfr = inv?.now?.dfr;
+  const cards = [
+    ['Stocks · EURO STOXX 50', n.stocks_12m, '12 months, incl. dividends', true],
+    ['Gold', n.gold_12m, '12 months, in EUR', true],
+    ['Property · euro area', n.house_12m, '12 months, house prices', true],
+    ['Inflation · euro area', n.inflation, 'a year', false],
+    ['ECB deposit rate', dfr, '', false],
+    ['10-year govt bond', n.bond10, 'euro area yield', false],
+  ].filter(c => isNum(c[1]?.value));
+  const val = (o, change) => change ? pct(o.value) : `${fmt(o.value)}%`;
+  document.getElementById('index-cards').innerHTML = cards.map(([name, o, sub, change]) =>
+    `<a href="/invest"><span class="name">${name}</span>
+      <span class="val ${change ? dir(o.value) : ''}">${val(o, change)}</span><span class="chg">${sub}</span></a>`).join('');
+  const big = COS.filter(c => isNum(c.mcap) && isNum(c.price)).sort((a, b) => b.mcap - a.mcap).slice(0, 12);
+  document.getElementById('ticker').innerHTML = cards.map(([name, o, , change]) =>
+    `<span><span class="name">${name.split(' · ')[0]}</span>${val(o, change)}</span>`).join('') +
+    big.map(c => `<span><span class="name">${esc(c.ticker || c.name)}</span>€${fmt(c.price)}${isNum(c.change) ? `<span class="chg ${dir(c.change)}">${pct(c.change)}</span>` : ''}</span>`).join('');
+}
+
+// ── Sector map: daily change weighted by market value ─
 function tileColor(c) {
+  if (!isNum(c)) return '#E3E9F3';
   if (c >= 1)    return '#34C38F';
   if (c >= 0.4)  return '#7EDDB4';
   if (c >= 0)    return '#B9EBD3';
@@ -29,44 +70,44 @@ function tileColor(c) {
 }
 function renderSectorMap() {
   const bySector = {};
-  STOCKS.forEach(s => {
-    const g = bySector[s.sector] || (bySector[s.sector] = { cap: 0, w: 0 });
-    g.cap += s.marketCap;
-    g.w += s.marketCap * s.change;
+  COS.filter(c => c.sector && isNum(c.mcap)).forEach(c => {
+    const g = bySector[c.sector] || (bySector[c.sector] = { cap: 0, w: 0, wc: 0 });
+    g.cap += c.mcap;
+    if (isNum(c.change)) { g.w += c.mcap * c.change; g.wc += c.mcap; }
   });
   const sectors = Object.entries(bySector)
-    .map(([name, g]) => ({ name, cap: g.cap, change: g.w / g.cap }))
-    .sort((a, b) => b.cap - a.cap);
+    .map(([name, g]) => ({ name, cap: g.cap, change: g.wc ? g.w / g.wc : null }))
+    .sort((a, b) => b.cap - a.cap).slice(0, 14);
   const sizes = ['big', 'big', 'mid', 'mid', 'mid'];
-  document.getElementById('sector-map').innerHTML = sectors.map((s, i) => {
-    const size = sizes[i] || 'sm';
-    return `<a class="${size} ${s.change < 0 ? 'neg' : ''}" href="/map" style="background:${tileColor(s.change)}">
-      ${s.name}<span>${pct(s.change)}</span></a>`;
-  }).join('');
+  document.getElementById('sector-map').innerHTML = sectors.map((s, i) =>
+    `<a class="${sizes[i] || 'sm'} ${s.change < 0 ? 'neg' : ''}" href="/companies" style="background:${tileColor(s.change)}">
+      ${esc(s.name)}<span>${isNum(s.change) ? pct(s.change) : bnEur(s.cap)}</span></a>`).join('');
+  if (!sectors.some(s => isNum(s.change)))
+    document.getElementById('map-note').textContent = 'Market value by sector. The daily change appears after the next trading day.';
 }
 
-// ── Value-investor presets ────────────────────────
+// ── Value-investor screens on real annual reports and prices ─
 const PRESETS = [
-  { id: 'buffett', title: 'Buffett screen', rule: 'ROE above 15%, debt-to-equity below 0.5 and growing earnings',
-    test: s => s.roe > 15 && s.de < 0.5 && s.epsGrowth > 0, sort: (a, b) => b.roe - a.roe,
-    metric: s => `ROE ${fmt(s.roe, 1)}%` },
-  { id: 'cheap', title: 'Cheap stocks', rule: 'P/E below 10 and price below 1.5× book value',
-    test: s => s.pe && s.pe < 10 && s.pb < 1.5, sort: (a, b) => a.pe - b.pe,
-    metric: s => `P/E ${fmt(s.pe, 1)}` },
-  { id: 'dividend', title: 'Dividend payers', rule: 'Dividend above 4% and P/E below 15, so the payout is backed by earnings',
-    test: s => s.dividend >= 4 && s.pe && s.pe < 15, sort: (a, b) => b.dividend - a.dividend,
-    metric: s => `Div. ${fmt(s.dividend, 1)}%` }
+  { id: 'quality', title: 'Quality at a fair price', rule: 'Strong quality score (3/4 of tests or more), P/E below 15 and positive free cash flow',
+    test: c => c.quality >= 0.75 && c.pe > 0 && c.pe < 15 && c.fcf > 0, sort: (a, b) => b.mcap - a.mcap,
+    metric: c => `P/E ${fmt(c.pe, 1)}` },
+  { id: 'dividend', title: 'Covered dividends', rule: 'Dividend yield above 4%, paid out of less than 60% of free cash flow',
+    test: c => c.divYield > 4 && c.payoutFcf > 0 && c.payoutFcf <= 60, sort: (a, b) => b.mcap - a.mcap,
+    metric: c => `Div. ${fmt(c.divYield, 1)}%` },
+  { id: 'cash', title: 'Cash machines', rule: 'Free cash flow above 15% of revenue, ROE above 15% and net debt under 1× EBITDA',
+    test: c => c.fcfMargin > 15 && c.roe > 15 && isNum(c.netDebtToEbitda) && c.netDebtToEbitda < 1 && isNum(c.mcap), sort: (a, b) => b.mcap - a.mcap,
+    metric: c => `FCF ${fmt(c.fcfMargin, 0)}%` },
 ];
 function renderPresets() {
   document.getElementById('presets').innerHTML = PRESETS.map(p => {
-    const hits = STOCKS.filter(p.test).sort(p.sort);
-    const rows = hits.slice(0, 5).map(s =>
-      `<li><span><a href="${stockLink(s.ticker)}">${esc(s.ticker)}</a><span class="nm">${esc(s.name)}</span></span><span class="metric">${p.metric(s)}</span></li>`
+    const hits = COS.filter(p.test).sort(p.sort);
+    const rows = hits.slice(0, 5).map(c =>
+      `<li><span><a href="${coLink(c)}">${esc(c.ticker || '')}</a><span class="nm">${esc(c.name)}</span></span><span class="metric">${p.metric(c)}</span></li>`
     ).join('');
     return `<article class="h-card h-preset" id="preset-${p.id}">
       <div><h3>${p.title}</h3><p class="rule">${p.rule}</p></div>
       <ul>${rows}</ul>
-      <a class="more" href="/screener">All ${hits.length} results in the screener</a>
+      <a class="more" href="/companies">All ${hits.length} results in the screener</a>
     </article>`;
   }).join('');
   document.querySelectorAll('[data-preset]').forEach(chip => chip.addEventListener('click', () => {
@@ -76,35 +117,48 @@ function renderPresets() {
   }));
 }
 
-// ── Investment comparison (illustrative figures) ──
-const COMPARE = {
-  5:  [['EU stocks (STOXX 600)', 14800], ['US stocks (S&P 500)', 19200], ['Gold', 17600], ['Real estate (Slovakia)', 13900], ['EU bonds', 9600], ['Term deposit', 10500], ['Cash after inflation', 7900]],
-  10: [['EU stocks (STOXX 600)', 19500], ['US stocks (S&P 500)', 33000], ['Gold', 24000], ['Real estate (Slovakia)', 18000], ['EU bonds', 10800], ['Term deposit', 11000], ['Cash after inflation', 7400]],
-  20: [['EU stocks (STOXX 600)', 31000], ['US stocks (S&P 500)', 64000], ['Gold', 52000], ['Real estate (Slovakia)', 34000], ['EU bonds', 15800], ['Term deposit', 13200], ['Cash after inflation', 6100]]
-};
-const BAR_COLORS = ['#1F6FEB', '#5B9BFF', '#D99A1E', '#8B5CF6', '#0EA5B7', '#7A8AA6', '#D23B3B'];
+// ── Total and yearly return over 5/10/20 years, euro area (same data as /invest) ─
+const ASSETS = [['stocks', 'Stocks (EURO STOXX 50)'], ['gold', 'Gold'], ['house', 'Property'], ['bonds', 'Government bonds'],
+  ['deposit', 'Term deposit'], ['savings', 'Savings account'], ['cash', 'Cash after inflation']];
+const BAR_COLORS = ['#1F6FEB', '#D99A1E', '#8B5CF6', '#0EA5B7', '#5B9BFF', '#7A8AA6', '#D23B3B'];
+const mIdx = m => +m.slice(0, 4) * 12 + +m.slice(5, 7) - 1;
+let INV = null;
+function series(key) {
+  const a = INV?.assets?.U2?.[key] || INV?.assets?.EUR?.[key];
+  if (!a) return null;
+  const [start, vals] = a, s0 = mIdx(start);
+  return { first: s0, last: s0 + vals.length - 1, at: i => vals[i - s0] };
+}
 function renderCompare(years) {
-  const rows = COMPARE[years];
-  const max = Math.max(...rows.map(r => r[1]));
-  document.getElementById('compare').innerHTML = rows.map(([label, v], i) =>
-    `<div class="h-bar"><span class="label">${label}</span>
-      <div class="track"><div class="fill" style="width:${Math.max(4, Math.round(v / max * 100))}%;background:${BAR_COLORS[i]}"></div></div>
-      <span class="val">€${fmt(v, 0)}</span></div>`
-  ).join('');
+  const grow = s => { const from = s.last - years * 12; return s.first <= from ? s.at(s.last) / s.at(from) : null; };
+  const prices = series('prices'), infl = prices && grow(prices);
+  const rows = ASSETS.map(([k, label], i) => {
+    const g = k === 'cash' ? (infl ? 1 / infl : null) : (series(k) && grow(series(k)));
+    return g ? { label, total: (g - 1) * 100, year: (Math.pow(g, 1 / years) - 1) * 100, color: BAR_COLORS[i] } : null;
+  }).filter(Boolean).sort((a, b) => b.total - a.total);
+  // Bars start at the largest loss, so a negative return still shows as a (short) bar.
+  const lo = Math.min(0, ...rows.map(r => r.total)), hi = Math.max(...rows.map(r => r.total));
+  document.getElementById('compare').innerHTML = rows.map(r =>
+    `<div class="h-bar"><span class="label">${r.label}</span>
+      <div class="track"><div class="fill" style="width:${Math.max(4, Math.round((r.total - lo) / (hi - lo || 1) * 100))}%;background:${r.color}"></div></div>
+      <span class="val ${dir(r.total)}">${pct1(r.total)}<small>${pct1(r.year)} a year</small></span></div>`
+  ).join('') || '<p class="h-note">Could not load the comparison.</p>';
   document.querySelectorAll('#periods button').forEach(b => b.classList.toggle('on', Number(b.dataset.years) === years));
 }
 
 // ── Movers table ──────────────────────────────────
 function renderMovers(tab) {
-  const list = [...STOCKS];
-  if (tab === 'up') list.sort((a, b) => b.change - a.change);
-  if (tab === 'down') list.sort((a, b) => a.change - b.change);
-  if (tab === 'vol') list.sort((a, b) => b.volume * b.price - a.volume * a.price);
-  document.getElementById('movers').innerHTML = list.slice(0, 8).map(s =>
-    `<tr><td><a href="${stockLink(s.ticker)}">${esc(s.ticker)}</a></td><td>${esc(s.name)}</td>
-      <td class="c">${s.country}</td>
-      <td class="r m">${fmt(s.price)}</td><td class="r m ${dir(s.change)}">${pct(s.change)}</td>
-      <td class="r m c">${s.pe ? fmt(s.pe, 1) : '—'}</td></tr>`
+  const priced = COS.filter(c => isNum(c.price) && isNum(c.mcap) && c.mcap >= 1000);   // €1B+ so tiny stocks do not dominate
+  const withChange = priced.filter(c => isNum(c.change));
+  let list = tab === 'big' || !withChange.length ? [...priced].sort((a, b) => b.mcap - a.mcap)
+    : tab === 'up' ? withChange.sort((a, b) => b.change - a.change) : withChange.sort((a, b) => a.change - b.change);
+  const note = tab !== 'big' && !withChange.length
+    ? '<tr><td colspan="6" class="c">Daily changes appear after the next trading day. Largest companies for now:</td></tr>' : '';
+  document.getElementById('movers').innerHTML = note + list.slice(0, 8).map(c =>
+    `<tr><td><a href="${coLink(c)}">${esc(c.ticker || '—')}</a></td><td>${esc(c.name)}</td>
+      <td class="c">${esc(c.country)}</td>
+      <td class="r m">${fmt(c.price)}</td><td class="r m ${dir(c.change)}">${pct(c.change)}</td>
+      <td class="r m c">${isNum(c.pe) ? fmt(c.pe, 1) : '—'}</td></tr>`
   ).join('');
   document.querySelectorAll('#tabs button').forEach(b => {
     const on = b.dataset.tab === tab;
@@ -113,25 +167,50 @@ function renderMovers(tab) {
   });
 }
 
-// ── Search: a known ticker or name opens its detail in the screener ─
+// ── FINILA Data: insider buying and fund short positions ─
+function renderData(ins, sh) {
+  const eur = v => v >= 1e6 ? `€${fmt(v / 1e6, 1)}M` : `€${fmt(v / 1e3, 0)}k`;
+  const buys = {};
+  // A real buy on an exchange. Older insiders.json files have no `signal`, so the same rule is applied here.
+  const isBuy = t => 'signal' in t ? t.signal === true
+    : t.status === 'Current' && t.nature === 'Acquisition' && t.instrumentType === 'Share' && t.isin
+      && t.venue && !/outside a trading venue/i.test(t.venue);
+  (ins?.rows || []).filter(t => isBuy(t) && t.valueEur > 0)
+    .forEach(t => { const b = buys[t.issuer] || (buys[t.issuer] = { v: 0, people: new Set() }); b.v += t.valueEur; b.people.add(t.person); });
+  document.getElementById('insider-list').innerHTML = Object.entries(buys).sort((a, b) => b[1].v - a[1].v).slice(0, 4)
+    .map(([name, b]) => `<li><span><a href="/insiders?q=${encodeURIComponent(name)}">${esc(name)}</a> · ${b.people.size} ${b.people.size === 1 ? 'person' : 'people'}</span><span class="v">${eur(b.v)}</span></li>`).join('')
+    || '<li><span>No data right now</span></li>';
+  const shorts = {};
+  (sh?.positions || []).forEach(p => { const s = shorts[p.isin] || (shorts[p.isin] = { name: p.issuer, pct: 0 }); s.pct += p.pct; });
+  document.getElementById('short-list').innerHTML = Object.entries(shorts).sort((a, b) => b[1].pct - a[1].pct).slice(0, 4)
+    .map(([isin, s]) => `<li><span><a href="/shorts?q=${encodeURIComponent(isin)}">${esc(s.name)}</a></span><span class="v">${fmt(s.pct)}%</span></li>`).join('')
+    || '<li><span>No data right now</span></li>';
+}
+
+// ── Search: opens the company in the screener ─────
 function setupSearch() {
-  document.getElementById('stock-list').innerHTML = STOCKS.map(s => `<option value="${esc(s.ticker)}">${esc(s.name)}</option>`).join('');
+  document.getElementById('stock-list').innerHTML = COS.filter(c => isNum(c.mcap)).sort((a, b) => b.mcap - a.mcap)
+    .map(c => `<option value="${esc(c.name)}">${esc(c.ticker || '')}</option>`).join('');
   document.querySelector('.h-search').addEventListener('submit', e => {
     e.preventDefault();
     const q = document.getElementById('q').value.trim().toLowerCase();
-    if (!q) { location.href = '/screener'; return; }
-    const hit = STOCKS.find(s => s.ticker.toLowerCase() === q)
-      || STOCKS.find(s => s.name.toLowerCase().includes(q));
-    location.href = hit ? stockLink(hit.ticker) : '/screener';
+    if (!q) { location.href = '/companies'; return; }
+    const hit = COS.find(c => (c.ticker || '').toLowerCase() === q || c.name.toLowerCase() === q);
+    location.href = hit ? coLink(hit) : `/companies?q=${encodeURIComponent(q)}`;
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderIndices();
+document.addEventListener('DOMContentLoaded', async () => {
+  const [cos, prices, inv, ins, sh] = await Promise.all(
+    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json'].map(load));
+  COS = cos ? buildCompanies(cos, prices) : [];
+  INV = inv;
+  renderMarket(inv);
   renderSectorMap();
   renderPresets();
   renderCompare(10);
   renderMovers('up');
+  renderData(ins, sh);
   setupSearch();
   document.querySelectorAll('#periods button').forEach(b => b.addEventListener('click', () => renderCompare(Number(b.dataset.years))));
   document.querySelectorAll('#tabs button').forEach(b => b.addEventListener('click', () => renderMovers(b.dataset.tab)));
