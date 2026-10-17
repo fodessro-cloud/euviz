@@ -1,0 +1,120 @@
+== https://data-api.ecb.europa.eu/service/data/ICP/M.U2.N..4.ANR?lastNObservations=1&format=csvdata
+   ICP.M.U2.N.000000.4.ANR 2025-12 1.9 HICP - Overall index
+   ICP.M.U2.N.010000.4.ANR 2025-12 2.5 HICP - FOOD AND NON-ALCOHOLIC BEVERAGES
+   ICP.M.U2.N.011000.4.ANR 2025-12 2 HICP - Food
+   ICP.M.U2.N.011100.4.ANR 2025-12 1 HICP - Bread and cereals
+   ICP.M.U2.N.011110.4.ANR 2025-12 -0.4 HICP - Rice
+   ICP.M.U2.N.011120.4.ANR 2025-12 -0.7 HICP - Flours and other cereals
+   ICP.M.U2.N.011130.4.ANR 2025-12 1.6 HICP - Bread
+   ICP.M.U2.N.011140.4.ANR 2025-12 2 HICP - Other bakery products
+   ICP.M.U2.N.011150.4.ANR 2025-12 0 HICP - Pizza and quiche
+   ICP.M.U2.N.011160.4.ANR 2025-12 -2 HICP - Pasta products and couscous
+   ICP.M.U2.N.011170.4.ANR 2025-12 -0.8 HICP - Breakfast cereals
+   ICP.M.U2.N.011180.4.ANR 2025-12 0 HICP - Other cereal products
+   ICP.M.U2.N.011200.4.ANR 2025-12 5.2 HICP - Meat
+   ICP.M.U2.N.011210.4.ANR 2025-12 13.9 HICP - Beef and veal
+   ICP.M.U2.N.011220.4.ANR 2025-12 2.4 HICP - Pork
+   ICP.M.U2.N.011230.4.ANR 2025-12 8.2 HICP - Lamb and goat
+   ICP.M.U2.N.011240.4.ANR 2025-12 4.9 HICP - Poultry
+   ICP.M.U2.N.011250.4.ANR 2025-12 4.6 HICP - Other meats
+   ICP.M.U2.N.011260.4.ANR 2025-12 5.8 HICP - Edible offal
+   ICP.M.U2.N.011270.4.ANR 2025-12 1.5 HICP - Dried, salted or smoked meat
+   ICP.M.U2.N.011280.4.ANR 2025-12 4.6 HICP - Other meat preparations
+   ICP.M.U2.N.011300.4.ANR 2025-12 2.7 HICP - Fish
+   ICP.M.U2.N.011310.4.ANR 2025-12 3.3 HICP - Fresh or chilled fish
+   ICP.M.U2.N.011320.4.ANR 2025-12 4.3 HICP - Frozen fish
+   ICP.M.U2.N.011330.4.ANR 2025-12 3 HICP - Fresh or chilled seafood
+   ICP.M.U2.N.011340.4.ANR 2025-12 2 HICP - Frozen seafood
+   ICP.M.U2.N.011350.4.ANR 2025-12 3.7 HICP - Dried, smoked or salted fish and seafood
+   ICP.M.U2.N.011360.4.ANR 2025-12 0.6 HICP - Other preserved or processed fish and seafood-based preparations
+   ICP.M.U2.N.011400.4.ANR 2025-12 2.1 HICP - Milk, cheese and eggs
+   ICP.M.U2.N.011410.4.ANR 2025-12 2.3 HICP - Milk, whole, fresh
+   ICP.M.U2.N.011420.4.ANR 2025-12 0.5 HICP - Milk, low fat, fresh
+   ICP.M.U2.N.011430.4.ANR 2025-12 0.8 HICP - Milk, preserved
+   ICP.M.U2.N.011440.4.ANR 2025-12 1 HICP - Yoghurt
+   ICP.M.U2.N.011450.4.ANR 2025-12 1.4 HICP - Cheese and curd
+   ICP.M.U2.N.011460.4.ANR 2025-12 1.9 HICP - Other milk products
+   ICP.M.U2.N.011470.4.ANR 2025-12 8.7 HICP - Eggs
+   ICP.M.U2.N.011500.4.ANR 2025-12 -13 HICP - Oils and fats
+   ICP.M.U2.N.011510.4.ANR 2025-12 -12.1 HICP - Butter
+   ICP.M.U2.N.011520.4.ANR 2025-12 0.8 HICP - Margarine and other vegetable fats
+   ICP.M.U2.N.011530.4.ANR 2025-12 -23.1 HICP - Olive oil
+   ICP.M.U2.N.011540.4.ANR 2025-12 2.4 HICP - Other edible oils
+   ICP.M.U2.N.011550.4.ANR 2025-12 -0.9 HICP - Other edible animal fats
+   ICP.M.U2.N.011600.4.ANR 2025-12 2.1 HICP - Fruit
+   ICP.M.U2.N.011610.4.ANR 2025-12 0.8 HICP - Fresh or chilled fruit
+   ICP.M.U2.N.011620.4.ANR 2025-12 25.3 HICP - Frozen fruit
+   ICP.M.U2.N.011630.4.ANR 2025-12 5.6 HICP - Dried fruit and nuts
+   ICP.M.U2.N.011640.4.ANR 2025-12 13.5 HICP - Preserved fruit and fruit-based products
+   ICP.M.U2.N.011700.4.ANR 2025-12 -0.2 HICP - Vegetables
+   ICP.M.U2.N.011710.4.ANR 2025-12 1.2 HICP - Fresh or chilled vegetables other than potatoes and other tubers
+   ICP.M.U2.N.011720.4.ANR 2025-12 1.6 HICP - Frozen vegetables other than potatoes and other tubers
+   ICP.M.U2.N.011730.4.ANR 2025-12 0 HICP - Dried vegetables, other preserved or processed vegetables
+   ICP.M.U2.N.011740.4.ANR 2025-12 -6.8 HICP - Potatoes
+   ICP.M.U2.N.011750.4.ANR 2025-12 -1.1 HICP - Crisps
+   ICP.M.U2.N.011760.4.ANR 2025-12 7.5 HICP - Other tubers and products of tuber vegetables
+   ICP.M.U2.N.011800.4.ANR 2025-12 6 HICP - Sugar, jam, honey, chocolate and confectionery
+   ICP.M.U2.N.011810.4.ANR 2025-12 -2.9 HICP - Sugar
+   ICP.M.U2.N.011820.4.ANR 2025-12 0.1 HICP - Jams, marmalades and honey
+   ICP.M.U2.N.011830.4.ANR 2025-12 13.7 HICP - Chocolate
+   ICP.M.U2.N.011840.4.ANR 2025-12 2.8 HICP - Confectionery products
+   ICP.M.U2.N.011850.4.ANR 2025-12 1.9 HICP - Edible ices and ice cream
+== https://data-api.ecb.europa.eu/service/data/ICP/M.U2...4.ANR?lastNObservations=1&format=csvdata&startPeriod=2026-01
+
+== https://data-api.ecb.europa.eu/service/data/MIR/M.PL.B.L22.F.R.A.2250..N?lastNObservations=1&format=csvdata
+   MIR.M.PL.B.L22.F.R.A.2250.PLN.N 2026-08 2.94 Bank interest rates - deposits from households with an agreed maturity of up to 
+== https://data-api.ecb.europa.eu/service/data/IRS/M..L.L40.CI.0000..N.Z?lastNObservations=1&format=csvdata
+   IRS.M.AT.L.L40.CI.0000.EUR.N.Z 2026-09 3.6867 Long-term interest rate for convergence purposes - Euro
+   IRS.M.BE.L.L40.CI.0000.EUR.N.Z 2026-09 4.12 Long-term interest rate for convergence purposes - Euro
+   IRS.M.BG.L.L40.CI.0000.BGN.N.Z 2025-12 3.93 Long-term interest rate for convergence purposes - 10 years maturity, denominate
+   IRS.M.BG.L.L40.CI.0000.EUR.N.Z 2026-09 4.09 Long-term interest rate for convergence purposes - Euro
+   IRS.M.CY.L.L40.CI.0000.EUR.N.Z 2026-09 3.92 Long-term interest rate for convergence purposes - Euro
+   IRS.M.CZ.L.L40.CI.0000.CZK.N.Z 2026-09 5.24 Long-term interest rate for convergence purposes - Czech koruna
+   IRS.M.D0.L.L40.CI.0000.Z01.N.Z 2026-09 4.202277474478334 Long-term interest rate for convergence purposes - All currencies combined
+   IRS.M.DE.L.L40.CI.0000.EUR.N.Z 2026-09 3.473 Long-term interest rate for convergence purposes - Euro
+   IRS.M.DK.L.L40.CI.0000.DKK.N.Z 2026-09 3.287 Long-term interest rate for convergence purposes - Danish krone
+   IRS.M.EE.L.L40.CI.0000.EUR.N.Z 2026-09 4.09 Long-term interest rate for convergence purposes - Euro
+   IRS.M.ES.L.L40.CI.0000.EUR.N.Z 2026-09 3.927 Long-term interest rate for convergence purposes - Euro
+   IRS.M.FI.L.L40.CI.0000.EUR.N.Z 2026-09 3.8 Long-term interest rate for convergence purposes - Euro
+   IRS.M.FR.L.L40.CI.0000.EUR.N.Z 2026-09 4.44 Long-term interest rate for convergence purposes - Euro
+   IRS.M.GB.L.L40.CI.0000.GBP.N.Z 2020-01 0.6708833913043478 Long-term interest rate for convergence purposes - 10 years maturity, denominate
+   IRS.M.GR.L.L40.CI.0000.EUR.N.Z 2026-09 4.22 Long-term interest rate for convergence purposes - Euro
+   IRS.M.HR.L.L40.CI.0000.EUR.N.Z 2026-09 3.59 Long-term interest rate for convergence purposes - Euro
+   IRS.M.HU.L.L40.CI.0000.HUF.N.Z 2026-09 5.685 Long-term interest rate for convergence purposes - Hungarian forint
+   IRS.M.I10.L.L40.CI.0000.EUR.N.Z 2026-09 3.9283751113081005 Long-term interest rate for convergence purposes - Euro
+   IRS.M.I9.L.L40.CI.0000.EUR.N.Z 2026-09 3.926863988656915 Long-term interest rate for convergence purposes - Euro
+   IRS.M.IE.L.L40.CI.0000.EUR.N.Z 2026-09 3.5911 Long-term interest rate for convergence purposes - Euro
+   IRS.M.IT.L.L40.CI.0000.EUR.N.Z 2026-09 4.362 Long-term interest rate for convergence purposes - Euro
+   IRS.M.LT.L.L40.CI.0000.EUR.N.Z 2026-09 2.88 Long-term interest rate for convergence purposes - Euro
+   IRS.M.LU.L.L40.CI.0000.EUR.N.Z 2026-09 3.697 Long-term interest rate for convergence purposes - Euro
+   IRS.M.LV.L.L40.CI.0000.EUR.N.Z 2026-09 4.15 Long-term interest rate for convergence purposes - Euro
+   IRS.M.MT.L.L40.CI.0000.EUR.N.Z 2026-09 4.19 Long-term interest rate for convergence purposes - Euro
+   IRS.M.NL.L.L40.CI.0000.EUR.N.Z 2026-09 3.564 Long-term interest rate for convergence purposes - Euro
+   IRS.M.PL.L.L40.CI.0000.PLN.N.Z 2026-09 6.23 Long-term interest rate for convergence purposes - Polish zloty
+   IRS.M.PT.L.L40.CI.0000.EUR.N.Z 2026-09 3.846 Long-term interest rate for convergence purposes - Euro
+   IRS.M.RO.L.L40.CI.0000.RON.N.Z 2026-09 6.71 Long-term interest rate for convergence purposes - Romanian leu
+   IRS.M.SE.L.L40.CI.0000.SEK.N.Z 2026-09 3.19 Long-term interest rate for convergence purposes - Swedish krona
+   IRS.M.SI.L.L40.CI.0000.EUR.N.Z 2026-09 3.86 Long-term interest rate for convergence purposes - Euro
+   IRS.M.SK.L.L40.CI.0000.EUR.N.Z 2026-09 4.163714 Long-term interest rate for convergence purposes - Euro
+   IRS.M.U2.L.L40.CI.0000.EUR.N.Z 2026-09 3.9283751113081005 Long-term interest rate for convergence purposes - Euro
+   IRS.M.V5.L.L40.CI.0000.Z01.N.Z 2026-09 4.202277474478334 Long-term interest rate for convergence purposes - All currencies combined
+== https://api.statistiken.bundesbank.de/rest/data/BBEX3/D.XAU..EA.AC.?lastNObservations=1
+   {'DATAFLOW;BBK_STD_FREQ;BBK_STD_CURRENCY;BBK_ERX_PARTNER_CURRENCY;BBK_ERX_SERIES_TYPE;BBK_ERX_RATE_TYPE;BBK_ERX_SUFFIX;TIME_PERIOD;OBS_VALUE;TIME_FORMAT;BBK_DECIMALS;BBK_ID;BBK_UNIT;BBK_UNIT_MULT;BBK_TITLE;WEB_CATEGORY;BBK_COMM_GEN;BBK_COMM_SRC;OBS_STATUS': 'BBK:BBEX3(1.0);D;XAU;DEM;EA;AC;C01;1998-12-31;.;P1D;0;BBEX3.D.XAU.DEM.EA.AC.C01;DEM;0;Goldpreis in Frankfurt am Main / Fixing der Frankfurter  Wertpapierbörse / 1 kg Feingold = ... DM / bis Ende 1998;WEDE;Für Kilogramm-Goldbarren mit einem Feingehalt von 999', None: ['9/1000. Erstmalige Notierung am 18. Juni 1968.;Frankfurter  Wertpapierbörse;K']} None None 
+== https://api.statistiken.bundesbank.de/rest/data/BBEX3/M.XAU..EA.AC.?lastNObservations=1
+   {'DATAFLOW;BBK_STD_FREQ;BBK_STD_CURRENCY;BBK_ERX_PARTNER_CURRENCY;BBK_ERX_SERIES_TYPE;BBK_ERX_RATE_TYPE;BBK_ERX_SUFFIX;TIME_PERIOD;OBS_VALUE;TIME_FORMAT;BBK_DECIMALS;BBK_ID;BBK_UNIT;BBK_UNIT_MULT;BBK_TITLE;BBK_COMM_GEN;BBK_COMM_METH;BBK_COMM_SRC;WEB_CATEGORY;BBK_EURO;BBK_DIFF;BBK_DIFF_Y': 'BBK:BBEX3(1.0);M;XAU;DEM;EA;AC;C02;1998-12;15707;P1M;0;BBEX3.M.XAU.DEM.EA.AC.C02;DEM;0;Goldpreis in Frankfurt am Main / Fixing der Frankfurter Wertpapierbörse / 1 kg Feingold = ... DM / bis Ende 1998 / Durchschnitt im Monat;Für Kilogramm-Goldbarren mit einem Feingehalt von 999', None: ['9/1000. Erstmalige Notierung am 18. Juni 1968.;Die Durchschnitte wurden aus täglichen Notierungen errechnet.;Frankfurter Wertpapierbörse;WEDE;8031;-1.7;-5.1']} None None 
+== prc_hicp_manr?geo=EA20&coicop=CP00&lastTimePeriod=2
+   dims {'freq': ['M'], 'unit': ['RCH_A'], 'coicop': ['CP00'], 'geo': ['EA20'], 'time': ['2025-11', '2025-12']} values [('0', 2.1), ('1', 2.0)]
+== prc_hicp_manr?geo=EA20&lastTimePeriod=1
+   dims {'freq': ['M'], 'unit': ['RCH_A'], 'coicop': ['CP00', 'CP01', 'CP011', 'CP0111', 'CP01111', 'CP01112', 'CP01113', 'CP01114', 'CP01115', 'CP01116', 'CP01117', 'CP01118'], 'geo': ['EA20'], 'time': ['2025-12']} values [('459', 2.3), ('462', 5.2), ('463', 0.6), ('461', 4.0), ('460', -7.5), ('0', 2.0)]
+== prc_hicp_minr?geo=EA20&lastTimePeriod=1
+   dims {'freq': ['M'], 'unit': ['I25', 'I15', 'RCH_M', 'RCH_A', 'RCH_MV12MAVR'], 'coicop18': ['TOTAL', 'CP01', 'CP011', 'CP0111', 'CP01111', 'CP01112', 'CP01113', 'CP011131', 'CP011139', 'CP01114', 'CP01115', 'CP01119'], 'geo': ['EA20'], 'time': ['2026-09']} values [('1100', 137.19), ('1105', 130.55), ('1106', 140.12), ('1101', 170.82), ('1104', 176.49), ('1102', 128.49)]
+== prc_hicp_mv12r?geo=EA20&lastTimePeriod=1
+   dims {'freq': ['M'], 'unit': ['RCH_MV12MAVR'], 'coicop': ['CP00', 'CP01', 'CP011', 'CP0111', 'CP01111', 'CP01112', 'CP01113', 'CP01114', 'CP01115', 'CP01116', 'CP01117', 'CP01118'], 'geo': ['EA20'], 'time': ['2025-12']} values [('459', 3.0), ('462', 5.2), ('463', 1.6), ('461', 4.2), ('460', -4.5), ('0', 2.1)]
+== prc_hpi_q?geo=PL&purchase=TOTAL&unit=I15_Q&lastTimePeriod=1
+   dims {'freq': ['Q'], 'purchase': ['TOTAL'], 'unit': ['I15_Q'], 'geo': ['PL'], 'time': ['2026-Q2']} values [('0', 229.22)]
+== prc_hpi_q?geo=CH&purchase=TOTAL&unit=I15_Q&lastTimePeriod=1
+   dims {'freq': ['Q'], 'purchase': ['TOTAL'], 'unit': ['I15_Q'], 'geo': ['CH'], 'time': ['2026-Q2']} values []
+== prc_hicp_manr?geo=CH&lastTimePeriod=1
+   dims {'freq': ['M'], 'unit': ['RCH_A'], 'coicop': ['CP00', 'CP01', 'CP011', 'CP0111', 'CP01111', 'CP01112', 'CP01113', 'CP01114', 'CP01115', 'CP01116', 'CP01117', 'CP01118'], 'geo': ['CH'], 'time': ['2025-12']} values [('459', 0.3), ('462', -1.1), ('463', 0.9), ('461', 1.0), ('460', -7.3), ('0', 0.2)]
+== prc_hicp_manr?geo=UK&lastTimePeriod=1
+   dims {'freq': ['M'], 'unit': ['RCH_A'], 'coicop': ['CP00', 'CP01', 'CP011', 'CP0111', 'CP01111', 'CP01112', 'CP01113', 'CP01114', 'CP01115', 'CP01116', 'CP01117', 'CP01118'], 'geo': ['UK'], 'time': ['2025-12']} values []
