@@ -1,0 +1,58 @@
+SAP     no usable annual report (0 filings)
+SIE     no usable annual report (0 filings)
+ALV     no usable annual report (0 filings)
+BASF    no usable annual report (0 filings)
+DTE     no usable annual report (0 filings)
+DBK     no usable annual report (0 filings)
+BAYN    no usable annual report (0 filings)
+VOW3    no usable annual report (0 filings)
+ADS     no usable annual report (0 filings)
+MC      2024-12-31 EUR rev=84683.0 ebitda=None net=12550.0 fcf=None roe=18.6 nd/ebitda=None
+TTE     2025-12-31 USD rev=201196.0 ebitda=None net=13127.0 fcf=None roe=11.4 nd/ebitda=None
+OR      2025-12-31 EUR rev=44052.0 ebitda=None net=6127.2 fcf=None roe=17.5 nd/ebitda=None
+AIR     2025-12-31 EUR rev=73420.0 ebitda=None net=5221.0 fcf=None roe=20.0 nd/ebitda=None
+BNP     2025-12-31 EUR rev=None ebitda=24351.0 net=12225.0 fcf=None roe=9.7 nd/ebitda=None
+SAN     2025-12-31 EUR rev=None ebitda=None net=14101.0 fcf=-22494.0 roe=12.5 nd/ebitda=None
+CS      2025-12-31 EUR rev=91139.0 ebitda=None net=9797.0 fcf=None roe=20.8 nd/ebitda=None
+RMS     2024-12-31 EUR rev=15170.0 ebitda=None net=4603.0 fcf=None roe=26.6 nd/ebitda=None
+KER     2023-12-31 EUR rev=19566.0 ebitda=None net=2983.0 fcf=None roe=19.6 nd/ebitda=None
+DG      2025-12-31 EUR rev=75372.0 ebitda=13570.0 net=4903.0 fcf=None roe=15.9 nd/ebitda=-0.77
+CAP     2024-12-31 EUR rev=22096.0 ebitda=3039.0 net=1671.0 fcf=None roe=14.2 nd/ebitda=None
+RI      2025-06-30 EUR rev=10959.0 ebitda=3165.0 net=1626.0 fcf=None roe=10.7 nd/ebitda=None
+ORA     2024-12-31 EUR rev=40260.0 ebitda=None net=2350.0 fcf=None roe=7.4 nd/ebitda=None
+ASML    2025-12-31 EUR rev=32667.3 ebitda=13486.8 net=10213.0 fcf=11116.1 roe=42.2 nd/ebitda=-0.63
+SHEL    2025-12-31 USD rev=266886.0 ebitda=None net=17837.0 fcf=None roe=10.2 nd/ebitda=None
+INGA    2025-12-31 EUR rev=23035.0 ebitda=None net=6327.0 fcf=-6731.0 roe=12.7 nd/ebitda=None
+HEIA    2025-12-31 EUR rev=34257.0 ebitda=6015.0 net=952.0 fcf=2610.0 roe=11.0 nd/ebitda=2.4
+PHIA    2025-12-31 EUR rev=17834.0 ebitda=None net=895.0 fcf=None roe=8.2 nd/ebitda=None
+UNA     no usable annual report (10 filings)
+STLAM   2025-12-31 EUR rev=153508.0 ebitda=-19273.0 net=-22368.0 fcf=None roe=-41.8 nd/ebitda=None
+NESN    2023-12-31 USD rev=31466.0 ebitda=3344.0 net=1741.0 fcf=635.0 roe=6.9 nd/ebitda=8.31
+AZN     2025-12-31 USD rev=58739.0 ebitda=None net=10225.0 fcf=8670.0 roe=21.0 nd/ebitda=None
+HSBA    2025-12-31 USD rev=None ebitda=None net=23131.0 fcf=25105.0 roe=11.7 nd/ebitda=None
+BP      2025-12-31 USD rev=192549.0 ebitda=30464.0 net=55.0 fcf=None roe=0.1 nd/ebitda=0.7
+GLEN    2025-12-31 USD rev=247535.0 ebitda=None net=363.0 fcf=-290.0 roe=0.9 nd/ebitda=None
+RIO     2025-12-31 USD rev=57638.0 ebitda=21513.0 net=9966.0 fcf=None roe=16.0 nd/ebitda=0.61
+GSK     2025-12-31 GBP rev=None ebitda=None net=5716.0 fcf=4756.0 roe=34.9 nd/ebitda=None
+ULVR    no usable annual report (10 filings)
+DGE     2026-06-30 USD rev=27762.0 ebitda=None net=1958.0 fcf=None roe=18.0 nd/ebitda=None
+BARC    2025-12-31 GBP rev=None ebitda=None net=7172.0 fcf=None roe=9.2 nd/ebitda=None
+LLOY    2025-12-31 GBP rev=19422.0 ebitda=None net=4659.0 fcf=-622.0 roe=9.8 nd/ebitda=None
+ITX     2025-01-31 EUR rev=38632.0 ebitda=10728.0 net=5866.0 fcf=6616.0 roe=29.8 nd/ebitda=-0.59
+IBE     2024-12-31 EUR rev=44739.0 ebitda=16377.0 net=5612.0 fcf=3550.0 roe=11.9 nd/ebitda=None
+TEF     2024-12-31 EUR rev=41315.0 ebitda=11194.0 net=-49.0 fcf=None roe=-0.3 nd/ebitda=None
+ENEL    2024-12-31 EUR rev=73914.0 ebitda=22743.0 net=7016.0 fcf=3057.0 roe=20.8 nd/ebitda=2.44
+ENI     2025-12-31 EUR rev=82151.0 ebitda=12359.0 net=2608.0 fcf=4101.0 roe=5.4 nd/ebitda=1.37
+RACE    2025-12-31 EUR rev=7145.8 ebitda=2771.7 net=1596.9 fcf=1406.1 roe=40.9 nd/ebitda=0.51
+ISP     2022-12-31 EUR rev=None ebitda=None net=4354.0 fcf=None roe=None nd/ebitda=None
+ATCO    2024-12-31 SEK rev=176771.0 ebitda=None net=29782.0 fcf=30863.0 roe=26.2 nd/ebitda=None
+VOLV    2024-12-31 SEK rev=526816.0 ebitda=None net=50389.0 fcf=None roe=26.0 nd/ebitda=None
+ERICB   2024-12-31 SEK rev=247880.0 ebitda=None net=20.0 fcf=42621.0 roe=0.0 nd/ebitda=None
+HMB     2024-11-30 SEK rev=234478.0 ebitda=None net=11621.0 fcf=21696.0 roe=25.2 nd/ebitda=None
+NOVO    2025-12-31 DKK rev=309064.0 ebitda=None net=102434.0 fcf=28989.0 roe=52.8 nd/ebitda=None
+MAERSK  2025-12-31 USD rev=53988.0 ebitda=10171.0 net=2725.0 fcf=None roe=4.9 nd/ebitda=-0.31
+NOKIA   2025-12-31 EUR rev=19889.0 ebitda=None net=651.0 fcf=None roe=3.1 nd/ebitda=None
+ABI     2025-12-31 USD rev=59320.0 ebitda=None net=6837.0 fcf=None roe=7.8 nd/ebitda=None
+EQNR    2024-12-31 USD rev=103774.0 ebitda=40762.0 net=8806.0 fcf=7933.0 roe=20.8 nd/ebitda=0.45
+OMV     2025-12-31 EUR rev=24308.0 ebitda=5421.0 net=1520.0 fcf=None roe=9.3 nd/ebitda=None
+PKN     2023-12-31 PLN rev=372767.0 ebitda=42256.0 net=20680.0 fcf=None roe=13.6 nd/ebitda=-0.06

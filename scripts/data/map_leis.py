@@ -2,7 +2,7 @@
 
 Downloads the full entity list (name + LEI), matches on normalised names
 (with an alias table for names that differ from the legal name) and writes
-data/leis.json ({ticker: {lei, legal_name, ...} | null}) plus a review report.
+data/leis.json ({"TICKER@Country": {lei, legal_name, ...} | null}) plus a review report.
 """
 import difflib, json, re, sys, time, unicodedata, urllib.request
 from pathlib import Path
@@ -66,6 +66,11 @@ def main():
     result, report = {}, []
     for ticker, n1, n2, country in stocks():
         name = n1 or n2
+        key = f"{ticker}@{country}"   # tickers repeat across exchanges (SAN = Sanofi and Santander)
+        if country == "Switzerland":   # Swiss issuers do not file ESEF reports
+            result[key] = None
+            report.append(f"{ticker:7} {country:12} {name[:32]:32} -> skipped (no ESEF in Switzerland)")
+            continue
         want = norm(ALIASES.get(ticker, name))
         hit, how = None, ""
         if want in by_norm:
@@ -74,7 +79,7 @@ def main():
             close = difflib.get_close_matches(want, keys, n=1, cutoff=0.93)
             if close:
                 hit, how = by_norm[close[0]][0], f"fuzzy~{close[0]}"
-        result[ticker] = {"lei": hit[0], "legal_name": hit[1], "match": how} if hit else None
+        result[key] = {"lei": hit[0], "legal_name": hit[1], "match": how} if hit else None
         report.append(f"{ticker:7} {country:12} {name[:32]:32} [{want}] -> " +
                       (f"{hit[0]} {hit[1]} ({how})" if hit else "none"))
     (ROOT / "data").mkdir(exist_ok=True)
