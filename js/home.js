@@ -82,7 +82,7 @@ const COMPARE = {
   10: [['EU stocks (STOXX 600)', 19500], ['US stocks (S&P 500)', 33000], ['Gold', 24000], ['Real estate (Slovakia)', 18000], ['EU bonds', 10800], ['Term deposit', 11000], ['Cash after inflation', 7400]],
   20: [['EU stocks (STOXX 600)', 31000], ['US stocks (S&P 500)', 64000], ['Gold', 52000], ['Real estate (Slovakia)', 34000], ['EU bonds', 15800], ['Term deposit', 13200], ['Cash after inflation', 6100]]
 };
-const BAR_COLORS = ['#5B9BFF', '#8DB8FF', '#F2B33D', '#C89BFF', '#6FD6E8', '#B4C0D6', '#FF7A7A'];
+const BAR_COLORS = ['#1F6FEB', '#5B9BFF', '#D99A1E', '#8B5CF6', '#0EA5B7', '#7A8AA6', '#D23B3B'];
 function renderCompare(years) {
   const rows = COMPARE[years];
   const max = Math.max(...rows.map(r => r[1]));

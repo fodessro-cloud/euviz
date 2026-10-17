@@ -4,7 +4,7 @@
 
 .a-bar { background: var(--bg-alt); border-bottom: 1px solid var(--line); }
 .a-bar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding-top: 10px; padding-bottom: 10px; }
-.a-badge { font-family: var(--mono); font-size: 12px; color: var(--amber); border: 1px solid #5a4300; border-radius: 4px; padding: 3px 8px; }
+.a-badge { font-family: var(--mono); font-size: 12px; color: var(--amber); border: 1px solid #F0D58A; border-radius: 4px; padding: 3px 8px; }
 .a-subnav { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 14px; }
 .a-subnav a { color: var(--text2); }
 .a-subnav a:hover { color: var(--text); }
