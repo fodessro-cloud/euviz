@@ -33,5 +33,5 @@ function realPriceLabel(s) {
   if (!p) return '';
   const at = new Date(`${p.date}T${p.time}:00Z`);
   const when = at.toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
-  return `${p.venue} · ${when} ${p.final ? 'close' : '(15 min delayed)'}`;
+  return `${p.venue} · ${when} ${p.final ? 'last trade' : '(15 min delayed)'}`;
 }
