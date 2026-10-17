@@ -39,7 +39,7 @@ SECTORS = [
     ("Materials", ["chemical", "mining", "metal", "steel", "paper", "cement", "building material", "packaging", "gold"]),
     ("Consumer Staples", ["food", "dairy", "consumer goods", "beverage", "brew", "tobacco", "retail", "supermarket", "household", "cosmetic", "agricultur"]),
     ("Consumer Discretionary", ["automotive", "car", "luxury", "fashion", "clothing", "apparel", "hotel", "restaurant", "travel", "leisure", "gambling", "furniture", "e-commerce"]),
-    ("Industrials", ["engineering", "construction", "aerospace", "defence", "defense", "transport", "logistics", "shipping", "airline", "machine", "industrial", "manufactur", "rail", "conglomerate"]),
+    ("Industrials", ["engineering", "construction", "aerospace", "defence", "defense", "transport", "logistics", "shipping", "airline", "machine", "industrial", "rail", "conglomerate"]),
 ]
 WIKIDATA_QUERY = """
 SELECT ?lei ?item ?itemLabel ?ticker ?exLabel ?indLabel WHERE {
