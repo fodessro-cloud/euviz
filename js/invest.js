@@ -77,16 +77,14 @@ function renderNow() {
 function paths() {
   const all = [...ASSETS, PRICES].map(a => ({ ...a, s: series(country, a.key) })).filter(a => a.s);
   if (!all.length) return { list: [], from: 0, to: 0 };
-  const to = Math.min(...all.filter(a => a.key !== 'house').map(a => a.s.last).concat(all.map(a => a.s.last)));
-  const end = Math.max(...all.map(a => a.s.last));
-  const target = Math.min(end, Math.max(...all.map(a => a.s.last).filter(l => l >= end - 2)));
-  const from = target - years * 12;
-  const list = all.filter(a => a.s.first <= from && a.s.last >= from + 6).map(a => {
-    const last = Math.min(a.s.last, target), base = a.s.at(from), pts = [];
-    for (let i = from; i <= last; i++) { const v = a.s.at(i); if (isNum(v)) pts.push([i, amount * v / base]); }
-    return { ...a, pts, final: pts[pts.length - 1][1], lastM: last };
+  // The chart ends with the newest month any source has; each line stops at its own last month.
+  const to = Math.max(...all.map(a => a.s.last)), from = to - years * 12;
+  const list = all.filter(a => a.s.first <= from && a.s.last >= to - 6).map(a => {
+    const base = a.s.at(from), pts = [];
+    for (let i = from; i <= a.s.last; i++) { const v = a.s.at(i); if (isNum(v)) pts.push([i, amount * v / base]); }
+    return { ...a, pts, final: pts[pts.length - 1][1], lastM: a.s.last };
   });
-  return { list, from, to: target, unused: to };
+  return { list, from, to };
 }
 
 function renderCalc() {

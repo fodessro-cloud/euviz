@@ -275,13 +275,14 @@ def main():
     back = {ESTAT_GEO.get(c, c): c for c in COUNTRIES}
     jobs = {
         "hicp": lambda: ecb_multi("ICP", f"M.{areas}.N.000000.4.INX"),
+        "hicp_es": lambda: {back[g]: v for g, v in estat_multi("prc_hicp_midx", f"{geos}&coicop=CP00&unit=I15").items()},
         "infl_old": lambda: ecb_multi("ICP", f"M.{areas}.N.000000.4.ANR"),
         "infl": lambda: {back[g]: v for g, v in estat_multi("prc_hicp_minr", f"{geos}&coicop18=TOTAL&unit=RCH_A&sinceTimePeriod=2024-01").items()},
         "dep1y": lambda: ecb_multi("MIR", f"M.{areas}.B.L22.F.R.A.2250..N", cur_pos=8, want_cur=local),
         "depon": lambda: ecb_multi("MIR", f"M.{areas}.B.L21.A.R.A.2250..N", cur_pos=8, want_cur=local),
         "bond10": lambda: ecb_multi("IRS", f"M.{areas}.L.L40.CI.0000..N.Z", cur_pos=6, want_cur=local),
         "house": lambda: {back[g]: fill_months(v) for g, v in estat_multi("prc_hpi_q", f"{geos}&purchase=TOTAL&unit=I15_Q").items()},
-        "fx": lambda: ecb_multi("EXR", f"M.{'+'.join(CURRENCIES)}.EUR.SP00.A", area_pos=1),
+        "fx": lambda: ecb_multi("EXR", f"M.{'+'.join(CURRENCIES + ['USD'])}.EUR.SP00.A", area_pos=1),
         "dfr": lambda: ecb_multi("FM", "B.U2.EUR.4F.KR.DFR.LEV"),
         "stoxx50": lambda: ecb_multi("FM", "M.U2.EUR.DS.EI.DJES50I.HSTA"),
         "gold_usd": lambda: {"W": gold_usd()},
@@ -336,7 +337,7 @@ def main():
     for code, (name, cur, euro) in COUNTRIES.items():
         g = lambda k: raw.get(k, {}).get(code) or {}  # noqa: E731
         infl = {**g("infl_old"), **g("infl")}
-        prices = chain_prices(g("hicp"), infl)
+        prices = chain_prices(g("hicp") or g("hicp_es"), infl)
         a = {
             "deposit": pack(wealth_from_rate(contiguous_tail(g("dep1y")))) if g("dep1y") else None,
             "savings": pack(wealth_from_rate(contiguous_tail(g("depon")))) if g("depon") else None,
@@ -345,8 +346,8 @@ def main():
             "prices": pack(prices) if prices else None,
         }
         a = {k: v for k, v in a.items() if v}
-        if "prices" not in a and not infl:
-            print(f"skip  {code}: no inflation data")
+        if not infl or max(infl) < mstr(midx(max(max(v) for v in raw.get("infl", {}).values() if v)) - 24):
+            print(f"skip  {code}: no recent inflation data")   # e.g. the UK, out of EU statistics since 2020
             continue
         countries[code] = {"name": name, "cur": cur, "euro": euro}
         assets[code] = a
