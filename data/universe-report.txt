@@ -1,7 +1,7 @@
-1845 companies with figures, 104 without usable figures
-with ticker: 437, with sector: 1011
-with F-score: 1542, F-score 8-9: 83, with dividend cover: 770
-by country: GB 454, SE 308, FR 152, NO 133, ES 107, FI 107, IT 97, DK 91, NL 86, BE 49, AT 45, GR 37, LU 31, MT 27, IS 22, HU 18, LT 18, HR 15, IE 13, PT 6, SI 6, SK 6, CY 5, PL 5, CH 4, EE 3
+2462 companies with figures, 92 without usable figures
+with ticker: 839, with sector: 1452
+with F-score: 1553, F-score 8-9: 84, with dividend cover: 775
+by country: GB 529, SE 326, FR 212, NO 142, PL 141, IT 119, DK 118, FI 116, ES 114, DE 110, NL 103, BE 75, AT 50, CH 50, GR 41, LU 36, MT 27, IE 24, IS 23, HU 20, HR 19, LT 18, CZ 12, PT 7, SI 6, CY 6, SK 6, RO 5, EE 3, LV 3, BG 1
 
 largest 40 by revenue:
 Shell                              GB RDSA     Energy                 2025-12-31 rev€=237168.8 ebitda=None fcf=21948.0 roe=10.2 F=5 1111001-0
@@ -33,6 +33,7 @@ Iberdrola                          ES IBE      Utilities              2024-12-31
 L'Oréal                            FR OR       Consumer Staples       2025-12-31 rev€=44052.0 ebitda=None fcf=None roe=17.5 F=6 110101110
 Sanofi                             FR SAN      Healthcare             2025-12-31 rev€=43626.0 ebitda=8120.0 fcf=7212.0 roe=10.9 F=7 111100111
 Grupo ACS                          ES -        Industrials            2024-12-31 rev€=41633.1 ebitda=None fcf=2132.0 roe=17.6 F=5 1101001-1
+Novo                               DK NOVO     Healthcare             2025-12-31 rev€=41347.5 ebitda=149640.0 fcf=28989.0 roe=52.8 F=5 110101100
 Telefónica                         ES TEF      Communication          2024-12-31 rev€=41315.0 ebitda=11194.0 fcf=None roe=-0.3 F=5 0111-01-1
 Compass Group                      GB CPG      Consumer Staples       2025-09-30 rev€=40940.2 ebitda=None fcf=2474.0 roe=24.4 F=5 1111001-0
 Vodafone                           GB VOD      Communication          2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8 F=6 01111-101
@@ -43,4 +44,3 @@ Inditex                            ES ITX      Consumer Discretionary 2025-01-31
 Imperial Brands                    GB IMB      Consumer Staples       2025-09-30 rev€=38124.1 ebitda=4271.0 fcf=3429.0 roe=42.9 F=6 110101110
 Volvo Cars                         SE VOLCAR B Consumer Discretionary 2024-12-31 rev€=35911.5 ebitda=45048.0 fcf=2339.0 roe=11.2 F=6 1111-0110
 Heineken International             NL HEIA     Consumer Staples       2025-12-31 rev€=34257.0 ebitda=6015.0 fcf=2610.0 roe=10.5 F=6 1111011-0
-Heineken Holding                   NL HEIO     -                      2025-12-31 rev€=34257.0 ebitda=6015.0 fcf=2610.0 roe=11.0 F=6 1111011-0
