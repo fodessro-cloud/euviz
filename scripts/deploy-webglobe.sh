@@ -89,5 +89,8 @@ cmds="cd '$FTP_DIR'"
 [ "$SAVE_WP_HTACCESS" = 1 ] && cmds="$cmds && put '$WORK/htaccess.original' -o .htaccess-wordpress-zaloha"
 cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose '$WORK/site' ."
 [ "$ARCHIVE" = 1 ] && cmds="$cmds && mirror -R --parallel=4 --no-perms '$WORK/archiv' archiv"
+# Archive pages rebuilt in the FINILA design (scripts/build-archive.py) replace the
+# WordPress HTML; the images under archiv/wp-content stay as they are.
+[ -d "$SRC/archive-site" ] && cmds="$cmds && mirror -R --parallel=4 --no-perms '$SRC/archive-site' archiv"
 ftp "$cmds"
 echo "Done. FINILA is at the site root, the old site at /archiv/."
