@@ -56,18 +56,19 @@ function squarify(items, rect) {
     remaining = remaining.slice(row.length);
     const rowLen = rowSum / side;
 
-    let pos = (w >= h) ? x : y;
+    // Wide area: the row is a column on the left; tall area: a row on top
+    let pos = (w >= h) ? y : x;
     for (const item of row) {
       const size = (item.value * scale) / rowLen;
       let rx, ry, rw, rh;
-      if (w >= h) { rx = pos; ry = y; rw = rowLen; rh = size; }
-      else         { rx = x;  ry = pos; rw = size; rh = rowLen; }
+      if (w >= h) { rx = x;   ry = pos; rw = rowLen; rh = size; }
+      else         { rx = pos; ry = y;   rw = size;   rh = rowLen; }
       result.push({ ...item, rect: { x: rx, y: ry, w: rw, h: rh } });
       pos += size;
     }
 
-    if (w >= h) { y += rowLen; h -= rowLen; }
-    else         { x += rowLen; w -= rowLen; }
+    if (w >= h) { x += rowLen; w -= rowLen; }
+    else         { y += rowLen; h -= rowLen; }
   }
   return result;
 }
@@ -112,6 +113,7 @@ function renderHeatmap() {
   const PAD = 4;
   const groupRects = squarify(groupItems, { x: PAD, y: PAD, w: W - PAD*2, h: H - PAD*2 });
 
+  const allTiles = [];
   for (const gr of groupRects) {
     const { x, y, w, h } = gr.rect;
 
@@ -130,6 +132,7 @@ function renderHeatmap() {
       ctx.fillStyle = '#34445F';
       ctx.font = `bold ${Math.min(11, w/8)}px Inter, sans-serif`;
       ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
       ctx.fillText(gr.name, x + w/2, y + HEADER - 6);
     }
 
@@ -142,6 +145,7 @@ function renderHeatmap() {
     const inner = { x: x + 2, y: y + HEADER + 2, w: w - 4, h: h - HEADER - 4 };
     if (inner.w < 4 || inner.h < 4) continue;
     const tileRects = squarify(stockItems, inner);
+    allTiles.push(...tileRects);
 
     for (const tile of tileRects) {
       const { x: tx, y: ty, w: tw, h: th } = tile.rect;
@@ -158,9 +162,9 @@ function renderHeatmap() {
         ctx.font = `bold ${fs}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(tile.ticker, tx + tw/2, ty + th/2 - (th > 30 ? 8 : 0));
+        ctx.fillText(tile.ticker, tx + tw/2, ty + th/2 - (th > 40 ? 8 : 0));
 
-        if (th > 32) {
+        if (th > 40) {
           ctx.font = `${Math.max(9, fs - 3)}px Inter, sans-serif`;
           ctx.fillStyle = 'rgba(255,255,255,0.72)';
           const sign = val >= 0 ? '+' : '';
@@ -170,16 +174,8 @@ function renderHeatmap() {
     }
   }
 
-  // Tooltip
-  canvas._tileRects = groupRects.flatMap(gr => {
-    const HEADER = gr.rect.h > 40 ? 22 : 0;
-    const inner = {
-      x: gr.rect.x + 2, y: gr.rect.y + HEADER + 2,
-      w: gr.rect.w - 4, h: gr.rect.h - HEADER - 4,
-    };
-    if (inner.w < 4 || inner.h < 4) return [];
-    return squarify(gr.stocks.map(s => ({ ...s, value: s[hmSize] || 1 })).sort((a,b)=>b.marketCap-a.marketCap), inner);
-  });
+  // Tooltip hit areas
+  canvas._tileRects = allTiles;
 }
 
 function initHeatmap() {
