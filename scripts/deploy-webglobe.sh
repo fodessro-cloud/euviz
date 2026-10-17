@@ -8,12 +8,12 @@
 # Needs FTP_SERVER, FTP_USERNAME, FTP_PASSWORD (only the password is a secret); optional FTP_DIR (default /),
 # FTP_INSECURE_TLS=1 when the host's certificate does not match FTP_SERVER,
 # OLD_SITE_URL (default https://www.finila.com/).
-# The only existing file that changes is .htaccess; its original is kept in
+# The only existing file that changes is .htaccess (replaced by deploy/htaccess);
+# its WordPress original is kept on the server as .htaccess-wordpress-zaloha and in
 # $WORK/htaccess.original (the repo is public, so wp-config.php and other site
 # files are never copied into the workflow's artifacts).
-# Nothing on the server is deleted: WordPress stays in place and keeps serving
-# its old URLs; only index.html, screener.html, map.html, groups.html, css/, js/, archiv/ and
-# one DirectoryIndex line in .htaccess are added.
+# Nothing on the server is deleted. WordPress files stay but no longer run: old
+# addresses are served from the static copy in archiv/ under their original URLs.
 set -euo pipefail
 
 for v in FTP_SERVER FTP_USERNAME FTP_PASSWORD; do
@@ -75,15 +75,19 @@ mkdir -p "$WORK/site"
 cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
 cp -r "$SRC/css" "$SRC/js" "$WORK/site/"
 
-# Make "/" open FINILA's index.html before WordPress's index.php.
+# .htaccess comes from deploy/htaccess: "/" opens FINILA, old WordPress addresses
+# show their /archiv/ copy, WordPress's PHP is closed. The WordPress original is
+# saved once on the server as .htaccess-wordpress-zaloha (.ht* files are never served).
 ftp "cd '$FTP_DIR' && get -O '$WORK' .htaccess" 2>/dev/null || touch "$WORK/.htaccess"
 cp "$WORK/.htaccess" "$WORK/htaccess.original"
-if ! grep -qi '^DirectoryIndex index\.html' "$WORK/.htaccess"; then
-  { echo "DirectoryIndex index.html index.php"; echo; cat "$WORK/htaccess.original"; } > "$WORK/site/.htaccess"
-fi
+cp "$SRC/deploy/htaccess" "$WORK/site/.htaccess"
+SAVE_WP_HTACCESS=0
+grep -q '^# BEGIN FINILA' "$WORK/htaccess.original" || SAVE_WP_HTACCESS=1
 
 echo "== Uploading"
-cmds="cd '$FTP_DIR' && mirror -R --parallel=4 --no-perms --verbose '$WORK/site' ."
+cmds="cd '$FTP_DIR'"
+[ "$SAVE_WP_HTACCESS" = 1 ] && cmds="$cmds && put '$WORK/htaccess.original' -o .htaccess-wordpress-zaloha"
+cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose '$WORK/site' ."
 [ "$ARCHIVE" = 1 ] && cmds="$cmds && mirror -R --parallel=4 --no-perms '$WORK/archiv' archiv"
 ftp "$cmds"
 echo "Done. FINILA is at the site root, the old site at /archiv/."
