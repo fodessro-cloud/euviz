@@ -5,7 +5,7 @@ Reads data/leis.json, writes data/fundamentals.json and js/fundamentals.js.
 Amounts are in millions of the report currency; filings.xbrl.org states there
 are no restrictions on how its data can be used.
 """
-import json, sys, time, urllib.request
+import json, sys, time, urllib.parse, urllib.request
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -36,12 +36,12 @@ CONCEPTS = {
     "debt_nc":   ["NoncurrentBorrowings", "LongtermBorrowings"],
     "debt_c":    ["CurrentBorrowings", "ShorttermBorrowings", "CurrentPortionOfLongtermBorrowings"],
     "debt":      ["Borrowings"],
-    "eps":       ["BasicEarningsPerShare"],
+    "eps":       ["BasicEarningsLossPerShare", "BasicEarningsLossPerShareFromContinuingOperations", "BasicEarningsPerShare"],
     # For the quality score (Piotroski F-score): this year against last year.
     "gross":     ["GrossProfit"],
     "cur_assets": ["CurrentAssets"],
     "cur_liab":  ["CurrentLiabilities"],
-    "shares":    ["WeightedAverageShares", "AdjustedWeightedAverageShares"],
+    "shares":    ["WeightedAverageShares", "AdjustedWeightedAverageShares"],   # rarely tagged; else profit / EPS
     # Used when no combined D&A line is tagged.
     "dep_ppe":   ["DepreciationPropertyPlantAndEquipment", "AdjustmentsForDepreciationPropertyPlantAndEquipment"],
     "dep_rou":   ["DepreciationRightofuseAssets"],
@@ -77,6 +77,7 @@ INSTANT = {"equity", "assets", "cash", "debt_nc", "debt_c", "debt", "cur_assets"
 
 
 def get(url, as_json=True):
+    url = urllib.parse.quote(url, safe=":/?&=%[]-_.~")   # some report file names contain spaces
     for attempt in range(3):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
@@ -153,7 +154,9 @@ def extract(xjson, period_end):
             if slot not in found or rank < found[slot][0]:
                 found[slot] = (rank, value, dims.get("unit", ""))
     cur = {k: v[1] for (k, w), v in found.items() if w == "cur"}
-    if financial:
+    # Banks and insurers list their balance sheet by liquidity, without current assets. Industrial groups
+    # with a finance arm (Volvo) or customer loans also tag the bank concepts but keep the current split.
+    if financial and "cur_assets" not in cur:
         cur["financial"] = True
     prev = {k: v[1] for (k, w), v in found.items() if w == "prev"}
     units = {v[2] for (k, w), v in found.items() if k not in ("eps", "shares")}
@@ -171,6 +174,8 @@ def fscore(cur, prev):
     debt = lambda d: d.get("debt_nc", d.get("debt"))
     test = lambda a, b, better: None if a is None or b is None else int(better(a, b))
     net, cfo = cur.get("net"), cur.get("cfo")
+    shares = lambda d: d.get("shares") or (d["net"] / d["eps"] if d.get("net") and d.get("eps")
+                                           and (d["net"] > 0) == (d["eps"] > 0) and abs(d["eps"]) > 1e-6 else None)
     lev_cur = debt(cur) / cur["assets"] if debt(cur) is not None and cur.get("assets") else None
     lev_prev = debt(prev) / prev["assets"] if debt(prev) is not None and prev.get("assets") else None
     tests = [
@@ -180,7 +185,7 @@ def fscore(cur, prev):
         None if net is None or cfo is None else int(cfo > net),                 # 4 cash flow above profit
         test(lev_cur, lev_prev, lambda a, b: a <= b),                            # 5 long-term debt / assets not up
         test(ratio(cur, "cur_assets", "cur_liab"), ratio(prev, "cur_assets", "cur_liab"), lambda a, b: a > b),  # 6 current ratio up
-        test(cur.get("shares"), prev.get("shares"), lambda a, b: a <= b * 1.005),  # 7 no new shares
+        test(shares(cur), shares(prev), lambda a, b: a <= b * 1.02),           # 7 no new shares (2 % for rounding of EPS)
         test(ratio(cur, "gross", "revenue"), ratio(prev, "gross", "revenue"), lambda a, b: a > b),  # 8 gross margin up
         test(ratio(cur, "revenue", "assets"), ratio(prev, "revenue", "assets"), lambda a, b: a > b),  # 9 asset turnover up
     ]

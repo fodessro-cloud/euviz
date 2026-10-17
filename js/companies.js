@@ -21,8 +21,9 @@ const eur = v => !isNum(v) ? '—' : Math.abs(v) >= 1e6 ? `€${num(v / 1e6, 1)}
 // FINILA scores. Quality = Piotroski F-score (0-9) from this and last year's annual report.
 const F_TESTS = ['Profitable', 'Positive operating cash flow', 'Return on assets improved', 'Cash flow above profit',
   'Long-term debt / assets not up', 'Current ratio improved', 'No new shares issued', 'Gross margin improved', 'Asset turnover improved'];
+// Some reports lack a figure (e.g. no gross profit line), so a score is "tests passed / tests possible".
 const scoreCell = c => !isNum(c.fscore) ? '—'
-  : `<span class="score score-${c.fscore >= 7 ? 'hi' : c.fscore >= 4 ? 'mid' : 'lo'}">${c.fscore}/9</span>`;
+  : `<span class="score score-${c.quality >= 0.75 ? 'hi' : c.quality >= 0.45 ? 'mid' : 'lo'}" title="${c.fscore} of ${c.fscoreKnown} tests passed">${c.fscore}/${c.fscoreKnown}</span>`;
 // Dividends as % of free cash flow: under 60 % comfortable, over 100 % not covered.
 const coverCell = c => !isNum(c.payoutFcf) ? '—'
   : `<span class="${c.payoutFcf <= 60 ? 'pos' : c.payoutFcf > 100 ? 'neg' : ''}">${num(c.payoutFcf, 0)}%</span>`;
@@ -34,7 +35,7 @@ const COLUMNS = [
   { key: 'name', label: 'Company', left: true, fmt: c => `<span class="ticker-link">${esc(c.ticker || '')}</span> <span class="company-name">${esc(c.name)}</span>` },
   { key: 'country', label: 'Country', left: true, fmt: c => esc(countryName(c.country)) },
   { key: 'sector', label: 'Sector', left: true, fmt: c => c.sector ? `<span class="badge-sector">${esc(c.sector)}</span>` : '—' },
-  { key: 'fscore', label: 'Quality', fmt: scoreCell },
+  { key: 'quality', label: 'Quality', fmt: scoreCell },
   { key: 'insNet', label: 'Insiders 30d', fmt: insiderCell },
   { key: 'shortPct', label: 'Shorted', fmt: shortCell },
   { key: 'payoutFcf', label: 'Div. / FCF', fmt: coverCell },
@@ -50,13 +51,13 @@ const COLUMNS = [
 // Each filter: options as [label, test]
 const FILTERS = [
   { id: 'combo', label: 'FINILA signals', options: () => [
-      ['Quality 7+ and insiders buying', c => c.fscore >= 7 && c.insNet > 0],
+      ['Strong quality and insiders buying', c => c.quality >= 0.75 && c.insNet > 0],
       ['Insiders buying while funds short', c => c.insNet > 0 && c.shortPct >= 0.5],
-      ['Quality 7+ and dividend covered', c => c.fscore >= 7 && c.payoutFcf > 0 && c.payoutFcf <= 60],
-      ['Weak quality and heavily shorted', c => isNum(c.fscore) && c.fscore <= 3 && c.shortPct >= 2]] },
+      ['Strong quality and dividend covered', c => c.quality >= 0.75 && c.payoutFcf > 0 && c.payoutFcf <= 60],
+      ['Weak quality and heavily shorted', c => c.quality <= 0.34 && c.shortPct >= 2]] },
   { id: 'fscore', label: 'Quality score', options: () => [
-      ['8 to 9 (strong)', c => c.fscore >= 8], ['7 or more', c => c.fscore >= 7], ['5 or more', c => c.fscore >= 5],
-      ['3 or less (weak)', c => isNum(c.fscore) && c.fscore <= 3]] },
+      ['Strong (3/4 of tests or more)', c => c.quality >= 0.75], ['Above half', c => c.quality > 0.5],
+      ['Weak (1/3 of tests or less)', c => c.quality <= 0.34], ['All tests passed', c => isNum(c.fscore) && c.fscore === c.fscoreKnown]] },
   { id: 'insiders', label: 'Insiders, 30 days', options: () => [
       ['Net buying', c => c.insNet > 0], ['2 or more buyers', c => c.insBuyers >= 2], ['Net selling', c => c.insNet < 0]] },
   { id: 'shorts', label: 'Shorted by funds', options: () => [
@@ -182,8 +183,8 @@ function openCompany(lei) {
 function scoresHTML(c) {
   const tests = (c.fscoreTests || '').split('');
   const quality = isNum(c.fscore) ? `
-    <div class="modal-section"><h4>Quality score ${scoreCell(c)}</h4><table class="kv-table">
-      ${F_TESTS.map((t, i) => `<tr><td>${t}</td><td>${tests[i] === '1' ? '<span class="pos">✓ yes</span>' : tests[i] === '0' ? '<span class="neg">✗ no</span>' : '—'}</td></tr>`).join('')}
+    <div class="modal-section"><h4>Quality score ${scoreCell(c)} <span class="ins-note">Piotroski F-score: this year against last year</span></h4><table class="kv-table">
+      ${F_TESTS.map((t, i) => `<tr><td>${t}</td><td>${tests[i] === '1' ? '<span class="pos">✓ yes</span>' : tests[i] === '0' ? '<span class="neg">✗ no</span>' : '<span class="ins-note">not in report</span>'}</td></tr>`).join('')}
     </table></div>` : `<div class="modal-section"><h4>Quality score</h4><p class="ins-note">${c.financial ? 'Not calculated for banks and insurers.' : 'Not enough figures in the last two annual reports.'}</p></div>`;
   const other = `
     <div class="modal-section"><h4>Dividend, insiders, short sellers</h4><table class="kv-table">
@@ -231,6 +232,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const data = await (await fetch('js/companies.json')).json();
     UPDATED = data.updated;
     COMPANIES = data.rows.map(r => Object.fromEntries(data.fields.map((f, i) => [f, r[i]])));
+    COMPANIES.forEach(c => {
+      if (!isNum(c.fscore)) return;
+      c.fscoreKnown = (c.fscoreTests || '').replace(/-/g, '').length;
+      c.quality = c.fscore / c.fscoreKnown;
+    });
   } catch (e) {
     document.getElementById('co-count').textContent = 'Could not load company data.';
     return;
