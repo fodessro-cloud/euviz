@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FINILA — Európske akcie a porovnanie investícií</title>
-  <meta name="description" content="FINILA: screener európskych akcií, ukazovatele hodnotových investorov a porovnanie výnosov akcií, zlata, dlhopisov a nehnuteľností.">
+  <title>FINILA — European stocks and investment comparison</title>
+  <meta name="description" content="FINILA: a European stock screener with value-investing metrics and a return comparison of stocks, gold, bonds and real estate.">
   <link rel="icon" href="css/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,57 +14,57 @@
 
 <header class="h-header">
   <div class="h-wrap h-header-row">
-    <a class="h-logo" href="index.html" aria-label="FINILA, domov">
+    <a class="h-logo" href="index.html" aria-label="FINILA home">
       <svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>
       FINILA
     </a>
-    <nav class="h-nav" aria-label="Hlavné menu">
-      <a href="screener.html">Akcie</a>
-      <a href="map.html">Mapa trhu</a>
-      <a href="groups.html">Sektory a krajiny</a>
-      <a href="#porovnanie">Porovnanie investícií</a>
-      <a href="/archiv/">Archív</a>
+    <nav class="h-nav" aria-label="Main menu">
+      <a href="screener.html">Stocks</a>
+      <a href="map.html">Market map</a>
+      <a href="groups.html">Sectors &amp; countries</a>
+      <a href="#porovnanie">Compare investments</a>
+      <a href="/archiv/">Archive</a>
     </nav>
   </div>
 </header>
-<div class="demo-banner">Ukážková verzia FINILA: čísla na tejto stránke sú ilustračné, nie skutočné trhové dáta. Nejde o investičné odporúčanie.</div>
+<div class="demo-banner">FINILA preview: figures on this page are illustrative, not real market data. Not investment advice.</div>
 
 <div class="h-ticker"><div class="h-wrap h-ticker-row" id="ticker"></div></div>
 
 <main class="h-wrap">
-  <h1 class="sr-only">FINILA, screener európskych akcií a porovnanie investícií</h1>
+  <h1 class="sr-only">FINILA, European stock screener and investment comparison</h1>
 
   <section class="h-top">
     <div class="h-top-left">
       <form class="h-search" action="screener.html" method="get" role="search">
-        <label for="q" class="sr-only">Hľadať akciu</label>
-        <input id="q" name="q" type="search" list="stock-list" autocomplete="off" placeholder="Hľadaj firmu, ticker alebo krajinu, napr. SAP, ASML, Francúzsko">
+        <label for="q" class="sr-only">Search stocks</label>
+        <input id="q" name="q" type="search" list="stock-list" autocomplete="off" placeholder="Search a company or ticker, e.g. SAP, ASML, LVMH">
         <datalist id="stock-list"></datalist>
-        <button type="submit">Hľadať</button>
+        <button type="submit">Search</button>
       </form>
       <div class="h-chips">
-        <span>Rýchle filtre:</span>
-        <a href="#filtre" data-preset="buffett">ROE nad 15 %</a>
-        <a href="#filtre" data-preset="cheap">P/E pod 10</a>
-        <a href="#filtre" data-preset="dividend">Dividenda nad 4 %</a>
+        <span>Quick filters:</span>
+        <a href="#filtre" data-preset="buffett">ROE above 15%</a>
+        <a href="#filtre" data-preset="cheap">P/E below 10</a>
+        <a href="#filtre" data-preset="dividend">Dividend above 4%</a>
       </div>
       <div class="h-index-cards" id="index-cards"></div>
     </div>
 
     <div class="h-card h-map">
       <div class="h-card-head">
-        <h2>Mapa trhu podľa sektorov</h2>
-        <a href="map.html">Celá mapa</a>
+        <h2>Market map by sector</h2>
+        <a href="map.html">Full map</a>
       </div>
       <div class="h-map-grid" id="sector-map"></div>
-      <p class="h-note">Ilustračné dáta, priemerná denná zmena vážená trhovou kapitalizáciou.</p>
+      <p class="h-note">Illustrative data; average daily change weighted by market cap.</p>
     </div>
   </section>
 
   <section class="h-section" id="filtre">
     <div class="h-section-head">
-      <h2>Hotové filtre hodnotových investorov</h2>
-      <a href="screener.html">Otvoriť screener</a>
+      <h2>Ready-made value investor screens</h2>
+      <a href="screener.html">Open screener</a>
     </div>
     <div class="h-presets" id="presets"></div>
   </section>
@@ -72,18 +72,18 @@
   <section class="h-section" id="porovnanie">
     <div class="h-card h-compare">
       <div class="h-compare-intro">
-        <div class="h-eyebrow">POROVNANIE INVESTÍCIÍ</div>
-        <h2>Koľko by dnes mala tvoja investícia 10 000 €?</h2>
-        <p>Akcie, zlato, dlhopisy, byt na Slovensku aj termínovaný vklad na jednom grafe, vrátane straty kúpnej sily pri hotovosti.</p>
-        <div class="h-periods" role="group" aria-label="Obdobie" id="periods">
-          <button type="button" data-years="5">5 rokov</button>
-          <button type="button" data-years="10" class="on">10 rokov</button>
-          <button type="button" data-years="20">20 rokov</button>
+        <div class="h-eyebrow">COMPARE INVESTMENTS</div>
+        <h2>What would €10,000 be worth today?</h2>
+        <p>Stocks, gold, bonds, real estate and a term deposit on one chart, including the purchasing power lost by holding cash.</p>
+        <div class="h-periods" role="group" aria-label="Period" id="periods">
+          <button type="button" data-years="5">5 years</button>
+          <button type="button" data-years="10" class="on">10 years</button>
+          <button type="button" data-years="20">20 years</button>
         </div>
       </div>
       <div class="h-compare-bars">
         <div id="compare"></div>
-        <p class="h-note">Ilustračné čísla, nie skutočné historické výnosy. Minulé výnosy nezaručujú budúce.</p>
+        <p class="h-note">Illustrative figures, not actual historical returns. Past performance does not guarantee future results.</p>
       </div>
     </div>
   </section>
@@ -91,46 +91,46 @@
   <section class="h-section h-split">
     <div class="h-card h-movers">
       <div class="h-card-head">
-        <h2>Dnes na trhu</h2>
-        <div class="h-tabs" role="tablist" aria-label="Pohyby trhu" id="tabs">
-          <button type="button" role="tab" data-tab="up" class="on" aria-selected="true">Najviac rastúce</button>
-          <button type="button" role="tab" data-tab="down" aria-selected="false">Najviac klesajúce</button>
-          <button type="button" role="tab" data-tab="vol" aria-selected="false">Najobchodovanejšie</button>
+        <h2>Today on the market</h2>
+        <div class="h-tabs" role="tablist" aria-label="Market movers" id="tabs">
+          <button type="button" role="tab" data-tab="up" class="on" aria-selected="true">Top gainers</button>
+          <button type="button" role="tab" data-tab="down" aria-selected="false">Top losers</button>
+          <button type="button" role="tab" data-tab="vol" aria-selected="false">Most traded</button>
         </div>
       </div>
       <div class="h-table-wrap">
         <table>
-          <thead><tr><th>Ticker</th><th>Firma</th><th>Krajina</th><th class="r">Cena</th><th class="r">Zmena</th><th class="r">P/E</th></tr></thead>
+          <thead><tr><th>Ticker</th><th>Company</th><th>Country</th><th class="r">Price</th><th class="r">Change</th><th class="r">P/E</th></tr></thead>
           <tbody id="movers"></tbody>
         </table>
       </div>
     </div>
     <div class="h-card h-data">
-      <div class="h-eyebrow">PRIPRAVUJEME</div>
-      <h2>Dáta FINILA</h2>
+      <div class="h-eyebrow">COMING SOON</div>
+      <h2>FINILA Data</h2>
       <ul>
-        <li><strong>Nákupy manažérov v EÚ</strong><span>Kto z vedenia firiem kupuje vlastné akcie</span></li>
-        <li><strong>Dividendový kalendár</strong><span>Výplaty dividend európskych firiem po mesiacoch</span></li>
-        <li><strong>Firmy strednej Európy</strong><span>Varšava, Praha, Budapešť a Bratislava v jednom prehľade</span></li>
+        <li><strong>European insider buying</strong><span>Which executives are buying their own company’s shares</span></li>
+        <li><strong>Dividend calendar</strong><span>European dividend payments month by month</span></li>
+        <li><strong>Central European companies</strong><span>Warsaw, Prague, Budapest and Bratislava in one place</span></li>
       </ul>
     </div>
   </section>
 
   <section class="h-section h-tiles">
     <a class="h-card h-tile" href="groups.html">
-      <div class="h-eyebrow blue">SEKTORY A KRAJINY</div>
-      <h3>Ako sa darí jednotlivým trhom</h3>
-      <p>Výkonnosť a ocenenie sektorov a krajín Európy na jednom mieste.</p>
+      <div class="h-eyebrow blue">SECTORS &amp; COUNTRIES</div>
+      <h3>How each market is doing</h3>
+      <p>Performance and valuation of Europe’s sectors and countries in one place.</p>
     </a>
     <a class="h-card h-tile" href="map.html">
-      <div class="h-eyebrow blue">MAPA TRHU</div>
-      <h3>Celá Európa na jednej obrazovke</h3>
-      <p>Farebná mapa firiem podľa veľkosti a dnešnej zmeny ceny.</p>
+      <div class="h-eyebrow blue">MARKET MAP</div>
+      <h3>All of Europe on one screen</h3>
+      <p>A colour map of companies by size and today’s price change.</p>
     </a>
     <a class="h-card h-tile" href="/archiv/">
-      <div class="h-eyebrow blue">ARCHÍV</div>
-      <h3>Pôvodná FINILA 2014 až 2019</h3>
-      <p>Komoditné správy, COT reporty, grafy a obchodná škola.</p>
+      <div class="h-eyebrow blue">ARCHIVE</div>
+      <h3>The original FINILA, 2014 to 2019</h3>
+      <p>Commodity reports, COT reports, charts and the trading school (in Slovak).</p>
     </a>
   </section>
 </main>
@@ -142,13 +142,13 @@
         <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>
         FINILA
       </div>
-      <p>Informácie na FINILA slúžia na vzdelávanie a nie sú investičným odporúčaním.</p>
+      <p>Information on FINILA is for education only and is not investment advice.</p>
     </div>
-    <nav class="h-footer-nav" aria-label="Päta">
-      <a href="screener.html">Akcie</a>
-      <a href="map.html">Mapa trhu</a>
-      <a href="groups.html">Sektory a krajiny</a>
-      <a href="/archiv/">Archív</a>
+    <nav class="h-footer-nav" aria-label="Footer">
+      <a href="screener.html">Stocks</a>
+      <a href="map.html">Market map</a>
+      <a href="groups.html">Sectors &amp; countries</a>
+      <a href="/archiv/">Archive</a>
     </nav>
   </div>
 </footer>

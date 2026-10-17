@@ -1,0 +1,41 @@
+name: Obnoviť dáta FINILA
+
+on:
+  push:
+    branches: [claude/project-thread-tvs3mb]
+    paths: ['scripts/data/**', '.github/workflows/refresh-data.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Map stocks to their XBRL filer
+        run: |
+          set -o pipefail
+          mkdir -p data
+          python scripts/data/map_leis.py 2>&1 | tee data/run.log || { echo "::error::map_leis: $(tail -3 data/run.log | tr '\n' ' ')"; exit 1; }
+      - name: Read latest annual reports
+        run: |
+          set -o pipefail
+          python scripts/data/fundamentals.py 2>&1 | tee -a data/run.log || { echo "::error::fundamentals: $(tail -3 data/run.log | tr '\n' ' ')"; exit 1; }
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "finila-data-bot"
+          git config user.email "finila-data-bot@users.noreply.github.com"
+          git add data/ js/fundamentals.js
+          git diff --cached --quiet || git commit -m "Update FINILA data [data refresh]"
+          git push
