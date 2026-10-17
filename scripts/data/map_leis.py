@@ -1,27 +1,54 @@
-"""Find the LEI and the filings.xbrl.org entity for each stock in js/data.js.
+"""Match each stock in js/data.js to its filer on filings.xbrl.org.
 
-Writes data/leis.json ({ticker: {lei, xbrl_name, filings}}) and prints a
-review report. Run occasionally; the nightly refresh only reads leis.json.
+Downloads the full entity list (name + LEI), matches on normalised names
+(with an alias table for names that differ from the legal name) and writes
+data/leis.json ({ticker: {lei, legal_name, ...} | null}) plus a review report.
 """
-import json, re, sys, time, urllib.parse, urllib.request
+import difflib, json, re, sys, time, unicodedata, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-UA = {"User-Agent": "FINILA data refresh (finila.com)", "Accept": "application/vnd.api+json"}
+BASE = "https://filings.xbrl.org"
+UA = {"User-Agent": "FINILA data refresh (finila.com)"}
+
+# Legal names on the filings, where they differ from the screener name.
+ALIASES = {
+    "BBVA": "BANCO BILBAO VIZCAYA ARGENTARIA", "PHIA": "KONINKLIJKE PHILIPS",
+    "VOLV": "VOLVO", "MAERSK": "A P MOLLER MAERSK", "ERICB": "TELEFONAKTIEBOLAGET LM ERICSSON", "PKN": "ORLEN",
+    "DG": "VINCI", "CS": "AXA", "MC": "LVMH MOET HENNESSY LOUIS VUITTON",
+    "EDP": "EDP ENERGIAS DE PORTUGAL", "MUV2": "MUENCHENER RUECKVERSICHERUNGS",
+    "UCB": "UCB", "BP": "BP", "ORA": "ORANGE", "ENI": "ENI", "OMV": "OMV",
+}
+LEGAL = r"\b(SE|AG|SA|S A|NV|N V|PLC|P L C|AB|PUBL|ASA|A S|AS|SPA|S P A|OYJ|LTD|LIMITED|HOLDINGS?|GROUP|GROEP|INTERNATIONAL|AKTIENGESELLSCHAFT|AKTIEBOLAG(ET)?|SOCIETE ANONYME|SPOLKA AKCYJNA|SPOKA AKCYJNA|SOCIETA PER AZIONI|INC|CORPORATION|THE)\b"
+
+
+def norm(s):
+    s = s.translate(str.maketrans({"Ø": "O", "ø": "o", "Æ": "AE", "æ": "ae", "Ł": "L", "ł": "l", "ß": "SS"}))
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().upper()
+    s = re.sub(r"[^A-Z0-9 ]", " ", s)
+    s = re.sub(LEGAL, " ", s)
+    return re.sub(r"\s+", " ", s).strip()
 
 
 def get(url):
-    for attempt in range(3):
+    for attempt in range(4):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
                 return json.load(r)
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                return None
-            time.sleep(2 * (attempt + 1))
-        except Exception:
-            time.sleep(2 * (attempt + 1))
-    return None
+        except Exception as e:
+            err = e
+            time.sleep(3 * (attempt + 1))
+    raise RuntimeError(f"{url}: {err}")
+
+
+def all_entities():
+    out, url = [], f"{BASE}/api/entities?page[size]=500"
+    while url:
+        page = get(url)
+        out += [(e["attributes"]["identifier"], e["attributes"]["name"]) for e in page["data"]]
+        nxt = page.get("links", {}).get("next")
+        url = (nxt if nxt.startswith("http") else BASE + nxt) if nxt else None
+    return out
 
 
 def stocks():
@@ -29,38 +56,29 @@ def stocks():
     return re.findall(r"ticker:'([^']+)',\s*name:(?:'([^']*)'|\"([^\"]*)\"),\s*country:'([^']+)'", src)
 
 
-def candidates(name):
-    q = re.sub(r"\b(SE|AG|SA|S\.A\.|NV|N\.V\.|PLC|plc|AB|ASA|A/S|SpA|S\.p\.A\.|Ltd|Group|Holding|Holdings|Inc)\b\.?", "", name).strip(" ,.-")
-    url = "https://api.gleif.org/api/v1/fuzzycompletions?field=entity.legalName&q=" + urllib.parse.quote(q)
-    data = get(url) or {}
-    out = []
-    for d in data.get("data", [])[:8]:
-        lei = (d.get("relationships", {}).get("lei-records", {}).get("data") or {}).get("id")
-        if lei:
-            out.append((lei, d["attributes"]["value"]))
-    return q, out
-
-
 def main():
+    ents = all_entities()
+    print(f"{len(ents)} entities on filings.xbrl.org")
+    by_norm = {}
+    for lei, name in ents:
+        by_norm.setdefault(norm(name), []).append((lei, name))
+    keys = list(by_norm)
     result, report = {}, []
     for ticker, n1, n2, country in stocks():
         name = n1 or n2
-        q, cands = candidates(name)
-        hit = None
-        for lei, legal in cands:
-            ent = get(f"https://filings.xbrl.org/api/entities/{lei}/filings?page[size]=50")
-            if ent and ent.get("data"):
-                hit = {"lei": lei, "legal_name": legal, "filings": len(ent["data"]),
-                       "periods": sorted({f["attributes"]["period_end"] for f in ent["data"]})[-3:]}
-                break
-        result[ticker] = hit
-        report.append(f"{ticker:7} {country:12} {name[:32]:32} -> " +
-                      (f"{hit['lei']} {hit['legal_name'][:40]} ({hit['filings']} filings, {hit['periods']})" if hit
-                       else "NO XBRL MATCH; candidates: " + "; ".join(f"{l} {n[:30]}" for l, n in cands[:3])))
-        time.sleep(0.3)
-    out = ROOT / "data/leis.json"
-    out.parent.mkdir(exist_ok=True)
-    out.write_text(json.dumps(result, indent=1, ensure_ascii=False))
+        want = norm(ALIASES.get(ticker, name))
+        hit, how = None, ""
+        if want in by_norm:
+            hit, how = by_norm[want][0], "exact"
+        else:
+            close = difflib.get_close_matches(want, keys, n=1, cutoff=0.93)
+            if close:
+                hit, how = by_norm[close[0]][0], f"fuzzy~{close[0]}"
+        result[ticker] = {"lei": hit[0], "legal_name": hit[1], "match": how} if hit else None
+        report.append(f"{ticker:7} {country:12} {name[:32]:32} [{want}] -> " +
+                      (f"{hit[0]} {hit[1]} ({how})" if hit else "none"))
+    (ROOT / "data").mkdir(exist_ok=True)
+    (ROOT / "data/leis.json").write_text(json.dumps(result, indent=1, ensure_ascii=False))
     (ROOT / "data/leis-report.txt").write_text("\n".join(report) + "\n")
     print("\n".join(report))
     print(f"\nmatched {sum(1 for v in result.values() if v)} / {len(result)}")

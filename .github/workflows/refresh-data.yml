@@ -24,10 +24,12 @@ jobs:
           python-version: '3.12'
       - name: Map stocks to LEI / XBRL filings
         run: python scripts/data/map_leis.py
+      - name: Read latest annual reports
+        run: python scripts/data/fundamentals.py
       - name: Commit results
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/
+          git add data/ js/fundamentals.js
           git diff --cached --quiet || git commit -m "Update FINILA data [data refresh]"
           git push
