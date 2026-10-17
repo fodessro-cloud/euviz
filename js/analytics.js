@@ -27,13 +27,13 @@ function showConsentBar() {
   bar.setAttribute('role', 'region');
   bar.setAttribute('aria-label', 'Cookie consent');
   bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:1000;max-width:760px;margin:0 auto;' +
-    'background:#17223A;color:#E8EDF7;border:1px solid #2C3A5A;border-radius:12px;padding:14px 16px;' +
+    'background:#FFFFFF;color:#0F1B33;border:1px solid #C3CCDB;border-radius:12px;padding:14px 16px;' +
     'display:flex;flex-wrap:wrap;gap:12px;align-items:center;font:14px/1.45 "IBM Plex Sans",system-ui,sans-serif;' +
-    'box-shadow:0 8px 24px rgba(0,0,0,.4)';
+    'box-shadow:0 8px 24px rgba(15,27,51,.18)';
   bar.innerHTML =
     '<span style="flex:1 1 320px">We use analytics cookies (Google Analytics) to understand how FINILA is used. We never sell your data or share it for advertising.</span>' +
     '<span style="display:flex;gap:8px">' +
-    '<button type="button" data-v="no" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #2C3A5A;background:transparent;color:#E8EDF7;font:inherit;cursor:pointer">Decline</button>' +
+    '<button type="button" data-v="no" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C3CCDB;background:transparent;color:#0F1B33;font:inherit;cursor:pointer">Decline</button>' +
     '<button type="button" data-v="yes" style="height:40px;padding:0 16px;border-radius:8px;border:0;background:#F2B33D;color:#1A1305;font:inherit;font-weight:600;cursor:pointer">Accept</button>' +
     '</span>';
   bar.addEventListener('click', e => {

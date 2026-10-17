@@ -194,8 +194,8 @@ function scoresHTML(c) {
       <tr><td>Insiders buying, 30 days</td><td>${isNum(c.insNet) ? c.insBuyers : '—'}</td></tr>
       <tr><td>Shorted by funds</td><td>${shortCell(c)}${c.shortFunds ? ` <span class="ins-note">${c.shortFunds} ${c.shortFunds === 1 ? 'fund' : 'funds'}</span>` : ''}</td></tr>
     </table>
-    <p class="ins-note">${isNum(c.insNet) ? `<a href="insiders.html?q=${encodeURIComponent(c.insName)}">See insider trades</a>` : 'Insider trades so far only for Sweden.'}
-    ${isNum(c.shortPct) ? ` · <a href="shorts.html?q=${encodeURIComponent(c.isin)}">See short positions</a>` : ''}</p></div>`;
+    <p class="ins-note">${isNum(c.insNet) ? `<a href="/insiders?q=${encodeURIComponent(c.insName)}">See insider trades</a>` : 'Insider trades so far only for Sweden.'}
+    ${isNum(c.shortPct) ? ` · <a href="/shorts?q=${encodeURIComponent(c.isin)}">See short positions</a>` : ''}</p></div>`;
   return `<div class="modal-grid modal-scores">${quality}${other}</div>`;
 }
 

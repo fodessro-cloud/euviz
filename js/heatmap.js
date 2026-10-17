@@ -116,18 +116,18 @@ function renderHeatmap() {
     const { x, y, w, h } = gr.rect;
 
     // Group header
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = '#F6F8FB';
     ctx.fillRect(x, y, w, h);
-    ctx.strokeStyle = '#2a2a4e';
+    ctx.strokeStyle = '#FFFFFF';
     ctx.lineWidth = 2;
     ctx.strokeRect(x, y, w, h);
 
     const HEADER = h > 40 ? 22 : 0;
 
     if (HEADER) {
-      ctx.fillStyle = '#222244';
+      ctx.fillStyle = '#E3E9F3';
       ctx.fillRect(x, y, w, HEADER);
-      ctx.fillStyle = '#aaaacc';
+      ctx.fillStyle = '#34445F';
       ctx.font = `bold ${Math.min(11, w/8)}px Inter, sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(gr.name, x + w/2, y + HEADER - 6);

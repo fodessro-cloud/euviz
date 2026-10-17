@@ -9,6 +9,15 @@ RewriteBase /
 RewriteRule \.php$ - [F,L]
 RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]
 
+# Clean addresses for the FINILA pages: /screener shows screener.html, and the
+# old /screener.html and /index.html addresses redirect to /screener and /.
+# A new page needs its name added to both lists.
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+(screener|companies|insiders|shorts|invest|map|groups)\.html[\s?]
+RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)\.html$ /$1 [R=301,L]
+RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)$ $1.html [L]
+
 # Links inside the archive point to /archiv/...: send visitors to the original
 # address instead (/archiv/blog/index.html -> /blog/). Images, scripts and the
 # archive's own home page (/archiv/) stay where they are.

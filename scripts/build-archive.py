@@ -40,7 +40,7 @@ DROP_SELECTORS = [".entry-title", ".entry-posted", "#respond", ".comments-area",
                   ".sharedaddy", ".addtoany_share_save_container", ".post-navigation", ".nav-links"]
 
 LOGO = ('<svg width="{s}" height="{s}" viewBox="0 0 64 64" aria-hidden="true">'
-        '<rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/>'
+        '<rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/>'
         '<rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/>'
         '<rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/>'
         '<rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>')
@@ -57,21 +57,26 @@ PAGE = """<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/home.css">
   <link rel="stylesheet" href="/css/archive.css">
+  <link rel="stylesheet" href="/css/header.css">
 </head>
 <body>
 
-<header class="h-header">
-  <div class="h-wrap h-header-row">
-    <a class="h-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
-    <nav class="h-nav" aria-label="Main menu">
-      <a href="/screener.html">Stocks</a>
-      <a href="/map.html">Market map</a>
-      <a href="/groups.html">Sectors &amp; countries</a>
-      <a href="/#porovnanie">Compare investments</a>
+<header class="fh">
+  <div class="fh-row">
+    <a class="fh-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
+    <nav class="fh-nav" aria-label="Main menu">
+      <a href="/screener">Stocks</a>
+      <a href="/companies">Fundamentals</a>
+      <a href="/insiders">Insider trades</a>
+      <a href="/shorts">Short positions</a>
+      <a href="/map">Market map</a>
+      <a href="/groups">Sectors &amp; countries</a>
+      <a href="/invest">Where to put money</a>
       <a href="/archiv/" aria-current="page">Archive</a>
     </nav>
   </div>
 </header>
+<script>(function(){{var a=document.querySelector('.fh-nav [aria-current]');if(a)a.parentNode.scrollLeft=a.offsetLeft-a.parentNode.offsetLeft-16;}})();</script>
 <div class="a-bar">
   <div class="h-wrap a-bar-row">
     <span class="a-badge">Archive 2014–2019</span>
@@ -96,9 +101,9 @@ PAGE = """<!DOCTYPE html>
       <p>Archived content from the original FINILA.com (2014–2019), kept for reference. Prices and opinions reflect the date of publication. Not investment advice.</p>
     </div>
     <nav class="h-footer-nav" aria-label="Footer">
-      <a href="/screener.html">Stocks</a>
-      <a href="/map.html">Market map</a>
-      <a href="/groups.html">Sectors &amp; countries</a>
+      <a href="/screener">Stocks</a>
+      <a href="/map">Market map</a>
+      <a href="/groups">Sectors &amp; countries</a>
       <a href="/archiv/">Archive</a>
     </nav>
   </div>
@@ -112,8 +117,8 @@ PAGE = """<!DOCTYPE html>
 def public_url(rel):
     """archiv/<rel> file -> the address visitors use (no /archiv/, no index.html)."""
     path = "/" + rel
-    if path.endswith("/index.html"):
-        path = path[: -len("index.html")]
+    if path.endswith("/"):
+        path = path[: -len("/")]
     return path
 
 
@@ -135,8 +140,8 @@ def map_link(value, page_rel, attr):
         return "/archiv" + path
     if path.startswith("/archiv/"):
         path = path[len("/archiv"):]
-    if path.endswith("/index.html"):
-        path = path[: -len("index.html")]
+    if path.endswith("/"):
+        path = path[: -len("/")]
     if attr == "href" and path == "/":
         return "/archiv/"
     return path + (("#" + u.fragment) if u.fragment else "")
@@ -263,7 +268,7 @@ def build_index(pages):
     for rel, title, date in pages:
         url = public_url(rel)
         for prefix, label in SECTIONS:
-            if rel.startswith(prefix) and rel != prefix + "index.html":
+            if rel.startswith(prefix) and rel != prefix + "/":
                 groups[label].append((title, url, date))
                 break
         else:
@@ -315,7 +320,7 @@ def main():
             with open(dest, "w", encoding="utf-8") as fh:
                 fh.write(page)
             pages.append((rel, title, date))
-    with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as fh:
+    with open(os.path.join(out, "/"), "w", encoding="utf-8") as fh:
         fh.write(build_index(pages))
     print(f"Built {len(pages)} pages + index into {out}/")
 
