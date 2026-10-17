@@ -40,7 +40,7 @@ DROP_SELECTORS = [".entry-title", ".entry-posted", "#respond", ".comments-area",
                   ".sharedaddy", ".addtoany_share_save_container", ".post-navigation", ".nav-links"]
 
 LOGO = ('<svg width="{s}" height="{s}" viewBox="0 0 64 64" aria-hidden="true">'
-        '<rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/>'
+        '<rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/>'
         '<rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/>'
         '<rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/>'
         '<rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>')
