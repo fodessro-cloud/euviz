@@ -227,7 +227,7 @@ async function addSignals() {
   const byLei = {}, byIsin = {};
   if (ins) {
     const since = Date.now() - 30 * 864e5;
-    ins.rows.filter(t => t.lei && t.instrumentType === 'Share' && t.status !== 'Revoked' && new Date(t.published) >= since).forEach(t => {
+    ins.rows.filter(t => t.lei && t.signal && new Date(t.published) >= since).forEach(t => {
       const s = byLei[t.lei] || (byLei[t.lei] = { net: 0, buyers: new Set(), name: t.issuer });
       if (t.nature === 'Acquisition') { s.net += t.valueEur || 0; s.buyers.add(t.person); }
       if (t.nature === 'Disposal') s.net -= t.valueEur || 0;

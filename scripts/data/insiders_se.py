@@ -110,6 +110,12 @@ def main():
         else:
             value = t["volume"] * t["price"] if t["volume"] is not None and t["price"] is not None else None
         t["valueEur"] = round(value / rate) if value is not None and rate else None
+        # Counts toward "insiders buying/selling": the current version of a share purchase or sale
+        # on a trading venue. Off-venue deals (transfers between own holding companies, takeover
+        # bids, subscriptions) and revised or cancelled reports would inflate the totals.
+        t["signal"] = (t.get("status") == "Current" and t.get("instrumentType") == "Share"
+                       and t.get("nature") in ("Acquisition", "Disposal") and bool(t.get("isin"))
+                       and t.get("venue") != "Outside a trading venue")
         out.append(t)
     if not out:
         print("no transactions parsed")

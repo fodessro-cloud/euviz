@@ -1,7 +1,7 @@
 1844 companies with figures, 105 without usable figures
-with ticker: 434, with sector: 403
+with ticker: 435, with sector: 404
 with F-score: 1541, F-score 8-9: 83, with dividend cover: 769
-by country: GB 454, SE 308, FR 152, NO 133, FI 107, ES 106, IT 97, DK 89, NL 87, BE 49, AT 45, GR 37, LU 31, MT 27, IS 22, HU 18, LT 18, HR 16, IE 13, PT 6, SI 6, SK 6, CY 5, PL 5, CH 4, EE 3
+by country: GB 454, SE 308, FR 152, NO 133, ES 107, FI 107, IT 97, DK 89, NL 86, BE 49, AT 45, GR 37, LU 31, MT 27, IS 22, HU 18, LT 18, HR 16, IE 13, PT 6, SI 6, SK 6, CY 5, PL 5, CH 4, EE 3
 
 largest 40 by revenue:
 Shell                              GB RDSA     Energy                 2025-12-31 rev€=237168.8 ebitda=None fcf=21948.0 roe=10.2 F=5 1111001-0
@@ -37,7 +37,7 @@ Telefónica                         ES TEF      Communication          2024-12-3
 Compass Group                      GB CPG      Consumer Staples       2025-09-30 rev€=40940.2 ebitda=None fcf=2474.0 roe=24.4 F=5 1111001-0
 Vodafone                           GB VOD      Communication          2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8 F=6 01111-101
 Schneider Electric                 FR SU       Utilities              2025-12-31 rev€=40152.0 ebitda=None fcf=4588.0 roe=17.2 F=6 111100101
-J Sainsbury                        GB SBRY     Consumer Staples       2026-02-28 rev€=39873.2 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
+Sainsbury's                        GB SBRY     Consumer Staples       2026-02-28 rev€=39873.2 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
 GSK                                GB GSK      Healthcare             2025-12-31 rev€=38711.9 ebitda=None fcf=4756.0 roe=34.9 F=9 111111111
 Inditex                            ES ITX      Consumer Discretionary 2025-01-31 rev€=38632.0 ebitda=10728.0 fcf=6616.0 roe=29.8 F=8 111110111
 Imperial Brands                    GB IMB      Consumer Staples       2025-09-30 rev€=38124.1 ebitda=4271.0 fcf=3429.0 roe=42.9 F=6 110101110
