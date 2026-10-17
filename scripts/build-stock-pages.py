@@ -138,35 +138,39 @@ def add_history(rows):
 
 
 def chart(c):
-    """Price chart of the daily closes (inline SVG, so it costs no extra request)."""
-    pts = c.get('history') or []
-    if len(pts) < 2:
+    """Price chart. Daily closes are embedded; js/stock-page.js adds the minute prices of the last
+    trading day (/js/intraday/<ISIN>.json) for 1H, 4H and 1D, and 1H is shown first."""
+    if not is_num(c.get('price')):
         return ''
-    if len(pts) < 5:
-        return f'<p class="ins-note sp-chart-note">Price chart: FINILA started recording daily closing prices on {esc(pts[0][0])}, so the chart appears after a few more trading days.</p>'
+    pts = c.get('history') or []
     w, h, pad = 600, 150, 4
-    vals = [v for _, v in pts]
-    lo, hi = min(vals), max(vals)
-    span = (hi - lo) or 1
-    xy = [(pad + i * (w - 2 * pad) / (len(pts) - 1), pad + (hi - v) * (h - 2 * pad) / span) for i, v in enumerate(vals)]
-    line = ' '.join(f'{x:.1f},{y:.1f}' for x, y in xy)
-    area = f'{pad},{h} {line} {w - pad},{h}'
-    chg = (vals[-1] / vals[0] - 1) * 100
-    cls = 'pos' if chg >= 0 else 'neg'
-    # Range buttons (js/stock-page.js redraws from the embedded closes); only ranges the history covers.
-    first = date.fromisoformat(pts[0][0])
-    last = date.fromisoformat(pts[-1][0])
-    ranges = [(label, d) for label, d in (('1W', 7), ('1M', 31), ('3M', 92), ('6M', 183), ('1Y', 366)) if (last - first).days > d]
-    buttons = ''.join(f'<button type="button" data-days="{d}">{label}</button>' for label, d in ranges)
-    buttons += '<button type="button" data-days="0" class="active">All</button>'
-    return f'''<figure class="sp-chart">
+    line = area = ''
+    cap, chg_html, axis = 'Price', '', ['', '', '']
+    if len(pts) >= 5:
+        vals = [v for _, v in pts]
+        lo, hi = min(vals), max(vals)
+        span = (hi - lo) or 1
+        xy = [(pad + i * (w - 2 * pad) / (len(pts) - 1), pad + (hi - v) * (h - 2 * pad) / span) for i, v in enumerate(vals)]
+        line = ' '.join(f'{x:.1f},{y:.1f}' for x, y in xy)
+        area = f'{pad},{h} {line} {w - pad},{h}'
+        chg = (vals[-1] / vals[0] - 1) * 100
+        cap = f'Price since {esc(pts[0][0])}'
+        chg_html = f'{"+" if chg >= 0 else ""}{num(chg)}%'
+        axis = [esc(pts[0][0]), f'low €{num(lo, 2)} · high €{num(hi, 2)}', esc(pts[-1][0])]
+    days = (date.fromisoformat(pts[-1][0]) - date.fromisoformat(pts[0][0])).days if len(pts) >= 2 else 0
+    buttons = ''.join(f'<button type="button" data-range="i{m}" hidden>{label}</button>' for label, m in (('1H', 60), ('4H', 240), ('1D', 0)))
+    buttons += ''.join(f'<button type="button" data-range="d{d}">{label}</button>'
+                       for label, d in (('1W', 7), ('1M', 31), ('3M', 92), ('6M', 183), ('1Y', 366)) if days > d)
+    if len(pts) >= 5:
+        buttons += '<button type="button" data-range="d0" class="active">All</button>'
+    return f'''<figure class="sp-chart" data-isin="{esc(c["isin"])}">
       <div class="sp-chart-ranges" role="group" aria-label="Chart period">{buttons}</div>
       <script type="application/json" class="sp-hist">{json.dumps(pts, separators=(',', ':'))}</script>
-      <figcaption><span>Price since {esc(pts[0][0])}</span><span class="{cls}">{"+" if chg >= 0 else ""}{num(chg)}%</span></figcaption>
-      <svg viewBox="0 0 {w} {h}" preserveAspectRatio="none" role="img" aria-label="Closing price of {esc(c["name"])} from {esc(pts[0][0])} to {esc(pts[-1][0])}, between €{num(lo, 2)} and €{num(hi, 2)}">
-        <polygon class="sp-chart-area {cls}" points="{area}"/><polyline class="sp-chart-line {cls}" points="{line}"/>
+      <figcaption><span>{cap}</span><span>{chg_html}</span></figcaption>
+      <svg viewBox="0 0 {w} {h}" preserveAspectRatio="none" role="img" aria-label="Share price chart of {esc(c["name"])}">
+        <polygon class="sp-chart-area" points="{area}"/><polyline class="sp-chart-line" points="{line}"/>
       </svg>
-      <div class="sp-chart-axis"><span>{esc(pts[0][0])}</span><span>low €{num(lo, 2)} · high €{num(hi, 2)}</span><span>{esc(pts[-1][0])}</span></div>
+      <div class="sp-chart-axis"><span>{axis[0]}</span><span>{axis[1]}</span><span>{axis[2]}</span></div>
     </figure>'''
 
 

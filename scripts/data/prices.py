@@ -13,7 +13,7 @@ Writes js/prices.js (last price, change against the previous close, day range, v
 TICKER@Country) and keeps data/prices-history.json (ISIN -> {date: close}) so the daily
 change can be computed. Stocks that traded on neither venue keep their illustrative figures.
 """
-import gzip, hashlib, json, sys, tempfile, urllib.request
+import gzip, hashlib, json, os, sys, tempfile, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,6 +22,7 @@ OUT = ROOT / "js" / "prices.js"
 COMPANIES = ROOT / "js" / "companies.json"            # all European issuers with annual reports
 OUT_ALL = ROOT / "js" / "company-prices.json"        # last price per ISIN for those issuers
 HISTORY = ROOT / "data" / "prices-history.json"
+INTRADAY = ROOT / "js" / "intraday"   # minute prices of the last closed day, one file per ISIN
 STATE = ROOT / "data" / "prices-state.json"      # last closed day + the day in progress
 LIST_URL = "https://mfs.deutsche-boerse.com/api/{}-posttrade"
 # Xetra first; Börse Frankfurt (floor/Specialist trading) fills in shares Xetra does not trade.
@@ -80,11 +81,11 @@ def file_day(name):
     return name.split("-daily-")[1][:10] if "-daily-" in name else name.split("-posttrade-")[1][:10]
 
 
-def download_summary(name, wanted):
+def download_summary(name, wanted, bars=False):
     with tempfile.NamedTemporaryFile(suffix=".json.gz") as tmp:
         tmp.write(fetch(FILE_URL + name))
         tmp.flush()
-        return day_summary(tmp.name, wanted)
+        return day_summary(tmp.name, wanted, bars)
 
 
 def merge(into, more):
@@ -103,8 +104,9 @@ def merge(into, more):
         a["trades"] += b["trades"]
 
 
-def day_summary(path, wanted):
-    """Open, high, low, last price, volume and trade count per ISIN, from one day's trades."""
+def day_summary(path, wanted, bars=False):
+    """Open, high, low, last price, volume and trade count per ISIN, from one day's trades.
+    With bars=True also the last trade of every minute ("bars": {minute of day UTC: (time, price)})."""
     days = {}
     with gzip.open(path, "rt", encoding="utf-8") as f:
         for line in f:
@@ -118,8 +120,15 @@ def day_summary(path, wanted):
                 continue
             p, q, ts = float(t["price"]), float(t.get("quantity") or 0), t["tradingDateAndTime"]
             d = days.get(isin)
+            if bars:
+                minute = int(ts[11:13]) * 60 + int(ts[14:16])
+                b = (d or {}).get("bars", {}).get(minute)
+                if d and (not b or ts >= b[0]):
+                    d["bars"][minute] = (ts, p)
             if not d:
                 days[isin] = {"first": ts, "open": p, "last": ts, "close": p, "high": p, "low": p, "volume": q, "trades": 1}
+                if bars:
+                    days[isin]["bars"] = {minute: (ts, p)}
                 continue
             if ts < d["first"]:
                 d["first"], d["open"] = ts, p
@@ -155,6 +164,19 @@ def quote(isin, a, day, final, history):
     }
 
 
+def write_intraday(day, closed):
+    """js/intraday/<ISIN>.json: the last trade of every minute of the closed day, for the 1H/4H/1D charts
+    on the company pages. Not kept in git (about 2,000 files a day); prices.yml uploads them."""
+    INTRADAY.mkdir(parents=True, exist_ok=True)
+    for old in INTRADAY.glob("*.json"):
+        old.unlink()
+    for isin, a in closed.items():
+        bars = sorted(a.pop("bars", {}).items())
+        (INTRADAY / f"{isin}.json").write_text(json.dumps(
+            {"date": day, "venue": a["venue"], "bars": [[m, round(p, 4)] for m, (_, p) in bars]}, separators=(",", ":")))
+    print(f"Intraday charts for {day}: {len(closed)} shares")
+
+
 def pick(per_venue):
     """One aggregate per ISIN: Xetra where it traded, otherwise Börse Frankfurt."""
     rows = {}
@@ -177,13 +199,15 @@ def main():
     day = max(daily["DETR"], default="")
     asked = hashlib.sha1(",".join(sorted(wanted)).encode()).hexdigest()[:12]
     # Re-read the same day too when the list of shares changed (e.g. new issuers on the Fundamentals page).
-    if day > final["day"] or (day == final["day"] and final.get("asked") != asked):
+    redo = os.environ.get("PRICES_REDO_DAY") == "1"   # workflow_dispatch input: rebuild the intraday charts
+    if day > final["day"] or (day == final["day"] and (final.get("asked") != asked or redo)):
         per_venue = {}
         for venue, label in VENUES:
             if day in daily[venue]:
-                per_venue[venue] = download_summary(daily[venue][day], wanted)
+                per_venue[venue] = download_summary(daily[venue][day], wanted, bars=True)
                 print(f"Daily {label} file for {day}: {len(per_venue[venue])} of our shares traded")
         closed = {isin: {**a, "day": day} for isin, a in pick(per_venue).items()}
+        write_intraday(day, closed)
         # A share that did not trade that day keeps its last real close.
         final = {"day": day, "asked": asked, "rows": {**final["rows"], **closed}}
         for isin, a in closed.items():
