@@ -661,4 +661,4 @@ a:hover { text-decoration: underline; }
 .score-hi { color: #fff; background: var(--pos); }
 .score-mid { color: var(--text); background: var(--bg3); }
 .score-lo { color: #fff; background: var(--neg); }
-.modal-scores { margin-top: 12px; }
+.modal-scores { margin-top: 24px; }
