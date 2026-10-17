@@ -1,0 +1,31 @@
+# BEGIN FINILA
+# Managed by scripts/deploy-webglobe.sh, edit it in the repository (deploy/htaccess).
+# The old WordPress rules are saved on the server in .htaccess-wordpress-zaloha.
+DirectoryIndex index.html
+RewriteEngine On
+RewriteBase /
+
+# The old WordPress no longer runs: its PHP, admin and leftover folders are closed.
+RewriteRule \.php$ - [F,L]
+RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]
+
+# Old addresses (e.g. /blog/) keep working and show their copy from /archiv/
+# without changing the address in the browser.
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/archiv/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+/)$ archiv/$1index.html [L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/archiv/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^.]+)$ archiv/$1/index.html [L]
+
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{REQUEST_URI} !^/archiv/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ archiv/$1 [L]
+# END FINILA
