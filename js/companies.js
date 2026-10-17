@@ -158,7 +158,7 @@ function render() {
 function openCompany(lei) {
   const c = COMPANIES.find(x => x.lei === lei);
   if (!c) return;
-  const cur = c.currency || '', wd = c.origin === 'wikidata';
+  const cur = c.currency || '';
   const row = (k, v) => `<tr><td>${k}</td><td>${v}</td></tr>`;
   const fin = c.financial ? '<p class="modal-report-src">Bank or insurer: EBITDA, free cash flow and net debt are not shown because they do not describe these businesses well.</p>' : '';
   document.getElementById('modal-content').innerHTML = `
@@ -176,10 +176,11 @@ function openCompany(lei) {
       <span class="real-badge">Real price · ${esc(c.priceVenue)} · ${esc(c.priceDate)}</span>
       <span class="modal-vol">${isNum(c.mcap) ? `Market value ≈ ${bn(c.mcap)} €` : ''}${isNum(c.pe) ? ` · P/E ${num(c.pe, 1)}` : ''}${isNum(c.divYield) ? ` · Dividend yield ${num(c.divYield, 1)}%` : ''}</span>
     </div>` : ''}
+    ${c.origin === 'listing' ? `<div class="modal-report"><p class="modal-report-src">No annual report figures yet: this company’s ESEF report is not on filings.xbrl.org (German issuers, for example, are not published there). The price, insider trades and short positions are real.</p></div>` : `
     <div class="modal-report">
       <div class="modal-report-head">
-        <h4>${wd ? 'Headline figures' : 'Latest annual report'} · FY ending ${esc(c.periodEnd)} · ${esc(cur)}</h4>
-        <span class="real-badge">${wd ? 'Wikidata' : 'Real data'}</span>
+        <h4>Latest annual report · FY ending ${esc(c.periodEnd)} · ${esc(cur)}</h4>
+        <span class="real-badge">Real data</span>
       </div>
       <div class="modal-grid">
         <div class="modal-section"><h4>Income</h4><table class="kv-table">
@@ -197,10 +198,8 @@ function openCompany(lei) {
       </div>
       ${scoresHTML(c)}
       ${fin}
-      <div class="modal-report-src">${wd
-        ? `Source: Wikidata${c.source ? ` · <a href="${esc(c.source)}" target="_blank" rel="noopener">view entry</a>` : ''}. This company’s annual report is not on filings.xbrl.org yet, so only headline figures are shown, without cash flow or quality score. Check the company’s annual report before relying on them.`
-        : `Source: the company’s ESEF annual report via filings.xbrl.org${c.source ? ` · <a href="${esc(c.source)}" target="_blank" rel="noopener">view report</a>` : ''}. Figures are read automatically and can contain errors; check the report before relying on them.`}</div>
-    </div>`;
+      <div class="modal-report-src">Source: the company’s ESEF annual report via filings.xbrl.org${c.source ? ` · <a href="${esc(c.source)}" target="_blank" rel="noopener">view report</a>` : ''}. Figures are read automatically and can contain errors; check the report before relying on them.</div>
+    </div>`}`;
   document.getElementById('stock-modal').style.display = 'flex';
 }
 
