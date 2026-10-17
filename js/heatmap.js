@@ -1,244 +1,260 @@
-// Squarified treemap for market heat map
+// FINILA market map: every European company with a real price (js/company-prices.json) and an
+// annual report (js/companies.json). Box size = estimated market value, color = the chosen figure.
 
-let hmGroupBy = 'sector';
-let hmSize    = 'marketCap';
-let hmColor   = 'change';
+let HM = [], hmGroupBy = 'sector', hmColor = 'change', hmCountry = '', hmTiles = [], hmPinned = null;
 
-function getHmValue(stock) {
-  const v = stock[hmColor];
-  return v ?? 0;
+const isNum = v => typeof v === 'number' && isFinite(v);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const num = (v, d = 1) => isNum(v) ? v.toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d }) : '—';
+const signed = (v, d = 1, unit = '%') => isNum(v) ? `${v > 0 ? '+' : ''}${num(v, d)}${unit}` : '—';
+const money = v => !isNum(v) ? '—' : v >= 1000 ? `€${num(v / 1000, v >= 10000 ? 0 : 1)}B` : `€${num(v, 0)}M`;
+const countryNames = (() => { try { return new Intl.DisplayNames(['en'], { type: 'region' }); } catch { return null; } })();
+const countryName = c => (c && countryNames ? countryNames.of(c) : c) || 'Other';
+
+// Each color: how to read the figure, where it is neutral and how far it goes to full red or green.
+// `low` means a low value is the good one (green), as with P/E.
+const COLORS = [
+  { key: 'change', label: 'Day change', mid: 0, span: 3, fmt: v => signed(v, 2) },
+  { key: 'revenueGrowth', label: 'Revenue growth', mid: 0, span: 25, fmt: v => signed(v) },
+  { key: 'netMargin', label: 'Net margin', mid: 0, span: 20, fmt: v => signed(v) },
+  { key: 'quality', label: 'Quality score', mid: 0.5, span: 0.5, fmt: (v, c) => `${c.fscore}/${c.fscoreKnown}` },
+  { key: 'pe', label: 'P/E', mid: 18, span: 14, low: true, fmt: v => num(v) },
+  { key: 'divYield', label: 'Dividend yield', mid: 1.5, span: 4, fmt: v => `${num(v)}%` },
+];
+// Most issuers have no sector yet: they go last, so the known sectors read first.
+const OTHER = 'Sector not known yet';
+const colorDef = () => COLORS.find(c => c.key === hmColor);
+
+// Finviz-style scale: red, dark grey at the neutral point, green.
+const RED = [214, 52, 56], MID = [66, 72, 88], GREEN = [34, 160, 84], NONE = '#C9D0DB';
+function tileColor(c) {
+  const d = colorDef(), v = c[d.key];
+  if (!isNum(v)) return NONE;
+  let t = Math.max(-1, Math.min(1, (v - d.mid) / d.span));
+  if (d.low) t = -t;
+  const to = t >= 0 ? GREEN : RED, a = Math.abs(t);
+  return `rgb(${MID.map((m, i) => Math.round(m + (to[i] - m) * a)).join(',')})`;
 }
 
-function colorFromChange(val) {
-  // -5% → deep red, 0 → neutral, +5% → deep green
-  const v = Math.max(-5, Math.min(5, val));
-  if (v >= 0) {
-    const t = v / 5;
-    const r = Math.round(22 + (34 - 22) * t);
-    const g = Math.round(197 - (197 - 80) * (1 - t));
-    const b = Math.round(94 - (94 - 20) * t);
-    return `rgb(${r},${g},${b})`;
-  } else {
-    const t = Math.abs(v) / 5;
-    const r = Math.round(239 - (239 - 120) * (1 - t));
-    const g = Math.round(68 - (68 - 20) * t);
-    const b = Math.round(68 - (68 - 20) * t);
-    return `rgb(${r},${g},${b})`;
-  }
-}
-
-// Squarify algorithm
+// Squarified treemap (Bruls et al.): items sorted by value, laid out in rows along the shorter side.
 function squarify(items, rect) {
-  if (!items.length) return [];
-  const total = items.reduce((s, i) => s + i.value, 0);
-  const area  = rect.w * rect.h;
-  const scale = area / total;
-
-  const result = [];
-  let remaining = [...items];
-  let { x, y, w, h } = rect;
-
-  while (remaining.length) {
-    const row = [];
-    let rowSum = 0;
+  const out = [], total = items.reduce((s, i) => s + i.value, 0);
+  if (!total || rect.w <= 0 || rect.h <= 0) return out;
+  const scale = rect.w * rect.h / total;
+  let { x, y, w, h } = rect, i = 0;
+  while (i < items.length) {
     const side = Math.min(w, h);
-
-    for (const item of remaining) {
-      const testRow = [...row, item];
-      const testSum = rowSum + item.value * scale;
-      const worst1 = worstRatio(row,    rowSum,         side);
-      const worst2 = worstRatio(testRow, testSum,       side);
-      if (row.length && worst2 > worst1) break;
-      row.push(item);
-      rowSum += item.value * scale;
+    let sum = 0, j = i, best = Infinity;
+    while (j < items.length) {
+      const a = items[j].value * scale, s2 = sum + a;
+      const rowMax = items[i].value * scale, rowMin = a;
+      const worst = Math.max(side * side * rowMax / (s2 * s2), s2 * s2 / (side * side * rowMin));
+      if (j > i && worst > best) break;
+      best = worst; sum = s2; j++;
     }
-
-    remaining = remaining.slice(row.length);
-    const rowLen = rowSum / side;
-
-    // Wide area: the row is a column on the left; tall area: a row on top
-    let pos = (w >= h) ? y : x;
-    for (const item of row) {
-      const size = (item.value * scale) / rowLen;
-      let rx, ry, rw, rh;
-      if (w >= h) { rx = x;   ry = pos; rw = rowLen; rh = size; }
-      else         { rx = pos; ry = y;   rw = size;   rh = rowLen; }
-      result.push({ ...item, rect: { x: rx, y: ry, w: rw, h: rh } });
+    const len = sum / side;
+    let pos = w >= h ? y : x;
+    for (let k = i; k < j; k++) {
+      const size = items[k].value * scale / len;
+      out.push({ item: items[k], x: w >= h ? x : pos, y: w >= h ? pos : y, w: w >= h ? len : size, h: w >= h ? size : len });
       pos += size;
     }
-
-    if (w >= h) { x += rowLen; w -= rowLen; }
-    else         { y += rowLen; h -= rowLen; }
+    if (w >= h) { x += len; w -= len; } else { y += len; h -= len; }
+    i = j;
   }
-  return result;
+  return out;
 }
 
-function worstRatio(row, rowSum, side) {
-  if (!row.length) return Infinity;
-  const max = Math.max(...row.map(i => i.value));
-  const min = Math.min(...row.map(i => i.value));
-  const s2 = side * side;
-  const rs2 = rowSum * rowSum;
-  return Math.max((s2 * max) / rs2, rs2 / (s2 * min));
+// Same estimate as the Stocks page: shares = net income / EPS; absurd P/E or price/sales means mismatched units.
+function buildCompanies(cos, prices) {
+  const ix = f => prices.fields.indexOf(f);
+  const [iPrice, iChange, iVenue, iDate] = ['price', 'change', 'venue', 'date'].map(ix);
+  const out = [];
+  for (const r of cos.rows) {
+    const c = Object.fromEntries(cos.fields.map((f, i) => [f, r[i]]));
+    const q = prices.rows[c.isin];
+    if (!q) continue;
+    Object.assign(c, { price: q[iPrice], change: q[iChange], venue: q[iVenue], priceDate: q[iDate] });
+    const fx = isNum(c.revenueEur) && isNum(c.revenue) && c.revenue ? c.revenueEur / c.revenue : c.currency === 'EUR' ? 1 : null;
+    const shares = isNum(c.eps) && isNum(c.netIncome) && c.eps * c.netIncome > 0 ? c.netIncome / c.eps : null;
+    if (!fx || !shares || !isNum(c.price)) continue;
+    const mcap = c.price * shares, pe = c.eps > 0 ? c.price / (c.eps * fx) : null;
+    const ps = isNum(c.revenueEur) && c.revenueEur > 0 ? mcap / c.revenueEur : null;
+    if ((pe !== null && (pe < 1 || pe > 150)) || (ps !== null && (ps < 0.02 || ps > 60))) continue;
+    c.mcap = mcap;
+    if (pe !== null) c.pe = pe;
+    if (c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; c.divYield = y < 25 ? y : null; } else c.divYield = 0;
+    if (isNum(c.fscore)) { c.fscoreKnown = (c.fscoreTests || '').replace(/-/g, '').length; c.quality = c.fscoreKnown ? c.fscore / c.fscoreKnown : null; }
+    c.label = c.ticker || c.name.split(/\s+/)[0];
+    c.group = { sector: c.sector || OTHER, country: countryName(c.country) };
+    out.push(c);
+  }
+  return out;
+}
+
+function fitText(ctx, text, maxW) {
+  if (ctx.measureText(text).width <= maxW) return text;
+  for (let n = text.length - 1; n > 1; n--) { const t = text.slice(0, n) + '…'; if (ctx.measureText(t).width <= maxW) return t; }
+  return '';
 }
 
 function renderHeatmap() {
-  const canvas = document.getElementById('heatmap-canvas');
-  if (!canvas) return;
+  const wrap = document.getElementById('hm-wrap'), canvas = document.getElementById('heatmap-canvas');
+  const W = wrap.clientWidth;
+  // Phones get a taller map that scrolls, so the boxes stay big enough to read.
+  const avail = window.innerHeight - wrap.getBoundingClientRect().top - window.scrollY - 8;
+  const H = W < 700 ? Math.max(avail, Math.round(W * 2.4)) : Math.max(avail, 480);
+  wrap.style.height = H + 'px';
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
   const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, W, H);
 
-  const W = canvas.offsetWidth;
-  const H = canvas.offsetHeight;
-  canvas.width  = W;
-  canvas.height = H;
-
-  ctx.clearRect(0, 0, W, H);
-
-  // Group stocks
+  const shown = HM.filter(c => !hmCountry || c.country === hmCountry);
   const groups = {};
-  for (const s of STOCKS) {
-    const g = s[hmGroupBy] || 'Other';
-    if (!groups[g]) groups[g] = [];
-    groups[g].push(s);
-  }
+  shown.forEach(c => (groups[c.group[hmGroupBy]] ||= []).push(c));
+  const groupItems = Object.entries(groups).map(([name, list]) => ({
+    name, list: list.sort((a, b) => b.mcap - a.mcap), value: list.reduce((s, c) => s + c.mcap, 0),
+  })).sort((a, b) => (a.name === OTHER) - (b.name === OTHER) || b.value - a.value);
 
-  // Build top-level items (groups)
-  const groupItems = Object.entries(groups).map(([name, stocks]) => ({
-    name,
-    value: stocks.reduce((s, st) => s + st.marketCap, 0),
-    stocks,
-  })).sort((a, b) => b.value - a.value);
-
-  // Layout groups
-  const PAD = 4;
-  const groupRects = squarify(groupItems, { x: PAD, y: PAD, w: W - PAD*2, h: H - PAD*2 });
-
-  const allTiles = [];
-  for (const gr of groupRects) {
-    const { x, y, w, h } = gr.rect;
-
-    // Group header
-    ctx.fillStyle = '#F6F8FB';
-    ctx.fillRect(x, y, w, h);
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(x, y, w, h);
-
-    const HEADER = h > 40 ? 22 : 0;
-
-    if (HEADER) {
-      ctx.fillStyle = '#E3E9F3';
-      ctx.fillRect(x, y, w, HEADER);
+  hmTiles = [];
+  const d = colorDef();
+  for (const g of squarify(groupItems, { x: 0, y: 0, w: W, h: H })) {
+    const HEAD = g.h > 60 && g.w > 50 ? 18 : 0;
+    ctx.fillStyle = '#E3E9F3';
+    ctx.fillRect(g.x, g.y, g.w, g.h);
+    if (HEAD) {
       ctx.fillStyle = '#34445F';
-      ctx.font = `bold ${Math.min(11, w/8)}px Inter, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText(gr.name, x + w/2, y + HEADER - 6);
+      ctx.font = '600 11px Inter, sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(fitText(ctx, g.item.name.toUpperCase(), g.w - 10), g.x + 5, g.y + HEAD / 2 + 1);
     }
-
-    // Layout stocks within group
-    const stockItems = gr.stocks.map(s => ({
-      ...s,
-      value: s[hmSize] || 1,
-    })).sort((a, b) => b.value - a.value);
-
-    const inner = { x: x + 2, y: y + HEADER + 2, w: w - 4, h: h - HEADER - 4 };
-    if (inner.w < 4 || inner.h < 4) continue;
-    const tileRects = squarify(stockItems, inner);
-    allTiles.push(...tileRects);
-
-    for (const tile of tileRects) {
-      const { x: tx, y: ty, w: tw, h: th } = tile.rect;
-      if (tw < 2 || th < 2) continue;
-
-      const val = getHmValue(tile);
-      ctx.fillStyle = colorFromChange(val);
-      ctx.fillRect(tx + 1, ty + 1, tw - 2, th - 2);
-
-      // Ticker label
-      if (tw > 28 && th > 18) {
-        const fs = Math.min(14, tw / 4, th / 2.5);
-        ctx.fillStyle = 'rgba(255,255,255,0.92)';
-        ctx.font = `bold ${fs}px Inter, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(tile.ticker, tx + tw/2, ty + th/2 - (th > 40 ? 8 : 0));
-
-        if (th > 40) {
-          ctx.font = `${Math.max(9, fs - 3)}px Inter, sans-serif`;
-          ctx.fillStyle = 'rgba(255,255,255,0.72)';
-          const sign = val >= 0 ? '+' : '';
-          const label = hmColor === 'change' && tile.changeKnown === false ? '-' : `${sign}${val.toFixed(2)}%`;
-          ctx.fillText(label, tx + tw/2, ty + th/2 + fs * 0.9);
-        }
+    const inner = { x: g.x + 1, y: g.y + HEAD + 1, w: g.w - 2, h: g.h - HEAD - 2 };
+    for (const t of squarify(g.item.list.map(c => ({ ...c, value: c.mcap })), inner)) {
+      const c = t.item;
+      hmTiles.push({ c, x: t.x, y: t.y, w: t.w, h: t.h });
+      ctx.fillStyle = tileColor(c);
+      ctx.fillRect(t.x + 0.5, t.y + 0.5, Math.max(t.w - 1, 0.5), Math.max(t.h - 1, 0.5));
+      if (t.w < 26 || t.h < 14) continue;
+      const fs = Math.max(9, Math.min(22, t.w / 5, t.h / 2.6));
+      const dark = !isNum(c[d.key]);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.font = `700 ${fs}px Inter, sans-serif`;
+      const name = fitText(ctx, c.label, t.w - 6);
+      if (!name) continue;
+      ctx.font = `500 ${Math.max(9, fs * 0.62)}px Inter, sans-serif`;
+      const value = isNum(c[d.key]) ? d.fmt(c[d.key], c) : '—';
+      // The figure goes under the name only when it fits whole: a cut-off number would mislead.
+      const two = t.h > fs * 2.6 && ctx.measureText(value).width <= t.w - 6;
+      ctx.font = `700 ${fs}px Inter, sans-serif`;
+      ctx.fillStyle = dark ? '#34445F' : '#FFFFFF';
+      ctx.fillText(name, t.x + t.w / 2, t.y + t.h / 2 - (two ? fs * 0.45 : 0));
+      if (two) {
+        ctx.font = `500 ${Math.max(9, fs * 0.62)}px Inter, sans-serif`;
+        ctx.fillStyle = dark ? '#5A6A86' : 'rgba(255,255,255,0.85)';
+        ctx.fillText(value, t.x + t.w / 2, t.y + t.h / 2 + fs * 0.6);
       }
     }
   }
-
-  // Tooltip hit areas
-  canvas._tileRects = allTiles;
+  const total = HM.length, n = shown.length;
+  const known = shown.filter(c => isNum(c.change)).length;
+  const day = HM[0] ? new Date(HM[0].priceDate + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+  document.getElementById('hm-note').innerHTML =
+    `${num(n, 0)} companies${hmCountry ? ` in ${esc(countryName(hmCountry))}` : ''} with a real price (${day}) and an annual report, worth ${money(shown.reduce((s, c) => s + c.mcap, 0))} together. ` +
+    (hmColor === 'change' && known < n / 2 ? 'The day change appears after the next trading day; until then the boxes are grey, so try another color. ' : '') +
+    `Box size is market value. Click a box to see the company.`;
+  hideHover();
 }
 
-function initHeatmap() {
+function renderLegend() {
+  const d = colorDef();
+  const lo = d.low ? d.mid + d.span : d.mid - d.span, hi = d.low ? d.mid - d.span : d.mid + d.span;
+  const f = v => d.key === 'quality' ? `${Math.round(v * 100)}%` : d.key === 'pe' ? num(v, 0) : d.fmt(v, {});
+  document.getElementById('hm-legend').innerHTML = `<span>${f(lo)}</span><div class="hm-legend-bar"></div><span>${f(hi)}</span><span class="hm-legend-none"></span><span>no figure</span>`;
+}
+
+function tileAt(e) {
+  const r = document.getElementById('heatmap-canvas').getBoundingClientRect();
+  const x = e.clientX - r.left, y = e.clientY - r.top;
+  return hmTiles.find(t => x >= t.x && x < t.x + t.w && y >= t.y && y < t.y + t.h);
+}
+
+function showHover(t, e) {
+  const box = document.getElementById('hm-hover'), tip = document.getElementById('hm-tooltip'), c = t.c, d = colorDef();
+  Object.assign(box.style, { display: 'block', left: t.x + 'px', top: t.y + 'px', width: t.w + 'px', height: t.h + 'px' });
+  const row = (k, v) => `<tr><td>${k}</td><td>${v}</td></tr>`;
+  tip.innerHTML = `<div class="hm-tip-name">${esc(c.name)}</div>
+    <div class="hm-tip-meta">${esc([c.ticker, countryName(c.country), c.sector].filter(Boolean).join(' · '))}</div>
+    <div class="hm-tip-price">€${num(c.price, 2)} <span class="${c.change > 0 ? 'pos' : c.change < 0 ? 'neg' : ''}">${isNum(c.change) ? signed(c.change, 2) : ''}</span></div>
+    <table>${row('Market value ≈', money(c.mcap))}${row('P/E', isNum(c.pe) ? num(c.pe) : '—')}${row('Dividend yield', isNum(c.divYield) ? num(c.divYield) + '%' : '—')}
+    ${d.key !== 'pe' && d.key !== 'divYield' && d.key !== 'change' ? row(d.label, isNum(c[d.key]) ? d.fmt(c[d.key], c) : '—') : ''}</table>
+    <div class="hm-tip-src">${esc(c.venue)} · ${esc(c.priceDate)}</div>`;
+  tip.style.display = 'block';
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let left = e.clientX + 14, top = e.clientY + 14;
+  if (left + tw > window.innerWidth - 8) left = Math.max(8, e.clientX - tw - 14);
+  if (top + th > window.innerHeight - 8) top = Math.max(8, e.clientY - th - 14);
+  tip.style.left = left + 'px'; tip.style.top = top + 'px';
+}
+
+function hideHover() {
+  document.getElementById('hm-hover').style.display = 'none';
+  document.getElementById('hm-tooltip').style.display = 'none';
+  hmPinned = null;
+}
+
+function setActive(sel, btn) {
+  document.querySelectorAll(sel).forEach(b => b.classList.toggle('active', b === btn));
+}
+
+async function initHeatmap() {
+  const load = async url => { try { return await (await fetch(url, { cache: 'no-cache' })).json(); } catch { return null; } };
+  const [cos, prices] = await Promise.all([load('js/companies.json'), load('js/company-prices.json')]);
+  if (!cos || !prices) { document.getElementById('hm-note').textContent = 'Could not load company data.'; return; }
+  HM = buildCompanies(cos, prices);
+  // Without a day change yet (weekend, or only one trading day so far), start with revenue growth.
+  if (HM.filter(c => isNum(c.change)).length < HM.length / 2) hmColor = 'revenueGrowth';
+
+  const sel = document.getElementById('hm-country');
+  const counts = {};
+  HM.forEach(c => { counts[c.country] = (counts[c.country] || 0) + 1; });
+  sel.innerHTML += Object.keys(counts).sort((a, b) => countryName(a).localeCompare(countryName(b)))
+    .map(k => `<option value="${esc(k)}">${esc(countryName(k))} (${counts[k]})</option>`).join('');
+  document.getElementById('hm-colors').innerHTML = COLORS
+    .map(c => `<button class="hm-btn${c.key === hmColor ? ' active' : ''}" type="button" data-hm-color="${c.key}">${c.label}</button>`).join('');
+
+  sel.addEventListener('change', () => { hmCountry = sel.value; renderHeatmap(); });
+  document.querySelectorAll('[data-hm-group]').forEach(b => b.addEventListener('click', () => {
+    hmGroupBy = b.dataset.hmGroup; setActive('[data-hm-group]', b); renderHeatmap();
+  }));
+  document.querySelectorAll('[data-hm-color]').forEach(b => b.addEventListener('click', () => {
+    hmColor = b.dataset.hmColor; setActive('[data-hm-color]', b); renderLegend(); renderHeatmap();
+  }));
+
   const canvas = document.getElementById('heatmap-canvas');
-  if (!canvas) return;
-
-  const tooltip = document.getElementById('hm-tooltip');
-
-  canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-
-    if (!canvas._tileRects) return;
-    const hit = canvas._tileRects.find(t => {
-      const r = t.rect;
-      return mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h;
-    });
-
-    if (hit && tooltip) {
-      tooltip.style.display = 'block';
-      tooltip.style.left = (e.clientX + 16) + 'px';
-      tooltip.style.top  = (e.clientY - 16) + 'px';
-      const val = getHmValue(hit);
-      const sign = val >= 0 ? '+' : '';
-      tooltip.innerHTML = `
-        <strong>${hit.ticker}</strong> &nbsp; ${hit.name}<br>
-        <span class="${val>=0?'pos':'neg'}">${hmColor === 'change' && hit.changeKnown === false ? '-' : `${sign}${val.toFixed(2)}%`}</span> &nbsp;|&nbsp;
-        Mkt Cap: ${formatMarketCap(hit.marketCap)}<br>
-        Price: €${formatNumber(hit.price,2)} &nbsp;|&nbsp; ${hit.country}
-      `;
-    } else if (tooltip) {
-      tooltip.style.display = 'none';
-    }
+  canvas.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    const t = tileAt(e);
+    canvas.style.cursor = t ? 'pointer' : 'default';
+    t ? showHover(t, e) : hideHover();
   });
-
-  canvas.addEventListener('mouseleave', () => {
-    if (tooltip) tooltip.style.display = 'none';
+  canvas.addEventListener('mouseleave', hideHover);
+  // Mouse: a click opens the company. Touch: the first tap shows the details, a second tap on the same box opens it.
+  canvas.addEventListener('click', e => {
+    const t = tileAt(e);
+    if (!t) return hideHover();
+    const touch = e.pointerType ? e.pointerType !== 'mouse' : matchMedia('(hover: none)').matches;
+    if (touch && hmPinned !== t.c) { showHover(t, e); hmPinned = t.c; return; }
+    location.href = `/companies?lei=${encodeURIComponent(t.c.lei)}`;
   });
+  window.addEventListener('scroll', () => { if (hmPinned) hideHover(); }, { passive: true });
+  let timer;
+  window.addEventListener('resize', () => { clearTimeout(timer); timer = setTimeout(renderHeatmap, 120); });
 
-  window.addEventListener('resize', () => {
-    renderHeatmap();
-  });
-
-  document.querySelectorAll('[data-hm-group]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-hm-group]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      hmGroupBy = btn.dataset.hmGroup;
-      renderHeatmap();
-    });
-  });
-
-  document.querySelectorAll('[data-hm-color]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-hm-color]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      hmColor = btn.dataset.hmColor;
-      renderHeatmap();
-    });
-  });
-
+  renderLegend();
   renderHeatmap();
 }
 

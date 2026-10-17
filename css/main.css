@@ -437,13 +437,31 @@ a:hover { text-decoration: underline; }
   width: 140px;
   height: 12px;
   border-radius: 3px;
-  background: linear-gradient(to right, #D23B3B, #E3E9F3, #0F8A57);
+  background: linear-gradient(to right, rgb(214,52,56), rgb(66,72,88), rgb(34,160,84));
+}
+.hm-legend-none { width: 12px; height: 12px; border-radius: 3px; background: #C9D0DB; margin-left: 8px; }
+.hm-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.hm-select { background: var(--bg3); border: 1px solid var(--border2); color: var(--text); border-radius: 4px; padding: 4px 8px; font: inherit; font-size: 12px; }
+.hm-note { padding: 6px 16px; font-size: 12px; color: var(--text2); background: var(--bg2); border-bottom: 1px solid var(--border); }
+#hm-hover { display: none; position: absolute; border: 2px solid #F2B33D; pointer-events: none; box-sizing: border-box; }
+#hm-tooltip table { border-collapse: collapse; width: 100%; margin-top: 4px; }
+#hm-tooltip td { padding: 1px 0; }
+#hm-tooltip td:last-child { text-align: right; font-weight: 600; padding-left: 14px; }
+.hm-tip-name { font-weight: 700; color: var(--strong); font-size: 13px; }
+.hm-tip-meta, .hm-tip-src { color: var(--text2); font-size: 11px; }
+.hm-tip-price { font-size: 16px; font-weight: 700; color: var(--strong); margin-top: 4px; }
+.hm-tip-price span { font-size: 13px; margin-left: 6px; }
+@media (max-width: 700px) {
+  .hm-controls { gap: 10px; padding: 8px 12px; }
+  .hm-control-group { flex-wrap: wrap; }
+  .hm-legend { margin-left: 0; }
+  .hm-note { padding: 6px 12px; }
 }
 
 .hm-canvas-wrap {
-  flex: 1;
   position: relative;
   overflow: hidden;
+  margin: 0 4px 4px;
 }
 #heatmap-canvas {
   width: 100%;
