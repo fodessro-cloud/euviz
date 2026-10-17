@@ -235,6 +235,13 @@ def page(c, peers, updated):
     cur = c.get('currency') or ''
     country = COUNTRIES.get(c['country'], c['country'] or '')
     who = f'{c["name"]} ({c["ticker"]})' if c.get('ticker') else c['name']
+    # Issuers with no ESEF report on filings.xbrl.org (e.g. all of Germany) carry headline figures from Wikidata.
+    wd = c.get('origin') == 'wikidata'
+    # Listed issuers without any usable report: name, ISIN, ticker and sector only.
+    listed_only = c.get('origin') == 'listing'
+    link = f' · <a href="{esc(c["source"])}" target="_blank" rel="noopener">{"view on Wikidata" if wd else "view report"}</a>' if c.get('source') else ''
+    src = (f'Source: headline figures from Wikidata (CC0), the company has no ESEF report on filings.xbrl.org yet{link}' if wd
+           else f'Source: the company’s ESEF annual report via filings.xbrl.org{link}')
     fy = (c.get('periodEnd') or '')[:4]
     url = f'{SITE}/stock/{c["slug"]}'
     title = f'{who} stock: price, P/E, dividend and financials | FINILA'
@@ -250,7 +257,9 @@ def page(c, peers, updated):
     if is_num(c.get('netMargin')):
         facts.append(f'net margin {num(c["netMargin"])}%')
     desc = (f'{c["name"]}: {", ".join(facts)}. ' if facts else f'{c["name"]}: ') + \
-        f'Financials from the {fy} annual report, quality score, insider trades and short positions. ' + \
+        ('Share price, insider trades and short positions. ' if listed_only else
+         f'Headline financials for {fy}, insider trades and short positions. ' if wd else
+         f'Financials from the {fy} annual report, quality score, insider trades and short positions. ') + \
         ', '.join(x for x in [country, c.get('sector')] if x) + '.'
     ld = {'@context': 'https://schema.org', '@type': 'Corporation', 'name': c['name'], 'url': url,
           'leiCode': c['lei'], 'address': {'@type': 'PostalAddress', 'addressCountry': c['country']}}
@@ -278,7 +287,7 @@ def page(c, peers, updated):
            ('P/E', num(c.get('pe'), 1)),
            ('Dividend yield', f'{num(c["divYield"], 1)}%' if is_num(c.get('divYield')) else '—'),
            ('Quality score', f'{c["fscore"]}/{c["fscoreKnown"]}' if is_num(c.get('fscore')) else '—'),
-           ('Revenue', f'€{bn(c.get("revenueEur"))}'), ('Net margin', pct(c.get('netMargin')))]
+           ('Revenue', f'€{bn(c["revenueEur"])}' if is_num(c.get('revenueEur')) else '—'), ('Net margin', pct(c.get('netMargin')))]
     keyhtml = ''.join(f'<div class="sp-key"><span>{k}</span><b>{v}</b></div>' for k, v in key)
 
     tests = list(c.get('fscoreTests') or '')
@@ -288,7 +297,7 @@ def page(c, peers, updated):
       {"".join(row(t, '<span class="pos">✓ yes</span>' if i < len(tests) and tests[i] == '1' else '<span class="neg">✗ no</span>' if i < len(tests) and tests[i] == '0' else '<span class="ins-note">not in report</span>') for i, t in enumerate(F_TESTS))}
     </table></div>'''
     else:
-        qual = f'<div class="modal-section"><h2 class="sp-h">Quality score</h2><p class="ins-note">{"Not calculated for banks and insurers." if c.get("financial") else "Not enough figures in the last two annual reports."}</p></div>'
+        qual = f'<div class="modal-section"><h2 class="sp-h">Quality score</h2><p class="ins-note">{"Not calculated for banks and insurers." if c.get("financial") else "Needs the full annual report, which FINILA does not have for this company yet." if wd or listed_only else "Not enough figures in the last two annual reports."}</p></div>'
 
     ins = '—' if not is_num(c.get('insNet')) else '0' if c['insNet'] == 0 and not c['insBuyers'] else \
         f'<span class="{"pos" if c["insNet"] > 0 else "neg" if c["insNet"] < 0 else ""}">{"+" if c["insNet"] > 0 else ""}{eur(c["insNet"])}</span>'
@@ -318,22 +327,14 @@ def page(c, peers, updated):
         (f'. In the financial year ending {esc(c["periodEnd"])} it reported revenue of {bn(c["revenue"], cur)}' if is_num(c.get('revenue')) else '') + \
         (f' and net income of {bn(c["netIncome"], cur)}' if is_num(c.get('netIncome')) and is_num(c.get('revenue')) else '') + '.'
 
-    return head(title, desc, url, extra) + f'''
-<main class="sp-wrap">
-  <nav class="sp-crumbs" aria-label="Breadcrumb"><a href="/stock/">Stocks</a> › {esc(COUNTRIES.get(c["country"], c["country"]))} › {esc(c["name"])}</nav>
-  <article class="modal-box sp-box">
-    <div class="modal-header">
-      <div>
-        <h1 class="sp-title">{esc(c["name"])} {f'<span class="modal-name">{esc(c["ticker"])}{" · " + esc(c["exchange"]) if c.get("exchange") else ""}</span>' if c.get("ticker") else ""}</h1>
-        <div class="modal-meta">{esc(country)}{" · " + esc(c["sector"]) if c.get("sector") else ""}{" · " + esc(c["industry"]) if c.get("industry") else ""} · ISIN {esc(c["isin"])} · LEI {esc(c["lei"])}</div>
+    if listed_only:
+        figs = '''      <div class="modal-report-head">
+        <h2 class="sp-h0">No annual report figures yet</h2>
       </div>
-    </div>
-    {price}
-    <div class="sp-keys">{keyhtml}</div>
-    <p class="sp-intro">{intro}</p>
-    <div class="modal-report">
-      <div class="modal-report-head">
-        <h2 class="sp-h0">Latest annual report · FY ending {esc(c["periodEnd"])} · {esc(cur)}</h2>
+      <p class="ins-note">FINILA reads company figures from ESEF annual reports on filings.xbrl.org, which does not have this company’s report yet. The price, insider trades and short positions are real.</p>'''
+    else:
+        figs = f'''      <div class="modal-report-head">
+        <h2 class="sp-h0">{"Headline figures from Wikidata" if wd else "Latest annual report"} · FY ending {esc(c["periodEnd"])} · {esc(cur)}</h2>
         <span class="real-badge">Real data</span>
       </div>
       <div class="modal-grid">
@@ -349,10 +350,25 @@ def page(c, peers, updated):
         <div class="modal-section"><h2 class="sp-h">Ratios</h2><table class="kv-table">
           {row('ROE', pct(c.get('roe')))}{row('EBITDA margin', pct(c.get('ebitdaMargin')))}{row('Operating margin', pct(c.get('operatingMargin')))}{row('Net margin', pct(c.get('netMargin')))}{row('FCF margin', pct(c.get('fcfMargin')))}{row('Net debt / EBITDA', ndv)}{row('Revenue growth', pct(c.get('revenueGrowth')))}{row('Net income growth', pct(c.get('netIncomeGrowth')))}
         </table></div>
+      </div>'''
+    return head(title, desc, url, extra) + f'''
+<main class="sp-wrap">
+  <nav class="sp-crumbs" aria-label="Breadcrumb"><a href="/stock/">Stocks</a> › {esc(COUNTRIES.get(c["country"], c["country"]))} › {esc(c["name"])}</nav>
+  <article class="modal-box sp-box">
+    <div class="modal-header">
+      <div>
+        <h1 class="sp-title">{esc(c["name"])} {f'<span class="modal-name">{esc(c["ticker"])}{" · " + esc(c["exchange"]) if c.get("exchange") else ""}</span>' if c.get("ticker") else ""}</h1>
+        <div class="modal-meta">{esc(country)}{" · " + esc(c["sector"]) if c.get("sector") else ""}{" · " + esc(c["industry"]) if c.get("industry") else ""} · ISIN {esc(c["isin"])} · LEI {esc(c["lei"])}</div>
       </div>
+    </div>
+    {price}
+    <div class="sp-keys">{keyhtml}</div>
+    <p class="sp-intro">{intro}</p>
+    <div class="modal-report">
+{figs}
       <div class="modal-grid modal-scores">{qual}{signals}</div>
       {fin}
-      <div class="modal-report-src">Source: the company’s ESEF annual report via filings.xbrl.org{f' · <a href="{esc(c["source"])}" target="_blank" rel="noopener">view report</a>' if c.get("source") else ""}. Prices: Deutsche Börse delayed data. Market value is estimated from net income / EPS. Figures are read automatically and can contain errors; check the report before relying on them. Page updated {esc(updated)}.</div>
+      <div class="modal-report-src">{"" if listed_only else src + ". "}Prices: Deutsche Börse delayed data. Market value is estimated from net income / EPS. Figures are read automatically and can contain errors; check the report before relying on them. Page updated {esc(updated)}.</div>
     </div>
     <p class="sp-cta"><a class="btn btn-primary" href="/companies?lei={esc(c["lei"])}">Compare in the stock screener</a></p>
   </article>
@@ -381,7 +397,7 @@ def index_page(rows, updated):
     return head(title, desc, f'{SITE}/stock/') + f'''
 <main class="sp-wrap">
   <h1 class="sp-title">All companies A-Z</h1>
-  <p class="sp-intro">{len(rows):,} European companies whose annual reports are published in the ESEF format. Updated {esc(updated)}. To filter and sort them, use the <a href="/companies">stock screener</a>.</p>
+  <p class="sp-intro">{len(rows):,} European listed companies. Updated {esc(updated)}. To filter and sort them, use the <a href="/companies">stock screener</a>.</p>
   <p class="sp-letters">{nav}</p>
   {body}
 </main>
