@@ -133,9 +133,32 @@ def ecb_rates():
 def sector_of(industries):
     text = " ".join(industries).lower()
     for sector, words in SECTORS:
-        if any(w in text for w in words):
+        if any(re.search(r"\b" + re.escape(w), text) for w in words):
             return sector
     return None
+
+
+# Main exchange of each country, to pick the home ticker among Wikidata's listings.
+HOME_EXCHANGE = {
+    "FR": "Paris", "NL": "Amsterdam", "BE": "Brussels", "PT": "Lisbon", "IE": "Dublin|Irish", "GB": "London",
+    "SE": "Stockholm", "DK": "Copenhagen", "FI": "Helsinki", "NO": "Oslo", "IS": "Iceland", "IT": "Milan|Italiana",
+    "ES": "Madrid|Spanish|Bolsa", "AT": "Vienna|Wiener", "PL": "Warsaw", "GR": "Athens", "LU": "Luxembourg",
+    "DE": "Frankfurt|Xetra", "CZ": "Prague", "HU": "Budapest", "SK": "Bratislava", "SI": "Ljubljana",
+    "HR": "Zagreb", "RO": "Bucharest", "BG": "Sofia", "EE": "Tallinn", "LV": "Riga", "LT": "Vilnius",
+    "CY": "Cyprus", "MT": "Malta",
+}
+FOREIGN = re.compile(r"New York|NASDAQ(?! (Stockholm|Copenhagen|Helsinki|Iceland|Riga|Tallinn|Vilnius))|OTC|Over-the-counter|Pink|Tokyo|Toronto", re.I)
+
+
+def pick_ticker(tickers, country):
+    home = HOME_EXCHANGE.get(country)
+    for t, ex in tickers:
+        if home and re.search(home, ex, re.I):
+            return t, ex
+    for t, ex in tickers:
+        if not FOREIGN.search(ex):
+            return t, ex
+    return None, None
 
 
 def tidy(name):
@@ -143,7 +166,7 @@ def tidy(name):
     return name.title() if name.isupper() and len(name) > 4 else name
 
 
-FIELDS = ["lei", "name", "country", "ticker", "exchange", "sector", "industry", "currency", "periodEnd",
+FIELDS = ["lei", "isin", "name", "country", "ticker", "exchange", "mic", "sector", "industry", "currency", "periodEnd",
           "revenueEur", "revenue", "ebitda", "operatingProfit", "netIncome", "operatingCashFlow", "capex", "fcf",
           "dividendsPaid", "equity", "assets", "cash", "debt", "netDebt", "eps", "roe", "ebitdaMargin",
           "operatingMargin", "netMargin", "fcfMargin", "netDebtToEbitda", "revenueGrowth", "netIncomeGrowth",
@@ -153,8 +176,10 @@ FIELDS = ["lei", "name", "country", "ticker", "exchange", "sector", "industry", 
 def main():
     cache = json.loads(CACHE.read_text()) if CACHE.exists() else {}
     issuers = list_filings()
+    listed_file = ROOT / "data/listed.json"
+    listed = json.loads(listed_file.read_text()) if listed_file.exists() else {}
     todo = [(lei, rec) for lei, rec in issuers.items()
-            if cache.get(lei, {}).get("fxo") != rec["filings"][0]["fxo_id"]]
+            if cache.get(lei, {}).get("fxo") != rec["filings"][0]["fxo_id"] and (not listed or lei in listed)]
     log(f"{len(todo)} reports to read, {len(issuers) - len(todo)} cached")
     done = 0
     with ThreadPoolExecutor(WORKERS) as pool:
@@ -176,6 +201,7 @@ def main():
     log(f"read {done} reports this run")
 
     wd, fx = wikidata(), ecb_rates()
+    log(f"{len(listed)} issuers with listed shares (FIRDS); {sum(1 for l in issuers if l in listed)} of them file reports here")
     rows, no_figures = [], 0
     for lei, rec in issuers.items():
         row = cache.get(lei, {}).get("row")
@@ -183,10 +209,16 @@ def main():
             no_figures += 1
             continue
         w = wd.get(lei, {})
-        ticker, exchange = (w.get("tickers") or [(None, None)])[0]
+        ticker, exchange = pick_ticker(w.get("tickers", []), rec["country"])
+        listing = listed.get(lei)
+        if listed and not listing:
+            continue   # no shares on a European venue: bond-only issuers, unlisted companies
         rate = fx.get(row.get("currency") or "")
         rev_eur = round(row["revenue"] / rate, 1) if row.get("revenue") is not None and rate else None
-        rows.append({**row, "lei": lei, "name": w.get("name") or tidy(rec["name"]), "country": rec["country"],
+        name = w.get("name") if w.get("name") and not re.fullmatch(r"Q\d+", w["name"]) else tidy(rec["name"])
+        rows.append({**row, "lei": lei, "name": name, "country": rec["country"],
+                     "isin": listing["isin"] if listing else None,
+                     "mic": (listing or {}).get("mics", [None])[0] if listing and listing.get("mics") else None,
                      "ticker": ticker, "exchange": exchange, "sector": sector_of(w.get("industries", [])),
                      "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "revenueEur": rev_eur})
     rows.sort(key=lambda r: -(r["revenueEur"] or 0))

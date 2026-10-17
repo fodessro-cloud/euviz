@@ -33,6 +33,10 @@ jobs:
         run: |
           set -o pipefail
           python scripts/data/fundamentals.py 2>&1 | tee -a data/run.log || { echo "::error::fundamentals: $(tail -3 data/run.log | tr '\n' ' ')"; exit 1; }
+      - name: List issuers with shares on European venues (ESMA and FCA FIRDS)
+        run: |
+          set -o pipefail
+          python scripts/data/listed.py 2>&1 | tee -a data/run.log || echo "::warning::listed: $(tail -3 data/run.log | tr '\n' ' ')"
       - name: Read reports of all European issuers
         env:
           FINILA_BUDGET_MIN: '290'
