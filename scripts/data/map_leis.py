@@ -23,7 +23,7 @@ LEGAL = r"\b(SE|AG|SA|S A|NV|N V|PLC|P L C|AB|PUBL|ASA|A S|AS|SPA|S P A|OYJ|LTD|
 
 
 def norm(s):
-    s = s.translate(str.maketrans({"Ø": "O", "ø": "o", "Æ": "AE", "æ": "ae", "Ł": "L", "ł": "l", "ß": "SS"}))
+    s = (s or "").translate(str.maketrans({"Ø": "O", "ø": "o", "Æ": "AE", "æ": "ae", "Ł": "L", "ł": "l", "ß": "SS"}))
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().upper()
     s = re.sub(r"[^A-Z0-9 ]", " ", s)
     s = re.sub(LEGAL, " ", s)
