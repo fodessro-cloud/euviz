@@ -22,7 +22,7 @@
   --neg:       #D23B3B;
   --pos-bg:    rgba(15,138,87,0.10);
   --neg-bg:    rgba(210,59,59,0.10);
-  --header-h:  42px;
+  --header-h:  65px;  /* css/header.css: 64px row + 1px border */
   --indices-h: 36px;
   --news-h:    30px;
   --radius:    6px;
@@ -39,71 +39,6 @@ body {
 
 a { color: var(--accent2); text-decoration: none; }
 a:hover { text-decoration: underline; }
-
-/* ── HEADER ────────────────────────────────────── */
-.site-header {
-  height: var(--header-h);
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  gap: 24px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--strong);
-  flex-shrink: 0;
-}
-.logo:hover { text-decoration: none; }
-
-.nav-links {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-}
-.nav-link {
-  padding: 5px 12px;
-  border-radius: var(--radius);
-  color: var(--text2);
-  font-size: 12.5px;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: all .15s;
-  cursor: pointer;
-}
-.nav-link:hover { background: var(--bg3); color: var(--text); text-decoration: none; }
-.nav-link.active { background: var(--accent); color: #fff; }
-
-.header-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.market-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text2);
-}
-.status-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--pos);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
 /* ── INDICES BAR ────────────────────────────────── */
 .indices-bar {
@@ -712,3 +647,5 @@ a:hover { text-decoration: underline; }
 .modal-table th, .modal-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; }
 .modal-table th { color: var(--text2); font-weight: 600; font-size: 11px; text-transform: uppercase; }
 .modal-table .l { text-align: left; }
+
+@media (max-width: 1000px) { :root { --header-h: 87px; } }

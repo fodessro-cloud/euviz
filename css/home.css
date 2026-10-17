@@ -42,14 +42,8 @@ h1, h2, h3, p { margin: 0; }
 .h-wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 
 /* ── Header ─────────────────────────────────── */
-.h-header { border-bottom: 1px solid var(--line); }
-.h-header-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding-top: 14px; padding-bottom: 14px; }
 .h-logo { display: flex; align-items: center; gap: 12px; color: var(--text); font-size: 30px; font-weight: 700; letter-spacing: 0.06em; }
-.h-logo:hover { color: var(--text); }
 .h-logo.small { font-size: 20px; gap: 10px; margin-bottom: 10px; }
-.h-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: 15px; font-weight: 500; }
-.h-nav a { color: var(--text2); padding: 10px 0; }
-.h-nav a:hover { color: var(--text); }
 
 .demo-banner { background: #FFF4D6; color: #6B4A00; font-size: 13px; text-align: center; padding: 6px 12px; border-bottom: 1px solid #F0D58A; }
 
@@ -183,10 +177,7 @@ h1, h2, h3, p { margin: 0; }
 /* ── Phone ──────────────────────────────────── */
 @media (max-width: 640px) {
   .h-wrap { padding: 0 16px; }
-  .h-logo { font-size: 24px; }
-  .h-logo svg { width: 30px; height: 30px; }
-  .h-nav { gap: 0 16px; font-size: 14px; }
-  .h-top { padding-top: 16px; }
+    .h-top { padding-top: 16px; }
   .h-index-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .h-compare { padding: 20px; }
   .h-compare-intro h2 { font-size: 24px; }

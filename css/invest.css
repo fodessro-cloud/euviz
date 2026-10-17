@@ -2,7 +2,6 @@
    FINILA — Where to put money (on top of home.css)
    ═══════════════════════════════════════════════ */
 
-.h-nav a.on { color: var(--text); box-shadow: inset 0 -2px 0 var(--amber); }
 .i-banner { background: var(--real-bg, #0d2a1c); color: var(--real-text, #8fe3b5); font-size: 13px; text-align: center; padding: 6px 12px; border-bottom: 1px solid var(--real-line, #1f5a3c); }
 .i-main { padding-top: 32px; }
 .i-sub { font-size: 14px; color: var(--muted); }
