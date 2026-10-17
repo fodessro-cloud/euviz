@@ -1,8 +1,11 @@
 name: Nasadiť na finila.com (Webglobe)
 
-# Runs only when started by hand: Actions → "Nasadiť na finila.com" → Run workflow.
+# Publishing runs only when started by hand: Actions → "Nasadiť na finila.com" → Run workflow.
 # "kontrola" only connects and lists the server; "nasadit" publishes.
+# Pushes to the finila-webglobe branch run "kontrola" only.
 on:
+  push:
+    branches: [finila-webglobe]
   workflow_dispatch:
     inputs:
       mode:
@@ -30,9 +33,9 @@ jobs:
 
       - name: Upload over FTPS
         env:
-          MODE: ${{ inputs.mode == 'nasadit' && 'deploy' || 'check' }}
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'nasadit' && 'deploy' || 'check' }}
+          FTP_SERVER: ${{ vars.FTP_SERVER || 'sftp://ftp.finila.com:222' }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'FOD0001' }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_DIR: ${{ vars.FTP_DIR || '/' }}
           FTP_INSECURE_TLS: ${{ vars.FTP_INSECURE_TLS || '0' }}

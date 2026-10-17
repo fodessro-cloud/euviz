@@ -5,7 +5,7 @@
 #   MODE=deploy  backs up, archives the old WordPress site to /archiv/ (first
 #                run only), then uploads FINILA next to it
 #
-# Needs FTP_SERVER, FTP_USERNAME, FTP_PASSWORD; optional FTP_DIR (default /),
+# Needs FTP_SERVER, FTP_USERNAME, FTP_PASSWORD (only the password is a secret); optional FTP_DIR (default /),
 # FTP_INSECURE_TLS=1 when the host's certificate does not match FTP_SERVER,
 # OLD_SITE_URL (default https://www.finila.com/).
 # The only existing file that changes is .htaccess; its original is kept in
