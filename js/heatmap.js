@@ -168,7 +168,8 @@ function renderHeatmap() {
           ctx.font = `${Math.max(9, fs - 3)}px Inter, sans-serif`;
           ctx.fillStyle = 'rgba(255,255,255,0.72)';
           const sign = val >= 0 ? '+' : '';
-          ctx.fillText(`${sign}${val.toFixed(2)}%`, tx + tw/2, ty + th/2 + fs * 0.9);
+          const label = hmColor === 'change' && tile.changeKnown === false ? '-' : `${sign}${val.toFixed(2)}%`;
+          ctx.fillText(label, tx + tw/2, ty + th/2 + fs * 0.9);
         }
       }
     }
@@ -203,7 +204,7 @@ function initHeatmap() {
       const sign = val >= 0 ? '+' : '';
       tooltip.innerHTML = `
         <strong>${hit.ticker}</strong> &nbsp; ${hit.name}<br>
-        <span class="${val>=0?'pos':'neg'}">${sign}${val.toFixed(2)}%</span> &nbsp;|&nbsp;
+        <span class="${val>=0?'pos':'neg'}">${hmColor === 'change' && hit.changeKnown === false ? '-' : `${sign}${val.toFixed(2)}%`}</span> &nbsp;|&nbsp;
         Mkt Cap: ${formatMarketCap(hit.marketCap)}<br>
         Price: €${formatNumber(hit.price,2)} &nbsp;|&nbsp; ${hit.country}
       `;
