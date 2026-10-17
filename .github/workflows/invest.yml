@@ -8,7 +8,7 @@ on:
     - cron: '10 5 * * *'
   push:
     branches: [claude/project-thread-wlsy64]
-    paths: ['scripts/data/invest.py', '.github/workflows/invest.yml']
+    paths: ['scripts/data/invest*.py', '.github/workflows/invest.yml']
   workflow_dispatch:
 
 permissions:
@@ -27,6 +27,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Discover series (temporary)
+        if: github.ref != 'refs/heads/main'
+        run: python scripts/data/invest_discover.py > data/invest-discover.log 2>&1 || true
       - name: Download ECB, Eurostat and Bundesbank series
         run: |
           set -o pipefail
@@ -38,7 +41,7 @@ jobs:
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/invest.log js/invest.json 2>/dev/null || true
+          git add data/invest.log data/invest-discover.log js/invest.json 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -m "Update investment comparison data [data refresh]"
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done

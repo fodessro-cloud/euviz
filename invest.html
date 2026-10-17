@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINILA — Where to put your money: deposits, bonds, stocks, gold and property compared</title>
+  <meta name="description" content="Real returns of term deposits, savings accounts, government bonds, stocks, gold and house prices in Slovakia and the euro area, against inflation. Official ECB, Eurostat and Bundesbank data, refreshed daily.">
+  <link rel="icon" href="css/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/invest.css">
+</head>
+<body>
+
+<header class="h-header">
+  <div class="h-wrap h-header-row">
+    <a class="h-logo" href="index.html" aria-label="FINILA home">
+      <svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>
+      FINILA
+    </a>
+    <nav class="h-nav" aria-label="Main menu">
+      <a href="screener.html">Stocks</a>
+      <a href="insiders.html">Insider trades</a>
+      <a href="shorts.html">Short positions</a>
+      <a href="map.html">Market map</a>
+      <a href="groups.html">Sectors &amp; countries</a>
+      <a href="invest.html" class="on" aria-current="page">Where to put money</a>
+      <a href="/archiv/">Archive</a>
+    </nav>
+  </div>
+</header>
+<div class="i-banner">Real data from the ECB, Eurostat and the Deutsche Bundesbank, refreshed daily. Before taxes and fees. Not investment advice.</div>
+
+<main class="h-wrap i-main">
+  <section class="i-intro">
+    <div class="h-eyebrow">WHERE TO PUT MONEY</div>
+    <h1>Does your money beat inflation?</h1>
+    <p>Bank deposits, government bonds, stocks, gold and property side by side, measured against what prices did in the same time.</p>
+    <div class="i-controls">
+      <div class="i-seg" role="group" aria-label="Country" id="region">
+        <button type="button" data-region="SK" class="on">Slovakia</button>
+        <button type="button" data-region="U2">Euro area</button>
+      </div>
+      <span class="i-updated" id="updated"></span>
+    </div>
+  </section>
+
+  <section class="h-section">
+    <div class="h-section-head">
+      <h2>What you earn today, after inflation</h2>
+      <span class="i-sub" id="infl-line"></span>
+    </div>
+    <div class="i-now" id="now"></div>
+    <p class="h-note">Real return = nominal yield or 12-month change minus current annual inflation (HICP). Deposit rates are averages of new bank deposits by households; the best offers on the market are higher.</p>
+  </section>
+
+  <section class="h-section">
+    <div class="h-card i-calc">
+      <div class="i-calc-head">
+        <div>
+          <h2 id="calc-title">What would €10,000 be worth today?</h2>
+          <p class="i-sub" id="calc-sub"></p>
+        </div>
+        <div class="i-calc-inputs">
+          <label class="i-amount">Amount (€)
+            <input id="amount" type="number" min="100" step="100" value="10000" inputmode="numeric">
+          </label>
+          <div class="i-seg" role="group" aria-label="Period" id="years">
+            <button type="button" data-years="1">1 y</button>
+            <button type="button" data-years="3">3 y</button>
+            <button type="button" data-years="5">5 y</button>
+            <button type="button" data-years="10" class="on">10 y</button>
+            <button type="button" data-years="15">15 y</button>
+          </div>
+        </div>
+      </div>
+      <div class="i-calc-body">
+        <div class="i-chart-wrap">
+          <div class="i-legend" id="legend"></div>
+          <div class="i-chart" id="chart" role="img" aria-label="Growth of the amount in each investment over time"></div>
+          <div class="i-tip" id="tip" hidden></div>
+        </div>
+        <div class="i-rank">
+          <table>
+            <thead><tr><th>Investment</th><th class="r">Worth now</th><th class="r">Per year</th><th class="r" title="After inflation">Real / year</th></tr></thead>
+            <tbody id="rank"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="h-note" id="calc-note">Stocks = EURO STOXX 50 price index, dividends not included (they have added roughly 3 % a year). Property = house price index, rent not included. Bonds = a fund holding 10-year government bonds (estimated from yields). Past returns do not guarantee future results.</p>
+    </div>
+  </section>
+
+  <section class="h-section i-split">
+    <div class="h-card i-method">
+      <h2>How we calculate it</h2>
+      <ul>
+        <li><strong>Term deposit:</strong> money rolled over in a deposit fixed for up to one year at the average rate banks paid households each month.</li>
+        <li><strong>Savings account:</strong> the same with the average overnight deposit rate.</li>
+        <li><strong>Government bonds:</strong> interest of a 10-year government bond plus the change in its price when yields move (rising yields push prices down, as in 2022).</li>
+        <li><strong>Stocks, gold, property:</strong> change in price only, in euros.</li>
+        <li><strong>Inflation:</strong> the Harmonised Index of Consumer Prices; "real" means in today's purchasing power.</li>
+      </ul>
+    </div>
+    <div class="h-card i-method">
+      <h2>Sources</h2>
+      <ul id="sources"></ul>
+      <p class="h-note" id="failed"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="h-footer">
+  <div class="h-wrap h-footer-row">
+    <div class="h-footer-brand">
+      <div class="h-logo small">
+        <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>
+        FINILA
+      </div>
+      <p>Information on FINILA is for education only and is not investment advice.</p>
+    </div>
+    <nav class="h-footer-nav" aria-label="Footer">
+      <a href="screener.html">Stocks</a>
+      <a href="invest.html">Where to put money</a>
+      <a href="map.html">Market map</a>
+      <a href="/archiv/">Archive</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/invest.js"></script>
+<script src="js/analytics.js" defer></script>
+</body>
+</html>
