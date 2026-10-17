@@ -67,10 +67,10 @@ function renderFilters() {
   }));
 }
 
-// Net open-market share buying per company over 30 days, with the number of distinct buyers.
+// Net share buying on trading venues per company over 30 days, with the number of distinct buyers.
 function renderTop() {
   const by = {};
-  TRADES.filter(t => side(t) !== 'other' && daysAgo(t.published) < 30 && t.status !== 'Revoked').forEach(t => {
+  TRADES.filter(t => t.signal && daysAgo(t.published) < 30).forEach(t => {
     const c = by[t.issuer] || (by[t.issuer] = { net: 0, buyers: new Set() });
     c.net += (side(t) === 'buy' ? 1 : -1) * (t.valueEur || 0);
     if (side(t) === 'buy') c.buyers.add(t.person);
