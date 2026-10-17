@@ -271,7 +271,10 @@ def pick_ticker(tickers, country):
 
 def tidy(name):
     name = re.sub(r"\s+", " ", name or "").strip()
-    return name.title() if name.isupper() and len(name) > 4 else name
+    if not (name.isupper() and len(name) > 4):
+        return name
+    # SAP AG, not Sap Ag: short words are kept as acronyms and legal forms.
+    return " ".join(w if len(w) <= 3 and w.isalpha() else w.title() for w in name.split())
 
 
 FIELDS = ["lei", "isin", "name", "country", "ticker", "exchange", "mic", "sector", "industry", "currency", "periodEnd",
@@ -328,6 +331,8 @@ def main():
         rate = fx.get(row.get("currency") or "")
         rev_eur = round(row["revenue"] / rate, 1) if row.get("revenue") is not None and rate else None
         name = w.get("name") if w.get("name") and not re.fullmatch(r"Q\d+", w["name"]) else tidy(rec["name"])
+        if " " not in name and tidy(rec["name"]).lower().startswith(name.lower() + " "):
+            name = tidy(rec["name"])   # Wikidata's short label "Novo" for Novo Nordisk A/S
         # The ISIN shows the company's home country; the filing country can be where it filed (Boliden in Norway).
         country = listing["isin"][:2] if listing and listing["isin"][:2] in EUROPE - {"GG", "JE", "IM", "GI", "FO"} else rec["country"]
         rows.append({**row, "lei": lei, "name": name, "country": country,
