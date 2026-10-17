@@ -104,7 +104,7 @@ function toggleGroupDetail(name) {
 
 function openGroupStock(ticker) {
   // redirect to screener with modal
-  window.open(`index.html?stock=${ticker}`, '_blank');
+  window.open(`screener.html?stock=${ticker}`, '_blank');
 }
 
 function onGroupSortClick(key) {
