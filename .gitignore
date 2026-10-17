@@ -1,1 +1,6 @@
 __pycache__/
+
+# Built by scripts/build-stock-pages.py during deploy and the daily stock-pages job.
+/stock/
+/sitemap.xml
+/js/stock-slugs.json

@@ -18,6 +18,14 @@ RewriteCond %{THE_REQUEST} \s/+(screener|companies|insiders|shorts|invest|map|gr
 RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)\.html$ /$1 [R=301,L]
 RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)$ $1.html [L]
 
+# Company pages: /stock/asml-holding shows stock/asml-holding.html, /stock/ is the A-Z list.
+RewriteCond %{THE_REQUEST} \s/+stock/index\.html[\s?]
+RewriteRule ^stock/index\.html$ /stock/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+stock/[a-z0-9-]+\.html[\s?]
+RewriteRule ^stock/([a-z0-9-]+)\.html$ /stock/$1 [R=301,L]
+RewriteRule ^stock/([a-z0-9-]+)$ stock/$1.html [L]
+RewriteRule ^stock$ /stock/ [R=301,L]
+
 # Links inside the archive point to /archiv/...: send visitors to the original
 # address instead (/archiv/blog/index.html -> /blog/). Images, scripts and the
 # archive's own home page (/archiv/) stay where they are.

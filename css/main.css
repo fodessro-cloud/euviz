@@ -680,3 +680,5 @@ a:hover { text-decoration: underline; }
 .score-mid { color: var(--text); background: var(--bg3); }
 .score-lo { color: #fff; background: var(--neg); }
 .modal-scores { margin-top: 24px; }
+.modal-actions { display: flex; align-items: center; gap: 10px; }
+.modal-page { font-size: 12px; font-weight: 600; white-space: nowrap; }
