@@ -719,3 +719,10 @@ a:hover { text-decoration: underline; }
 .modal-table th, .modal-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; }
 .modal-table th { color: var(--text2); font-weight: 600; font-size: 11px; text-transform: uppercase; }
 .modal-table .l { text-align: left; }
+
+/* ── FINILA scores (companies.html) ─────────── */
+.score { font-weight: 700; padding: 1px 6px; border-radius: 4px; font-size: 11.5px; }
+.score-hi { color: #08110c; background: var(--pos); }
+.score-mid { color: var(--text); background: var(--bg3); }
+.score-lo { color: #fff; background: var(--neg); }
+.modal-scores { margin-top: 12px; }

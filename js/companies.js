@@ -16,24 +16,55 @@ const countryNames = (() => {
 })();
 const countryName = c => (c && countryNames ? countryNames.of(c) : c) || '—';
 const ndCell = v => isNum(v) ? (v < 0 ? '<span class="pos">net cash</span>' : `${num(v, 2)}×`) : '—';
+const eur = v => !isNum(v) ? '—' : Math.abs(v) >= 1e6 ? `€${num(v / 1e6, 1)}M` : `€${num(v / 1e3, 0)}k`;
+
+// FINILA scores. Quality = Piotroski F-score (0-9) from this and last year's annual report.
+const F_TESTS = ['Profitable', 'Positive operating cash flow', 'Return on assets improved', 'Cash flow above profit',
+  'Long-term debt / assets not up', 'Current ratio improved', 'No new shares issued', 'Gross margin improved', 'Asset turnover improved'];
+const scoreCell = c => !isNum(c.fscore) ? '—'
+  : `<span class="score score-${c.fscore >= 7 ? 'hi' : c.fscore >= 4 ? 'mid' : 'lo'}">${c.fscore}/9</span>`;
+// Dividends as % of free cash flow: under 60 % comfortable, over 100 % not covered.
+const coverCell = c => !isNum(c.payoutFcf) ? '—'
+  : `<span class="${c.payoutFcf <= 60 ? 'pos' : c.payoutFcf > 100 ? 'neg' : ''}">${num(c.payoutFcf, 0)}%</span>`;
+const insiderCell = c => !isNum(c.insNet) ? '—' : c.insNet === 0 && !c.insBuyers ? '0'
+  : `<span class="${c.insNet > 0 ? 'pos' : c.insNet < 0 ? 'neg' : ''}">${c.insNet > 0 ? '+' : ''}${eur(c.insNet)}</span>${c.insBuyers ? ` <span class="ins-note">${c.insBuyers}↑</span>` : ''}`;
+const shortCell = c => !isNum(c.shortPct) ? '—' : `<span class="${c.shortPct >= 2 ? 'neg' : ''}">${num(c.shortPct, 2)}%</span>`;
 
 const COLUMNS = [
   { key: 'name', label: 'Company', left: true, fmt: c => `<span class="ticker-link">${esc(c.ticker || '')}</span> <span class="company-name">${esc(c.name)}</span>` },
   { key: 'country', label: 'Country', left: true, fmt: c => esc(countryName(c.country)) },
   { key: 'sector', label: 'Sector', left: true, fmt: c => c.sector ? `<span class="badge-sector">${esc(c.sector)}</span>` : '—' },
-  { key: 'periodEnd', label: 'FY end', fmt: c => esc(c.periodEnd) },
+  { key: 'fscore', label: 'Quality', fmt: scoreCell },
+  { key: 'insNet', label: 'Insiders 30d', fmt: insiderCell },
+  { key: 'shortPct', label: 'Shorted', fmt: shortCell },
+  { key: 'payoutFcf', label: 'Div. / FCF', fmt: coverCell },
   { key: 'revenueEur', label: 'Revenue €', fmt: c => bn(c.revenueEur) },
   { key: 'revenueGrowth', label: 'Rev. growth', fmt: c => pctCell(c.revenueGrowth) },
   { key: 'netMargin', label: 'Net margin', fmt: c => pctCell(c.netMargin) },
-  { key: 'ebitdaMargin', label: 'EBITDA margin', fmt: c => pctCell(c.ebitdaMargin) },
   { key: 'fcfMargin', label: 'FCF margin', fmt: c => pctCell(c.fcfMargin) },
   { key: 'roe', label: 'ROE', fmt: c => pctCell(c.roe) },
   { key: 'netDebtToEbitda', label: 'Net debt/EBITDA', fmt: c => ndCell(c.netDebtToEbitda) },
-  { key: 'netIncomeGrowth', label: 'Profit growth', fmt: c => pctCell(c.netIncomeGrowth) },
+  { key: 'periodEnd', label: 'FY end', fmt: c => esc(c.periodEnd) },
 ];
 
 // Each filter: options as [label, test]
 const FILTERS = [
+  { id: 'combo', label: 'FINILA signals', options: () => [
+      ['Quality 7+ and insiders buying', c => c.fscore >= 7 && c.insNet > 0],
+      ['Insiders buying while funds short', c => c.insNet > 0 && c.shortPct >= 0.5],
+      ['Quality 7+ and dividend covered', c => c.fscore >= 7 && c.payoutFcf > 0 && c.payoutFcf <= 60],
+      ['Weak quality and heavily shorted', c => isNum(c.fscore) && c.fscore <= 3 && c.shortPct >= 2]] },
+  { id: 'fscore', label: 'Quality score', options: () => [
+      ['8 to 9 (strong)', c => c.fscore >= 8], ['7 or more', c => c.fscore >= 7], ['5 or more', c => c.fscore >= 5],
+      ['3 or less (weak)', c => isNum(c.fscore) && c.fscore <= 3]] },
+  { id: 'insiders', label: 'Insiders, 30 days', options: () => [
+      ['Net buying', c => c.insNet > 0], ['2 or more buyers', c => c.insBuyers >= 2], ['Net selling', c => c.insNet < 0]] },
+  { id: 'shorts', label: 'Shorted by funds', options: () => [
+      ['Over 5%', c => c.shortPct > 5], ['Over 2%', c => c.shortPct > 2], ['Any public short', c => c.shortPct > 0],
+      ['No public short', c => !(c.shortPct > 0)]] },
+  { id: 'cover', label: 'Dividend vs free cash flow', options: () => [
+      ['Well covered (under 60%)', c => c.payoutFcf > 0 && c.payoutFcf <= 60], ['Covered (under 100%)', c => c.payoutFcf > 0 && c.payoutFcf <= 100],
+      ['Not covered (over 100%)', c => c.payoutFcf > 100]] },
   { id: 'country', label: 'Country', options: () => [...new Set(COMPANIES.map(c => c.country).filter(Boolean))]
       .sort((a, b) => countryName(a).localeCompare(countryName(b))).map(k => [countryName(k), c => c.country === k]) },
   { id: 'sector', label: 'Sector', options: () => [...new Set(COMPANIES.map(c => c.sector).filter(Boolean))].sort()
@@ -141,10 +172,56 @@ function openCompany(lei) {
           ${row('ROE', pctCell(c.roe))}${row('EBITDA margin', pctCell(c.ebitdaMargin))}${row('Operating margin', pctCell(c.operatingMargin))}${row('Net margin', pctCell(c.netMargin))}${row('FCF margin', pctCell(c.fcfMargin))}${row('Net debt / EBITDA', ndCell(c.netDebtToEbitda))}${row('Revenue growth', pctCell(c.revenueGrowth))}${row('Net income growth', pctCell(c.netIncomeGrowth))}
         </table></div>
       </div>
+      ${scoresHTML(c)}
       ${fin}
       <div class="modal-report-src">Source: the company’s ESEF annual report via filings.xbrl.org${c.source ? ` · <a href="${esc(c.source)}" target="_blank" rel="noopener">view report</a>` : ''}. Figures are read automatically and can contain errors; check the report before relying on them.</div>
     </div>`;
   document.getElementById('stock-modal').style.display = 'flex';
+}
+
+function scoresHTML(c) {
+  const tests = (c.fscoreTests || '').split('');
+  const quality = isNum(c.fscore) ? `
+    <div class="modal-section"><h4>Quality score ${scoreCell(c)}</h4><table class="kv-table">
+      ${F_TESTS.map((t, i) => `<tr><td>${t}</td><td>${tests[i] === '1' ? '<span class="pos">✓ yes</span>' : tests[i] === '0' ? '<span class="neg">✗ no</span>' : '—'}</td></tr>`).join('')}
+    </table></div>` : `<div class="modal-section"><h4>Quality score</h4><p class="ins-note">${c.financial ? 'Not calculated for banks and insurers.' : 'Not enough figures in the last two annual reports.'}</p></div>`;
+  const other = `
+    <div class="modal-section"><h4>Dividend, insiders, short sellers</h4><table class="kv-table">
+      <tr><td>Dividends / free cash flow</td><td>${coverCell(c)}</td></tr>
+      <tr><td>Dividends / net profit</td><td>${isNum(c.payoutNet) ? num(c.payoutNet, 0) + '%' : '—'}</td></tr>
+      <tr><td>Insiders, net 30 days</td><td>${insiderCell(c)}</td></tr>
+      <tr><td>Insiders buying, 30 days</td><td>${isNum(c.insNet) ? c.insBuyers : '—'}</td></tr>
+      <tr><td>Shorted by funds</td><td>${shortCell(c)}${c.shortFunds ? ` <span class="ins-note">${c.shortFunds} funds</span>` : ''}</td></tr>
+    </table>
+    <p class="ins-note">${isNum(c.insNet) ? `<a href="insiders.html?q=${encodeURIComponent(c.insName)}">See insider trades</a>` : 'Insider trades so far only for Sweden.'}
+    ${isNum(c.shortPct) ? ` · <a href="shorts.html?q=${encodeURIComponent(c.isin)}">See short positions</a>` : ''}</p></div>`;
+  return `<div class="modal-grid modal-scores">${quality}${other}</div>`;
+}
+
+// Join the insider register (by LEI) and the short-selling registers (by ISIN) to each company.
+async function addSignals() {
+  const load = async url => { try { return await (await fetch(url, { cache: 'no-cache' })).json(); } catch { return null; } };
+  const [ins, sh] = await Promise.all([load('js/insiders.json'), load('js/shorts.json')]);
+  const byLei = {}, byIsin = {};
+  if (ins) {
+    const since = Date.now() - 30 * 864e5;
+    ins.rows.filter(t => t.lei && t.instrumentType === 'Share' && t.status !== 'Revoked' && new Date(t.published) >= since).forEach(t => {
+      const s = byLei[t.lei] || (byLei[t.lei] = { net: 0, buyers: new Set(), name: t.issuer });
+      if (t.nature === 'Acquisition') { s.net += t.valueEur || 0; s.buyers.add(t.person); }
+      if (t.nature === 'Disposal') s.net -= t.valueEur || 0;
+    });
+  }
+  if (sh) sh.positions.forEach(p => {
+    const s = byIsin[p.isin] || (byIsin[p.isin] = { pct: 0, funds: 0 });
+    s.pct += p.pct; if (p.c !== 'UK') s.funds += 1;
+  });
+  COMPANIES.forEach(c => {
+    const i = byLei[c.lei], s = byIsin[c.isin];
+    // Swedish companies are covered by the register, so no trades means zero rather than unknown.
+    if (i) Object.assign(c, { insNet: i.net, insBuyers: i.buyers.size, insName: i.name });
+    else if (ins && c.country === 'SE') Object.assign(c, { insNet: 0, insBuyers: 0, insName: c.name });
+    if (s) Object.assign(c, { shortPct: +s.pct.toFixed(2), shortFunds: s.funds });
+  });
 }
 
 function closeCompany() { document.getElementById('stock-modal').style.display = 'none'; }
@@ -158,6 +235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('co-count').textContent = 'Could not load company data.';
     return;
   }
+  await addSignals();
   renderFilters();
   const params = new URLSearchParams(location.search);
   query = params.get('q') || '';
