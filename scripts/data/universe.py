@@ -201,6 +201,61 @@ def wikidata_extra(isins, leis):
     return saved
 
 
+# Listed issuers that are not on filings.xbrl.org (all of Germany, most of Poland, Romania and
+# Bulgaria, part of Belgium and France: Lufthansa, bpost) get headline figures from Wikidata (CC0).
+FIGURES_QUERY = """
+SELECT ?lei ?item ?prop ?amount ?cur ?time WHERE {
+  VALUES ?lei { %s }
+  VALUES (?p ?psv ?prop) { (p:P2139 psv:P2139 "revenue") (p:P2295 psv:P2295 "netIncome")
+                          (p:P3362 psv:P3362 "operatingProfit") (p:P2403 psv:P2403 "assets") (p:P2137 psv:P2137 "equity") }
+  ?item wdt:P1278 ?lei; ?p ?st.
+  ?st ?psv [wikibase:quantityAmount ?amount; wikibase:quantityUnit ?unit]; pq:P585 ?time.
+  ?unit wdt:P498 ?cur.
+  FILTER(YEAR(?time) >= %d)
+}"""
+FIGURES_CACHE = ROOT / "data/cache/wikidata-figures.json"
+
+
+def wikidata_figures(leis):
+    """{LEI: {"item", "currency", "periodEnd", figures in millions}} from the newest year that has revenue
+    or profit; values of other years or currencies are not mixed in."""
+    try:
+        saved = json.loads(FIGURES_CACHE.read_text())
+    except Exception:
+        saved = {}
+    if not leis:
+        return saved
+    q = FIGURES_QUERY % (" ".join(f'"{l}"' for l in sorted(leis)), date.today().year - 3)
+    req = urllib.request.Request("https://query.wikidata.org/sparql", data=urllib.parse.urlencode({"query": q}).encode(),
+                                 headers={**UA, "Accept": "application/sparql-results+json",
+                                          "Content-Type": "application/x-www-form-urlencoded"})
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=300) as r:
+                rows = json.load(r)["results"]["bindings"]
+            break
+        except Exception as e:
+            err = e
+            time.sleep(75)
+    else:
+        log(f"  ! Wikidata figures: {err}; using the last saved copy")
+        return saved
+    years = {}
+    for b in rows:
+        lei, t = b["lei"]["value"], b["time"]["value"][:10]
+        y = years.setdefault(lei, {"item": b["item"]["value"], "by": {}})
+        y["by"].setdefault((t, b["cur"]["value"]), {})[b["prop"]["value"]] = round(float(b["amount"]["value"]) / 1e6, 1)
+    out = {}
+    for lei, y in years.items():
+        usable = [k for k, v in y["by"].items() if "revenue" in v or "netIncome" in v]
+        if usable:
+            (t, cur) = max(usable)
+            out[lei] = {"item": y["item"], "currency": cur, "periodEnd": t, **y["by"][(t, cur)]}
+    FIGURES_CACHE.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
+    log(f"Wikidata figures for {len(out)} of {len(leis)} listed issuers without an ESEF report")
+    return out
+
+
 # Last resort: words in the company name (Fastigheter, Bank, Pharma, Energia...).
 NAME_SECTORS = [
     ("Real Estate", r"fastighet|real estate|propert|immobili|inmobili|reit\b|estates?\b|eiendom|kiinteist|nieruchomo|wohnen|wonen|vastgoed|logistics? property"),
@@ -270,7 +325,7 @@ FIELDS = ["lei", "isin", "name", "country", "ticker", "exchange", "mic", "sector
           "revenueEur", "revenue", "ebitda", "operatingProfit", "netIncome", "operatingCashFlow", "capex", "fcf",
           "dividendsPaid", "equity", "assets", "cash", "debt", "netDebt", "eps", "roe", "ebitdaMargin",
           "operatingMargin", "netMargin", "fcfMargin", "netDebtToEbitda", "revenueGrowth", "netIncomeGrowth",
-          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source"]
+          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source", "origin"]
 
 
 def main():
@@ -327,6 +382,27 @@ def main():
                      "mic": (listing or {}).get("mics", [None])[0] if listing and listing.get("mics") else None,
                      "ticker": ticker, "exchange": exchange, "sector": sector_of(w.get("industries", [])),
                      "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "revenueEur": rev_eur})
+    # Listed European issuers without a report on filings.xbrl.org: headline figures from Wikidata.
+    absent = {lei for lei, l in listed.items() if lei not in issuers and l["isin"][:2] in EUROPE}
+    for lei, fig in wikidata_figures(absent).items():
+        l, w = listed[lei], wd.get(lei, {})
+        if l["isin"][:2] in {"GG", "JE", "IM", "GI", "FO"}:
+            continue
+        rate = fx.get(fig["currency"])
+        rev, net, op, eq = (fig.get(k) for k in ("revenue", "netIncome", "operatingProfit", "equity"))
+        ticker, exchange = pick_ticker(w.get("tickers", []), l["isin"][:2])
+        name = w.get("name") if w.get("name") and not re.fullmatch(r"Q\d+", w["name"]) else tidy(l["name"] or "")
+        pct = lambda a, b: round(100 * a / b, 1) if a is not None and b else None
+        rows.append({"lei": lei, "isin": l["isin"], "name": name, "country": l["isin"][:2],
+                     "mic": (l.get("mics") or [None])[0], "ticker": ticker, "exchange": exchange,
+                     "sector": sector_of(w.get("industries", [])),
+                     "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None,
+                     "currency": fig["currency"], "periodEnd": fig["periodEnd"],
+                     "revenue": rev, "revenueEur": round(rev / rate, 1) if rev is not None and rate else None,
+                     "operatingProfit": op, "netIncome": net, "equity": eq, "assets": fig.get("assets"),
+                     "netMargin": pct(net, rev), "operatingMargin": pct(op, rev),
+                     "roe": pct(net, eq) if eq and eq > 0 else None,
+                     "source": fig["item"], "origin": "wikidata"})
     missing = [r for r in rows if not r["sector"]]
     extra = wikidata_extra({r["isin"] for r in missing if r["isin"]}, {r["lei"] for r in missing})
     via = {"wikidata": 0, "bank": 0, "name": 0}
