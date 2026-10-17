@@ -58,13 +58,10 @@
     <div class="h-card i-calc">
       <div class="i-calc-head">
         <div>
-          <h2 id="calc-title">What would €10,000 be worth today?</h2>
+          <h2 id="calc-title">How much did each investment return?</h2>
           <p class="i-sub" id="calc-sub"></p>
         </div>
         <div class="i-calc-inputs">
-          <label class="i-amount"><span>Amount <span id="amount-cur">(€)</span></span>
-            <input id="amount" type="number" min="100" step="100" value="10000" inputmode="numeric">
-          </label>
           <div class="i-seg" role="group" aria-label="Period" id="years">
             <button type="button" data-years="1">1 y</button>
             <button type="button" data-years="3">3 y</button>
@@ -77,12 +74,12 @@
       <div class="i-calc-body">
         <div class="i-chart-wrap">
           <div class="i-legend" id="legend"></div>
-          <div class="i-chart" id="chart" role="img" aria-label="Growth of the amount in each investment over time"></div>
+          <div class="i-chart" id="chart" role="img" aria-label="Total return of each investment over time, in per cent"></div>
           <div class="i-tip" id="tip" hidden></div>
         </div>
         <div class="i-rank">
           <table>
-            <thead><tr><th>Investment</th><th class="r">Worth now</th><th class="r">Per year</th><th class="r" title="After inflation">Real / year</th></tr></thead>
+            <thead><tr><th>Investment</th><th class="r">Total return</th><th class="r">Per year</th><th class="r" title="After inflation">Real / year</th></tr></thead>
             <tbody id="rank"></tbody>
           </table>
         </div>

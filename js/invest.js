@@ -27,9 +27,10 @@ function applyTheme() {
   PRICES.color = css.getPropertyValue('--muted').trim() || '#9AA8C2';
   CASH.color = css.getPropertyValue('--line2').trim() || '#5E6B85';
 }
-const CUR_SIGN = { EUR: '€', CZK: 'Kč', DKK: 'kr', HUF: 'Ft', PLN: 'zł', RON: 'lei', SEK: 'kr', NOK: 'kr', CHF: 'CHF', GBP: '£', ISK: 'kr' };
 
-let D = null, country = 'U2', years = 10, amount = 10000, sortKey = 'name', sortDir = 1;
+// Every line starts at 100, so the value minus 100 is the total return in per cent.
+const amount = 100;
+let D = null, country = 'U2', years = 10, sortKey = 'name', sortDir = 1;
 
 const isNum = v => typeof v === 'number' && isFinite(v);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -40,11 +41,6 @@ const mIdx = m => +m.slice(0, 4) * 12 + +m.slice(5, 7) - 1;
 const mStr = i => `${Math.floor(i / 12)}-${String(i % 12 + 1).padStart(2, '0')}`;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const mNice = m => m ? `${MONTHS[+m.slice(5, 7) - 1]} ${m.slice(0, 4)}` : '';
-const cur = () => D.countries[country].cur;
-const money = v => {
-  const c = cur(), s = CUR_SIGN[c] || c, n = Math.round(v).toLocaleString('en-US');
-  return c === 'EUR' || c === 'GBP' ? `${s}${n}` : `${n} ${s}`;
-};
 
 // Series are stored as [first month, [values...]]; returns a lookup month -> value.
 function series(code, key) {
@@ -57,7 +53,6 @@ function series(code, key) {
 function render() {
   const c = D.countries[country];
   document.querySelectorAll('#region option').forEach(o => { o.selected = o.value === country; });
-  document.getElementById('amount-cur').textContent = `(${CUR_SIGN[c.cur] || c.cur})`;
   renderNow(); renderCalc(); renderTable();
 }
 
@@ -87,7 +82,7 @@ function renderNow() {
   }).join('');
 }
 
-// ── Calculator: growth of the amount over N years ───────────────────────
+// ── Calculator: total return over N years ───────────────────────
 function paths() {
   const all = [...ASSETS, PRICES].map(a => ({ ...a, s: series(country, a.key) })).filter(a => a.s);
   if (!all.length) return { list: [], from: 0, to: 0 };
@@ -103,7 +98,7 @@ function paths() {
 
 function renderCalc() {
   const c = D.countries[country], { list, from, to } = paths();
-  document.getElementById('calc-title').textContent = `What would ${money(amount)} put away ${years} year${years > 1 ? 's' : ''} ago be worth today?`;
+  document.getElementById('calc-title').textContent = `How much did each investment return over ${years} year${years > 1 ? 's' : ''}?`;
   document.getElementById('calc-sub').textContent = list.length ? `${c.name}, ${mNice(mStr(from))} to ${mNice(mStr(to))}, in ${c.cur}` : '';
   const prices = list.find(a => a.key === 'prices');
   const infl = prices ? prices.final / amount : null;
@@ -114,10 +109,10 @@ function renderCalc() {
   rows.sort((a, b) => b.final - a.final);
   document.getElementById('rank').innerHTML = rows.map(a => `<tr>
       <td><span class="i-dot" style="background:${a.color}"></span>${a.label}${a.lastM < to ? `<span class="i-note"> to ${mNice(mStr(a.lastM))}</span>` : ''}</td>
-      <td class="r m">${money(a.final)}</td>
+      <td class="r m ${cls(a.final - amount)}">${ret(a.final)}</td>
       <td class="r m ${cls(pa(a))}">${pct(pa(a))}</td>
       <td class="r m ${cls(real(a))}">${pct(real(a))}</td></tr>`).join('')
-    + (prices ? `<tr class="i-prices"><td><span class="i-dash"></span>Needed to keep up with prices</td><td class="r m">${money(prices.final)}</td><td class="r m">${pct((Math.pow(infl, 1 / yrs(prices.lastM)) - 1) * 100)}</td><td class="r m"></td></tr>` : '');
+    + (prices ? `<tr class="i-prices"><td><span class="i-dash"></span>Prices rose (inflation)</td><td class="r m">${ret(prices.final)}</td><td class="r m">${pct((Math.pow(infl, 1 / yrs(prices.lastM)) - 1) * 100)}</td><td class="r m"></td></tr>` : '');
   const missing = ASSETS.filter(a => !list.some(l => l.key === a.key)).map(a => a.label.toLowerCase());
   document.getElementById('calc-missing').textContent = missing.length
     ? `No data for ${c.name} over ${years} years: ${missing.join(', ')}.` : '';
@@ -137,7 +132,7 @@ function drawChart(list, from, to) {
   const step = niceStep((hi - lo) / 5);
   let grid = '';
   for (let v = Math.ceil(lo / step) * step; v <= hi; v += step)
-    grid += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}" class="g"/><text x="${pad.l - 8}" y="${y(v) + 4}" class="ax" text-anchor="end">${short(v)}</text>`;
+    grid += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}" class="g"/><text x="${pad.l - 8}" y="${y(v) + 4}" class="ax" text-anchor="end">${axisPct(v)}</text>`;
   const yStep = years <= 3 ? 1 : years <= 5 ? 1 : years <= 10 ? 2 : 3;
   for (let yr = Math.ceil((from + 1) / 12); yr * 12 <= to; yr += yStep)
     grid += `<text x="${x(yr * 12)}" y="${H - 8}" class="ax" text-anchor="middle">${W < 520 && yStep === 1 && years > 3 ? `’${String(yr).slice(2)}` : yr}</text>`;
@@ -156,7 +151,7 @@ function drawChart(list, from, to) {
     <rect x="${pad.l}" y="0" width="${W - pad.l - pad.r}" height="${H}" fill="transparent" id="hit"/></svg>`;
   document.getElementById('legend').innerHTML = lines.map(a =>
     `<span><i class="${a.key === 'prices' ? 'dash' : ''}" style="background:${a.color}"></i>${a.label}</span>`).join('')
-    + `<span><i class="base"></i>Starting amount</span>`;
+    + `<span><i class="base"></i>0 % (no gain)</span>`;
 
   const hit = document.getElementById('hit'), tip = document.getElementById('tip'), xh = document.getElementById('xh'), dots = document.getElementById('dots');
   const move = ev => {
@@ -166,7 +161,7 @@ function drawChart(list, from, to) {
     const vals = lines.map(a => ({ a, p: a.pts.find(p => p[0] === i) })).filter(v => v.p).sort((p, q) => q.p[1] - p.p[1]);
     xh.setAttribute('x1', x(i)); xh.setAttribute('x2', x(i)); xh.setAttribute('visibility', 'visible');
     dots.innerHTML = vals.map(v => `<circle cx="${x(i)}" cy="${y(v.p[1])}" r="4.5" fill="${v.a.color}" class="dt"/>`).join('');
-    tip.innerHTML = `<b>${mNice(mStr(i))}</b>` + vals.map(v => `<div><i style="background:${v.a.color}"></i>${v.a.key === 'prices' ? 'Prices' : v.a.label}<span>${money(v.p[1])}</span></div>`).join('');
+    tip.innerHTML = `<b>${mNice(mStr(i))}</b>` + vals.map(v => `<div><i style="background:${v.a.color}"></i>${v.a.key === 'prices' ? 'Prices' : v.a.label}<span>${ret(v.p[1])}</span></div>`).join('');
     tip.hidden = false;
     const wrap = el.parentElement.getBoundingClientRect(), tx = r.left - wrap.left + px;
     tip.style.left = `${Math.min(Math.max(tx + 14, 0), wrap.width - tip.offsetWidth)}px`;
@@ -178,7 +173,8 @@ function drawChart(list, from, to) {
   hit.addEventListener('mouseleave', leave); hit.addEventListener('touchend', leave);
 }
 const niceStep = s => { const p = Math.pow(10, Math.floor(Math.log10(s))), f = s / p; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * p; };
-const short = v => Math.abs(v) >= 1e6 ? `${+(v / 1e6).toFixed(1)}M` : Math.abs(v) >= 1e3 ? `${+(v / 1e3).toFixed(1)}k` : String(Math.round(v));
+const ret = v => pct(v - amount, Math.abs(v - amount) >= 100 ? 0 : 1);
+const axisPct = v => `${Math.round(v - amount) > 0 ? '+' : ''}${Math.round(v - amount)} %`;
 
 // ── All of Europe side by side ──────────────────────────────────────────
 const COLS = [
@@ -225,8 +221,6 @@ function setup() {
   document.querySelectorAll('#years button').forEach(b => b.addEventListener('click', () => {
     years = +b.dataset.years; document.querySelectorAll('#years button').forEach(x => x.classList.toggle('on', x === b)); renderCalc();
   }));
-  const amt = document.getElementById('amount');
-  amt.addEventListener('input', () => { const v = +amt.value; if (v > 0) { amount = v; renderCalc(); } });
   document.getElementById('eu-head').addEventListener('click', e => {
     const th = e.target.closest('th'); if (!th) return;
     const k = th.dataset.k; sortDir = k === sortKey ? -sortDir : (k === 'name' ? 1 : -1); sortKey = k; renderTable();
