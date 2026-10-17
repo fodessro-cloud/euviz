@@ -4,6 +4,7 @@
 const fmt = (n, d = 2) => Number(n).toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
 const isNum = v => typeof v === 'number' && isFinite(v);
 const pct = n => isNum(n) ? (n >= 0 ? '+' : '−') + fmt(Math.abs(n)) + '%' : '—';
+const pct1 = n => isNum(n) ? (n >= 0 ? '+' : '−') + fmt(Math.abs(n), 1) + '%' : '—';
 const dir = n => (!isNum(n) ? '' : n >= 0 ? 'up' : 'down');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const bnEur = v => isNum(v) ? `€${fmt(v / 1000, v >= 100000 ? 0 : 1)}B` : '—';
@@ -116,9 +117,9 @@ function renderPresets() {
   }));
 }
 
-// ── €10,000 over 5/10/20 years, euro area (same data as /invest) ─
+// ── Total and yearly return over 5/10/20 years, euro area (same data as /invest) ─
 const ASSETS = [['stocks', 'Stocks (EURO STOXX 50)'], ['gold', 'Gold'], ['house', 'Property'], ['bonds', 'Government bonds'],
-  ['deposit', 'Term deposit'], ['savings', 'Savings account']];
+  ['deposit', 'Term deposit'], ['savings', 'Savings account'], ['cash', 'Cash after inflation']];
 const BAR_COLORS = ['#1F6FEB', '#D99A1E', '#8B5CF6', '#0EA5B7', '#5B9BFF', '#7A8AA6', '#D23B3B'];
 const mIdx = m => +m.slice(0, 4) * 12 + +m.slice(5, 7) - 1;
 let INV = null;
@@ -130,16 +131,17 @@ function series(key) {
 }
 function renderCompare(years) {
   const grow = s => { const from = s.last - years * 12; return s.first <= from ? s.at(s.last) / s.at(from) : null; };
-  const prices = series('prices');
-  const rows = ASSETS.map(([k, label]) => { const s = series(k), g = s && grow(s); return g ? [label, 10000 * g] : null; }).filter(Boolean);
-  const infl = prices && grow(prices);
-  if (infl) rows.push(['Cash after inflation', 10000 / infl]);
-  rows.sort((a, b) => b[1] - a[1]);
-  const max = Math.max(...rows.map(r => r[1]));
-  document.getElementById('compare').innerHTML = rows.map(([label, v]) =>
-    `<div class="h-bar"><span class="label">${label}</span>
-      <div class="track"><div class="fill" style="width:${Math.max(4, Math.round(v / max * 100))}%;background:${BAR_COLORS[ASSETS.findIndex(a => a[1] === label) >= 0 ? ASSETS.findIndex(a => a[1] === label) : 6]}"></div></div>
-      <span class="val">€${fmt(v, 0)}</span></div>`
+  const prices = series('prices'), infl = prices && grow(prices);
+  const rows = ASSETS.map(([k, label], i) => {
+    const g = k === 'cash' ? (infl ? 1 / infl : null) : (series(k) && grow(series(k)));
+    return g ? { label, total: (g - 1) * 100, year: (Math.pow(g, 1 / years) - 1) * 100, color: BAR_COLORS[i] } : null;
+  }).filter(Boolean).sort((a, b) => b.total - a.total);
+  // Bars start at the largest loss, so a negative return still shows as a (short) bar.
+  const lo = Math.min(0, ...rows.map(r => r.total)), hi = Math.max(...rows.map(r => r.total));
+  document.getElementById('compare').innerHTML = rows.map(r =>
+    `<div class="h-bar"><span class="label">${r.label}</span>
+      <div class="track"><div class="fill" style="width:${Math.max(4, Math.round((r.total - lo) / (hi - lo || 1) * 100))}%;background:${r.color}"></div></div>
+      <span class="val ${dir(r.total)}">${pct1(r.total)}<small>${pct1(r.year)} a year</small></span></div>`
   ).join('') || '<p class="h-note">Could not load the comparison.</p>';
   document.querySelectorAll('#periods button').forEach(b => b.classList.toggle('on', Number(b.dataset.years) === years));
 }
