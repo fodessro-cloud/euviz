@@ -126,6 +126,50 @@ def companies():
     return data['updated'], prices.get('date'), rows
 
 
+def add_history(rows):
+    """Daily closes from data/prices-history.json (ISIN -> {date: close}), kept by scripts/data/prices.py."""
+    try:
+        hist = json.loads((SRC / 'data' / 'prices-history.json').read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return
+    for c in rows:
+        if c.get('isin') in hist:
+            c['history'] = sorted(hist[c['isin']].items())
+
+
+def chart(c):
+    """Price chart of the daily closes (inline SVG, so it costs no extra request)."""
+    pts = c.get('history') or []
+    if len(pts) < 2:
+        return ''
+    if len(pts) < 5:
+        return f'<p class="ins-note sp-chart-note">Price chart: FINILA started recording daily closing prices on {esc(pts[0][0])}, so the chart appears after a few more trading days.</p>'
+    w, h, pad = 600, 150, 4
+    vals = [v for _, v in pts]
+    lo, hi = min(vals), max(vals)
+    span = (hi - lo) or 1
+    xy = [(pad + i * (w - 2 * pad) / (len(pts) - 1), pad + (hi - v) * (h - 2 * pad) / span) for i, v in enumerate(vals)]
+    line = ' '.join(f'{x:.1f},{y:.1f}' for x, y in xy)
+    area = f'{pad},{h} {line} {w - pad},{h}'
+    chg = (vals[-1] / vals[0] - 1) * 100
+    cls = 'pos' if chg >= 0 else 'neg'
+    # Range buttons (js/stock-page.js redraws from the embedded closes); only ranges the history covers.
+    first = date.fromisoformat(pts[0][0])
+    last = date.fromisoformat(pts[-1][0])
+    ranges = [(label, d) for label, d in (('1W', 7), ('1M', 31), ('3M', 92), ('6M', 183), ('1Y', 366)) if (last - first).days > d]
+    buttons = ''.join(f'<button type="button" data-days="{d}">{label}</button>' for label, d in ranges)
+    buttons += '<button type="button" data-days="0" class="active">All</button>'
+    return f'''<figure class="sp-chart">
+      <div class="sp-chart-ranges" role="group" aria-label="Chart period">{buttons}</div>
+      <script type="application/json" class="sp-hist">{json.dumps(pts, separators=(',', ':'))}</script>
+      <figcaption><span>Price since {esc(pts[0][0])}</span><span class="{cls}">{"+" if chg >= 0 else ""}{num(chg)}%</span></figcaption>
+      <svg viewBox="0 0 {w} {h}" preserveAspectRatio="none" role="img" aria-label="Closing price of {esc(c["name"])} from {esc(pts[0][0])} to {esc(pts[-1][0])}, between €{num(lo, 2)} and €{num(hi, 2)}">
+        <polygon class="sp-chart-area {cls}" points="{area}"/><polyline class="sp-chart-line {cls}" points="{line}"/>
+      </svg>
+      <div class="sp-chart-axis"><span>{esc(pts[0][0])}</span><span>low €{num(lo, 2)} · high €{num(hi, 2)}</span><span>{esc(pts[-1][0])}</span></div>
+    </figure>'''
+
+
 def add_signals(rows):
     ins, sh = load('insiders.json'), load('shorts.json')
     by_lei, by_isin = defaultdict(lambda: {'net': 0, 'buyers': set()}), defaultdict(lambda: {'pct': 0, 'funds': 0})
@@ -362,6 +406,7 @@ def page(c, peers, updated):
       </div>
     </div>
     {price}
+    {chart(c)}
     <div class="sp-keys">{keyhtml}</div>
     <p class="sp-intro">{intro}</p>
     <div class="modal-report">
@@ -410,6 +455,7 @@ def index_page(rows, updated):
 def main():
     updated, price_day, rows = companies()
     add_signals(rows)
+    add_history(rows)
     assign_slugs(rows)
     out = OUT / 'stock'
     out.mkdir(parents=True, exist_ok=True)
