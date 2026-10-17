@@ -2,7 +2,7 @@ name: Obnoviť dáta FINILA
 
 on:
   push:
-    branches: [claude/project-thread-tvs3mb]
+    branches: [claude/project-thread-ms2i2k]
     paths: ['scripts/data/**', '.github/workflows/refresh-data.yml']
   schedule:
     - cron: '30 4 * * *'   # every day at 04:30 UTC

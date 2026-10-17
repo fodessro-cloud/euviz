@@ -37,6 +37,11 @@ CONCEPTS = {
     "debt_c":    ["CurrentBorrowings", "ShorttermBorrowings", "CurrentPortionOfLongtermBorrowings"],
     "debt":      ["Borrowings"],
     "eps":       ["BasicEarningsPerShare"],
+    # For the quality score (Piotroski F-score): this year against last year.
+    "gross":     ["GrossProfit"],
+    "cur_assets": ["CurrentAssets"],
+    "cur_liab":  ["CurrentLiabilities"],
+    "shares":    ["WeightedAverageShares", "AdjustedWeightedAverageShares"],
     # Used when no combined D&A line is tagged.
     "dep_ppe":   ["DepreciationPropertyPlantAndEquipment", "AdjustmentsForDepreciationPropertyPlantAndEquipment"],
     "dep_rou":   ["DepreciationRightofuseAssets"],
@@ -68,7 +73,7 @@ def extension_key(name):
 FINANCIAL_MARKERS = {"InterestRevenueCalculatedUsingEffectiveInterestMethod", "RevenueFromInterest",
                      "InsuranceRevenue", "LoansAndAdvancesToCustomers", "DepositsFromCustomers",
                      "InsuranceContractsIssuedThatAreLiabilities"}
-INSTANT = {"equity", "assets", "cash", "debt_nc", "debt_c", "debt"}
+INSTANT = {"equity", "assets", "cash", "debt_nc", "debt_c", "debt", "cur_assets", "cur_liab"}
 
 
 def get(url, as_json=True):
@@ -151,9 +156,38 @@ def extract(xjson, period_end):
     if financial:
         cur["financial"] = True
     prev = {k: v[1] for (k, w), v in found.items() if w == "prev"}
-    units = {v[2] for (k, w), v in found.items() if k != "eps"}
+    units = {v[2] for (k, w), v in found.items() if k not in ("eps", "shares")}
     currency = next((u.split(":")[1] for u in units if u.startswith("iso4217:")), None)
     return cur, prev, currency, end - timedelta(days=1), seen
+
+
+def fscore(cur, prev):
+    """Piotroski F-score: nine yes/no tests comparing this year with last year.
+    Returns (score, tests) where tests is a 9-character string of 1 (passed), 0 (failed)
+    or - (figure missing); None for banks and insurers, where the tests do not apply."""
+    if cur.get("financial"):
+        return None, None
+    ratio = lambda d, a, b: d[a] / d[b] if d.get(a) is not None and d.get(b) else None
+    debt = lambda d: d.get("debt_nc", d.get("debt"))
+    test = lambda a, b, better: None if a is None or b is None else int(better(a, b))
+    net, cfo = cur.get("net"), cur.get("cfo")
+    lev_cur = debt(cur) / cur["assets"] if debt(cur) is not None and cur.get("assets") else None
+    lev_prev = debt(prev) / prev["assets"] if debt(prev) is not None and prev.get("assets") else None
+    tests = [
+        None if net is None else int(net > 0),                                   # 1 profitable
+        None if cfo is None else int(cfo > 0),                                   # 2 positive operating cash flow
+        test(ratio(cur, "net", "assets"), ratio(prev, "net", "assets"), lambda a, b: a > b),   # 3 return on assets up
+        None if net is None or cfo is None else int(cfo > net),                 # 4 cash flow above profit
+        test(lev_cur, lev_prev, lambda a, b: a <= b),                            # 5 long-term debt / assets not up
+        test(ratio(cur, "cur_assets", "cur_liab"), ratio(prev, "cur_assets", "cur_liab"), lambda a, b: a > b),  # 6 current ratio up
+        test(cur.get("shares"), prev.get("shares"), lambda a, b: a <= b * 1.005),  # 7 no new shares
+        test(ratio(cur, "gross", "revenue"), ratio(prev, "gross", "revenue"), lambda a, b: a > b),  # 8 gross margin up
+        test(ratio(cur, "revenue", "assets"), ratio(prev, "revenue", "assets"), lambda a, b: a > b),  # 9 asset turnover up
+    ]
+    known = [t for t in tests if t is not None]
+    if len(known) < 6:
+        return None, None
+    return sum(known), "".join("-" if t is None else str(t) for t in tests)
 
 
 def metrics(cur, prev):
@@ -171,6 +205,7 @@ def metrics(cur, prev):
     net_debt = debt - cur["cash"] if debt is not None and "cash" in cur else None
     if cur.get("financial"):
         ebitda = capex = fcf = net_debt = None
+    score, tests = fscore(cur, prev)
     return {
         "financial": bool(cur.get("financial")),
         "revenue": m(rev), "ebitda": m(ebitda), "operatingProfit": m(op), "netIncome": m(net),
@@ -184,6 +219,10 @@ def metrics(cur, prev):
         "netDebtToEbitda": round(net_debt / ebitda, 2) if net_debt is not None and ebitda and ebitda > 0 else None,
         "revenueGrowth": pct(rev - prev["revenue"], prev["revenue"]) if rev is not None and prev.get("revenue") else None,
         "netIncomeGrowth": pct(net - prev["net"], abs(prev["net"])) if net is not None and prev.get("net") else None,
+        "fscore": score, "fscoreTests": tests,
+        # Share of free cash flow and of profit paid out as dividends; above 100 % is not covered.
+        "payoutFcf": pct(abs(cur["dividends"]), fcf) if "dividends" in cur and fcf and fcf > 0 else None,
+        "payoutNet": pct(abs(cur["dividends"]), net) if "dividends" in cur and net and net > 0 else None,
     }
 
 
