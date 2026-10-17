@@ -176,6 +176,7 @@ function openCompany(lei) {
       <span class="real-badge">Real price · ${esc(c.priceVenue)} · ${esc(c.priceDate)}</span>
       <span class="modal-vol">${isNum(c.mcap) ? `Market value ≈ ${bn(c.mcap)} €` : ''}${isNum(c.pe) ? ` · P/E ${num(c.pe, 1)}` : ''}${isNum(c.divYield) ? ` · Dividend yield ${num(c.divYield, 1)}%` : ''}</span>
     </div>` : ''}
+    ${c.origin === 'listing' ? `<div class="modal-report"><p class="modal-report-src">No annual report figures yet: this company’s ESEF report is not on filings.xbrl.org (German issuers, for example, are not published there). The price, insider trades and short positions are real.</p></div>` : `
     <div class="modal-report">
       <div class="modal-report-head">
         <h4>Latest annual report · FY ending ${esc(c.periodEnd)} · ${esc(cur)}</h4>
@@ -198,7 +199,7 @@ function openCompany(lei) {
       ${scoresHTML(c)}
       ${fin}
       <div class="modal-report-src">Source: the company’s ESEF annual report via filings.xbrl.org${c.source ? ` · <a href="${esc(c.source)}" target="_blank" rel="noopener">view report</a>` : ''}. Figures are read automatically and can contain errors; check the report before relying on them.</div>
-    </div>`;
+    </div>`}`;
   document.getElementById('stock-modal').style.display = 'flex';
 }
 

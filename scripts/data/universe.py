@@ -13,13 +13,14 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fundamentals import BASE, ROOT, get, extract, metrics, UA   # noqa: E402
+from fundamentals import BASE, ROOT, get, extract, metrics, latest_annual, UA   # noqa: E402
 
 import urllib.request
 
 MIN_PERIOD = "2024-01-01"
 CACHE = ROOT / "data/cache/universe.json"
 CACHE_VERSION = 3          # bump when metrics() changes, so every report is read again
+RETRY_EMPTY = 2            # bump when read_report() changes, so companies without figures are read again
 WIKIDATA_CACHE = ROOT / "data/cache/wikidata.json"
 # Shares with a European ISIN only: drops e.g. Toyota or Royal Bank of Canada, which file in London too.
 EUROPE = set("AT BE BG CH CY CZ DE DK EE ES FI FR GB GG GR HR HU IE IM IS IT JE LI LT LU LV MT NL NO PL PT RO SE SI SK FO GI".split())
@@ -46,6 +47,7 @@ SELECT ?lei ?item ?itemLabel ?ticker ?exLabel ?indLabel WHERE {
   ?item wdt:P1278 ?lei; p:P414 ?st.
   ?st ps:P414 ?ex.
   OPTIONAL { ?st pq:P249 ?ticker }
+  OPTIONAL { ?st pq:P582 ?end }
   OPTIONAL { ?item wdt:P452 ?ind }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }"""
@@ -88,7 +90,20 @@ def list_filings():
 
 
 def read_report(lei, rec):
-    for f in rec["filings"][:3]:
+    """Newest version of each recent period. Half-year reports (Novo Nordisk files them in ESEF
+    too) carry no full-year figures, and the filings listing can miss the annual report, so the
+    company's own filing list is tried after the listing."""
+    def candidates():
+        latest = {}
+        for f in rec["filings"]:
+            latest.setdefault(f["period_end"], f)
+        yield from list(latest.values())[:4]
+        yield from (latest_annual(lei) or [])[:8]
+    tried = set()
+    for f in candidates():
+        if f["period_end"] in tried:
+            continue
+        tried.add(f["period_end"])
         xj = get(BASE + f["json_url"])
         if not xj:
             continue
@@ -124,7 +139,8 @@ def wikidata():
         lei = b["lei"]["value"]
         w = out.setdefault(lei, {"name": b["itemLabel"]["value"], "tickers": [], "industries": set()})
         if "ticker" in b:
-            w["tickers"].append((b["ticker"]["value"], b.get("exLabel", {}).get("value", "")))
+            # Delisted lines (Shell's RDSA) go last, so the current ticker wins.
+            w["tickers"].append((b["ticker"]["value"], b.get("exLabel", {}).get("value", ""), "end" in b))
         if "indLabel" in b:
             w["industries"].add(b["indLabel"]["value"])
     log(f"{len(out)} listed companies with an LEI on Wikidata")
@@ -144,6 +160,76 @@ def ecb_rates():
     except Exception as e:
         log(f"  ! ECB rates: {e}")
         return {"EUR": 1.0}
+
+
+# Companies Wikidata does not link by LEI: look them up by ISIN too, and use what the company
+# is (bank, airline, mining company) when it has no industry.
+EXTRA_QUERY = """
+SELECT ?key ?indLabel ?typeLabel WHERE {
+  { VALUES ?key { %s } ?item wdt:P946 ?key. } UNION { VALUES ?key { %s } ?item wdt:P1278 ?key. }
+  OPTIONAL { ?item wdt:P452 ?ind }
+  OPTIONAL { ?item wdt:P31 ?type }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}"""
+EXTRA_CACHE = ROOT / "data/cache/wikidata-extra.json"
+
+
+def wikidata_extra(isins, leis):
+    """{ISIN or LEI: [industry and type labels]}, saved so a failed query keeps the last answer."""
+    try:
+        saved = json.loads(EXTRA_CACHE.read_text())
+    except Exception:
+        saved = {}
+    if not isins and not leis:
+        return saved
+    q = EXTRA_QUERY % (" ".join(f'"{i}"' for i in sorted(isins)), " ".join(f'"{l}"' for l in sorted(leis)))
+    req = urllib.request.Request("https://query.wikidata.org/sparql", data=urllib.parse.urlencode({"query": q}).encode(),
+                                 headers={**UA, "Accept": "application/sparql-results+json",
+                                          "Content-Type": "application/x-www-form-urlencoded"})
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=300) as r:
+                rows = json.load(r)["results"]["bindings"]
+            break
+        except Exception as e:
+            err = e
+            time.sleep(75)
+    else:
+        log(f"  ! Wikidata by ISIN: {err}; using the last saved copy")
+        return saved
+    out = {}
+    for b in rows:
+        labels = out.setdefault(b["key"]["value"], set())
+        for k in ("indLabel", "typeLabel"):
+            if k in b and not re.fullmatch(r"Q\d+", b[k]["value"]):
+                labels.add(b[k]["value"])
+    saved.update({k: sorted(v) for k, v in out.items()})
+    EXTRA_CACHE.write_text(json.dumps(saved, ensure_ascii=False, separators=(",", ":")))
+    log(f"Wikidata by ISIN/LEI: labels for {len(out)} of {len(isins) + len(leis)} keys")
+    return saved
+
+
+# Last resort: words in the company name (Fastigheter, Bank, Pharma, Energia...).
+NAME_SECTORS = [
+    ("Real Estate", r"fastighet|real estate|propert|immobili|inmobili|reit\b|estates?\b|eiendom|kiinteist|nieruchomo|wohnen|wonen|vastgoed|logistics? property"),
+    ("Financials", r"\bbank|banca|banco|banque|sparebank|insurance|assurance|assicura|seguros|versicher|försäkring|forsikring|vakuutus|capital\b|invest|finans|finance|credit|kredit|leasing"),
+    ("Healthcare", r"pharm|\bbio|medic|health|thera|diagnost|clinic|dental|life science|genetic|genom"),
+    ("Energy", r"\boil\b|petrol|\bgas\b|energ|offshore|drilling|solar|wind|hydrogen"),
+    ("Utilities", r"utilit|electric|power|water\b|\bvann|wasser"),
+    ("Technology", r"software|tech|digital|data\b|semicon|\bsystems?\b|\bit\b|cyber|cloud|electronic|games"),
+    ("Communication", r"telecom|media|\btv\b|broadcast|publish|entertain|music"),
+    ("Materials", r"mining|minerals?|metal|steel|chem|paper|pulp|cement|gold|silver|copper|lithium|forest|timber|packag"),
+    ("Industrials", r"shipping|tankers?|maritime|airlines?|aviation|logistic|transport|construct|bygg|engineer|industr|machin|defen[cs]e|infrastruct"),
+    ("Consumer Staples", r"\bfood|foods\b|beverage|brew|wine|spirits|dairy|agri|\bfarms?\b|farmland|seafood|salmon|laks|retail|grocer|supermarket"),
+    ("Consumer Discretionary", r"hotel|resort|travel|fashion|apparel|cloth|automotive|motors?\b|\bcar\b|cars\b|furniture|home\b|leisure|sport|casino|betting|gaming"),
+]
+
+
+def sector_by_name(name):
+    for sector, pattern in NAME_SECTORS:
+        if re.search(pattern, name or "", re.I):
+            return sector
+    return None
 
 
 def sector_of(industries):
@@ -171,6 +257,8 @@ FOREIGN = re.compile(r"New York|NASDAQ(?! (Stockholm|Copenhagen|Helsinki|Iceland
 
 
 def pick_ticker(tickers, country):
+    tickers = sorted(tickers, key=lambda t: len(t) > 2 and bool(t[2]))
+    tickers = [(t[0], t[1]) for t in tickers]
     home = HOME_EXCHANGE.get(country)
     for t, ex in tickers:
         if home and re.search(home, ex, re.I):
@@ -183,14 +271,17 @@ def pick_ticker(tickers, country):
 
 def tidy(name):
     name = re.sub(r"\s+", " ", name or "").strip()
-    return name.title() if name.isupper() and len(name) > 4 else name
+    if not (name.isupper() and len(name) > 4):
+        return name
+    # SAP AG, not Sap Ag: short words are kept as acronyms and legal forms.
+    return " ".join(w if len(w) <= 3 and w.isalpha() else w.title() for w in name.split())
 
 
 FIELDS = ["lei", "isin", "name", "country", "ticker", "exchange", "mic", "sector", "industry", "currency", "periodEnd",
           "revenueEur", "revenue", "ebitda", "operatingProfit", "netIncome", "operatingCashFlow", "capex", "fcf",
           "dividendsPaid", "equity", "assets", "cash", "debt", "netDebt", "eps", "roe", "ebitdaMargin",
           "operatingMargin", "netMargin", "fcfMargin", "netDebtToEbitda", "revenueGrowth", "netIncomeGrowth",
-          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source"]
+          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source", "origin"]
 
 
 def main():
@@ -199,7 +290,8 @@ def main():
     listed_file = ROOT / "data/listed.json"
     listed = json.loads(listed_file.read_text()) if listed_file.exists() else {}
     todo = [(lei, rec) for lei, rec in issuers.items()
-            if (cache.get(lei, {}).get("fxo") != rec["filings"][0]["fxo_id"] or cache[lei].get("v") != CACHE_VERSION)
+            if (cache.get(lei, {}).get("fxo") != rec["filings"][0]["fxo_id"] or cache[lei].get("v") != CACHE_VERSION
+                or (cache[lei].get("row") is None and cache[lei].get("retry") != RETRY_EMPTY))
             and (not listed or lei in listed)]
     log(f"{len(todo)} reports to read, {len(issuers) - len(todo)} cached")
     done = 0
@@ -211,7 +303,7 @@ def main():
             res = fut.result()
             if res is None:
                 continue
-            cache[futures[fut]] = {"fxo": res[0], "row": res[1], "v": CACHE_VERSION}
+            cache[futures[fut]] = {"fxo": res[0], "row": res[1], "v": CACHE_VERSION, "retry": RETRY_EMPTY}
             done += 1
             if done % 200 == 0:
                 log(f"  read {done} reports")
@@ -239,6 +331,8 @@ def main():
         rate = fx.get(row.get("currency") or "")
         rev_eur = round(row["revenue"] / rate, 1) if row.get("revenue") is not None and rate else None
         name = w.get("name") if w.get("name") and not re.fullmatch(r"Q\d+", w["name"]) else tidy(rec["name"])
+        if " " not in name and tidy(rec["name"]).lower().startswith(name.lower() + " "):
+            name = tidy(rec["name"])   # Wikidata's short label "Novo" for Novo Nordisk A/S
         # The ISIN shows the company's home country; the filing country can be where it filed (Boliden in Norway).
         country = listing["isin"][:2] if listing and listing["isin"][:2] in EUROPE - {"GG", "JE", "IM", "GI", "FO"} else rec["country"]
         rows.append({**row, "lei": lei, "name": name, "country": country,
@@ -246,7 +340,36 @@ def main():
                      "mic": (listing or {}).get("mics", [None])[0] if listing and listing.get("mics") else None,
                      "ticker": ticker, "exchange": exchange, "sector": sector_of(w.get("industries", [])),
                      "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "revenueEur": rev_eur})
-    rows.sort(key=lambda r: -(r["revenueEur"] or 0))
+    # Listed European issuers with no usable report on filings.xbrl.org (all of Germany, most of
+    # Poland, part of Belgium and France: Lufthansa, bpost) still get a row with name, ticker and
+    # price, without figures. Only those Wikidata lists on an exchange, which leaves out
+    # thousands of tiny or inactive issuers.
+    have = {r["lei"] for r in rows}
+    for lei, l in listed.items():
+        w = wd.get(lei)
+        if lei in have or not w or l["isin"][:2] not in EUROPE - {"GG", "JE", "IM", "GI", "FO"}:
+            continue
+        ticker, exchange = pick_ticker(w.get("tickers", []), l["isin"][:2])
+        rows.append({"lei": lei, "isin": l["isin"], "name": tidy(l.get("name") or w.get("name")),
+                     "country": l["isin"][:2], "mic": (l.get("mics") or [None])[0], "ticker": ticker,
+                     "exchange": exchange, "sector": sector_of(w.get("industries", [])),
+                     "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "origin": "listing"})
+    missing = [r for r in rows if not r["sector"]]
+    extra = wikidata_extra({r["isin"] for r in missing if r["isin"]}, {r["lei"] for r in missing})
+    via = {"wikidata": 0, "bank": 0, "name": 0}
+    for r in missing:
+        labels = extra.get(r["isin"] or "", []) + extra.get(r["lei"], [])
+        if sector_of(labels):
+            r["sector"] = sector_of(labels)
+            via["wikidata"] += 1
+        elif r.get("financial"):   # balance sheet of a bank or insurer
+            r["sector"] = "Financials"
+            via["bank"] += 1
+        elif sector_by_name(r["name"]):
+            r["sector"] = sector_by_name(r["name"])
+            via["name"] += 1
+    log(f"sector found for {sum(via.values())} of {len(missing)} without a Wikidata industry: {via}")
+    rows.sort(key=lambda r: -(r.get("revenueEur") or 0))
     out = {"updated": date.today().isoformat(), "fields": FIELDS,
            "rows": [[r.get(k) for k in FIELDS] for r in rows]}
     (ROOT / "js/companies.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
@@ -262,7 +385,7 @@ def main():
               "by country: " + ", ".join(f"{k} {v}" for k, v in sorted(by_country.items(), key=lambda x: -x[1])),
               "", "largest 40 by revenue:"]
     report += [f"{r['name'][:34]:34} {r['country']} {r['ticker'] or '-':8} {r['sector'] or '-':22} "
-               f"{r['periodEnd']} rev€={r['revenueEur']} ebitda={r['ebitda']} fcf={r['fcf']} roe={r['roe']} F={r.get('fscore')} {r.get('fscoreTests')}"
+               f"{r.get('periodEnd')} rev€={r.get('revenueEur')} ebitda={r.get('ebitda')} fcf={r.get('fcf')} roe={r.get('roe')} F={r.get('fscore')} {r.get('fscoreTests')}"
                for r in rows[:40]]
     (ROOT / "data/universe-report.txt").write_text("\n".join(report) + "\n")
     log("\n".join(report))
