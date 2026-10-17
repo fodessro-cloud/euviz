@@ -28,8 +28,7 @@ LIST_URL = "https://mfs.deutsche-boerse.com/api/{}-posttrade"
 VENUES = [("DETR", "Xetra"), ("DFRA", "Börse Frankfurt")]
 FILE_URL = "https://mfs.deutsche-boerse.com/api/download/"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
-KEEP_DAYS = 400      # enough history for 52-week ranges later (screener stocks)
-KEEP_DAYS_ALL = 10   # other issuers: enough for the daily change
+KEEP_DAYS = 400      # about a year and a half of closes: the price chart on every company page
 MAX_MINUTE_FILES = 600   # per venue and run; a trading day has about 900
 
 # ISIN of the share class each screener stock (js/data.js) stands for.
@@ -132,7 +131,6 @@ def day_summary(path, wanted):
     return days
 
 
-SCREENER = set(ISINS.values())
 
 
 def company_isins():
@@ -191,8 +189,7 @@ def main():
         for isin, a in closed.items():
             past = history.setdefault(isin, {})
             past[day] = round(a["close"], 4)
-            keep = KEEP_DAYS if isin in SCREENER else KEEP_DAYS_ALL
-            history[isin] = dict(sorted(past.items())[-keep:])
+            history[isin] = dict(sorted(past.items())[-KEEP_DAYS:])
 
     # 2. Minute files of a later day (the trading day in progress) give prices during the day.
     minutes = {venue: [f for f in listings[venue][1] if file_day(f) > final["day"]] for venue, _ in VENUES}
