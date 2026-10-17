@@ -19,7 +19,9 @@ COLUMNS = {
     "Publication date": "published", "Issuer": "issuer", "LEI-code": "lei",
     "Person discharging managerial responsibilities": "person", "Position": "position",
     "Closely associated": "associated", "Nature of transaction": "nature", "Instrument name": "instrument",
-    "Instrument type": "instrumentType", "ISIN": "isin", "Transaction date": "date", "Volume": "volume",
+    "Instrument type": "instrumentType", "Intrument type": "instrumentType",
+    "Amendment": "amendment", "Initial notification": "initial",
+    "Linked to share option programme": "optionProgramme", "ISIN": "isin", "Transaction date": "date", "Volume": "volume",
     "Unit": "unit", "Price": "price", "Currency": "currency", "Status": "status", "Trading venue": "venue",
 }
 
@@ -32,6 +34,8 @@ def fetch(url):
 def decode(raw):
     if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
         return raw.decode("utf-16")
+    if raw[1:200:2].count(0) > 50:   # FI sends UTF-16LE without a byte order mark
+        return raw.decode("utf-16-le")
     try:
         return raw.decode("utf-8-sig")
     except UnicodeDecodeError:
