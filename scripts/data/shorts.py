@@ -140,7 +140,8 @@ def event(holder, issuer, isin, pct, day):
 
 def norm(holder):
     """Same fund spelled differently across files: 'D. E. Shaw & Co., L.P.' == 'D E Shaw Co LP'."""
-    return re.sub(r"[^a-z0-9]", "", holder.lower())
+    h = re.sub(r"\b(limited|ltd|llc|l\.?p\.?|llp|inc|plc|s\.?a\.?|ag|ab|as|gmbh|co)\b", "", holder.lower())
+    return re.sub(r"[^a-z0-9]", "", h)
 
 
 # ── one function per register; each returns (current positions or None, all events with history or None) ──

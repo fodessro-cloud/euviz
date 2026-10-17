@@ -15,13 +15,19 @@ const daysAgo = d => (Date.now() - new Date(d).getTime()) / 864e5;
 // The UK publishes one aggregated position per company, without fund names.
 const AGG = p => p.c === 'UK';
 const COUNTRY = { NL: 'Netherlands', IT: 'Italy', SE: 'Sweden', NO: 'Norway', UK: 'United Kingdom' };
-// Registers write fund names in capitals or with legal suffixes; show them the same way everywhere.
-const fund = h => /[a-z]/.test(h) ? h : h.toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase())
-  .replace(/\b(Llc|Lp|Ltd|Plc|Ag|Sa|Ab|As|Nv|Bv|Se|Gmbh|Llp|Icav|Ii|Iii)\b/g, s => s.toUpperCase());
+// Registers write many names in capitals ("CITADEL ADVISORS LLC"); show them in normal case.
+const KEEP_UPPER = /^(UK|USA|LLC|LP|LLP|PLC|AG|SA|AB|AS|ASA|NV|BV|SE|SPA|ICAV|AQR|UBS|BNP|AHL|CFM|II|III|IV|HSBC|ABN|AMRO|ING|SEB|DNB|ESG|ETF|GSA|ADR|JM|SBB|AP|NN|DSM|BAE|BT|BP|ITV|IG|JD|HL|RS|WH|PZ|GB)$/;
+const LOWER = /^(of|and|the|for|de|di|dei|del|della|i|in|och|und|van|der)$/;
+const nice = n => /[a-z]/.test(n) ? n : n.toLowerCase().replace(/[a-zà-ÿ0-9'&.]+/g, (w, i) =>
+  KEEP_UPPER.test(w.toUpperCase().replace(/\./g, '')) ? w.toUpperCase()
+  : i > 0 && LOWER.test(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)).replace(/^Jpmorgan/, 'JPMorgan');
+const fund = nice;
+// The same fund appears as "JPMorgan Asset Management (UK) Ltd" and "... (Uk) Limited".
+const fundKey = h => h.toLowerCase().replace(/\b(limited|ltd|llc|l\.?p\.?|llp|inc|plc|s\.?a\.?|ag|ab|as|gmbh|co)\b/g, '').replace(/[^a-z0-9]/g, '');
 
 const COLUMNS = {
   companies: [
-    { key: 'issuer', label: 'Company', left: true, fmt: c => `<a href="#" class="company-name" data-issuer="${esc(c.isin)}">${esc(c.issuer)}</a>` },
+    { key: 'issuer', label: 'Company', left: true, fmt: c => `<a href="#" class="company-name" data-issuer="${esc(c.isin)}">${esc(nice(c.issuer))}</a>` },
     { key: 'c', label: 'Country', left: true, fmt: c => esc(COUNTRY[c.c] || c.c) },
     { key: 'total', label: 'Shorted', fmt: c => `<b>${pct(c.total)}</b>` },
     { key: 'change', label: `Change ${'30d'}`, fmt: c => change(c.change) },
@@ -31,7 +37,7 @@ const COLUMNS = {
     { key: 'latest', label: 'Last change', left: true, fmt: c => esc(c.latest) },
   ],
   positions: [
-    { key: 'issuer', label: 'Company', left: true, fmt: p => `<span class="company-name">${esc(p.issuer)}</span>` },
+    { key: 'issuer', label: 'Company', left: true, fmt: p => `<span class="company-name">${esc(nice(p.issuer))}</span>` },
     { key: 'holder', label: 'Fund', left: true, fmt: p => `<span class="company-name">${esc(fund(p.holder))}</span>` },
     { key: 'c', label: 'Country', left: true, fmt: p => esc(COUNTRY[p.c] || p.c) },
     { key: 'pct', label: 'Short', fmt: p => `<b>${pct(p.pct)}</b>` },
@@ -90,8 +96,9 @@ function setView(v) {
 function renderTop() {
   const by = {};
   POSITIONS.filter(p => !AGG(p)).forEach(p => {
-    const f = by[p.holder.toLowerCase()] || (by[p.holder.toLowerCase()] = { name: fund(p.holder), n: 0 });
-    f.n += 1;
+    const k = fundKey(p.holder);
+    const f = by[k] || (by[k] = { name: fund(p.holder), n: 0, isins: new Set() });
+    if (!f.isins.has(p.isin)) { f.isins.add(p.isin); f.n += 1; }
   });
   const top = Object.values(by).sort((a, b) => b.n - a.n).slice(0, 10);
   document.getElementById('ins-top').innerHTML = top.map(f =>
@@ -103,7 +110,7 @@ function results() {
   const active = FILTERS.filter(f => !f.view && f.id in filters).map(f => f.options[filters[f.id]][1]);
   const rows = view === 'companies' ? COMPANIES : POSITIONS;
   return rows.filter(r => active.every(test => test(r)) &&
-      (!q || `${r.issuer} ${r.isin} ${view === 'companies' ? r.list.map(p => p.holder).join(' ') : r.holder}`.toLowerCase().includes(q)))
+      (!q || `${nice(r.issuer)} ${r.isin} ${view === 'companies' ? r.list.map(p => fund(p.holder)).join(' ') : fund(r.holder)}`.toLowerCase().includes(q)))
     .sort((a, b) => {
       const x = a[sortKey], y = b[sortKey];
       if (x == null || x === '') return 1;
@@ -139,7 +146,7 @@ function openCompany(isin) {
   const src = (META.countries || {})[c.c] || {};
   document.getElementById('modal-content').innerHTML = `
     <div class="modal-header">
-      <div><h2>${esc(c.issuer)}</h2><div class="modal-meta">${esc(c.isin)} · ${esc(COUNTRY[c.c] || c.c)}</div></div>
+      <div><h2>${esc(nice(c.issuer))}</h2><div class="modal-meta">${esc(c.isin)} · ${esc(COUNTRY[c.c] || c.c)}</div></div>
       <button class="modal-close" type="button" aria-label="Close">×</button>
     </div>
     <p><b>${pct(c.total)}</b> of the shares are sold short${AGG(c) ? '' : ` by ${c.funds} ${c.funds === 1 ? 'fund' : 'funds'}`}${isNum(c.change) ? `, ${change(c.change)} points in 30 days` : ''}.</p>
