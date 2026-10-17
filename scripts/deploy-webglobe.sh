@@ -72,7 +72,7 @@ fi
 
 echo "== Preparing FINILA"
 mkdir -p "$WORK/site"
-cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/insiders.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
+cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/insiders.html "$SRC"/shorts.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
 cp -r "$SRC/css" "$SRC/js" "$WORK/site/"
 
 # .htaccess comes from deploy/htaccess: "/" opens FINILA, old WordPress addresses
@@ -87,7 +87,7 @@ grep -q '^# BEGIN FINILA' "$WORK/htaccess.original" || SAVE_WP_HTACCESS=1
 echo "== Uploading"
 cmds="cd '$FTP_DIR'"
 [ "$SAVE_WP_HTACCESS" = 1 ] && cmds="$cmds && put '$WORK/htaccess.original' -o .htaccess-wordpress-zaloha"
-cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose '$WORK/site' ."
+cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose --exclude-glob insiders.json --exclude-glob shorts.json '$WORK/site' ."
 [ "$ARCHIVE" = 1 ] && cmds="$cmds && mirror -R --parallel=4 --no-perms '$WORK/archiv' archiv"
 # Archive pages rebuilt in the FINILA design (scripts/build-archive.py) replace the
 # WordPress HTML; the images under archiv/wp-content stay as they are.
