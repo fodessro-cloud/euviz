@@ -1,6 +1,5 @@
 /* FINILA — archive of the original 2014–2019 site (pages built by scripts/build-archive.py) */
 
-.h-nav a[aria-current="page"] { color: var(--text); }
 
 .a-bar { background: var(--bg-alt); border-bottom: 1px solid var(--line); }
 .a-bar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; padding-top: 10px; padding-bottom: 10px; }

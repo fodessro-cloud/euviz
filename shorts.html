@@ -7,23 +7,27 @@
   <meta name="description" content="Which hedge funds are betting against which European companies, and how much: every public net short position from the official regulator registers.">
   <link rel="icon" href="css/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/header.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header class="site-header">
-  <a class="logo" href="/" aria-label="FINILA home"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
-  <nav class="nav-links">
-    <a class="nav-link"        href="/screener">Stocks</a>
-    <a class="nav-link"        href="/insiders">Insider trades</a>
-    <a class="nav-link active" href="/shorts">Short positions</a>
-    <a class="nav-link"        href="/map">Market map</a>
-    <a class="nav-link"        href="/groups">Sectors &amp; countries</a>
-    <a class="nav-link" href="/invest">Where to put money</a>
-    <a class="nav-link" href="/archiv/">Archive</a>
-  </nav>
+<header class="fh">
+  <div class="fh-row">
+    <a class="fh-logo" href="/" aria-label="FINILA home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
+    <nav class="fh-nav" aria-label="Main menu">
+      <a href="/screener">Stocks</a>
+      <a href="/insiders">Insider trades</a>
+      <a href="/shorts" aria-current="page">Short positions</a>
+      <a href="/map">Market map</a>
+      <a href="/groups">Sectors &amp; countries</a>
+      <a href="/invest">Where to put money</a>
+      <a href="/archiv/">Archive</a>
+    </nav>
+  </div>
 </header>
+<script>(function(){var a=document.querySelector('.fh-nav [aria-current]');if(a)a.parentNode.scrollLeft=a.offsetLeft-a.parentNode.offsetLeft-16;})();</script>
 <div class="real-banner">Real data from the official short-selling registers of the regulators in the Netherlands, Italy, Sweden, Norway and the UK, refreshed twice a day. Only positions of 0.5 % and more are public. Not investment advice.</div>
 
 <div class="page-wrap">

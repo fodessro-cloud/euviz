@@ -57,14 +57,17 @@ PAGE = """<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/home.css">
   <link rel="stylesheet" href="/css/archive.css">
+  <link rel="stylesheet" href="/css/header.css">
 </head>
 <body>
 
-<header class="h-header">
-  <div class="h-wrap h-header-row">
-    <a class="h-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
-    <nav class="h-nav" aria-label="Main menu">
+<header class="fh">
+  <div class="fh-row">
+    <a class="fh-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
+    <nav class="fh-nav" aria-label="Main menu">
       <a href="/screener">Stocks</a>
+      <a href="/insiders">Insider trades</a>
+      <a href="/shorts">Short positions</a>
       <a href="/map">Market map</a>
       <a href="/groups">Sectors &amp; countries</a>
       <a href="/invest">Where to put money</a>
@@ -72,6 +75,7 @@ PAGE = """<!DOCTYPE html>
     </nav>
   </div>
 </header>
+<script>(function(){{var a=document.querySelector('.fh-nav [aria-current]');if(a)a.parentNode.scrollLeft=a.offsetLeft-a.parentNode.offsetLeft-16;}})();</script>
 <div class="a-bar">
   <div class="h-wrap a-bar-row">
     <span class="a-badge">Archive 2014–2019</span>
