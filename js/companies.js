@@ -2,7 +2,7 @@
 // built by scripts/data/universe.py). Amounts are in millions of the report currency.
 
 const PAGE = 50;
-let COMPANIES = [], UPDATED = '';
+let COMPANIES = [], UPDATED = '', PRICES_DAY = '';
 let sortKey = 'revenueEur', sortDir = -1, page = 1, query = '';
 const filters = {};
 
@@ -35,6 +35,11 @@ const COLUMNS = [
   { key: 'name', label: 'Company', left: true, fmt: c => `<span class="ticker-link">${esc(c.ticker || '')}</span> <span class="company-name">${esc(c.name)}</span>` },
   { key: 'country', label: 'Country', left: true, fmt: c => esc(countryName(c.country)) },
   { key: 'sector', label: 'Sector', left: true, fmt: c => c.sector ? `<span class="badge-sector">${esc(c.sector)}</span>` : '—' },
+  { key: 'price', label: 'Price €', fmt: c => isNum(c.price) ? `<span title="${esc(c.priceVenue)} · ${esc(c.priceDate)}">${num(c.price, 2)}</span>` : '—' },
+  { key: 'change', label: 'Chg %', fmt: c => pctCell(c.change) },
+  { key: 'mcap', label: 'Mkt value €', fmt: c => bn(c.mcap) },
+  { key: 'pe', label: 'P/E', fmt: c => isNum(c.pe) ? num(c.pe, 1) : '—' },
+  { key: 'divYield', label: 'Div. yield', fmt: c => isNum(c.divYield) ? num(c.divYield, 1) + '%' : '—' },
   { key: 'quality', label: 'Quality', fmt: scoreCell },
   { key: 'insNet', label: 'Insiders 30d', fmt: insiderCell },
   { key: 'shortPct', label: 'Shorted', fmt: shortCell },
@@ -55,6 +60,15 @@ const FILTERS = [
       ['Insiders buying while funds short', c => c.insNet > 0 && c.shortPct >= 0.5],
       ['Strong quality and dividend covered', c => c.quality >= 0.75 && c.payoutFcf > 0 && c.payoutFcf <= 60],
       ['Weak quality and heavily shorted', c => c.quality <= 0.34 && c.shortPct >= 2]] },
+  { id: 'pe', label: 'P/E', options: () => [
+      ['Under 10', c => c.pe > 0 && c.pe < 10], ['Under 15', c => c.pe > 0 && c.pe < 15], ['Under 25', c => c.pe > 0 && c.pe < 25],
+      ['Over 25', c => c.pe >= 25]] },
+  { id: 'divYield', label: 'Dividend yield', options: () => [
+      ['Over 3%', c => c.divYield > 3], ['Over 5%', c => c.divYield > 5], ['Over 8%', c => c.divYield > 8]] },
+  { id: 'mcap', label: 'Market value', options: () => [
+      ['Over €50B', c => c.mcap > 50000], ['Over €10B', c => c.mcap > 10000], ['Over €1B', c => c.mcap > 1000],
+      ['€100M to €1B', c => c.mcap >= 100 && c.mcap <= 1000], ['Under €100M', c => isNum(c.mcap) && c.mcap < 100]] },
+  { id: 'priced', label: 'Price', options: () => [['Has a real price', c => isNum(c.price)], ['No price yet', c => !isNum(c.price)]] },
   { id: 'fscore', label: 'Quality score', options: () => [
       ['Strong (3/4 of tests or more)', c => c.quality >= 0.75], ['Above half', c => c.quality > 0.5],
       ['Weak (1/3 of tests or less)', c => c.quality <= 0.34], ['All tests passed', c => isNum(c.fscore) && c.fscore === c.fscoreKnown]] },
@@ -125,7 +139,8 @@ function render() {
   page = Math.min(page, pages);
   const start = (page - 1) * PAGE;
   document.getElementById('co-count').textContent =
-    `${list.length.toLocaleString('en-GB')} companies · annual reports read ${UPDATED}`;
+    `${list.length.toLocaleString('en-GB')} companies · annual reports read ${UPDATED}` +
+    (PRICES_DAY ? ` · prices ${PRICES_DAY} from Deutsche Börse (Xetra, Börse Frankfurt)` : '');
   const head = `<thead><tr><th class="col-no">#</th>${COLUMNS.map(c =>
     `<th class="sortable ${c.left ? 'l' : ''} ${sortKey === c.key ? 'sort-active' : ''}" data-sort="${c.key}">${c.label}${sortKey === c.key ? (sortDir < 0 ? ' ▼' : ' ▲') : ''}</th>`).join('')}</tr></thead>`;
   const body = '<tbody>' + list.slice(start, start + PAGE).map((c, i) =>
@@ -154,6 +169,12 @@ function openCompany(lei) {
       </div>
       <button class="modal-close" type="button" data-close>✕</button>
     </div>
+    ${isNum(c.price) ? `<div class="modal-price-row">
+      <span class="modal-price">€${num(c.price, 2)}</span>
+      ${isNum(c.change) ? `<span class="modal-change ${c.change >= 0 ? 'pos' : 'neg'}">${c.change >= 0 ? '+' : ''}${num(c.change, 2)}%</span>` : ''}
+      <span class="real-badge">Real price · ${esc(c.priceVenue)} · ${esc(c.priceDate)}</span>
+      <span class="modal-vol">${isNum(c.mcap) ? `Market value ≈ ${bn(c.mcap)} €` : ''}${isNum(c.pe) ? ` · P/E ${num(c.pe, 1)}` : ''}${isNum(c.divYield) ? ` · Dividend yield ${num(c.divYield, 1)}%` : ''}</span>
+    </div>` : ''}
     <div class="modal-report">
       <div class="modal-report-head">
         <h4>Latest annual report · FY ending ${esc(c.periodEnd)} · ${esc(cur)}</h4>
@@ -225,6 +246,30 @@ async function addSignals() {
   });
 }
 
+// Last price from Deutsche Börse's free delayed data (js/company-prices.json, by ISIN, in EUR).
+// Market value uses shares = net income / EPS from the annual report, so it is an estimate;
+// values that point to mismatched units in the report (absurd P/E or price/sales) are left out.
+async function addPrices() {
+  let data;
+  try { data = await (await fetch('js/company-prices.json', { cache: 'no-cache' })).json(); } catch { return; }
+  PRICES_DAY = data.date;
+  const [iPrice, iChange, iVenue, iDate] = ['price', 'change', 'venue', 'date'].map(f => data.fields.indexOf(f));
+  COMPANIES.forEach(c => {
+    const q = data.rows[c.isin];
+    if (!q) return;
+    Object.assign(c, { price: q[iPrice], change: q[iChange], priceVenue: q[iVenue], priceDate: q[iDate] });
+    const fx = isNum(c.revenueEur) && isNum(c.revenue) && c.revenue ? c.revenueEur / c.revenue : c.currency === 'EUR' ? 1 : null;
+    const shares = isNum(c.eps) && isNum(c.netIncome) && c.eps * c.netIncome > 0 ? c.netIncome / c.eps : null;
+    if (!fx || !shares) return;
+    const mcap = c.price * shares, pe = c.eps > 0 ? c.price / (c.eps * fx) : null;
+    const ps = isNum(c.revenueEur) && c.revenueEur > 0 ? mcap / c.revenueEur : null;
+    if ((pe !== null && (pe < 1 || pe > 150)) || (ps !== null && (ps < 0.02 || ps > 60))) return;
+    c.mcap = mcap;
+    if (pe !== null) c.pe = pe;
+    if (c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; if (y < 25) c.divYield = y; }
+  });
+}
+
 function closeCompany() { document.getElementById('stock-modal').style.display = 'none'; }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -241,7 +286,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('co-count').textContent = 'Could not load company data.';
     return;
   }
-  await addSignals();
+  await Promise.all([addSignals(), addPrices()]);
   renderFilters();
   const params = new URLSearchParams(location.search);
   query = params.get('q') || '';
