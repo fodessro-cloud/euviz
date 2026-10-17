@@ -2,7 +2,7 @@
 // built by scripts/data/universe.py). Amounts are in millions of the report currency.
 
 const PAGE = 50;
-let COMPANIES = [], UPDATED = '', PRICES_DAY = '';
+let COMPANIES = [], UPDATED = '', PRICES_DAY = '', SLUGS = {};
 let sortKey = 'revenueEur', sortDir = -1, page = 1, query = '';
 const filters = {};
 
@@ -167,7 +167,8 @@ function openCompany(lei) {
         <h2>${esc(c.name)} ${c.ticker ? `<span class="modal-name">${esc(c.ticker)}${c.exchange ? ' · ' + esc(c.exchange) : ''}</span>` : ''}</h2>
         <div class="modal-meta">${esc(countryName(c.country))}${c.sector ? ' · ' + esc(c.sector) : ''}${c.industry ? ' · ' + esc(c.industry) : ''}</div>
       </div>
-      <button class="modal-close" type="button" data-close>✕</button>
+      <span class="modal-actions">${SLUGS[c.lei] ? `<a class="modal-page" href="/stock/${SLUGS[c.lei]}">Company page</a>` : ''}
+      <button class="modal-close" type="button" data-close>✕</button></span>
     </div>
     ${isNum(c.price) ? `<div class="modal-price-row">
       <span class="modal-price">€${num(c.price, 2)}</span>
@@ -286,7 +287,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('co-count').textContent = 'Could not load company data.';
     return;
   }
-  await Promise.all([addSignals(), addPrices()]);
+  // Addresses of the company pages (/stock/<name>), built with the pages by scripts/build-stock-pages.py.
+  const slugs = fetch('js/stock-slugs.json').then(r => r.json()).then(d => { SLUGS = d; }).catch(() => {});
+  await Promise.all([addSignals(), addPrices(), slugs]);
   renderFilters();
   const params = new URLSearchParams(location.search);
   query = params.get('q') || '';

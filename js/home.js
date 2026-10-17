@@ -8,7 +8,9 @@ const pct1 = n => isNum(n) ? (n >= 0 ? '+' : '−') + fmt(Math.abs(n), 1) + '%' 
 const dir = n => (!isNum(n) ? '' : n >= 0 ? 'up' : 'down');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const bnEur = v => isNum(v) ? `€${fmt(v / 1000, v >= 100000 ? 0 : 1)}B` : '—';
-const coLink = c => `/companies?lei=${encodeURIComponent(c.lei)}`;
+// Each company has its own page (/stock/<name>, built by scripts/build-stock-pages.py); the screener is the fallback.
+let SLUGS = {};
+const coLink = c => SLUGS[c.lei] ? `/stock/${SLUGS[c.lei]}` : `/companies?lei=${encodeURIComponent(c.lei)}`;
 const load = async url => { try { return await (await fetch(url, { cache: 'no-cache' })).json(); } catch { return null; } };
 
 let COS = [];
@@ -201,8 +203,9 @@ function setupSearch() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const [cos, prices, inv, ins, sh] = await Promise.all(
-    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json'].map(load));
+  const [cos, prices, inv, ins, sh, slugs] = await Promise.all(
+    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json', 'js/stock-slugs.json'].map(load));
+  SLUGS = slugs || {};
   COS = cos ? buildCompanies(cos, prices) : [];
   INV = inv;
   renderMarket(inv);

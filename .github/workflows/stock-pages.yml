@@ -1,0 +1,41 @@
+name: Stránky firiem FINILA
+
+# Rebuilds the company pages (/stock/<name>) and sitemap.xml from the newest data once a day
+# and uploads only those. Pages keep their price current through js/stock-page.js.
+on:
+  workflow_run:
+    workflows: ['Obnoviť dáta FINILA']
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: '45 5 * * *'   # after the morning closing prices (prices.yml 05:15 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  upload:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Same lock as deploy-finila.yml, so an upload never overlaps a site deploy.
+    concurrency:
+      group: finila-webglobe
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Build and upload company pages
+        env:
+          FTP_SERVER: ${{ vars.FTP_SERVER || 'sftp://ftp.finila.com:222' }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'finila.com' }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_DIR: ${{ vars.FTP_DIR || '/' }}
+        run: scripts/upload-stock-pages.sh
