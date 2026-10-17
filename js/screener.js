@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('stock-modal')?.addEventListener('click', e => {
     if (e.target.id === 'stock-modal') closeModal();
   });
-  // Deep link from the homepage search and the groups page: screener.html?stock=SAP
+  // Deep link from the homepage search and the groups page: /screener?stock=SAP
   const linked = new URLSearchParams(location.search).get('stock');
   if (linked && STOCKS.some(s => s.ticker === linked)) openStock(linked);
 });
