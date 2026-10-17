@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINILA — European company fundamentals</title>
+  <meta name="description" content="Revenue, profit, cash flow, debt and returns of thousands of European listed companies, read from their official annual reports.">
+  <link rel="icon" href="css/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="index.html" aria-label="FINILA home"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#E8EDF7"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
+  <nav class="nav-links">
+    <a class="nav-link"        href="screener.html">Stocks</a>
+    <a class="nav-link active" href="companies.html">Fundamentals</a>
+    <a class="nav-link"        href="insiders.html">Insider trades</a>
+    <a class="nav-link"        href="map.html">Market map</a>
+    <a class="nav-link"        href="groups.html">Sectors &amp; countries</a>
+    <a class="nav-link" href="index.html#porovnanie">Compare investments</a>
+    <a class="nav-link" href="/archiv/">Archive</a>
+  </nav>
+</header>
+<div class="real-banner">Real data from each company’s official annual report (ESEF), via filings.xbrl.org. Share prices are not included yet. Not investment advice.</div>
+
+<div class="page-wrap">
+  <div class="page-content">
+    <aside class="filter-sidebar">
+      <h3>Filters</h3>
+      <div id="co-filters"></div>
+      <div class="filter-actions">
+        <button class="btn btn-secondary" id="co-reset" type="button">Reset</button>
+      </div>
+    </aside>
+
+    <div class="screener-main">
+      <div class="screener-toolbar">
+        <span class="result-count" id="co-count">Loading…</span>
+        <input id="co-search" class="co-search" type="search" placeholder="Search company, ticker or country" aria-label="Search companies">
+      </div>
+      <div class="table-wrap">
+        <table id="screener-table"></table>
+      </div>
+      <div id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<div id="stock-modal">
+  <div class="modal-box" id="modal-content"></div>
+</div>
+
+<script src="js/companies.js"></script>
+<script src="js/analytics.js" defer></script>
+</body>
+</html>

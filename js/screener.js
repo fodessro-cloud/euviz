@@ -254,6 +254,7 @@ function openStock(ticker) {
       <span class="modal-vol">Vol: ${formatVol(s.volume)}</span>
     </div>
     <div class="modal-sparkline">${sparklineHTML(s.ticker)}</div>
+    ${annualReportHTML(s)}
     <div class="modal-grid">
       <div class="modal-section">
         <h4>Valuation</h4>
@@ -298,6 +299,39 @@ function openStock(ticker) {
     </div>
   `;
   modal.style.display = 'flex';
+}
+
+// Real figures from the company's latest ESEF annual report (js/fundamentals.js).
+function annualReportHTML(s) {
+  const f = typeof FUNDAMENTALS !== 'undefined' && FUNDAMENTALS[`${s.ticker}@${s.country}`];
+  if (!f) return '';
+  const cur = f.currency || '';
+  const amt = v => v === null || v === undefined ? 'N/A' : `${formatNumber(v / 1000, 2)}B ${cur}`;
+  const pc = v => v === null || v === undefined ? 'N/A' : `<span class="${changeColor(v)}">${formatNumber(v, 1)}%</span>`;
+  const x = v => v === null || v === undefined ? 'N/A' : (v < 0 ? 'net cash' : `${formatNumber(v, 2)}×`);
+  const row = (k, v) => `<tr><td>${k}</td><td>${v}</td></tr>`;
+  return `
+    <div class="modal-report">
+      <div class="modal-report-head">
+        <h4>Latest annual report · FY ending ${f.periodEnd}</h4>
+        <span class="real-badge">Real data</span>
+      </div>
+      <div class="modal-grid">
+        <div class="modal-section"><table class="kv-table">
+          ${row('Revenue', amt(f.revenue))}${row('EBITDA', amt(f.ebitda))}${row('Operating profit', amt(f.operatingProfit))}${row('Net income', amt(f.netIncome))}
+        </table></div>
+        <div class="modal-section"><table class="kv-table">
+          ${row('Operating cash flow', amt(f.operatingCashFlow))}${row('Capex', amt(f.capex))}${row('Free cash flow', amt(f.fcf))}${row('Dividends paid', amt(f.dividendsPaid))}
+        </table></div>
+        <div class="modal-section"><table class="kv-table">
+          ${row('Equity', amt(f.equity))}${row('Net debt', amt(f.netDebt))}${row('Net debt / EBITDA', x(f.netDebtToEbitda))}${row('ROE', pc(f.roe))}
+        </table></div>
+        <div class="modal-section"><table class="kv-table">
+          ${row('EBITDA margin', pc(f.ebitdaMargin))}${row('FCF margin', pc(f.fcfMargin))}${row('Revenue growth', pc(f.revenueGrowth))}${row('Net income growth', pc(f.netIncomeGrowth))}
+        </table></div>
+      </div>
+      <div class="modal-report-src">Source: the company's ESEF annual report via filings.xbrl.org${f.source ? ` · <a href="${f.source}" target="_blank" rel="noopener">view report</a>` : ''}. The figures below it are illustrative.</div>
+    </div>`;
 }
 
 function closeModal() {

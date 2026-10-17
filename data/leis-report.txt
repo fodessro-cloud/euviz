@@ -1,77 +1,77 @@
-SAP     Germany      SAP SE                           -> NO XBRL MATCH; candidates: 969500XWQY8MXHZ0MB83 SP; 969500KBC8BLVMR5PG98 S.P; 969500WRA06F5O39QP74 S3P
-SIE     Germany      Siemens AG                       -> NO XBRL MATCH; candidates: 529900YDAG61JYILJZ53 Siemens; 529900HWCL6XE99Q1071 SIEMENS; 529900L2BY5305IPCH19 SIEMENS AS
-ALV     Germany      Allianz SE                       -> NO XBRL MATCH; candidates: 969500KLZW58TA45WZ22 ALLIANT; 967600O1QU22M6QU6P62 ALLIANZ; 98450017D208DF9A7F32 Allianza
-BASF    Germany      BASF SE                          -> NO XBRL MATCH; candidates: 969500SM76E611JRB708 BAF; 967600LV7NHD5Q9R9G91 BAS; 969500LARV5Y6WK7AU64 BAFA
-BMW     Germany      Bayerische Motoren Werke AG      -> NO XBRL MATCH; candidates: YEH5ZCD6E441RHVHD759 Bayerische Motoren Werke Aktie
-MBG     Germany      Mercedes-Benz Group AG           -> NO XBRL MATCH; candidates: 5299000W0HB7SX4P4882 Mercedes-Benz AG; 529900GNAGB9XQ5IYZ04 Mercedes-Benz BKK; 969500XZ6QWVX77HMF38 MERCEDES-BENZ BANK AG
-DTE     Germany      Deutsche Telekom AG              -> NO XBRL MATCH; candidates: 549300V9QSIG4WX4GJ96 DEUTSCHE TELEKOM AG; 529900EZIP261CBC7W95 Deutsche Telekom IT GmbH; 529900CAN0WMFQYQ2B36 Deutsche Telekom MMS GmbH
-DBK     Germany      Deutsche Bank AG                 -> NO XBRL MATCH; candidates: 529900J2KCFIPEYJIE34 DEUTSCHE BANK SA; 529900SS7ZWCX82U3W60 DEUTSCHE BANK S.P.A.; 894500QIRX4XR76ICY44 Deutsche Benkert GmbH
-BAYN    Germany      Bayer AG                         -> NO XBRL MATCH; candidates: 529900ZG157ER80GDN56 Bayer; 529900FX7N2Q7BVP8427 BAYER; 549300OW0GQ0DH559O41 BAYES
-VOW3    Germany      Volkswagen AG                    -> NO XBRL MATCH; candidates: 969500UQY1U5RRRFXL08 VOLKSWAGEN; 529900K6912JBFWMYH64 VolkswagenStiftung; 2138007XU5OVQMITB928 VOLKSWAGEN EQUILIBRE
-IFX     Germany      Infineon Technologies            -> NO XBRL MATCH; candidates: TSI2PJM6EPETEQ4X1U25 Infineon Technologies AG; 5299005GTRBMKT115M59 INFINEON TECHNOLOGIES LLC; 529900RQJADHH91ABP14 Infineon Technologies Austria 
-ADS     Germany      Adidas AG                        -> NO XBRL MATCH; candidates: 549300940UMBTEAN7T31 ADIDA; 549300JSX0Z4CW0V5023 adidas AG; 5493008PD7JXFD1KG250 ADIDANA SRL
-MUV2    Germany      Munich Re                        -> NO XBRL MATCH; candidates: 3912003F5ZX1GIMKIN41 MUNICH MED GmbH; 529900MVHQY507RAR364 Munich Wealth GmbH; 9695004H93GH5DH3QX91 MUNICH RE PLACEMENT
-HEN3    Germany      Henkel AG                        -> NO XBRL MATCH; candidates: 64889R3BK1B19MY77H28 HENKES; 549300KH7JZVWSQ6DG64 Henkle AB; 549300FBL3CC16WPON93 HENKLA ApS
-RWE     Germany      RWE AG                           -> NO XBRL MATCH; candidates: 969500WD7UF19BC6EN94 RED; 9695003QQCE9V2GW1N77 REG; 969500LPW9JY0EWZFU55 REM
-CON     Germany      Continental AG                   -> NO XBRL MATCH; candidates: 969500P56TRJPK7Y1W15 CONTINENTAL SF; 529900ZMQ4N1F0OZX457 Continenta GmbH; 5299005TINT7QCNXNT05 CONTINENTAL INC
-MC      France       LVMH Moët Hennessy               -> IOG4E947OATN0KJYSD45 LVMH MOET HENNESSY LOUIS VUITTON (4 filings, ['2022-12-31', '2023-12-31', '2024-12-31'])
-TTE     France       TotalEnergies SE                 -> 529900S21EQ1BO4ESM68 TotalEnergies SE (8 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-OR      France       L'Oréal SA                       -> 529900JI1GG6F7RKVI53 L'OREAL (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-AIR     France       Airbus SE                        -> MINO79WLOO247M1IL051 AIRBUS SE (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-BNP     France       BNP Paribas SA                   -> NO XBRL MATCH; candidates: 549300HNQHBUF2CZK416 BNP PARIBAS L1; 2138001QJF9E5YKQI462 BNP PARIBAS SF; 969500BU6OW57QN8CB86 BNP PARIBAS DUO
-SAN     France       Sanofi SA                        -> 549300E9PC51EN656011 SANOFI (6 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-CS      France       AXA SA                           -> NO XBRL MATCH; candidates: 9695003O0IBMX0ACM562 A+A; 969500B53EALNQYPDH10 A.A; 894500R99U3JB4FLHP78 AAA
-RMS     France       Hermès International             -> 969500Y4IJGHJE2MTJ13 HERMES INTERNATIONAL (6 filings, ['2023-12-31', '2024-12-31', '2026-12-31'])
-KER     France       Kering SA                        -> 549300VGEJKB7SVUZR78 KERING (3 filings, ['2021-12-31', '2022-12-31', '2023-12-31'])
-DG      France       Vinci SA                         -> NO XBRL MATCH; candidates: 969500ACWTMYEQHTNG39 VICI; 967600JAN9S0G3L1QF14 Vinck; 254900RHH2BOCKIGKU66 VINIG
-CAP     France       Capgemini SE                     -> 96950077L0TN7BAROX36 CAPGEMINI (3 filings, ['2021-12-31', '2022-12-31', '2024-12-31'])
-RI      France       Pernod Ricard SA                 -> 52990097YFPX9J0H5D87 PERNOD RICARD (5 filings, ['2023-06-30', '2024-06-30', '2025-06-30'])
-ORA     France       Orange SA                        -> NO XBRL MATCH; candidates: 9695001S2ILDIS7ADC23 ORANE; 549300YKJF3MTHPDJQ17 Ornge; 969500E5GKQHHWVE0376 ORANIE
-ASML    Netherlands  ASML Holding NV                  -> NO XBRL MATCH; candidates: 969500BT57DCK4UBF137 AML; 969500WIAQDAG1DSOF84 ASM; 969500JEB5KZEAN80R65 ASLR
-SHEL    Netherlands  Shell PLC                        -> NO XBRL MATCH; candidates: 894500RUIKJXH314S372 SHEL; 254900GTCGL1YW5D2969 Scella; 894500ZQLGNE9QUF0752 SELLIG
-INGA    Netherlands  ING Groep NV                     -> 549300NYKK9MWM7GGW15 ING GROEP N.V. (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-HEIA    Netherlands  Heineken NV                      -> 724500K5PTPSST86UQ23 Heineken N.V. (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-PHIA    Netherlands  Philips NV                       -> NO XBRL MATCH; candidates: 9695002W0RNJGFJ2E632 PHILIP; 969500H55TGSY6HOAL72 PHILIS; 967600131AI7OOG6US83 PHILIPPE
-UNA     Netherlands  Unilever PLC                     -> 549300MKFYEKVRWML317 UNILEVER PLC (10 filings, ['2024-02-08', '2025-02-13', '2026-02-12'])
-STLAM   Netherlands  Stellantis NV                    -> 549300LKT9PW7ZIBDF31 STELLANTIS N.V. (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-NESN    Switzerland  Nestlé SA                        -> 5493009GY1X8GQ66AM14 Neste Oyj (12 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-ROG     Switzerland  Roche Holding AG                 -> NO XBRL MATCH; candidates: 894500WMIC81GRK3NV90 Roche; 9695008PIQ304S3QOE33 ROCE; 9695001WM6PIM96ZUH02 ROCLE
-NOVN    Switzerland  Novartis AG                      -> NO XBRL MATCH; candidates: 969500P817MD33UC4X65 NOVARIS; 96950045NZYEKJV24650 NOVATIS; 959800UWR47AWL9VBG67 NOVACTIS SL
-ABBN    Switzerland  ABB Ltd                          -> NO XBRL MATCH; candidates: 549300CUYPVS34YV2G62 ABB; 894500XTRQ77X2CDIT72 A&B; 969500F7M7J91LLKT443 AB2
-ZURN    Switzerland  Zurich Insurance Group           -> NO XBRL MATCH; candidates: 529900QVNRBND50TXP03 Zurich Insurance Group AG; 506700POMO0770WN9I32 Zurich Insurance Mobile Soluti; 54930004F5ZUL53NC758 ZURICH INSURANCE PUBLIC LIMITE
-UBSG    Switzerland  UBS Group AG                     -> NO XBRL MATCH; candidates: 969500W0DF1GV5EDOC35 UBA; 9845002CC0F6F0BF3A97 UBV; 969500PBFIUKEIFZSW55 UBY
-GIVN    Switzerland  Givaudan SA                      -> NO XBRL MATCH; candidates: 9695004TF3NBPZIUHH88 GEVAUDAN; 9695002YBER1HA2B4H74 GIVAUDAN; 213800SVRMQA1TD91D41 GIVAUDAN SA
-AZN     UK           AstraZeneca PLC                  -> PY6ZZQWO2IZFZC3IOL08 ASTRAZENECA PLC (9 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-HSBA    UK           HSBC Holdings PLC                -> NO XBRL MATCH; candidates: 969500NS01JF43JCQ348 HSB; 894500PRJ451L5BX4M96 HFBC; 969500YWHD9KR4I4KJ55 HSBL
-BP      UK           BP PLC                           -> NO XBRL MATCH; candidates: 969500UOYB7Z1XRJ2G31 BPA; 894500EJYTXTEXGB5F73 BPG; 894500ECEWU7B6Q6IC83 BPI
-GLEN    UK           Glencore PLC                     -> 2138002658CPO9NBH955 GLENCORE PLC (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-RIO     UK           Rio Tinto PLC                    -> 213800YOEO5OQ72G2R82 RIO TINTO PLC (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-GSK     UK           GSK PLC                          -> NO XBRL MATCH; candidates: 969500EHJW61H0LU1289 G1K; 549300GR4VFC5JL1PN65 GBK; 875500TLL7BI9F1W1O88 GCK
-ULVR    UK           Unilever PLC                     -> 549300MKFYEKVRWML317 UNILEVER PLC (10 filings, ['2024-02-08', '2025-02-13', '2026-02-12'])
-DGE     UK           Diageo PLC                       -> NO XBRL MATCH; candidates: 969500M95KYF4WDS2R44 DIAGER; 96950096F53U7PZTTS85 DIASEO; 8945009PIGXJ8TYU8C75 DIAGOLD
-BARC    UK           Barclays PLC                     -> 213800LBQA1Y9L22JB70 BARCLAYS PLC (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-LLOY    UK           Lloyds Banking Group             -> 549300PPXHEU2JF0AM85 LLOYDS BANKING GROUP PLC (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-ITX     Spain        Industria de Diseño Textil SA    -> 549300TTCXZOGZM2EY83 INDUSTRIA DE DISEÑO TEXTIL, S.A. (5 filings, ['2023-01-31', '2024-01-31', '2025-01-31'])
-IBE     Spain        Iberdrola SA                     -> 5QK37QC7NWOJ8D7WVQ45 IBERDROLA SA (5 filings, ['2022-12-31', '2023-12-31', '2024-12-31'])
-SAN     Spain        Banco Santander SA               -> 5493006QMFDDMYWIAM13 BANCO SANTANDER S.A. (9 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-BBVA    Spain        BBVA SA                          -> NO XBRL MATCH; candidates: 96950053HQ2L8E8I8K14 BBDA; 969500L2RFJAWPC09098 BVAC; 9845005559A3AEC99D09 BVAK
-TEF     Spain        Telefónica SA                    -> 549300EEJH4FEPDBBR25 TELEFONICA SA (4 filings, ['2022-12-31', '2023-12-31', '2024-12-31'])
-ENEL    Italy        Enel SpA                         -> NO XBRL MATCH; candidates: 969500SA7ZW9N6PGJC82 EMEL; 894500ALOYOZNXXLZJ24 ENEV; 9695001ISSHNEYY76A82 ENEZ
-ENI     Italy        Eni SpA                          -> NO XBRL MATCH; candidates: 9695003YQ7WWTLTOND09 EBI; 875500EVKCE8SRA7ER34 ECI; 969500GPYQE4XY7PFD36 EFI
-RACE    Italy        Ferrari NV                       -> 549300RIVY5EX8RCON76 FERRARI N.V. (5 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-UCG     Italy        UniCredit SpA                    -> NO XBRL MATCH; candidates: 969500XF3D3YB3ADHI77 UNCREDIT.RE; 549300U1YXDFKMDU7D20 UNICREDIT NV/SA; 529900XA50FKIGB6C832 UniCredit Bank AG
-ISP     Italy        Intesa Sanpaolo SpA              -> NO XBRL MATCH; candidates: 724500ZM62VN7JH6K383 Intesa Sanpaolo S.p.A.; 2221001BQYKCFUQGX885 INTESA SANPAOLO SEC SA; 54930009CCENXT9WTF32 INTESA SANPAOLO BANK ALBANIA
-ATCO    Sweden       Atlas Copco AB                   -> 213800T8PC8Q4FYJZR07 ATLAS COPCO AKTIEBOLAG (8 filings, ['2022-12-31', '2023-12-31', '2024-12-31'])
-VOLV    Sweden       Volvo AB                         -> NO XBRL MATCH; candidates: 969500CJIWU5QCZQ6P64 VOLKO; 9695002V9OCJUJQ4KL14 VOLVIS; 969500TFLSCR1ELH3T82 VALVOGE
-ERICB   Sweden       Ericsson AB                      -> NO XBRL MATCH; candidates: 549300MLH00Y3BN4HD49 Ericsson AB; 5493007D42XKQ51JK239 ERICSSON AG; 549300GF55MLYLV0I304 ERICSSON AS
-HMB     Sweden       H&M Hennes & Mauritz AB          -> 529900O5RR7R39FRDM42 H & M Hennes & Mauritz AB (3 filings, ['2022-11-30', '2023-11-30', '2024-11-30'])
-NOVO    Denmark      Novo Nordisk A/S                 -> 549300DAQ1CVT6CXN342 NOVO NORDISK A/S (23 filings, ['2025-12-31', '2026-03-31', '2026-06-30'])
-MAERSK  Denmark      A.P. Møller - Mærsk A/S          -> 549300D2K6PKKKXVNN73 A.P. MØLLER - MÆRSK A/S (27 filings, ['2025-12-31', '2026-03-31', '2026-06-30'])
-NOKIA   Finland      Nokia Oyj                        -> 549300A0JPRWG1KI7U06 Nokia Oyj (6 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-UCB     Belgium      UCB SA                           -> NO XBRL MATCH; candidates: 969500W0DF1GV5EDOC35 UBA; 9845002CC0F6F0BF3A97 UBV; 969500PBFIUKEIFZSW55 UBY
-ABI     Belgium      Anheuser-Busch InBev SA          -> 5493008H3828EMEXB082 ANHEUSER-BUSCH INBEV (9 filings, ['2023-12-31', '2024-12-31', '2025-12-31'])
-CRH     Ireland      CRH PLC                          -> NO XBRL MATCH; candidates: 894500LOSLUE7VUYK741 CBH; 969500PEW1DVXTYV1Y62 CH2; 969500SPIW2582SKKL11 CHD
-EQNR    Norway       Equinor ASA                      -> NO XBRL MATCH; candidates: 894500037ZOCM7WINN33 EQUINOT; 98450071C14BEE766163 EQUINOX; 549300RN1XAST5QKCL11 Equinox
-OMV     Austria      OMV AG                           -> NO XBRL MATCH; candidates: 6488161SH8V0ZCN5A708 ODV; 969500NNO610ZDHTRT55 OJV; 87550020COOJLFQDF505 OM3
-EDP     Portugal     EDP - Energias de Portugal SA    -> NO XBRL MATCH; candidates: 
-PKN     Poland       PKN ORLEN SA                     -> NO XBRL MATCH; candidates: 
+SAP     Germany      SAP SE                           [SAP] -> 529900D6BF99LW9R2E68 SAP SE (exact)
+SIE     Germany      Siemens AG                       [SIEMENS] -> W38RGI023J3WT1HWRP32 Siemens Aktiengesellschaft (exact)
+ALV     Germany      Allianz SE                       [ALLIANZ] -> 529900K9B0N5BT694847 Allianz SE (exact)
+BASF    Germany      BASF SE                          [BASF] -> 529900PM64WH8AF1E917 BASF SE (exact)
+BMW     Germany      Bayerische Motoren Werke AG      [BAYERISCHE MOTOREN WERKE] -> none
+MBG     Germany      Mercedes-Benz Group AG           [MERCEDES BENZ] -> none
+DTE     Germany      Deutsche Telekom AG              [DEUTSCHE TELEKOM] -> 549300V9QSIG4WX4GJ96 Deutsche Telekom AG (exact)
+DBK     Germany      Deutsche Bank AG                 [DEUTSCHE BANK] -> 7LTWFZYICNSX8D621K86 DEUTSCHE BANK AKTIENGESELLSCHAFT (exact)
+BAYN    Germany      Bayer AG                         [BAYER] -> 549300J4U55H3WP1XT59 Bayer Aktiengesellschaft (exact)
+VOW3    Germany      Volkswagen AG                    [VOLKSWAGEN] -> 529900NNUPAGGOMPXZ31 VOLKSWAGEN AKTIENGESELLSCHAFT (exact)
+IFX     Germany      Infineon Technologies            [INFINEON TECHNOLOGIES] -> none
+ADS     Germany      Adidas AG                        [ADIDAS] -> 549300JSX0Z4CW0V5023 adidas AG (exact)
+MUV2    Germany      Munich Re                        [MUENCHENER RUECKVERSICHERUNGS] -> none
+HEN3    Germany      Henkel AG                        [HENKEL] -> none
+RWE     Germany      RWE AG                           [RWE] -> none
+CON     Germany      Continental AG                   [CONTINENTAL] -> none
+MC      France       LVMH Moët Hennessy               [LVMH MOET HENNESSY LOUIS VUITTON] -> IOG4E947OATN0KJYSD45 LVMH MOET HENNESSY LOUIS VUITTON (exact)
+TTE     France       TotalEnergies SE                 [TOTALENERGIES] -> 529900S21EQ1BO4ESM68 TotalEnergies SE (exact)
+OR      France       L'Oréal SA                       [L OREAL] -> 529900JI1GG6F7RKVI53 L'OREAL (exact)
+AIR     France       Airbus SE                        [AIRBUS] -> MINO79WLOO247M1IL051 AIRBUS SE (exact)
+BNP     France       BNP Paribas SA                   [BNP PARIBAS] -> R0MUWSFPU8MPRO8K5P83 BNP PARIBAS (exact)
+SAN     France       Sanofi SA                        [SANOFI] -> 549300E9PC51EN656011 SANOFI (exact)
+CS      France       AXA SA                           [AXA] -> F5WCUMTUM4RKZ1MAIE39 AXA (exact)
+RMS     France       Hermès International             [HERMES] -> 969500Y4IJGHJE2MTJ13 HERMES INTERNATIONAL (exact)
+KER     France       Kering SA                        [KERING] -> 549300VGEJKB7SVUZR78 KERING (exact)
+DG      France       Vinci SA                         [VINCI] -> 213800WFQ334R8UXUG83 VINCI (exact)
+CAP     France       Capgemini SE                     [CAPGEMINI] -> 96950077L0TN7BAROX36 CAPGEMINI (exact)
+RI      France       Pernod Ricard SA                 [PERNOD RICARD] -> 52990097YFPX9J0H5D87 PERNOD RICARD (exact)
+ORA     France       Orange SA                        [ORANGE] -> 969500MCOONR8990S771 ORANGE (exact)
+ASML    Netherlands  ASML Holding NV                  [ASML] -> 724500Y6DUVHQD6OXN27 ASML Holding N.V. (exact)
+SHEL    Netherlands  Shell PLC                        [SHELL] -> 21380068P1DRHMJ8KU70 SHELL PLC (exact)
+INGA    Netherlands  ING Groep NV                     [ING] -> 549300NYKK9MWM7GGW15 ING GROEP N.V. (exact)
+HEIA    Netherlands  Heineken NV                      [HEINEKEN] -> 724500M1WJLFM9TYBS04 Heineken Holding N.V. (exact)
+PHIA    Netherlands  Philips NV                       [KONINKLIJKE PHILIPS] -> H1FJE8H61JGM1JSGM897 Koninklijke Philips N.V. (exact)
+UNA     Netherlands  Unilever PLC                     [UNILEVER] -> 549300MKFYEKVRWML317 UNILEVER PLC (exact)
+STLAM   Netherlands  Stellantis NV                    [STELLANTIS] -> 549300LKT9PW7ZIBDF31 STELLANTIS N.V. (exact)
+NESN    Switzerland  Nestlé SA                        -> skipped (no ESEF in Switzerland)
+ROG     Switzerland  Roche Holding AG                 -> skipped (no ESEF in Switzerland)
+NOVN    Switzerland  Novartis AG                      -> skipped (no ESEF in Switzerland)
+ABBN    Switzerland  ABB Ltd                          -> skipped (no ESEF in Switzerland)
+ZURN    Switzerland  Zurich Insurance Group           -> skipped (no ESEF in Switzerland)
+UBSG    Switzerland  UBS Group AG                     -> skipped (no ESEF in Switzerland)
+GIVN    Switzerland  Givaudan SA                      -> skipped (no ESEF in Switzerland)
+AZN     UK           AstraZeneca PLC                  [ASTRAZENECA] -> PY6ZZQWO2IZFZC3IOL08 ASTRAZENECA PLC (exact)
+HSBA    UK           HSBC Holdings PLC                [HSBC] -> MLU0ZO3ML4LN2LL2TL39 HSBC HOLDINGS PLC (exact)
+BP      UK           BP PLC                           [BP] -> 213800LH1BZH3DI6G760 BP P.L.C. (exact)
+GLEN    UK           Glencore PLC                     [GLENCORE] -> 2138002658CPO9NBH955 GLENCORE PLC (exact)
+RIO     UK           Rio Tinto PLC                    [RIO TINTO] -> 213800YOEO5OQ72G2R82 RIO TINTO PLC (exact)
+GSK     UK           GSK PLC                          [GSK] -> 5493000HZTVUYLO1D793 GSK PLC (exact)
+ULVR    UK           Unilever PLC                     [UNILEVER] -> 549300MKFYEKVRWML317 UNILEVER PLC (exact)
+DGE     UK           Diageo PLC                       [DIAGEO] -> 213800ZVIELEA55JMJ32 DIAGEO PLC (exact)
+BARC    UK           Barclays PLC                     [BARCLAYS] -> 213800LBQA1Y9L22JB70 BARCLAYS PLC (exact)
+LLOY    UK           Lloyds Banking Group             [LLOYDS BANKING] -> 549300PPXHEU2JF0AM85 LLOYDS BANKING GROUP PLC (exact)
+ITX     Spain        Industria de Diseño Textil SA    [INDUSTRIA DE DISENO TEXTIL] -> 549300TTCXZOGZM2EY83 INDUSTRIA DE DISEÑO TEXTIL, S.A. (exact)
+IBE     Spain        Iberdrola SA                     [IBERDROLA] -> 5QK37QC7NWOJ8D7WVQ45 IBERDROLA SA (exact)
+SAN     Spain        Banco Santander SA               [BANCO SANTANDER] -> 5493006QMFDDMYWIAM13 BANCO SANTANDER S.A. (exact)
+BBVA    Spain        BBVA SA                          [BANCO BILBAO VIZCAYA ARGENTARIA] -> none
+TEF     Spain        Telefónica SA                    [TELEFONICA] -> 549300EEJH4FEPDBBR25 TELEFONICA SA (exact)
+ENEL    Italy        Enel SpA                         [ENEL] -> WOCMU6HCI0OJWNPRZS33 ENEL - SPA (exact)
+ENI     Italy        Eni SpA                          [ENI] -> BUCRF72VH5RBN7X3VL35 ENI S.P.A. (exact)
+RACE    Italy        Ferrari NV                       [FERRARI] -> 549300RIVY5EX8RCON76 FERRARI N.V. (exact)
+UCG     Italy        UniCredit SpA                    [UNICREDIT] -> none
+ISP     Italy        Intesa Sanpaolo SpA              [INTESA SANPAOLO] -> 2W8N8UU78PMDQKZENC08 INTESA SANPAOLO SPA (exact)
+ATCO    Sweden       Atlas Copco AB                   [ATLAS COPCO] -> 213800T8PC8Q4FYJZR07 ATLAS COPCO AKTIEBOLAG (exact)
+VOLV    Sweden       Volvo AB                         [VOLVO] -> 549300HGV012CNC8JD22 Aktiebolaget Volvo (exact)
+ERICB   Sweden       Ericsson AB                      [TELEFONAKTIEBOLAGET LM ERICSSON] -> 549300W9JLPW15XIFM52 Telefonaktiebolaget LM Ericsson (exact)
+HMB     Sweden       H&M Hennes & Mauritz AB          [H M HENNES MAURITZ] -> 529900O5RR7R39FRDM42 H & M Hennes & Mauritz AB (exact)
+NOVO    Denmark      Novo Nordisk A/S                 [NOVO NORDISK] -> 549300DAQ1CVT6CXN342 NOVO NORDISK A/S (exact)
+MAERSK  Denmark      A.P. Møller - Mærsk A/S          [A P MOLLER MAERSK] -> 549300D2K6PKKKXVNN73 A.P. MØLLER - MÆRSK A/S (exact)
+NOKIA   Finland      Nokia Oyj                        [NOKIA] -> 549300A0JPRWG1KI7U06 Nokia Oyj (exact)
+UCB     Belgium      UCB SA                           [UCB] -> none
+ABI     Belgium      Anheuser-Busch InBev SA          [ANHEUSER BUSCH INBEV] -> 5493008H3828EMEXB082 ANHEUSER-BUSCH INBEV (exact)
+CRH     Ireland      CRH PLC                          [CRH] -> none
+EQNR    Norway       Equinor ASA                      [EQUINOR] -> OW6OFBNCKXC4US5C7523 EQUINOR ASA (exact)
+OMV     Austria      OMV AG                           [OMV] -> 549300V62YJ9HTLRI486 OMV AKTIENGESELLSCHAFT (exact)
+EDP     Portugal     EDP - Energias de Portugal SA    [EDP ENERGIAS DE PORTUGAL] -> none
+PKN     Poland       PKN ORLEN SA                     [ORLEN] -> 259400VVMM70CQREJT74 ORLEN SPÓŁKA AKCYJNA (exact)

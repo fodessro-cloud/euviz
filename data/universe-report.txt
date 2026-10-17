@@ -1,0 +1,45 @@
+1898 companies with figures, 113 without usable figures
+with ticker: 0, with sector: 0
+by country: GB 509, SE 312, FR 147, NO 146, FI 107, ES 104, IT 101, NL 93, DK 89, BE 46, AT 45, GR 41, LU 31, MT 27, IS 23, HU 18, LT 17, HR 16, PT 6, SI 6, SK 6, PL 5, EE 3
+
+largest 40 by revenue:
+トヨタ自動車株式会社                         GB -        -                      2026-03-31 rev€=285035.2 ebitda=6158735.0 fcf=2945924.0 roe=9.6
+Shell Plc                          GB -        -                      2025-12-31 rev€=237168.8 ebitda=None fcf=21948.0 roe=10.2
+Glencore Plc                       GB -        -                      2025-12-31 rev€=219972.5 ebitda=None fcf=None roe=0.9
+TotalEnergies SE                   GB -        -                      2025-12-31 rev€=178793.2 ebitda=None fcf=10390.0 roe=11.4
+Bp P.L.C.                          GB -        -                      2025-12-31 rev€=171109.0 ebitda=30464.0 fcf=11272.0 roe=0.1
+Stellantis N.V.                    NL -        -                      2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8
+Koninklijke Ahold Delhaize N.V.    NL -        -                      2025-12-28 rev€=92352.0 ebitda=None fcf=None roe=15.9
+Equinor Asa                        NO -        -                      2024-12-31 rev€=92219.0 ebitda=40762.0 fcf=7933.0 roe=20.8
+AXA                                FR -        -                      2025-12-31 rev€=91139.0 ebitda=None fcf=None roe=20.8
+Tesco Plc                          GB -        -                      2026-02-28 rev€=87352.0 ebitda=None fcf=None roe=15.6
+Carrefour                          FR -        -                      2025-12-31 rev€=84025.0 ebitda=None fcf=None roe=2.9
+Eni S.P.A.                         IT -        -                      2025-12-31 rev€=82151.0 ebitda=12359.0 fcf=4101.0 roe=5.4
+Vinci                              FR -        -                      2025-12-31 rev€=75372.0 ebitda=13570.0 fcf=None roe=15.9
+Enel - Spa                         IT -        -                      2024-12-31 rev€=73914.0 ebitda=22743.0 fcf=3057.0 roe=20.8
+Airbus Se                          NL -        -                      2025-12-31 rev€=73420.0 ebitda=None fcf=None roe=20.0
+Engie                              FR -        -                      2025-12-31 rev€=71944.0 ebitda=13683.0 fcf=-8743.0 roe=11.6
+Renault                            FR -        -                      2025-12-31 rev€=57922.0 ebitda=-3628.0 fcf=-705.0 roe=-52.6
+Repsol Sa                          ES -        -                      2024-12-31 rev€=56713.0 ebitda=None fcf=None roe=6.0
+ArcelorMittal                      LU -        -                      2024-12-31 rev€=55488.3 ebitda=5942.0 fcf=447.0 roe=2.7
+Anheuser-Busch Inbev               BE -        -                      2025-12-31 rev€=52714.8 ebitda=21057.0 fcf=11227.0 roe=7.8
+Bhp Group Limited                  GB -        -                      2026-06-30 rev€=52217.2 ebitda=30070.0 fcf=11929.0 roe=19.3
+Astrazeneca Plc                    GB -        -                      2025-12-31 rev€=52198.5 ebitda=19476.0 fcf=8670.0 roe=21.0
+Rio Tinto Plc                      GB -        -                      2025-12-31 rev€=51220.1 ebitda=21513.0 fcf=4497.0 roe=16.0
+Unilever Plc                       NL -        -                      2025-12-31 rev€=50503.0 ebitda=10390.0 fcf=6759.0 roe=61.0
+A.P. Møller - Mærsk A/S            DK -        -                      2025-12-31 rev€=47976.5 ebitda=10171.0 fcf=4962.0 roe=4.9
+Aktiebolaget Volvo                 SE -        -                      2024-12-31 rev€=47269.3 ebitda=None fcf=None roe=26.0
+Compagnie De Saint-Gobain          FR -        -                      2025-12-31 rev€=46483.0 ebitda=None fcf=3464.0 roe=11.7
+Iberdrola Sa                       ES -        -                      2024-12-31 rev€=44739.0 ebitda=16377.0 fcf=3550.0 roe=11.9
+L'Oreal                            FR -        -                      2025-12-31 rev€=44052.0 ebitda=None fcf=None roe=17.5
+Sanofi                             FR -        -                      2025-12-31 rev€=43626.0 ebitda=8120.0 fcf=7212.0 roe=10.9
+Royal Bank of Canada               GB -        -                      2025-10-31 rev€=41797.9 ebitda=None fcf=None roe=14.6
+Acs Actividades De Construccion Y  ES -        -                      2024-12-31 rev€=41633.1 ebitda=None fcf=2132.0 roe=17.6
+Telefonica Sa                      ES -        -                      2024-12-31 rev€=41315.0 ebitda=11194.0 fcf=None roe=-0.3
+Compass Group Plc                  GB -        -                      2025-09-30 rev€=40940.2 ebitda=None fcf=2474.0 roe=24.4
+Vodafone Group Public Limited Comp GB -        -                      2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8
+Schneider Electric Se              FR -        -                      2025-12-31 rev€=40152.0 ebitda=None fcf=4588.0 roe=17.2
+J Sainsbury Plc                    GB -        -                      2026-02-28 rev€=39873.2 ebitda=1096.0 fcf=931.0 roe=6.4
+Gsk Plc                            GB -        -                      2025-12-31 rev€=38711.9 ebitda=None fcf=4756.0 roe=34.9
+Industria De Diseño Textil, S.A.   ES -        -                      2025-01-31 rev€=38632.0 ebitda=10728.0 fcf=6616.0 roe=29.8
+Imperial Brands Plc                GB -        -                      2025-09-30 rev€=38124.1 ebitda=4271.0 fcf=3429.0 roe=42.9
