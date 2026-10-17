@@ -16,7 +16,10 @@ jobs:
           set -x
           F=$(curl -sS https://mfs.deutsche-boerse.com/api/DETR-posttrade | python3 -c "import json,sys;print([f for f in json.load(sys.stdin)['CurrentFiles'] if 'daily' in f][0])")
           echo FILE $F
-          curl -sS -o d.json.gz "https://mfs.deutsche-boerse.com/api/download/$F" -w "HTTP %{http_code} %{size_download}\n"
+          curl -sS -D - -o /dev/null "https://mfs.deutsche-boerse.com/api/download/$F" | head -20
+          curl -sS https://mfs.deutsche-boerse.com/DETR-posttrade | grep -oiE "[a-z_./-]*\.js[^\"]*" | head
+          for J in $(curl -sS https://mfs.deutsche-boerse.com/DETR-posttrade | grep -oE 'src="[^"]+\.js"' | cut -d'"' -f2); do echo JS $J; curl -sS "https://mfs.deutsche-boerse.com/$J" | grep -oE ".{0,120}(download|href).{0,120}" | head -8; done
+          curl -sSL -o d.json.gz "https://mfs.deutsche-boerse.com/api/download/$F" -w "HTTP %{http_code} %{size_download} %{url_effective}\n"
           file d.json.gz; ls -la d.json.gz
           python3 - <<'PY'
           import gzip,json,collections
