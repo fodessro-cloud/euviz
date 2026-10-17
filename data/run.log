@@ -170,76 +170,56 @@ ESMA FULINS_E_20261017_02of02.zip: 0 new issuers
 FCA FULINS_E_20261017_01of01.zip: 2149 new issuers
 18568 issuers with listed shares
 3533 issuers with a report for 2024 or later (13 pages)
-1926 reports to read, 1607 cached
+23 reports to read, 3510 cached
   ! https://filings.xbrl.org/549300JUGBT2EH17X827/2026-06-30/ESEF/DK/0/Ennogie Solar Group-2026-06-30-1-en.json: URL can't contain control characters. '/549300JUGBT2EH17X827/2026-06-30/ESEF/DK/0/Ennogie Solar Group-2026-06-30-1-en.json' (found at least ' ')
-  read 200 reports
-  read 400 reports
   ! https://filings.xbrl.org/52990006IVXY7GCSSR39/2025-12-31/ESEF/FR/0/sartoriusstedimbio-2025-12-31-1-fr .json: URL can't contain control characters. '/52990006IVXY7GCSSR39/2025-12-31/ESEF/FR/0/sartoriusstedimbio-2025-12-31-1-fr .json' (found at least ' ')
   ! https://filings.xbrl.org/52990006IVXY7GCSSR39/2025-12-31/ESEF/FR/0/sartoriusstedimbio-2025-12-31-1-fr .json: URL can't contain control characters. '/52990006IVXY7GCSSR39/2025-12-31/ESEF/FR/0/sartoriusstedimbio-2025-12-31-1-fr .json' (found at least ' ')
-  read 600 reports
-  read 800 reports
-  read 1000 reports
-  ! https://filings.xbrl.org/529900E9W21TGMWZ7430/2024-12-31/ESEF/NO/0/Soiltech ASA-2024-12-31-en.json: URL can't contain control characters. '/529900E9W21TGMWZ7430/2024-12-31/ESEF/NO/0/Soiltech ASA-2024-12-31-en.json' (found at least ' ')
-  ! https://filings.xbrl.org/529900E9W21TGMWZ7430/2024-12-31/ESEF/NO/0/Soiltech ASA-2024-12-31-en.json: URL can't contain control characters. '/529900E9W21TGMWZ7430/2024-12-31/ESEF/NO/0/Soiltech ASA-2024-12-31-en.json' (found at least ' ')
-  read 1200 reports
-  ! https://filings.xbrl.org/959800RGBUGJA3UVZZ88/2024-12-31/ESEF/ES/0/REALIABUSINESS_InformeadicionalauditoríaCCAAConsolidadas2024_(IN25-1392)-2025-12-31-0-es.json: 'ascii' codec can't encode character '\xed' in position 85: ordinal not in range(128)
-  ! https://filings.xbrl.org/9598002SMUBZZBE58976/2024-12-31/ESEF/ES/0/GESJ CONS-CCAA 2024.json: URL can't contain control characters. '/9598002SMUBZZBE58976/2024-12-31/ESEF/ES/0/GESJ CONS-CCAA 2024.json' (found at least ' ')
-  ! https://filings.xbrl.org/529900BIDQN2AOKV6N08/2024-12-31/ESEF/NO/0/Annual Report 2024 Elopak ASA ESEF-2024-12-31--en.json: URL can't contain control characters. '/529900BIDQN2AOKV6N08/2024-12-31/ESEF/NO/0/Annual Report 2024 Elopak ASA ESEF-2024-12-31--en.json' (found at least ' ')
-  ! https://filings.xbrl.org/9598002SMUBZZBE58976/2024-12-31/ESEF/ES/0/GESJ CONS-CCAA 2024.json: URL can't contain control characters. '/9598002SMUBZZBE58976/2024-12-31/ESEF/ES/0/GESJ CONS-CCAA 2024.json' (found at least ' ')
-  ! https://filings.xbrl.org/54930050TPKOLSE1ZZ71/2024-12-31/ESEF/NO/0/Wilhelmsen Holding-2024-12-31-en.json: URL can't contain control characters. '/54930050TPKOLSE1ZZ71/2024-12-31/ESEF/NO/0/Wilhelmsen Holding-2024-12-31-en.json' (found at least ' ')
-  read 1400 reports
-  ! https://filings.xbrl.org/54930050TPKOLSE1ZZ71/2024-12-31/ESEF/NO/0/Wilhelmsen Holding-2024-12-31-en.json: URL can't contain control characters. '/54930050TPKOLSE1ZZ71/2024-12-31/ESEF/NO/0/Wilhelmsen Holding-2024-12-31-en.json' (found at least ' ')
-  read 1600 reports
-  ! https://filings.xbrl.org/5967007LIEEXZXH9Q807/2024-12-31/ESEF/NO/0/Eqva ASA-2024-12-31-en.json: URL can't contain control characters. '/5967007LIEEXZXH9Q807/2024-12-31/ESEF/NO/0/Eqva ASA-2024-12-31-en.json' (found at least ' ')
-  ! https://filings.xbrl.org/5967007LIEEXZXKC2G83/2024-12-31/ESEF/NO/0/Aquila Holdings ASA-2024-12-31-en.json: URL can't contain control characters. '/5967007LIEEXZXKC2G83/2024-12-31/ESEF/NO/0/Aquila Holdings ASA-2024-12-31-en.json' (found at least ' ')
-  read 1800 reports
-  ! https://filings.xbrl.org/5967007LIEEXZXGCJS95/2024-12-31/ESEF/NO/0/Nordic Financials-2024-12-31-en.json: URL can't contain control characters. '/5967007LIEEXZXGCJS95/2024-12-31/ESEF/NO/0/Nordic Financials-2024-12-31-en.json' (found at least ' ')
-read 1926 reports this run
-  ! Wikidata: HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132); using the last saved copy
+read 23 reports this run
+4904 listed companies with an LEI on Wikidata
 18568 issuers with listed shares (FIRDS); 1926 of them file reports here
 1836 companies with figures, 113 without usable figures
-with ticker: 0, with sector: 0
+with ticker: 433, with sector: 404
 with F-score: 1310, F-score 8-9: 15, with dividend cover: 700
 by country: GB 469, SE 307, FR 146, NO 136, FI 107, ES 104, IT 101, NL 89, DK 89, BE 46, AT 45, GR 41, LU 29, MT 27, IS 23, HU 18, LT 17, HR 16, PT 6, SI 6, SK 6, PL 5, EE 3
 
 largest 40 by revenue:
-Shell Plc                          GB -        -                      2025-12-31 rev€=237168.8 ebitda=None fcf=21948.0 roe=10.2 F=4 111100--0
-Glencore Plc                       GB -        -                      2025-12-31 rev€=219972.5 ebitda=None fcf=None roe=0.9 F=None None
-TotalEnergies SE                   GB -        -                      2025-12-31 rev€=178793.2 ebitda=None fcf=10390.0 roe=11.4 F=3 110100--0
-Bp P.L.C.                          GB -        -                      2025-12-31 rev€=171109.0 ebitda=30464.0 fcf=11272.0 roe=0.1 F=5 110101--1
-Stellantis N.V.                    NL -        -                      2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=2 000100--1
-Koninklijke Ahold Delhaize N.V.    NL -        -                      2025-12-28 rev€=92352.0 ebitda=None fcf=None roe=15.9 F=None None
-Equinor Asa                        NO -        -                      2024-12-31 rev€=92219.0 ebitda=40762.0 fcf=7933.0 roe=20.8 F=5 11011---1
-AXA                                FR -        -                      2025-12-31 rev€=91139.0 ebitda=None fcf=None roe=20.8 F=None None
-Tesco Plc                          GB -        -                      2026-02-28 rev€=87352.0 ebitda=None fcf=None roe=15.6 F=None None
-Carrefour                          FR -        -                      2025-12-31 rev€=84025.0 ebitda=None fcf=None roe=2.9 F=5 110110-01
-Eni S.P.A.                         IT -        -                      2025-12-31 rev€=82151.0 ebitda=12359.0 fcf=4101.0 roe=5.4 F=4 11110---0
-Vinci                              FR -        -                      2025-12-31 rev€=75372.0 ebitda=13570.0 fcf=None roe=15.9 F=None None
-Enel - Spa                         IT -        -                      2024-12-31 rev€=73914.0 ebitda=22743.0 fcf=3057.0 roe=20.8 F=4 11110---0
-Airbus Se                          NL -        -                      2025-12-31 rev€=73420.0 ebitda=None fcf=None roe=20.0 F=None None
-Engie                              FR -        -                      2025-12-31 rev€=71944.0 ebitda=13683.0 fcf=-8743.0 roe=11.6 F=3 101000--1
-Renault                            FR -        -                      2025-12-31 rev€=57922.0 ebitda=-3628.0 fcf=-705.0 roe=-52.6 F=4 0101-01-1
-Repsol Sa                          ES -        -                      2024-12-31 rev€=56713.0 ebitda=None fcf=None roe=6.0 F=None None
-ArcelorMittal                      LU -        -                      2024-12-31 rev€=55488.3 ebitda=5942.0 fcf=447.0 roe=2.7 F=6 111100110
-Anheuser-Busch Inbev               BE -        -                      2025-12-31 rev€=52714.8 ebitda=21057.0 fcf=11227.0 roe=7.8 F=7 111111-10
-Astrazeneca Plc                    GB -        -                      2025-12-31 rev€=52198.5 ebitda=19476.0 fcf=8670.0 roe=21.0 F=8 111111110
-Rio Tinto Plc                      GB -        -                      2025-12-31 rev€=51220.1 ebitda=21513.0 fcf=4497.0 roe=16.0 F=3 11010---0
-Unilever Plc                       NL -        -                      2025-12-31 rev€=50503.0 ebitda=10390.0 fcf=6759.0 roe=61.0 F=5 1110-1--1
-A.P. Møller - Mærsk A/S            DK -        -                      2025-12-31 rev€=47976.5 ebitda=10171.0 fcf=4962.0 roe=4.9 F=None None
-Aktiebolaget Volvo                 SE -        -                      2024-12-31 rev€=47269.3 ebitda=None fcf=None roe=26.0 F=None None
-Compagnie De Saint-Gobain          FR -        -                      2025-12-31 rev€=46483.0 ebitda=None fcf=3464.0 roe=11.7 F=7 1111101-1
-Iberdrola Sa                       ES -        -                      2024-12-31 rev€=44739.0 ebitda=16377.0 fcf=3550.0 roe=11.9 F=5 1111-0-10
-L'Oreal                            FR -        -                      2025-12-31 rev€=44052.0 ebitda=None fcf=None roe=17.5 F=5 110101-10
-Sanofi                             FR -        -                      2025-12-31 rev€=43626.0 ebitda=8120.0 fcf=7212.0 roe=10.9 F=7 111100111
-Acs Actividades De Construccion Y  ES -        -                      2024-12-31 rev€=41633.1 ebitda=None fcf=2132.0 roe=17.6 F=4 110100--1
-Telefonica Sa                      ES -        -                      2024-12-31 rev€=41315.0 ebitda=11194.0 fcf=None roe=-0.3 F=4 0111-0--1
-Compass Group Plc                  GB -        -                      2025-09-30 rev€=40940.2 ebitda=None fcf=2474.0 roe=24.4 F=4 111100--0
-Vodafone Group Public Limited Comp GB -        -                      2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8 F=5 01111--01
-Schneider Electric Se              FR -        -                      2025-12-31 rev€=40152.0 ebitda=None fcf=4588.0 roe=17.2 F=5 111100-01
-J Sainsbury Plc                    GB -        -                      2026-02-28 rev€=39873.2 ebitda=1096.0 fcf=931.0 roe=6.4 F=5 111100-01
-Gsk Plc                            GB -        -                      2025-12-31 rev€=38711.9 ebitda=None fcf=4756.0 roe=34.9 F=8 111111-11
-Industria De Diseño Textil, S.A.   ES -        -                      2025-01-31 rev€=38632.0 ebitda=10728.0 fcf=6616.0 roe=29.8 F=7 111110-11
-Imperial Brands Plc                GB -        -                      2025-09-30 rev€=38124.1 ebitda=4271.0 fcf=3429.0 roe=42.9 F=5 110101-10
-Volvo Car AB                       SE -        -                      2024-12-31 rev€=35911.5 ebitda=None fcf=None roe=11.2 F=None None
-Heineken N.V.                      NL -        -                      2025-12-31 rev€=34257.0 ebitda=None fcf=None roe=10.5 F=None None
-Heineken Holding N.V.              NL -        -                      2025-12-31 rev€=34257.0 ebitda=None fcf=None roe=11.0 F=None None
+Shell                              GB RDSA     Energy                 2025-12-31 rev€=237168.8 ebitda=None fcf=21948.0 roe=10.2 F=4 111100--0
+Glencore                           GB GLEN     Materials              2025-12-31 rev€=219972.5 ebitda=None fcf=None roe=0.9 F=None None
+TotalEnergies SE                   GB TOT      Energy                 2025-12-31 rev€=178793.2 ebitda=None fcf=10390.0 roe=11.4 F=3 110100--0
+BP                                 GB BP       Energy                 2025-12-31 rev€=171109.0 ebitda=30464.0 fcf=11272.0 roe=0.1 F=5 110101--1
+Stellantis                         NL STLAM    Consumer Discretionary 2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=2 000100--1
+Ahold                              NL AD       Consumer Staples       2025-12-28 rev€=92352.0 ebitda=None fcf=None roe=15.9 F=None None
+Equinor ASA                        NO EQNR     Energy                 2024-12-31 rev€=92219.0 ebitda=40762.0 fcf=7933.0 roe=20.8 F=5 11011---1
+AXA                                FR CS       Financials             2025-12-31 rev€=91139.0 ebitda=None fcf=None roe=20.8 F=None None
+Tesco                              GB TSCO     Consumer Staples       2026-02-28 rev€=87352.0 ebitda=None fcf=None roe=15.6 F=None None
+Carrefour Group                    FR CA       Consumer Staples       2025-12-31 rev€=84025.0 ebitda=None fcf=None roe=2.9 F=5 110110-01
+Eni                                IT ENI      Energy                 2025-12-31 rev€=82151.0 ebitda=12359.0 fcf=4101.0 roe=5.4 F=4 11110---0
+Vinci                              FR DG       Industrials            2025-12-31 rev€=75372.0 ebitda=13570.0 fcf=None roe=15.9 F=None None
+Enel                               IT ENEL     Energy                 2024-12-31 rev€=73914.0 ebitda=22743.0 fcf=3057.0 roe=20.8 F=4 11110---0
+Airbus                             NL AIR      Industrials            2025-12-31 rev€=73420.0 ebitda=None fcf=None roe=20.0 F=None None
+Engie                              FR ENGI     Energy                 2025-12-31 rev€=71944.0 ebitda=13683.0 fcf=-8743.0 roe=11.6 F=3 101000--1
+Renault                            FR RNO      Consumer Discretionary 2025-12-31 rev€=57922.0 ebitda=-3628.0 fcf=-705.0 roe=-52.6 F=4 0101-01-1
+Repsol                             ES REP      Energy                 2024-12-31 rev€=56713.0 ebitda=None fcf=None roe=6.0 F=None None
+ArcelorMittal                      LU MT       Materials              2024-12-31 rev€=55488.3 ebitda=5942.0 fcf=447.0 roe=2.7 F=6 111100110
+Anheuser-Busch InBev               BE ABI      Consumer Staples       2025-12-31 rev€=52714.8 ebitda=21057.0 fcf=11227.0 roe=7.8 F=7 111111-10
+AstraZeneca                        GB AZN      Healthcare             2025-12-31 rev€=52198.5 ebitda=19476.0 fcf=8670.0 roe=21.0 F=8 111111110
+Rio Tinto plc                      GB RIO      -                      2025-12-31 rev€=51220.1 ebitda=21513.0 fcf=4497.0 roe=16.0 F=3 11010---0
+Unilever                           NL UNA      Energy                 2025-12-31 rev€=50503.0 ebitda=10390.0 fcf=6759.0 roe=61.0 F=5 1110-1--1
+Maersk                             DK MAERSK A Industrials            2025-12-31 rev€=47976.5 ebitda=10171.0 fcf=4962.0 roe=4.9 F=None None
+AB Volvo                           SE -        Consumer Discretionary 2024-12-31 rev€=47269.3 ebitda=None fcf=None roe=26.0 F=None None
+Saint-Gobain                       FR SGO      Materials              2025-12-31 rev€=46483.0 ebitda=None fcf=3464.0 roe=11.7 F=7 1111101-1
+Iberdrola                          ES IBE      Utilities              2024-12-31 rev€=44739.0 ebitda=16377.0 fcf=3550.0 roe=11.9 F=5 1111-0-10
+L'Oréal                            FR OR       Consumer Staples       2025-12-31 rev€=44052.0 ebitda=None fcf=None roe=17.5 F=5 110101-10
+Sanofi                             FR SAN      Healthcare             2025-12-31 rev€=43626.0 ebitda=8120.0 fcf=7212.0 roe=10.9 F=7 111100111
+Grupo ACS                          ES -        Industrials            2024-12-31 rev€=41633.1 ebitda=None fcf=2132.0 roe=17.6 F=4 110100--1
+Telefónica                         ES TEF      Communication          2024-12-31 rev€=41315.0 ebitda=11194.0 fcf=None roe=-0.3 F=4 0111-0--1
+Compass Group                      GB CPG      Consumer Staples       2025-09-30 rev€=40940.2 ebitda=None fcf=2474.0 roe=24.4 F=4 111100--0
+Vodafone                           GB VOD      Communication          2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8 F=5 01111--01
+Schneider Electric                 FR SU       Utilities              2025-12-31 rev€=40152.0 ebitda=None fcf=4588.0 roe=17.2 F=5 111100-01
+Sainsbury's                        GB SBRY     Consumer Staples       2026-02-28 rev€=39873.2 ebitda=1096.0 fcf=931.0 roe=6.4 F=5 111100-01
+GSK                                GB GSK      Healthcare             2025-12-31 rev€=38711.9 ebitda=None fcf=4756.0 roe=34.9 F=8 111111-11
+Inditex                            ES ITX      Consumer Staples       2025-01-31 rev€=38632.0 ebitda=10728.0 fcf=6616.0 roe=29.8 F=7 111110-11
+Imperial Brands                    GB IMB      Consumer Staples       2025-09-30 rev€=38124.1 ebitda=4271.0 fcf=3429.0 roe=42.9 F=5 110101-10
+Volvo Cars                         SE VOLCAR B Consumer Discretionary 2024-12-31 rev€=35911.5 ebitda=None fcf=None roe=11.2 F=None None
+Heineken International             NL HEIA     Consumer Staples       2025-12-31 rev€=34257.0 ebitda=None fcf=None roe=10.5 F=None None
+Heineken Holding                   NL HEIO     -                      2025-12-31 rev€=34257.0 ebitda=None fcf=None roe=11.0 F=None None
