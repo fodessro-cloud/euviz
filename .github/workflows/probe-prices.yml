@@ -13,17 +13,25 @@ jobs:
       - name: Probe sources
         run: |
           exec > probe-out.txt 2>&1
-          UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36"
-          p(){ echo "=================== $1"; curl -sSL -m 30 -A "$UA" -H "Accept: */*" -o out.bin -w "HTTP %{http_code} %{size_download}B %{content_type}\n" "$1"; head -c ${2:-1500} out.bin | tr -d '\000'; echo; }
-          p https://mfs.deutsche-boerse.com/DETR-posttrade 4000
-          p "https://mfs.deutsche-boerse.com/api/DETR-posttrade" 3000
-          p https://www.nasdaqomxnordic.com/shares 800
-          p "https://api.nasdaq.com/api/nordic/search?searchText=Novo" 1500
-          p "https://api.nasdaq.com/api/nordic/instruments/CSE1158/chart/download?assetClass=SHARES&fromDate=2026-10-01&toDate=2026-10-16" 1500
-          p "https://api.londonstockexchange.com/api/gw/lse/instruments/alldata/AZN" 1500
-          p "https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc/company-page" 500
-          p https://mfs.deutsche-boerse.com/robots.txt 500
-          p https://api.nasdaq.com/robots.txt 500
+          set -x
+          F=$(curl -sS https://mfs.deutsche-boerse.com/api/DETR-posttrade | python3 -c "import json,sys;print([f for f in json.load(sys.stdin)['CurrentFiles'] if 'daily' in f][0])")
+          echo FILE $F
+          curl -sS -o d.json.gz "https://mfs.deutsche-boerse.com/api/download/$F" -w "HTTP %{http_code} %{size_download}\n"
+          file d.json.gz; ls -la d.json.gz
+          python3 - <<'PY'
+          import gzip,json,collections
+          raw=gzip.open('d.json.gz').read()
+          print('bytes',len(raw)); print(raw[:1500].decode('utf8','replace'))
+          try:
+            d=json.loads(raw)
+          except Exception as e:
+            lines=raw.splitlines(); print('lines',len(lines)); d=[json.loads(l) for l in lines[:200000] if l.strip()]
+          recs=d if isinstance(d,list) else next(v for v in d.values() if isinstance(v,list))
+          print('records',len(recs)); print(json.dumps(recs[:2])[:1500])
+          s=json.dumps(recs)
+          for i in ['DE0007164600','CH0038863350','NL0010273215','FR0000121014','DK0062498333','GB0009895292','ES0148396007','IT0003128367']:
+            print(i, s.count(i))
+          PY
       - name: Save output
         if: always()
         run: |
