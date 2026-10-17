@@ -20,6 +20,7 @@ import urllib.request
 MIN_PERIOD = "2024-01-01"
 CACHE = ROOT / "data/cache/universe.json"
 CACHE_VERSION = 3          # bump when metrics() changes, so every report is read again
+RETRY_EMPTY = 1            # bump when read_report() changes, so companies without figures are read again
 WIKIDATA_CACHE = ROOT / "data/cache/wikidata.json"
 # Shares with a European ISIN only: drops e.g. Toyota or Royal Bank of Canada, which file in London too.
 EUROPE = set("AT BE BG CH CY CZ DE DK EE ES FI FR GB GG GR HR HU IE IM IS IT JE LI LT LU LV MT NL NO PL PT RO SE SI SK FO GI".split())
@@ -89,7 +90,12 @@ def list_filings():
 
 
 def read_report(lei, rec):
-    for f in rec["filings"][:3]:
+    # Newest version of each of the last four periods: half-year reports (Novo Nordisk files
+    # them in ESEF too) carry no full-year figures, so fall back to the annual report.
+    latest = {}
+    for f in rec["filings"]:
+        latest.setdefault(f["period_end"], f)
+    for f in list(latest.values())[:4]:
         xj = get(BASE + f["json_url"])
         if not xj:
             continue
@@ -273,7 +279,8 @@ def main():
     listed_file = ROOT / "data/listed.json"
     listed = json.loads(listed_file.read_text()) if listed_file.exists() else {}
     todo = [(lei, rec) for lei, rec in issuers.items()
-            if (cache.get(lei, {}).get("fxo") != rec["filings"][0]["fxo_id"] or cache[lei].get("v") != CACHE_VERSION)
+            if (cache.get(lei, {}).get("fxo") != rec["filings"][0]["fxo_id"] or cache[lei].get("v") != CACHE_VERSION
+                or (cache[lei].get("row") is None and cache[lei].get("retry") != RETRY_EMPTY))
             and (not listed or lei in listed)]
     log(f"{len(todo)} reports to read, {len(issuers) - len(todo)} cached")
     done = 0
@@ -285,7 +292,7 @@ def main():
             res = fut.result()
             if res is None:
                 continue
-            cache[futures[fut]] = {"fxo": res[0], "row": res[1], "v": CACHE_VERSION}
+            cache[futures[fut]] = {"fxo": res[0], "row": res[1], "v": CACHE_VERSION, "retry": RETRY_EMPTY}
             done += 1
             if done % 200 == 0:
                 log(f"  read {done} reports")
