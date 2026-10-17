@@ -1,0 +1,36 @@
+name: Export archívu (len čítanie)
+
+# Copies the archive's HTML/CSS (not images) from the server into the
+# archive-snapshot branch so the pages can be rebuilt in the FINILA design.
+# Read-only on the server.
+on:
+  push:
+    branches: [finila-archive-design]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    environment: finila-com
+    steps:
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Download archive pages
+        env:
+          FTP_SERVER: ${{ vars.FTP_SERVER || 'sftp://ftp.finila.com:222' }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'finila.com' }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          mkdir -p snap
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -e "set sftp:auto-confirm yes; set net:max-retries 3; mirror --parallel=4 --include-glob '*.html' --include-glob '*.htm' --exclude-glob 'wp-content/uploads/' /archiv snap/archiv; bye" "$FTP_SERVER"
+          echo "::notice title=Archive export::$(find snap -type f | wc -l) files, $(du -sh snap | cut -f1)"
+      - name: Commit to archive-snapshot
+        run: |
+          cd snap
+          git init -q -b archive-snapshot
+          git add -A
+          git -c user.name=finila-bot -c user.email=noreply@github.com commit -qm "Archive snapshot $(date -u +%F)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" archive-snapshot
