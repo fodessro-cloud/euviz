@@ -72,7 +72,7 @@ fi
 
 echo "== Preparing FINILA"
 mkdir -p "$WORK/site"
-cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
+cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/insiders.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
 cp -r "$SRC/css" "$SRC/js" "$WORK/site/"
 
 # .htaccess comes from deploy/htaccess: "/" opens FINILA, old WordPress addresses
