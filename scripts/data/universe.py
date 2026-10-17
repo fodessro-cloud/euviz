@@ -46,6 +46,7 @@ SELECT ?lei ?item ?itemLabel ?ticker ?exLabel ?indLabel WHERE {
   ?item wdt:P1278 ?lei; p:P414 ?st.
   ?st ps:P414 ?ex.
   OPTIONAL { ?st pq:P249 ?ticker }
+  OPTIONAL { ?st pq:P582 ?end }
   OPTIONAL { ?item wdt:P452 ?ind }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
 }"""
@@ -124,7 +125,8 @@ def wikidata():
         lei = b["lei"]["value"]
         w = out.setdefault(lei, {"name": b["itemLabel"]["value"], "tickers": [], "industries": set()})
         if "ticker" in b:
-            w["tickers"].append((b["ticker"]["value"], b.get("exLabel", {}).get("value", "")))
+            # Delisted lines (Shell's RDSA) go last, so the current ticker wins.
+            w["tickers"].append((b["ticker"]["value"], b.get("exLabel", {}).get("value", ""), "end" in b))
         if "indLabel" in b:
             w["industries"].add(b["indLabel"]["value"])
     log(f"{len(out)} listed companies with an LEI on Wikidata")
@@ -144,6 +146,76 @@ def ecb_rates():
     except Exception as e:
         log(f"  ! ECB rates: {e}")
         return {"EUR": 1.0}
+
+
+# Companies Wikidata does not link by LEI: look them up by ISIN too, and use what the company
+# is (bank, airline, mining company) when it has no industry.
+EXTRA_QUERY = """
+SELECT ?key ?indLabel ?typeLabel WHERE {
+  { VALUES ?key { %s } ?item wdt:P946 ?key. } UNION { VALUES ?key { %s } ?item wdt:P1278 ?key. }
+  OPTIONAL { ?item wdt:P452 ?ind }
+  OPTIONAL { ?item wdt:P31 ?type }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}"""
+EXTRA_CACHE = ROOT / "data/cache/wikidata-extra.json"
+
+
+def wikidata_extra(isins, leis):
+    """{ISIN or LEI: [industry and type labels]}, saved so a failed query keeps the last answer."""
+    try:
+        saved = json.loads(EXTRA_CACHE.read_text())
+    except Exception:
+        saved = {}
+    if not isins and not leis:
+        return saved
+    q = EXTRA_QUERY % (" ".join(f'"{i}"' for i in sorted(isins)), " ".join(f'"{l}"' for l in sorted(leis)))
+    req = urllib.request.Request("https://query.wikidata.org/sparql", data=urllib.parse.urlencode({"query": q}).encode(),
+                                 headers={**UA, "Accept": "application/sparql-results+json",
+                                          "Content-Type": "application/x-www-form-urlencoded"})
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=300) as r:
+                rows = json.load(r)["results"]["bindings"]
+            break
+        except Exception as e:
+            err = e
+            time.sleep(75)
+    else:
+        log(f"  ! Wikidata by ISIN: {err}; using the last saved copy")
+        return saved
+    out = {}
+    for b in rows:
+        labels = out.setdefault(b["key"]["value"], set())
+        for k in ("indLabel", "typeLabel"):
+            if k in b and not re.fullmatch(r"Q\d+", b[k]["value"]):
+                labels.add(b[k]["value"])
+    saved.update({k: sorted(v) for k, v in out.items()})
+    EXTRA_CACHE.write_text(json.dumps(saved, ensure_ascii=False, separators=(",", ":")))
+    log(f"Wikidata by ISIN/LEI: labels for {len(out)} of {len(isins) + len(leis)} keys")
+    return saved
+
+
+# Last resort: words in the company name (Fastigheter, Bank, Pharma, Energia...).
+NAME_SECTORS = [
+    ("Real Estate", r"fastighet|real estate|propert|immobili|inmobili|reit\b|estates?\b|eiendom|kiinteist|nieruchomo|wohnen|wonen|vastgoed|logistics? property"),
+    ("Financials", r"\bbank|banca|banco|banque|sparebank|insurance|assurance|assicura|seguros|versicher|försäkring|forsikring|vakuutus|capital\b|invest|finans|finance|credit|kredit|leasing"),
+    ("Healthcare", r"pharm|\bbio|medic|health|thera|diagnost|clinic|dental|life science|genetic|genom"),
+    ("Energy", r"\boil\b|petrol|\bgas\b|energ|offshore|drilling|solar|wind|hydrogen"),
+    ("Utilities", r"utilit|electric|power|water\b|\bvann|wasser"),
+    ("Technology", r"software|tech|digital|data\b|semicon|\bsystems?\b|\bit\b|cyber|cloud|electronic|games"),
+    ("Communication", r"telecom|media|\btv\b|broadcast|publish|entertain|music"),
+    ("Materials", r"mining|minerals?|metal|steel|chem|paper|pulp|cement|gold|silver|copper|lithium|forest|timber|packag"),
+    ("Industrials", r"shipping|tankers?|maritime|airlines?|aviation|logistic|transport|construct|bygg|engineer|industr|machin|defen[cs]e|infrastruct"),
+    ("Consumer Staples", r"\bfood|foods\b|beverage|brew|wine|spirits|dairy|agri|\bfarms?\b|farmland|seafood|salmon|laks|retail|grocer|supermarket"),
+    ("Consumer Discretionary", r"hotel|resort|travel|fashion|apparel|cloth|automotive|motors?\b|\bcar\b|cars\b|furniture|home\b|leisure|sport|casino|betting|gaming"),
+]
+
+
+def sector_by_name(name):
+    for sector, pattern in NAME_SECTORS:
+        if re.search(pattern, name or "", re.I):
+            return sector
+    return None
 
 
 def sector_of(industries):
@@ -171,6 +243,8 @@ FOREIGN = re.compile(r"New York|NASDAQ(?! (Stockholm|Copenhagen|Helsinki|Iceland
 
 
 def pick_ticker(tickers, country):
+    tickers = sorted(tickers, key=lambda t: len(t) > 2 and bool(t[2]))
+    tickers = [(t[0], t[1]) for t in tickers]
     home = HOME_EXCHANGE.get(country)
     for t, ex in tickers:
         if home and re.search(home, ex, re.I):
@@ -246,6 +320,21 @@ def main():
                      "mic": (listing or {}).get("mics", [None])[0] if listing and listing.get("mics") else None,
                      "ticker": ticker, "exchange": exchange, "sector": sector_of(w.get("industries", [])),
                      "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "revenueEur": rev_eur})
+    missing = [r for r in rows if not r["sector"]]
+    extra = wikidata_extra({r["isin"] for r in missing if r["isin"]}, {r["lei"] for r in missing})
+    via = {"wikidata": 0, "bank": 0, "name": 0}
+    for r in missing:
+        labels = extra.get(r["isin"] or "", []) + extra.get(r["lei"], [])
+        if sector_of(labels):
+            r["sector"] = sector_of(labels)
+            via["wikidata"] += 1
+        elif r.get("financial"):   # balance sheet of a bank or insurer
+            r["sector"] = "Financials"
+            via["bank"] += 1
+        elif sector_by_name(r["name"]):
+            r["sector"] = sector_by_name(r["name"])
+            via["name"] += 1
+    log(f"sector found for {sum(via.values())} of {len(missing)} without a Wikidata industry: {via}")
     rows.sort(key=lambda r: -(r["revenueEur"] or 0))
     out = {"updated": date.today().isoformat(), "fields": FIELDS,
            "rows": [[r.get(k) for k in FIELDS] for r in rows]}
