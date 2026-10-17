@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FINILA — Market Maps</title>
+  <title>FINILA — Market map of European stocks</title>
+  <meta name="description" content="Market map of about 1,300 European companies: box size is market value, color is the daily price change or another figure from the annual report.">
   <link rel="icon" href="css/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/header.css">
@@ -26,48 +27,33 @@
   </div>
 </header>
 <script>(function(){var a=document.querySelector('.fh-nav [aria-current]');if(a)a.parentNode.scrollLeft=a.offsetLeft-a.parentNode.offsetLeft-16;})();</script>
-<div class="demo-banner" style="background:#FFF4D6;color:#6B4A00;font-size:12px;text-align:center;padding:5px 12px;border-bottom:1px solid #F0D58A;flex-shrink:0;">FINILA preview: figures on this page are illustrative, not real market data. Not investment advice.</div>
+<div class="real-banner" id="hm-banner">Real data: share prices from Deutsche Börse (15 minutes delayed), company figures from annual reports. Market value is estimated from the annual report. Not investment advice.</div>
 
-<div class="indices-bar" id="indices-bar"></div>
-
-<!-- HEATMAP CONTROLS -->
 <div class="hm-controls">
   <div class="hm-control-group">
-    <label>Group By</label>
-    <button class="hm-btn active" data-hm-group="sector">Sector</button>
-    <button class="hm-btn" data-hm-group="country">Country</button>
-    <button class="hm-btn" data-hm-group="exchange">Exchange</button>
+    <label for="hm-country">Market</label>
+    <select class="hm-select" id="hm-country"><option value="">All Europe</option></select>
   </div>
   <div class="hm-control-group">
-    <label>Box Size</label>
-    <span style="font-size:11px;color:var(--text2)">Market Cap</span>
+    <label>Group by</label>
+    <button class="hm-btn active" type="button" data-hm-group="sector">Sector</button>
+    <button class="hm-btn" type="button" data-hm-group="country">Country</button>
   </div>
   <div class="hm-control-group">
-    <label>Color By</label>
-    <button class="hm-btn active" data-hm-color="change">Day Chg %</button>
-    <button class="hm-btn" data-hm-color="revenueGrowth">Rev Growth</button>
-    <button class="hm-btn" data-hm-color="epsGrowth">EPS Growth</button>
-    <button class="hm-btn" data-hm-color="netMargin">Net Margin</button>
+    <label>Color by</label>
+    <span class="hm-btns" id="hm-colors"></span>
   </div>
-  <div class="hm-legend">
-    <span>-5%</span>
-    <div class="hm-legend-bar"></div>
-    <span>+5%</span>
-  </div>
+  <div class="hm-legend" id="hm-legend"></div>
+</div>
+<div class="hm-note" id="hm-note">Loading companies…</div>
+
+<div class="hm-canvas-wrap" id="hm-wrap">
+  <canvas id="heatmap-canvas" aria-label="Market map of European companies: box size is market value, color is the chosen figure"></canvas>
+  <div id="hm-hover"></div>
 </div>
 
-<!-- CANVAS -->
-<div class="hm-canvas-wrap" style="height:calc(100vh - 42px - 36px - 30px - 48px);">
-  <canvas id="heatmap-canvas"></canvas>
-</div>
-
-<!-- TOOLTIP -->
 <div id="hm-tooltip"></div>
 
-<script src="js/data.js"></script>
-<script src="js/prices.js"></script>
-<script src="js/live-prices.js"></script>
-<script src="js/app.js"></script>
 <script src="js/heatmap.js"></script>
 <script src="js/analytics.js" defer></script>
 </body>
