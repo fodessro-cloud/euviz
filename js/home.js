@@ -171,7 +171,11 @@ function renderMovers(tab) {
 function renderData(ins, sh) {
   const eur = v => v >= 1e6 ? `€${fmt(v / 1e6, 1)}M` : `€${fmt(v / 1e3, 0)}k`;
   const buys = {};
-  (ins?.rows || []).filter(t => t.nature === 'Acquisition' && t.instrumentType === 'Share' && t.status !== 'Revoked' && t.valueEur > 0)
+  // A real buy on an exchange. Older insiders.json files have no `signal`, so the same rule is applied here.
+  const isBuy = t => 'signal' in t ? t.signal === true
+    : t.status === 'Current' && t.nature === 'Acquisition' && t.instrumentType === 'Share' && t.isin
+      && t.venue && !/outside a trading venue/i.test(t.venue);
+  (ins?.rows || []).filter(t => isBuy(t) && t.valueEur > 0)
     .forEach(t => { const b = buys[t.issuer] || (buys[t.issuer] = { v: 0, people: new Set() }); b.v += t.valueEur; b.people.add(t.person); });
   document.getElementById('insider-list').innerHTML = Object.entries(buys).sort((a, b) => b[1].v - a[1].v).slice(0, 4)
     .map(([name, b]) => `<li><span><a href="/insiders?q=${encodeURIComponent(name)}">${esc(name)}</a> · ${b.people.size} ${b.people.size === 1 ? 'person' : 'people'}</span><span class="v">${eur(b.v)}</span></li>`).join('')
