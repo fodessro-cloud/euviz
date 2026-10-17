@@ -11,7 +11,8 @@ files=()
 for f in js/insiders.json js/shorts.json; do [ -f "$f" ] && files+=("$f"); done
 [ ${#files[@]} -gt 0 ] || { echo "No data files to upload."; exit 0; }
 cmds="cd '$FTP_DIR' && cd js"
-for f in "${files[@]}"; do cmds="$cmds && put '$f' -o '$(basename "$f").tmp' && mv '$(basename "$f").tmp' '$(basename "$f")'"; done
+# SFTP cannot rename onto an existing file: upload to .tmp, then swap it in (the old file is gone only for a moment).
+for f in "${files[@]}"; do b=$(basename "$f"); cmds="$cmds && put '$f' -o '$b.tmp' && rm -f '$b' && mv '$b.tmp' '$b'"; done
 err=$(mktemp)
 lftp -u "$FTP_USERNAME","$FTP_PASSWORD" \
   -e "set net:max-retries 3; set net:timeout 30; set sftp:auto-confirm yes; $cmds; bye" "$FTP_SERVER" 2>"$err" || {
