@@ -1,6 +1,6 @@
 // FINILA "Where to put money": real returns of deposits, bonds, stocks, gold and property in every
 // European country, against inflation. Data: js/invest.json, built daily by scripts/data/invest.py
-// from the ECB, Eurostat and the Bundesbank.
+// from the ECB, Eurostat and the World Bank.
 
 const ASSETS = [
   // key, label, colour (validated categorical order, dark steps), what it is
@@ -103,7 +103,7 @@ function renderCalc() {
       <td class="r m">${money(a.final)}</td>
       <td class="r m ${cls(pa(a))}">${pct(pa(a))}</td>
       <td class="r m ${cls(real(a))}">${pct(real(a))}</td></tr>`).join('')
-    + (prices ? `<tr class="i-prices"><td><span class="i-dash"></span>To keep its value you need</td><td class="r m">${money(prices.final)}</td><td class="r m">${pct((Math.pow(infl, 1 / yrs(prices.lastM)) - 1) * 100)}</td><td class="r m">inflation</td></tr>` : '');
+    + (prices ? `<tr class="i-prices"><td><span class="i-dash"></span>Needed to keep up with prices</td><td class="r m">${money(prices.final)}</td><td class="r m">${pct((Math.pow(infl, 1 / yrs(prices.lastM)) - 1) * 100)}</td><td class="r m"></td></tr>` : '');
   const missing = ASSETS.filter(a => !list.some(l => l.key === a.key)).map(a => a.label.toLowerCase());
   document.getElementById('calc-missing').textContent = missing.length
     ? `No data for ${c.name} over ${years} years: ${missing.join(', ')}.` : '';

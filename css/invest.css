@@ -112,5 +112,12 @@
   .i-seg button { min-width: 44px; padding: 0 10px; }
   .i-tile-real { font-size: 22px; }
   .i-now { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .i-rank { overflow-x: auto; }
+  .i-rank { flex-basis: 100%; }
+  .i-rank table { font-size: 12px; }
+  .i-rank .m { letter-spacing: -0.02em; }
+  .i-rank th, .i-rank td { padding: 8px 3px; }
+  .i-rank .i-note { display: none; }
+  .i-rank td:first-child { white-space: normal; }
+  .i-rank .i-dot { margin-right: 6px; }
+  .i-chart-wrap { flex-basis: 100%; }
 }
