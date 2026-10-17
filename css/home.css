@@ -187,3 +187,12 @@ h1, h2, h3, p { margin: 0; }
   .h-bar .track { grid-column: 1 / -1; height: 12px; }
   .h-section-head h2 { font-size: 22px; }
 }
+
+/* ── Real-data banner + FINILA Data lists ─────── */
+.h-real-banner { background: var(--real-bg); color: var(--real-text); border-bottom: 1px solid var(--real-line); font-size: 13px; text-align: center; padding: 6px 16px; }
+.h-data-h { font-size: 15px; font-weight: 600; margin: 4px 0 8px; display: flex; justify-content: space-between; }
+.h-data-h a { font-size: 14px; font-weight: 500; }
+.h-data .h-list { margin-bottom: 16px; gap: 6px; }
+.h-data .h-list li { padding: 9px 12px; display: flex; justify-content: space-between; gap: 12px; }
+.h-data .h-list li span { margin: 0; }
+.h-data .h-list .v { font-family: var(--mono); color: var(--text); white-space: nowrap; }
