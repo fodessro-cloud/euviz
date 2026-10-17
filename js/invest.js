@@ -2,17 +2,31 @@
 // European country, against inflation. Data: js/invest.json, built daily by scripts/data/invest.py
 // from the ECB, Eurostat and the World Bank.
 
+// Categorical colours in a fixed order, validated for colour-blind separation: the dark steps on a
+// dark page, the light steps on a light one (picked from the page background, so a theme change
+// in the shared CSS carries over).
+const PALETTE = {
+  dark:  ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#3fa63f'],
+  light: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300'],
+};
 const ASSETS = [
-  // key, label, colour (validated categorical order, dark steps), what it is
-  { key: 'stocks',  label: 'Stocks',          color: '#3987e5', note: 'EURO STOXX 50, price only' },
-  { key: 'bonds',   label: 'Government bonds', color: '#d95926', note: '10-year, interest + price change' },
-  { key: 'house',   label: 'Property',        color: '#199e70', note: 'house prices, rent not included' },
-  { key: 'gold',    label: 'Gold',            color: '#c98500', note: 'price in local currency' },
-  { key: 'deposit', label: 'Term deposit',    color: '#d55181', note: 'up to 1 year, rolled over' },
-  { key: 'savings', label: 'Savings account', color: '#3fa63f', note: 'overnight deposit' },
+  { key: 'stocks',  label: 'Stocks' },
+  { key: 'bonds',   label: 'Government bonds' },
+  { key: 'house',   label: 'Property' },
+  { key: 'gold',    label: 'Gold' },
+  { key: 'deposit', label: 'Term deposit' },
+  { key: 'savings', label: 'Savings account' },
 ];
-const PRICES = { key: 'prices', label: 'Prices (inflation)', color: '#9AA8C2' };
-const CASH = { key: 'cash', label: 'Cash at home', color: '#5E6B85' };
+const PRICES = { key: 'prices', label: 'Prices (inflation)' };
+const CASH = { key: 'cash', label: 'Cash at home' };
+function applyTheme() {
+  const css = getComputedStyle(document.body);
+  const [r, g, b] = (css.backgroundColor.match(/\d+/g) || [0, 0, 0]).map(Number);
+  const pal = PALETTE[0.299 * r + 0.587 * g + 0.114 * b > 128 ? 'light' : 'dark'];
+  ASSETS.forEach((a, i) => { a.color = pal[i]; });
+  PRICES.color = css.getPropertyValue('--muted').trim() || '#9AA8C2';
+  CASH.color = css.getPropertyValue('--line2').trim() || '#5E6B85';
+}
 const CUR_SIGN = { EUR: '€', CZK: 'Kč', DKK: 'kr', HUF: 'Ft', PLN: 'zł', RON: 'lei', SEK: 'kr', NOK: 'kr', CHF: 'CHF', GBP: '£', ISK: 'kr' };
 
 let D = null, country = 'U2', years = 10, amount = 10000, sortKey = 'name', sortDir = 1;
@@ -230,6 +244,7 @@ function save() { try { localStorage.setItem('finila-invest-country', country); 
 
 fetch('js/invest.json', { cache: 'no-cache' }).then(r => r.json()).then(d => {
   D = d;
+  applyTheme();
   let saved = null; try { saved = localStorage.getItem('finila-invest-country'); } catch (e) { /* private mode */ }
   const hash = location.hash.slice(1).toUpperCase();
   country = D.countries[hash] ? hash : D.countries[saved] ? saved : 'U2';
