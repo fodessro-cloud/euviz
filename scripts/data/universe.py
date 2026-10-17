@@ -34,10 +34,10 @@ SECTORS = [
     ("Healthcare", ["pharma", "biotech", "medical", "health", "hospital", "drug", "diagnostic"]),
     ("Technology", ["software", "semiconductor", "information technology", "computer", "electronics", "internet", "it service", "video game"]),
     ("Communication", ["telecom", "media", "broadcast", "publishing", "advertising", "entertainment"]),
-    ("Energy", ["oil", "gas", "petroleum", "energy", "coal", "renewable"]),
+    ("Energy", ["oil and gas", "oil industry", "natural gas", "gas industry", "petroleum", "energy", "coal", "renewable"]),
     ("Utilities", ["utility", "electric", "water supply", "power"]),
     ("Materials", ["chemical", "mining", "metal", "steel", "paper", "cement", "building material", "packaging", "gold"]),
-    ("Consumer Staples", ["food", "beverage", "brew", "tobacco", "retail", "supermarket", "household", "cosmetic", "agricultur"]),
+    ("Consumer Staples", ["food", "dairy", "consumer goods", "beverage", "brew", "tobacco", "retail", "supermarket", "household", "cosmetic", "agricultur"]),
     ("Consumer Discretionary", ["automotive", "car", "luxury", "fashion", "clothing", "apparel", "hotel", "restaurant", "travel", "leisure", "gambling", "furniture", "e-commerce"]),
     ("Industrials", ["engineering", "construction", "aerospace", "defence", "defense", "transport", "logistics", "shipping", "airline", "machine", "industrial", "manufactur", "rail", "conglomerate"]),
 ]
@@ -147,11 +147,15 @@ def ecb_rates():
 
 
 def sector_of(industries):
-    text = " ".join(industries).lower()
-    for sector, words in SECTORS:
-        if any(re.search(r"\b" + re.escape(w), text) for w in words):
-            return sector
-    return None
+    """The sector most of the company's Wikidata industries point to (Unilever: food, dairy and
+    consumer goods, not the one industry that mentions oils)."""
+    votes = {}
+    for ind in industries:
+        for rank, (sector, words) in enumerate(SECTORS):
+            if any(re.search(r"\b" + re.escape(w), ind.lower()) for w in words):
+                votes[sector] = (votes.get(sector, (0, rank))[0] + 1, rank)
+                break
+    return max(votes, key=lambda k: (votes[k][0], -votes[k][1])) if votes else None
 
 
 # Main exchange of each country, to pick the home ticker among Wikidata's listings.
@@ -235,7 +239,9 @@ def main():
         rate = fx.get(row.get("currency") or "")
         rev_eur = round(row["revenue"] / rate, 1) if row.get("revenue") is not None and rate else None
         name = w.get("name") if w.get("name") and not re.fullmatch(r"Q\d+", w["name"]) else tidy(rec["name"])
-        rows.append({**row, "lei": lei, "name": name, "country": rec["country"],
+        # The ISIN shows the company's home country; the filing country can be where it filed (Boliden in Norway).
+        country = listing["isin"][:2] if listing and listing["isin"][:2] in EUROPE - {"GG", "JE", "IM", "GI", "FO"} else rec["country"]
+        rows.append({**row, "lei": lei, "name": name, "country": country,
                      "isin": listing["isin"] if listing else None,
                      "mic": (listing or {}).get("mics", [None])[0] if listing and listing.get("mics") else None,
                      "ticker": ticker, "exchange": exchange, "sector": sector_of(w.get("industries", [])),

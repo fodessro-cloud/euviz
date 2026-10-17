@@ -192,7 +192,7 @@ function scoresHTML(c) {
       <tr><td>Dividends / net profit</td><td>${isNum(c.payoutNet) ? num(c.payoutNet, 0) + '%' : '—'}</td></tr>
       <tr><td>Insiders, net 30 days</td><td>${insiderCell(c)}</td></tr>
       <tr><td>Insiders buying, 30 days</td><td>${isNum(c.insNet) ? c.insBuyers : '—'}</td></tr>
-      <tr><td>Shorted by funds</td><td>${shortCell(c)}${c.shortFunds ? ` <span class="ins-note">${c.shortFunds} funds</span>` : ''}</td></tr>
+      <tr><td>Shorted by funds</td><td>${shortCell(c)}${c.shortFunds ? ` <span class="ins-note">${c.shortFunds} ${c.shortFunds === 1 ? 'fund' : 'funds'}</span>` : ''}</td></tr>
     </table>
     <p class="ins-note">${isNum(c.insNet) ? `<a href="insiders.html?q=${encodeURIComponent(c.insName)}">See insider trades</a>` : 'Insider trades so far only for Sweden.'}
     ${isNum(c.shortPct) ? ` · <a href="shorts.html?q=${encodeURIComponent(c.isin)}">See short positions</a>` : ''}</p></div>`;
