@@ -1,0 +1,66 @@
+name: Obchody manažérov (každú hodinu)
+
+# Downloads managers' transactions from Finansinspektionen (Sweden) every hour.
+# On main it also uploads the data files (only js/*.json) to finila.com; pages are
+# published only by deploy-finila.yml.
+on:
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    branches: [claude/project-thread-ms2i2k]
+    paths: ['scripts/data/insiders_se.py', '.github/workflows/insiders.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: insiders
+  cancel-in-progress: false
+
+jobs:
+  insiders:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download Swedish insider register
+        run: |
+          set -o pipefail
+          mkdir -p data
+          python scripts/data/insiders_se.py 2>&1 | tee data/insiders.log || { echo "::error::insiders: $(tail -5 data/insiders.log | tr '\n' ' ')"; exit 1; }
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "finila-data-bot"
+          git config user.email "finila-data-bot@users.noreply.github.com"
+          git add data/insiders.log js/insiders.json 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Update insider transactions [data refresh]"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+
+  upload:
+    needs: insiders
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Same lock as deploy-finila.yml, so a data upload never overlaps a site deploy.
+    concurrency:
+      group: finila-webglobe
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Upload data files to finila.com
+        env:
+          FTP_SERVER: ${{ vars.FTP_SERVER || 'sftp://ftp.finila.com:222' }}
+          FTP_USERNAME: ${{ vars.FTP_USERNAME || 'finila.com' }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_DIR: ${{ vars.FTP_DIR || '/' }}
+        run: scripts/upload-data.sh

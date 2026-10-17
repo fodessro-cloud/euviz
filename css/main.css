@@ -692,3 +692,16 @@ a:hover { text-decoration: underline; }
   .modal-grid { grid-template-columns: 1fr 1fr; }
   .overview-bar { display: none; }
 }
+
+/* ── INSIDER TRADES PAGE (insiders.html) ─────────── */
+.real-banner { background: #0d2a1c; color: #8fe3b5; font-size: 12px; text-align: center; padding: 5px 12px; border-bottom: 1px solid #1f5a3c; flex-shrink: 0; }
+.co-search { background: var(--bg3); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius); padding: 5px 10px; font: inherit; width: 260px; max-width: 50%; }
+.co-search:focus { outline: none; border-color: var(--accent); }
+#screener-table th.l, #screener-table td.l { text-align: left; }
+#screener-table td.l .company-name { max-width: 240px; }
+.ins-top-head { margin-top: 18px; }
+.ins-top { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.ins-top li { display: flex; flex-direction: column; font-size: 11.5px; }
+.ins-top li span { color: var(--text2); font-size: 10.5px; }
+.ins-note { color: var(--text2); font-size: 10.5px; }
+.ins-revoked td { text-decoration: line-through; opacity: 0.5; }
