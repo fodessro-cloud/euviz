@@ -20,6 +20,9 @@ OUT = ROOT / "js" / "invest.json"
 RAW = ROOT / "data" / "invest-raw.json"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
 START = "1999-01"
+# EURO STOXX 50 is a price index; dividends (paid out by its companies at roughly 3 % a year over
+# the long run) are added as a flat estimate so stocks are compared on the same footing as interest.
+DIVIDEND_YIELD = 0.03
 
 # code: (name, currency, euro member). U2 = euro area as a whole.
 COUNTRIES = {
@@ -301,7 +304,9 @@ def main():
 
     fx = raw.get("fx", {})
     usd = fx.get("USD") or {}
-    stoxx = raw.get("stoxx50", {}).get("U2", {})
+    stoxx_price = raw.get("stoxx50", {}).get("U2", {})
+    first = min(stoxx_price) if stoxx_price else None
+    stoxx = {m: v * (1 + DIVIDEND_YIELD / 12) ** (midx(m) - midx(first)) for m, v in stoxx_price.items()}
     gold = {m: v / usd[m] for m, v in raw.get("gold_usd", {}).get("W", {}).items() if m in usd} if usd else {}
     if not usd:
         try:  # gold needs EUR/USD, fetched only when gold is
