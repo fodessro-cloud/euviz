@@ -13,14 +13,14 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fundamentals import BASE, ROOT, get, extract, metrics, UA   # noqa: E402
+from fundamentals import BASE, ROOT, get, extract, metrics, latest_annual, UA   # noqa: E402
 
 import urllib.request
 
 MIN_PERIOD = "2024-01-01"
 CACHE = ROOT / "data/cache/universe.json"
 CACHE_VERSION = 3          # bump when metrics() changes, so every report is read again
-RETRY_EMPTY = 1            # bump when read_report() changes, so companies without figures are read again
+RETRY_EMPTY = 2            # bump when read_report() changes, so companies without figures are read again
 WIKIDATA_CACHE = ROOT / "data/cache/wikidata.json"
 # Shares with a European ISIN only: drops e.g. Toyota or Royal Bank of Canada, which file in London too.
 EUROPE = set("AT BE BG CH CY CZ DE DK EE ES FI FR GB GG GR HR HU IE IM IS IT JE LI LT LU LV MT NL NO PL PT RO SE SI SK FO GI".split())
@@ -90,12 +90,20 @@ def list_filings():
 
 
 def read_report(lei, rec):
-    # Newest version of each of the last four periods: half-year reports (Novo Nordisk files
-    # them in ESEF too) carry no full-year figures, so fall back to the annual report.
-    latest = {}
-    for f in rec["filings"]:
-        latest.setdefault(f["period_end"], f)
-    for f in list(latest.values())[:4]:
+    """Newest version of each recent period. Half-year reports (Novo Nordisk files them in ESEF
+    too) carry no full-year figures, and the filings listing can miss the annual report, so the
+    company's own filing list is tried after the listing."""
+    def candidates():
+        latest = {}
+        for f in rec["filings"]:
+            latest.setdefault(f["period_end"], f)
+        yield from list(latest.values())[:4]
+        yield from (latest_annual(lei) or [])[:8]
+    tried = set()
+    for f in candidates():
+        if f["period_end"] in tried:
+            continue
+        tried.add(f["period_end"])
         xj = get(BASE + f["json_url"])
         if not xj:
             continue
@@ -225,21 +233,26 @@ def wikidata_figures(leis):
         saved = {}
     if not leis:
         return saved
-    q = FIGURES_QUERY % (" ".join(f'"{l}"' for l in sorted(leis)), date.today().year - 3)
-    req = urllib.request.Request("https://query.wikidata.org/sparql", data=urllib.parse.urlencode({"query": q}).encode(),
-                                 headers={**UA, "Accept": "application/sparql-results+json",
-                                          "Content-Type": "application/x-www-form-urlencoded"})
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=300) as r:
-                rows = json.load(r)["results"]["bindings"]
-            break
-        except Exception as e:
-            err = e
-            time.sleep(75)
-    else:
-        log(f"  ! Wikidata figures: {err}; using the last saved copy")
-        return saved
+    rows, failed = [], set()
+    leis = sorted(leis)
+    for i in range(0, len(leis), 250):   # one query for all ~3,000 issuers times out
+        batch = leis[i:i + 250]
+        q = FIGURES_QUERY % (" ".join(f'"{l}"' for l in batch), date.today().year - 3)
+        req = urllib.request.Request("https://query.wikidata.org/sparql", data=urllib.parse.urlencode({"query": q}).encode(),
+                                     headers={**UA, "Accept": "application/sparql-results+json",
+                                              "Content-Type": "application/x-www-form-urlencoded"})
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(req, timeout=120) as r:
+                    rows += json.load(r)["results"]["bindings"]
+                break
+            except Exception as e:
+                err = e
+                time.sleep(30 * (attempt + 1))
+        else:
+            log(f"  ! Wikidata figures, batch {i // 250 + 1}: {err}; keeping the last saved figures")
+            failed.update(batch)
+        time.sleep(2)
     years = {}
     for b in rows:
         lei, t = b["lei"]["value"], b["time"]["value"][:10]
@@ -251,6 +264,7 @@ def wikidata_figures(leis):
         if usable:
             (t, cur) = max(usable)
             out[lei] = {"item": y["item"], "currency": cur, "periodEnd": t, **y["by"][(t, cur)]}
+    out.update({l: saved[l] for l in failed if l in saved})
     FIGURES_CACHE.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
     log(f"Wikidata figures for {len(out)} of {len(leis)} listed issuers without an ESEF report")
     return out
@@ -382,8 +396,9 @@ def main():
                      "mic": (listing or {}).get("mics", [None])[0] if listing and listing.get("mics") else None,
                      "ticker": ticker, "exchange": exchange, "sector": sector_of(w.get("industries", [])),
                      "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "revenueEur": rev_eur})
-    # Listed European issuers without a report on filings.xbrl.org: headline figures from Wikidata.
-    absent = {lei for lei, l in listed.items() if lei not in issuers and l["isin"][:2] in EUROPE}
+    # Listed European issuers without usable figures from filings.xbrl.org: headline figures from Wikidata.
+    have = {r["lei"] for r in rows}
+    absent = {lei for lei, l in listed.items() if lei not in have and l["isin"][:2] in EUROPE}
     for lei, fig in wikidata_figures(absent).items():
         l, w = listed[lei], wd.get(lei, {})
         if l["isin"][:2] in {"GG", "JE", "IM", "GI", "FO"}:
