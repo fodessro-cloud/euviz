@@ -2,12 +2,17 @@ name: probe-prices
 on:
   push:
     branches: [probe/price-sources]
+permissions:
+  contents: write
 jobs:
   probe:
+    if: "!contains(github.event.head_commit.message, 'probe output')"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Probe sources
         run: |
+          exec > probe-out.txt 2>&1
           UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124 Safari/537.36"
           p(){ echo "=================== $1"; curl -sSL -m 30 -A "$UA" -H "Accept: */*" -o out.bin -w "HTTP %{http_code} %{size_download}B %{content_type}\n" "$1"; head -c ${2:-1500} out.bin | tr -d '\000'; echo; }
           p https://mfs.deutsche-boerse.com/DETR-posttrade 4000
@@ -19,3 +24,8 @@ jobs:
           p "https://www.londonstockexchange.com/stock/AZN/astrazeneca-plc/company-page" 500
           p https://mfs.deutsche-boerse.com/robots.txt 500
           p https://api.nasdaq.com/robots.txt 500
+      - name: Save output
+        if: always()
+        run: |
+          git config user.name probe; git config user.email probe@users.noreply.github.com
+          git add probe-out.txt; git commit -m "probe output"; git push
