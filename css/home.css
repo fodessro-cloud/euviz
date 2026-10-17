@@ -127,6 +127,7 @@ h1, h2, h3, p { margin: 0; }
 .h-compare-intro { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
 .h-compare-intro h2 { font-size: 30px; line-height: 1.15; font-weight: 700; }
 .h-compare-intro p { font-size: 16px; line-height: 1.55; color: var(--text2); }
+.h-compare-more { font-size: 16px; font-weight: 600; }
 .h-compare-bars { flex: 2 1 480px; min-width: 0; }
 .h-periods { display: flex; gap: 8px; flex-wrap: wrap; }
 .h-periods button, .h-tabs button {
