@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Uploads only FINILA's data files (js/insiders.json) to the live site's js/ folder.
+# Uploads only FINILA's data files (js/insiders.json, js/shorts.json) to the live site's js/ folder.
 # Pages, styles and scripts are published only by deploy-finila.yml. Never deletes anything.
 # Needs FTP_SERVER, FTP_USERNAME, FTP_PASSWORD; optional FTP_DIR (default /).
 set -euo pipefail
@@ -8,7 +8,7 @@ for v in FTP_SERVER FTP_USERNAME FTP_PASSWORD; do
 done
 FTP_DIR="${FTP_DIR:-/}"
 files=()
-for f in js/insiders.json; do [ -f "$f" ] && files+=("$f"); done
+for f in js/insiders.json js/shorts.json; do [ -f "$f" ] && files+=("$f"); done
 [ ${#files[@]} -gt 0 ] || { echo "No data files to upload."; exit 0; }
 cmds="cd '$FTP_DIR' && cd js"
 for f in "${files[@]}"; do cmds="$cmds && put '$f' -o '$(basename "$f").tmp' && mv '$(basename "$f").tmp' '$(basename "$f")'"; done
