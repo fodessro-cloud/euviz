@@ -4,7 +4,7 @@ Downloads the last 60 days from FI's insider register export and writes
 js/insiders.json for the site. FI publishes the register as public information.
 """
 import csv, io, json, sys, urllib.request
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -77,14 +77,22 @@ def ecb_rates():
         return {"EUR": 1.0}
 
 
-def main():
-    today = date.today()
-    raw = fetch(URL.format(frm=(today - timedelta(days=DAYS)).isoformat(), to=today.isoformat()))
-    text = decode(raw)
+def download(frm, to):
+    """Rows published between frm and to; FI caps an export at 1000 rows, so long windows are split."""
+    text = decode(fetch(URL.format(frm=frm.isoformat(), to=to.isoformat())))
     first = text.splitlines()[0] if text else ""
-    print(f"downloaded {len(raw)} bytes; header: {first[:300]}")
     delim = ";" if first.count(";") >= first.count(",") else ","
     rows = list(csv.DictReader(io.StringIO(text, newline=""), delimiter=delim))
+    if len(rows) >= 1000 and to > frm:
+        mid = frm + (to - frm) // 2
+        return download(frm, mid) + download(mid + timedelta(days=1), to)
+    print(f"  {frm}..{to}: {len(rows)} rows")
+    return rows
+
+
+def main():
+    today = date.today()
+    rows = download(today - timedelta(days=DAYS), today)
     unknown = [h for h in (rows[0].keys() if rows else []) if h and h.strip() not in COLUMNS]
     if unknown:
         print(f"  unmapped columns: {unknown}")
@@ -97,15 +105,18 @@ def main():
         t["published"], t["date"] = to_date(t.get("published")), to_date(t.get("date"))
         t["volume"], t["price"] = to_num(t.get("volume")), to_num(t.get("price"))
         rate = fx.get(t.get("currency") or "")
-        value = t["volume"] * t["price"] if t["volume"] is not None and t["price"] is not None else None
+        if t.get("unit") == "Amount":
+            value = t["volume"]
+        else:
+            value = t["volume"] * t["price"] if t["volume"] is not None and t["price"] is not None else None
         t["valueEur"] = round(value / rate) if value is not None and rate else None
         out.append(t)
     if not out:
-        print("no transactions parsed; first 500 chars:\n" + text[:500])
+        print("no transactions parsed")
         return 1
     out.sort(key=lambda t: (t.get("published") or "", t.get("valueEur") or 0), reverse=True)
     (ROOT / "js/insiders.json").write_text(json.dumps(
-        {"updated": datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"), "source": "Finansinspektionen (Sweden)",
+        {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"), "source": "Finansinspektionen (Sweden)",
          "days": DAYS, "rows": out}, ensure_ascii=False, separators=(",", ":")))
     natures = {}
     for t in out:
