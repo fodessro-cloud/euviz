@@ -22,7 +22,8 @@ CONCEPTS = {
     "da":        ["DepreciationAndAmortisationExpense",
                   "AdjustmentsForDepreciationAndAmortisationExpense",
                   "DepreciationAmortisationAndImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss",
-                  "AdjustmentsForDepreciationAmortisationAndImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss"],
+                  "AdjustmentsForDepreciationAmortisationAndImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss",
+                  "AdjustmentsForDepreciationAndAmortisationExpenseAndImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss"],
     "cfo":       ["CashFlowsFromUsedInOperatingActivities"],
     "capex_ppe": ["PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities",
                   "PurchaseOfPropertyPlantAndEquipment",
@@ -41,7 +42,32 @@ CONCEPTS = {
     "dep_rou":   ["DepreciationRightofuseAssets"],
     "amort":     ["AmortisationIntangibleAssetsOtherThanGoodwill", "AdjustmentsForAmortisationExpense"],
 }
-DEBUG_WORDS = ("Depreciation", "Amortisation", "PurchaseOf", "Revenue")
+DEBUG_WORDS = ("Depreciation", "Amortisation", "Amortization", "PurchaseOf", "Revenue", "Operating", "EBIT", "Capital")
+NOT_AMOUNTS = ("Explanatory", "Policy", "Description", "Disclosure", "Accumulated", "Percentage", "Ratio", "Margin",
+               "PerShare", "Segment")
+
+
+def extension_key(name):
+    """Company-specific (non-IFRS) concepts some issuers use for the lines we need."""
+    if any(w in name for w in NOT_AMOUNTS):
+        return None
+    if "EBITDA" in name or "Ebitda" in name:
+        return None if any(w in name for w in ("Adjusted", "Underlying", "Recurring")) else "ebitda_tag"
+    if "Depreciation" in name and ("Amortisation" in name or "Amortization" in name):
+        return "da"
+    if name.startswith(("PurchaseOf", "PurchasesOf", "AcquisitionOf", "AcquisitionsOf", "PaymentsFor", "PaymentsTo")) \
+            and ("PropertyPlant" in name or "TangibleAssets" in name or "TangibleFixedAssets" in name):
+        return "capex_ppe"
+    if "CapitalExpenditure" in name:
+        return "capex_ppe"
+    if any(w in name for w in ("OperatingProfit", "OperatingIncome", "ProfitFromOperations", "OperatingResult")) \
+            and not any(w in name for w in ("Adjusted", "Underlying", "Recurring", "Other", "Before")):
+        return "op_profit"
+    return None
+# Banks and insurers: EBITDA, free cash flow and net debt do not mean much for them.
+FINANCIAL_MARKERS = {"InterestRevenueCalculatedUsingEffectiveInterestMethod", "RevenueFromInterest",
+                     "InsuranceRevenue", "LoansAndAdvancesToCustomers", "DepositsFromCustomers",
+                     "InsuranceContractsIssuedThatAreLiabilities"}
 INSTANT = {"equity", "assets", "cash", "debt_nc", "debt_c", "debt"}
 
 
@@ -88,20 +114,23 @@ def extract(xjson, period_end):
     end = fiscal_end(facts) or date.fromisoformat(period_end) + timedelta(days=1)
     near = lambda d, ref: abs((d - ref).days) <= 7
     prev_end = end - timedelta(days=365)
-    found, seen = {}, set()   # (key, which) -> (rank, value, unit)
+    found, seen, financial = {}, set(), False   # (key, which) -> (rank, value, unit)
     for fact in facts:
         dims = fact.get("dimensions", {})
         if set(dims) - {"concept", "entity", "period", "unit", "language"}:
             continue   # segment / axis breakdowns, we want group totals
         concept = dims.get("concept", "")
-        if not concept.startswith("ifrs-full:"):
-            continue
-        name = concept.split(":", 1)[1]
-        if any(w in name for w in DEBUG_WORDS):
-            seen.add(name)
-        for key, names in CONCEPTS.items():
-            if name not in names:
-                continue
+        prefix, _, name = concept.partition(":")
+        if any(w in name for w in DEBUG_WORDS) and not any(w in name for w in NOT_AMOUNTS[:4]):
+            seen.add(concept)
+        if prefix == "ifrs-full" and name in FINANCIAL_MARKERS:
+            financial = True
+        if prefix == "ifrs-full":
+            keys = [(k, names.index(name)) for k, names in CONCEPTS.items() if name in names]
+        else:
+            ext = extension_key(name)
+            keys = [(ext, 100)] if ext else []
+        for key, rank in keys:
             start, stop = parse_period(dims.get("period", ""))
             if key in INSTANT:
                 if start is not None:
@@ -115,11 +144,12 @@ def extract(xjson, period_end):
                 value = float(fact["value"])
             except (TypeError, ValueError):
                 continue
-            rank = names.index(name)
             slot = (key, which)
             if slot not in found or rank < found[slot][0]:
                 found[slot] = (rank, value, dims.get("unit", ""))
     cur = {k: v[1] for (k, w), v in found.items() if w == "cur"}
+    if financial:
+        cur["financial"] = True
     prev = {k: v[1] for (k, w), v in found.items() if w == "prev"}
     units = {v[2] for (k, w), v in found.items() if k != "eps"}
     currency = next((u.split(":")[1] for u in units if u.startswith("iso4217:")), None)
@@ -132,14 +162,17 @@ def metrics(cur, prev):
     rev, op, net, da = cur.get("revenue"), cur.get("op_profit"), cur.get("net"), cur.get("da")
     if da is None and ("dep_ppe" in cur or "amort" in cur):
         da = sum(abs(cur.get(k, 0)) for k in ("dep_ppe", "dep_rou", "amort"))
-    ebitda = op + abs(da) if op is not None and da is not None else None
+    ebitda = op + abs(da) if op is not None and da is not None else cur.get("ebitda_tag")
     capex = sum(abs(cur[k]) for k in ("capex_ppe", "capex_int") if k in cur) if "capex_ppe" in cur else None
     fcf = cur["cfo"] - capex if "cfo" in cur and capex is not None else None
     debt = cur.get("debt")
     if debt is None and ("debt_nc" in cur or "debt_c" in cur):
         debt = cur.get("debt_nc", 0) + cur.get("debt_c", 0)
     net_debt = debt - cur["cash"] if debt is not None and "cash" in cur else None
+    if cur.get("financial"):
+        ebitda = capex = fcf = net_debt = None
     return {
+        "financial": bool(cur.get("financial")),
         "revenue": m(rev), "ebitda": m(ebitda), "operatingProfit": m(op), "netIncome": m(net),
         "operatingCashFlow": m(cur.get("cfo")), "capex": m(capex), "fcf": m(fcf),
         "dividendsPaid": m(abs(cur["dividends"])) if "dividends" in cur else None,
@@ -173,7 +206,7 @@ def main():
                 out[ticker] = row
                 missing = [k for k in ("revenue", "ebitda", "fcf") if row[k] is None]
                 if missing:
-                    log.append(f"        missing {missing}; tagged: {sorted(seen)[:25]}")
+                    log.append(f"        missing {missing}; tagged: {sorted(seen)[:40]}")
                 log.append(f"{ticker:14} {row['periodEnd']} {currency} rev={row['revenue']} ebitda={row['ebitda']} "
                            f"net={row['netIncome']} fcf={row['fcf']} roe={row['roe']} nd/ebitda={row['netDebtToEbitda']}")
                 break
