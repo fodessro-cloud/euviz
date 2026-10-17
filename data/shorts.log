@@ -1,0 +1,12 @@
+NL: 0 events, 79 current positions, latest 2026-10-15
+::warning::shorts IT: File is not a zip file
+SE: 38961 events, 253 current positions, latest 2026-10-15
+NO: 11077 events, 90 current positions, latest 2026-10-15
+UK links: ['/publication/documents/aggregated-net-short-positions.xlsx', '/publication/documents/uk-reportable-shares-list.xlsx']
+UK sheet Current ANSP [['Current aggregated net short position\n16/10/2026', None, None, None], [None, None, None, None], ['Name of Company', 'International Securities Identification Number (ISIN)', 'Aggregated net short position (%)', 'Position date (of latest position date notified)']]
+UK sheet Historical ANSP [['Historical aggregated net short position\n16/10/2026', None, None, None, None], [None, None, None, None, None], ['Name of Company', 'International Securities Identification Number (ISIN)', 'Aggregated net short position (%)', 'Position date', 'Date the aggregated net short position became historical']]
+UK sheet Content - instructions [[None, 'Reportable Shares List (RSL)', None, None], ['Reportable Shares List under the Short Selling Regulations 2025 (“SSR 2025”).', None, None, None], ['The Reportable Shares List (RSL) identifies every class of share issued by a company, and admitted to trading on UK trading venues, that are subject to the short selling rules.\n                                                                                                                                                           ', None, None, None, None]]
+UK sheet Reportable Shares List [['Share ISIN', 'Company name', 'Date added', 'Class of share (Main or Other Class of Shares)'], ['AU00000088E2', '88 ENERGY LIMITED', 46216.0, 'Main'], ['AU000000EMH5', 'EUROPEAN METALS HOLDINGS LIMITED', 46216.0, 'Main']]
+UK sheet Recently Removed [['Share ISIN', 'Company name', 'Date added', 'Class of share (Main or Other Class of Shares)', 'Date removed'], ['GG00BQKNKR70', 'AMEDEO AIR FOUR PLUS LIMITED', 46216.0, 'Main', 46237.0], ['US07724U1034', 'BEIERSDORF AKTIENGESELLSCHAFT', 46216.0, 'Other Class of Shares', 46237.0]]
+::warning::shorts UK: no current positions found
+wrote shorts.json: 422 positions, failed: ['IT', 'UK']
