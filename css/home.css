@@ -19,6 +19,10 @@
   --amber:   #B97A0A;
   --up:      #0F8A57;
   --down:    #D23B3B;
+  --on-blue: #FFFFFF;
+  --real-bg: #E3F5EC;
+  --real-text: #0B5E3B;
+  --real-line: #A9DBC3;
   --mono:    'IBM Plex Mono', ui-monospace, monospace;
 }
 
