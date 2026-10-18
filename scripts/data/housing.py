@@ -133,7 +133,9 @@ def main():
     es, oe = raw.get("eurostat", {}), raw.get("oecd", {})
     countries = {}
     for code, name in COUNTRIES.items():
-        nominal = es.get(code) or oe.get("nominal_oecd", {}).get(code) or {}
+        # Whichever source is newer: Eurostat stopped covering the UK in 2020, the OECD did not.
+        nominal = max([es.get(code) or {}, oe.get("nominal_oecd", {}).get(code) or {}],
+                      key=lambda x: max(x) if x else "")
         real = oe.get("real", {}).get(code) or {}
         income = oe.get("income", {}).get(code) or {}
         rent = oe.get("rent", {}).get(code) or {}
@@ -149,6 +151,7 @@ def main():
             "vsIncome": vs_average(income) if income else None,
             "vsRent": vs_average(rent) if rent else None,
             "valuationLatest": max(income) if income else None,
+            "valuation": None,
             "series": {
                 "nominal": {k: round(v, 2) for k, v in nominal.items()},
                 **({"real": {k: round(v, 2) for k, v in real.items()}} if real else {}),
@@ -156,6 +159,10 @@ def main():
                 **({"rent": {k: round(v, 2) for k, v in rent.items()}} if rent else {}),
             },
         }
+    # One number for "cheap or expensive": the average of the two ratios against their own history.
+    for c in countries.values():
+        v = [x for x in (c["vsIncome"], c["vsRent"]) if x is not None]
+        c["valuation"] = round(sum(v) / len(v), 1) if v else None
     if not countries:
         print("no country data, keeping the previous file", file=sys.stderr)
         sys.exit(1)

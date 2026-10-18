@@ -189,6 +189,21 @@ function renderData(ins, sh) {
     || '<li><span>No data right now</span></li>';
 }
 
+// ── Property prices by country (js/housing.json) ─
+function renderProperty(h) {
+  const box = document.getElementById('property');
+  if (!h || !h.countries) { box.hidden = true; return; }
+  const all = Object.entries(h.countries);
+  const sign = v => `${v > 0 ? '+' : ''}${fmt(v, 0)}%`;
+  const li = (k, c, v) => `<li><span><a href="/property?c=${k}">${esc(c.name)}</a></span><span class="v">${sign(v)}</span></li>`;
+  const val = all.filter(([, c]) => isNum(c.valuation)).sort((a, b) => a[1].valuation - b[1].valuation);
+  document.getElementById('home-cheap').innerHTML = val.slice(0, 3).map(([k, c]) => li(k, c, c.valuation)).join('');
+  document.getElementById('home-dear').innerHTML = val.slice(-3).reverse().map(([k, c]) => li(k, c, c.valuation)).join('');
+  const chg = all.filter(([, c]) => isNum(c.nominal['5y'])).sort((a, b) => b[1].nominal['5y'] - a[1].nominal['5y']);
+  document.getElementById('home-up').innerHTML = chg.slice(0, 3).map(([k, c]) => li(k, c, c.nominal['5y'])).join('');
+  document.getElementById('home-down').innerHTML = chg.slice(-3).reverse().map(([k, c]) => li(k, c, c.nominal['5y'])).join('');
+}
+
 // ── Search: opens the company in the screener ─────
 function setupSearch() {
   document.getElementById('stock-list').innerHTML = COS.filter(c => isNum(c.mcap)).sort((a, b) => b.mcap - a.mcap)
@@ -203,8 +218,8 @@ function setupSearch() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const [cos, prices, inv, ins, sh, slugs] = await Promise.all(
-    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json', 'js/stock-slugs.json'].map(load));
+  const [cos, prices, inv, ins, sh, slugs, housing] = await Promise.all(
+    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json', 'js/stock-slugs.json', 'js/housing.json'].map(load));
   SLUGS = slugs || {};
   COS = cos ? buildCompanies(cos, prices) : [];
   INV = inv;
@@ -214,6 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderCompare(10);
   renderMovers('up');
   renderData(ins, sh);
+  renderProperty(housing);
   setupSearch();
   document.querySelectorAll('#periods button').forEach(b => b.addEventListener('click', () => renderCompare(Number(b.dataset.years))));
   document.querySelectorAll('#tabs button').forEach(b => b.addEventListener('click', () => renderMovers(b.dataset.tab)));

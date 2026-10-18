@@ -14,9 +14,9 @@ RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]
 # A new page needs its name added to both lists.
 RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
 RewriteRule ^index\.html$ / [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+(screener|companies|insiders|shorts|invest|map|groups)\.html[\s?]
-RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)\.html$ /$1 [R=301,L]
-RewriteRule ^(screener|companies|insiders|shorts|invest|map|groups)$ $1.html [L]
+RewriteCond %{THE_REQUEST} \s/+(screener|companies|insiders|shorts|invest|property|map|groups)\.html[\s?]
+RewriteRule ^(screener|companies|insiders|shorts|invest|property|map|groups)\.html$ /$1 [R=301,L]
+RewriteRule ^(screener|companies|insiders|shorts|invest|property|map|groups)$ $1.html [L]
 
 # Company pages: /stock/asml-holding shows stock/asml-holding.html, /stock/ is the A-Z list.
 RewriteCond %{THE_REQUEST} \s/+stock/index\.html[\s?]

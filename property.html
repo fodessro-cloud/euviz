@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINILA — House prices in Europe by country: growth, after inflation, vs. incomes and rents</title>
+  <meta name="description" content="How house prices changed in every European country over 1, 5 and 10 years, before and after inflation, and whether homes are expensive against incomes and rents. Official Eurostat and OECD data.">
+  <link rel="icon" href="css/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/invest.css">
+  <link rel="stylesheet" href="css/property.css">
+  <link rel="stylesheet" href="css/header.css">
+</head>
+<body>
+
+<header class="fh">
+  <div class="fh-row">
+    <a class="fh-logo" href="/" aria-label="FINILA home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
+    <nav class="fh-nav" aria-label="Main menu">
+      <a href="/companies">Stocks</a>
+      <a href="/insiders">Insider trades</a>
+      <a href="/shorts">Short positions</a>
+      <a href="/map">Market map</a>
+      <a href="/groups">Sectors &amp; countries</a>
+      <a href="/invest">Where to put money</a>
+      <a href="/property" aria-current="page">Property prices</a>
+      <a href="/archiv/">Archive</a>
+    </nav>
+  </div>
+</header>
+<script>(function(){var a=document.querySelector('.fh-nav [aria-current]');if(a)a.parentNode.scrollLeft=a.offsetLeft-a.parentNode.offsetLeft-16;})();</script>
+<div class="i-banner">Real data from Eurostat and the OECD, refreshed daily as they publish (quarterly). Prices only, rent income not included. Not investment advice.</div>
+
+<main class="h-wrap i-main">
+  <section class="i-intro" id="top">
+    <div class="h-eyebrow">PROPERTY PRICES</div>
+    <h1>How did home prices change across Europe?</h1>
+    <p>Price changes for every European country over 1, 5 and 10 years, before and after inflation, and whether homes cost more or less than usual against incomes and rents.</p>
+    <div class="i-controls">
+      <label class="i-country">Country
+        <select id="region" aria-label="Country"></select>
+      </label>
+      <span class="i-updated" id="updated"></span>
+    </div>
+  </section>
+
+  <section class="h-section">
+    <div class="h-section-head">
+      <h2>At a glance</h2>
+      <span class="i-sub" id="now-sub"></span>
+    </div>
+    <div class="i-now" id="now"></div>
+    <p class="h-note">"Price vs. incomes" and "vs. rents" compare today's ratio with its own average since 2000: above zero, homes cost more against incomes (or rents) than they usually did; below zero, less. It says nothing about where prices go next.</p>
+  </section>
+
+  <section class="h-section">
+    <div class="h-card i-calc">
+      <div class="i-calc-head">
+        <div>
+          <h2 id="chart-title">House prices</h2>
+          <p class="i-sub" id="chart-sub"></p>
+        </div>
+        <div class="i-calc-inputs">
+          <div class="i-seg" role="group" aria-label="Period" id="years">
+            <button type="button" data-years="5">5 y</button>
+            <button type="button" data-years="10" class="on">10 y</button>
+            <button type="button" data-years="20">20 y</button>
+            <button type="button" data-years="0">All</button>
+          </div>
+        </div>
+      </div>
+      <div class="i-chart-wrap">
+        <div class="i-legend" id="legend"></div>
+        <div class="i-chart" id="chart" role="img" aria-label="House price change over time, in per cent"></div>
+      </div>
+      <p class="h-note">Compare with deposits, bonds, stocks and gold on <a href="/invest">Where to put money</a>.</p>
+    </div>
+  </section>
+
+  <section class="h-section">
+    <div class="h-section-head">
+      <h2>Where homes look cheap or expensive</h2>
+      <span class="i-sub">Against incomes and rents, compared with each country's average since 2000</span>
+    </div>
+    <div class="p-value">
+      <div class="h-card"><h3>Cheapest against incomes and rents</h3><ol id="cheap"></ol></div>
+      <div class="h-card"><h3>Most expensive against incomes and rents</h3><ol id="dear"></ol></div>
+    </div>
+    <p class="h-note">Cheap today does not mean prices will rise: incomes, interest rates, population and local markets matter too. Not investment advice.</p>
+  </section>
+
+  <section class="h-section">
+    <div class="h-section-head">
+      <h2>All of Europe side by side</h2>
+      <span class="i-sub">Click a country to see its chart. Click a column to sort.</span>
+    </div>
+    <div class="h-card i-eu">
+      <div class="h-table-wrap">
+        <table>
+          <thead id="eu-head"></thead>
+          <tbody id="eu-body"></tbody>
+        </table>
+      </div>
+      <p class="h-note">Price changes from the Eurostat house price index (the OECD for the United Kingdom). After inflation, incomes and rents: OECD, not published for Cyprus and Malta.</p>
+    </div>
+  </section>
+
+  <section class="h-section i-split">
+    <div class="h-card i-method">
+      <h2>How to read it</h2>
+      <ul>
+        <li><strong>Price change:</strong> all dwellings, new and existing, in the local currency.</li>
+        <li><strong>After inflation:</strong> the same change in today's purchasing power.</li>
+        <li><strong>Price vs. incomes:</strong> house prices divided by household disposable income per person, compared with its average since 2000.</li>
+        <li><strong>Price vs. rents:</strong> house prices divided by rents, compared with its average since 2000. High values mean buying is dear compared with renting.</li>
+        <li>Country averages hide big differences between cities and regions.</li>
+      </ul>
+    </div>
+    <div class="h-card i-method">
+      <h2>Sources</h2>
+      <ul id="sources"></ul>
+    </div>
+  </section>
+</main>
+
+<footer class="h-footer">
+  <div class="h-wrap h-footer-row">
+    <div class="h-footer-brand">
+      <div class="h-logo small">
+        <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>
+        FINILA
+      </div>
+      <p>Information on FINILA is for education only and is not investment advice.</p>
+    </div>
+    <nav class="h-footer-nav" aria-label="Footer">
+      <a href="/companies">Stocks</a>
+      <a href="/invest">Where to put money</a>
+      <a href="/property">Property prices</a>
+      <a href="/map">Market map</a>
+      <a href="/archiv/">Archive</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/property.js"></script>
+<script src="js/analytics.js" defer></script>
+</body>
+</html>

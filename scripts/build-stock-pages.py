@@ -23,7 +23,7 @@ SITE = 'https://www.finila.com'
 SRC = Path(sys.argv[1] if len(sys.argv) > 1 else '.')
 OUT = Path(sys.argv[2] if len(sys.argv) > 2 else SRC)
 # Pages listed in the sitemap besides the company pages.
-PAGES = ['', 'companies', 'insiders', 'shorts', 'invest', 'map', 'groups', 'stock/']
+PAGES = ['', 'companies', 'insiders', 'shorts', 'invest', 'property', 'map', 'groups', 'stock/']
 
 COUNTRIES = {
     'AT': 'Austria', 'BE': 'Belgium', 'BG': 'Bulgaria', 'CH': 'Switzerland', 'CY': 'Cyprus', 'CZ': 'Czechia',
@@ -251,6 +251,7 @@ HEADER = '''<header class="fh">
       <a href="/map">Market map</a>
       <a href="/groups">Sectors &amp; countries</a>
       <a href="/invest">Where to put money</a>
+      <a href="/property">Property prices</a>
       <a href="/archiv/">Archive</a>
     </nav>
   </div>
