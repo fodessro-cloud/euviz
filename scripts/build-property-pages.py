@@ -122,7 +122,7 @@ def chart(series, years=10, w=760, h=260):
     legend = ''.join(f'<span><i class="{"dash" if dash else ""}" style="background:{color}"></i>{esc(label)}</span>'
                      for label, color, dash, _ in lines)
     return (f'<div class="i-legend">{legend}</div><div class="i-chart"><svg viewBox="0 0 {w} {h}" width="100%" '
-            f'role="img" aria-label="Change in house prices since {esc(quarter(start))}">{"".join(g)}{paths}</svg></div>'), start
+            f'role="img" aria-label="Change in home prices since {esc(quarter(start))}">{"".join(g)}{paths}</svg></div>'), start
 
 
 def tile(title, value, sub, klass=''):
@@ -140,7 +140,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
     title = f'Property prices in {name} {year}: price per m², growth and valuation | FINILA'
     facts = []
     if m2:
-        facts.append(f'Homes in {name} cost {eur(m2)} per m² ({lv["what"]}, {lv["period"]}).')
+        facts.append(f'Flats in {name} cost {eur(m2)} per m² ({lv["what"]}, {lv["period"]}).')
     facts.append(f'Prices changed by {pct(n.get("1y"), 1)} in the last year and {pct(n.get("10y"))} in ten years'
                  + (f' ({pct(r.get("10y"))} after inflation).' if is_num(r.get('10y')) else '.'))
     if is_num(c.get('valuation')):
@@ -150,7 +150,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
 
     tiles = []
     if m2:
-        tiles.append(tile('Price per m²', eur(m2), f'{esc(lv["what"])}, {esc(lv["period"])}'))
+        tiles.append(tile('Flat price per m²', eur(m2), f'{esc(lv["what"])}, {esc(lv["period"])}'))
     tiles += [
         tile('Last 12 months', pct(n.get('1y'), 1), f'{pct(r.get("1y"), 1)} after inflation' if is_num(r.get('1y')) else 'price change', cls(n.get('1y'))),
         tile('Last 10 years', pct(n.get('10y')), f'{pct(r.get("10y"))} after inflation' if is_num(r.get('10y')) else 'price change', cls(n.get('10y'))),
@@ -170,7 +170,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
         rows = ''.join(f'<tr><td>{esc(x["name"])}</td><td class="r m">{eur(x["eur"])}</td></tr>' for x in lv['regions'])
         regions = f'''
   <section class="h-section">
-    <div class="h-section-head"><h2>Price per m² in {esc(name)}: regions and cities</h2>
+    <div class="h-section-head"><h2>Flat price per m² in {esc(name)}: regions and cities</h2>
       <span class="i-sub">{esc(lv["what"])}, {esc(lv["period"])}</span></div>
     <div class="h-card i-eu"><div class="h-table-wrap"><table style="min-width:0">
       <thead><tr><th>Region or city</th><th class="r">€ per m²</th></tr></thead><tbody>{rows}</tbody></table></div>
@@ -181,7 +181,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
     others = {k: v for k, v in data['countries'].items() if not v.get('agg')}
     rank = lambda get: sorted([k for k in others if is_num(get(k))], key=lambda k: -get(k))
     ranks = []
-    for label, get, fmt in (('Price per m²', lambda k: (levels.get(k) or {}).get('eur'), eur),
+    for label, get, fmt in (('Flat price per m²', lambda k: (levels.get(k) or {}).get('eur'), eur),
                             ('10-year price change', lambda k: others[k]['nominal'].get('10y'), pct),
                             ('Cheap or expensive vs. own history', lambda k: others[k].get('valuation'), pct)):
         order = rank(get)
@@ -195,7 +195,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
     <div class="h-card i-eu"><div class="h-table-wrap"><table style="min-width:0">
       <thead><tr><th>Measure</th><th class="r">{esc(name)}</th><th class="r">Rank, highest first</th></tr></thead>
       <tbody>{"".join(ranks)}</tbody></table></div>
-      <p class="h-note">Price per m² compares countries' own official figures, which differ in method; see the note above each figure.
+      <p class="h-note">Flat prices per m² come from each country's own official source; see the note above each figure.
       The valuation compares each country with its own past, not with other countries. <a href="/property/undervalued">How it works</a>.</p></div>
   </section>''' if ranks and code != EU else ''
 
@@ -217,8 +217,8 @@ def country_page(code, c, lv, data, levels, header, footer, links):
 
   <section class="h-section">
     <div class="h-card i-calc">
-      <div class="i-calc-head"><div><h2>House prices in {esc(name)}</h2>
-        <p class="i-sub">Change since {esc(quarter(start))}, all dwellings</p></div></div>
+      <div class="i-calc-head"><div><h2>Home prices in {esc(name)}</h2>
+        <p class="i-sub">Change since {esc(quarter(start))}, all homes: flats and houses together</p></div></div>
       <div class="i-chart-wrap">{svg}</div>
       <p class="h-note">Compare with deposits, bonds, stocks and gold on <a href="/invest">Where to put money</a>.</p>
     </div>
@@ -288,8 +288,8 @@ def undervalued_page(data, header, footer, links):
     <div class="h-card i-method">
       <h2>How it works</h2>
       <ul>
-        <li><strong>Price vs. incomes:</strong> house prices divided by household disposable income per person (OECD). It shows how many years of income a home costs, as an index.</li>
-        <li><strong>Price vs. rents:</strong> house prices divided by rents (OECD). High values mean buying is dear compared with renting.</li>
+        <li><strong>Price vs. incomes:</strong> home prices (flats and houses together) divided by household disposable income per person (OECD). It shows how many years of income a home costs, as an index.</li>
+        <li><strong>Price vs. rents:</strong> home prices divided by rents (OECD). High values mean buying is dear compared with renting.</li>
         <li><strong>Against its own average:</strong> each ratio is compared with the same country's average since 2000. +20 % means homes cost a fifth more than usual for that country; it does not compare one country with another.</li>
         <li><strong>Overall:</strong> the average of the two.</li>
         <li>Expensive today does not mean prices will fall, and cheap does not mean they will rise: interest rates, population and local markets matter too. Not investment advice.</li>
@@ -319,6 +319,8 @@ def main():
     data = json.loads((SRC / 'js' / 'housing.json').read_text())
     lv_path = SRC / 'js' / 'housing-levels.json'
     levels = json.loads(lv_path.read_text())['countries'] if lv_path.exists() else {}
+    # Flats only everywhere, so like is compared with like; flats-and-houses figures stay out.
+    levels = {k: v for k, v in levels.items() if v.get('type') == 'flats'}
     page = (SRC / 'property.html').read_text()
     header = piece(page, 'header')
     header = header.replace(' aria-current="page"', '').replace('href="/property"', 'href="/property" aria-current="page"', 1)

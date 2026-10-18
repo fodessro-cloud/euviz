@@ -44,6 +44,7 @@
       </label>
       <span class="i-updated" id="updated"></span>
     </div>
+    <nav class="p-countries" aria-label="Home prices by country"><span>Country pages:</span><span id="countries"></span></nav>
   </section>
 
   <section class="h-section">
@@ -59,7 +60,7 @@
     <div class="h-section-head">
       <h2>Europe on a map</h2>
       <div class="i-seg" role="group" aria-label="What the map shows" id="metric">
-        <button type="button" data-metric="m2" class="on">Price per m²</button>
+        <button type="button" data-metric="m2" class="on">Flat price per m²</button>
         <button type="button" data-metric="n1">1-year change</button>
         <button type="button" data-metric="n5">5-year change</button>
         <button type="button" data-metric="n10">10-year change</button>
@@ -72,7 +73,8 @@
         <div class="p-scale" id="map-scale"></div>
       </div>
       <div class="h-card p-side">
-        <h3 id="side-title">Price per m²</h3>
+        <div id="country-link"></div>
+        <h3 id="side-title">Flat price per m²</h3>
         <ol class="p-rank" id="rank"></ol>
         <div id="regions-box" hidden>
           <h3 id="regions-title"></h3>
@@ -139,7 +141,8 @@
     <div class="h-card i-method">
       <h2>How to read it</h2>
       <ul>
-        <li><strong>Price change:</strong> all dwellings, new and existing, in the local currency.</li>
+        <li><strong>Price per m²:</strong> flats only, from each country's official source, so every country is measured the same way.</li>
+        <li><strong>Price change:</strong> all homes, flats and houses together, new and existing, in the local currency. Eurostat and the OECD do not publish flats alone.</li>
         <li><strong>After inflation:</strong> the same change in today's purchasing power.</li>
         <li><strong>Price vs. incomes:</strong> house prices divided by household disposable income per person, compared with its average since 2000.</li>
         <li><strong>Price vs. rents:</strong> house prices divided by rents, compared with its average since 2000. High values mean buying is dear compared with renting.</li>
