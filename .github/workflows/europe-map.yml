@@ -1,0 +1,33 @@
+name: Mapa Európy s regiónmi
+
+# Rebuilds js/europe-map.json (country and region outlines) when the build script changes.
+on:
+  push:
+    branches: [claude/project-thread-ms2i2k]
+    paths: ['scripts/build-europe-map.cjs', '.github/workflows/europe-map.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build the map
+        run: |
+          npm i --no-save --silent world-atlas@2.0.2 d3-geo@3.1.1 topojson-client@3.1.0
+          node scripts/build-europe-map.cjs
+      - name: Commit the map
+        run: |
+          git config user.name "finila-data-bot"
+          git config user.email "finila-data-bot@users.noreply.github.com"
+          git add js/europe-map.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Rebuild map of Europe with regions [data refresh]"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
