@@ -1,4 +1,3 @@
-FAIL  PT: URLError: <urlopen error [Errno 110] Connection timed out>
 ok    SK 3041 €/m2 2026-Q2 (8 regions: Bratislava region 3882, Košice region 2796, Prešov region 2310, Žilina region 2303, Trnava region 2064, Trenčín region 1908)
   FR levels: {'departement': 101, 'commune': 39162, 'section': 464250, 'epci': 1353, 'nation': 1}
 ok    FR 3342 €/m2 last 5 years (20 regions: Paris 10470, Cannes 5333, Antibes 4891, Lyon 4825, Nice 4556, Bordeaux 4427)
@@ -6,6 +5,8 @@ ok    FR 3342 €/m2 last 5 years (20 regions: Paris 10470, Cannes 5333, Antibes
   FI areas start: ['Akaa', 'Alajärvi', 'Alavieska'], has whole country: False
   FI 13mv variables: timeperiod_q ['2006Q1', '2006Q2', '2006Q3', '2006Q4'] (81); alue_43_20220407 ['Whole country', 'Greater Helsinki', 'Whole country excluding Greater Helsinki', 'Major cities (total)'] (87); talotyyppi_5_20111209 ['Building types total', 'Terraced houses', 'Blocks of flats'] (3); huoneluku_1_20111212 ['Total', 'One-room flat', 'Two-room flat', 'Three-room flat+'] (4); contentscode ['Price per square meter (EUR/m2)', 'Number of sales, asset transfer tax data, until 2019', 'Number of sales, asset transfer tax data starting from 2020'] (3)
 ok    FI 2710 €/m2 2026-Q1 (10 regions: Helsinki 5225, Espoo 3812, Tampere 3062, Turku 2639, Vantaa 2543, Oulu 2207)
+  PT types: ['Flats', 'Total', 'Villas'], flats rows: 347
+ok    PT 2655 €/m2 2026-08 (20 regions: Lisboa 4765, Cascais 4066, Oeiras 4056, Loulé 3548, Odivelas 3375, Porto 3366)
   ES columns: ['Año', 'Trimestre', 'Valor', 'Régimen', 'CPRO', 'Provincia', 'Comunidad_Autónoma', 'CODAUTO']
   ES (2026, 2): 65 rows, 48 provinces, others: [('Ceuta y Melilla', 'Ceuta y Melilla', '2184.9'), ('Total CCAA', 'Navarra, Comunidad Foral de', '1936.4'), ('Total CCAA', 'Navarra, Comunidad Foral de', '1936.4'), ('Total CCAA', 'Andalucía', '1981.6'), ('Total CCAA', 'Aragón', '1762.8'), ('Total CCAA', 'Asturias, Principado de', '1798.5'), ('Total CCAA', 'Canarias', '2279.4'), ('Total CCAA', 'Castilla y León', '1349.6'), ('Total CCAA', 'Castilla-La Mancha', '1215.4'), ('Total CCAA', 'Cataluña', '2752.9'), ('Total CCAA', 'Comunitat Valenciana', '1935'), ('Total CCAA', 'Extremadura', '996.6'), ('Total CCAA', 'Galicia', '1656.8'), ('Total CCAA', 'Madrid, Comunidad de', '4089.6'), ('Total CCAA', 'País Vasco', '3102.3'), ('Total CCAA', 'Murcia, Region de', '1350.1'), ('Total CCAA', 'Total nacional', '2355')]
 ok    ES 2355 €/m2 2026-Q2 (11 regions: Madrid 4090, Gipuzkoa 3515, Barcelona 3204, Málaga 3084, Bizkaia 3025, Santa Cruz de Tenerife 2297)
@@ -13,4 +14,4 @@ ok    HU 1571 €/m2 2025 (7 regions: Budapest 3002, Central Transdanubia, count
   LU Prix de vente des appartements par commune sur les 12 derniers mois: 51 communes with prices, total row: None
 ok    LU 7819 €/m2 2026-Q2, last 12 months (12 regions: Luxembourg-Ville 10269, Strassen 9983, Hesperange 8577, Schifflange 7375, Kayl 7257, Sanem 7149)
 ok    PL 2152 €/m2 2026-Q2 (17 regions: Warsaw 3944, Kraków 3489, Gdańsk 3310, Wrocław 2970, Gdynia 2893, Rzeszów 2588)
-wrote js/housing-levels.json: 8 countries, failed: ['PT']
+wrote js/housing-levels.json: 8 countries, failed: none
