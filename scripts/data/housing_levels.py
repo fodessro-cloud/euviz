@@ -276,11 +276,29 @@ def main():
     print(f"wrote {OUT.relative_to(ROOT)}: {len(countries)} countries, failed: {failed or 'none'}")
 
 
+def sheets(body):
+    """{sheet name: rows} from an .xlsx or .xls file."""
+    if body[:2] == b"PK":
+        import openpyxl
+        wb = openpyxl.load_workbook(io.BytesIO(body), read_only=True, data_only=True)
+        return {ws.title: [list(r) for r in ws.iter_rows(values_only=True)] for ws in wb.worksheets}
+    import xlrd
+    wb = xlrd.open_workbook(file_contents=body)
+    return {sh.name: [sh.row_values(i) for i in range(sh.nrows)] for sh in wb.sheets()}
+
+
 def probe(urls):
     """Log the start of each response, to write parsers for new sources (hosts are unreachable from the editor)."""
     for url in urls:
         try:
-            body = fetch(url, limit=300_000)
+            body = fetch(url, limit=None if url.endswith((".xls", ".xlsx")) else 300_000)
+            if body[:2] == b"PK" or body[:4] == b"\xd0\xcf\x11\xe0":
+                print(f"\n===== {url} OK spreadsheet {len(body)} bytes")
+                for name, rows in sheets(body).items():
+                    print(f"--- sheet {name}: {len(rows)} rows")
+                    for r in rows[:45]:
+                        print(" | ".join(str(c)[:22] for c in r if c not in (None, "")))
+                continue
             try:
                 t = body.decode("utf-8-sig")
             except UnicodeDecodeError:
