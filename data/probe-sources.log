@@ -1,263 +1,208 @@
 
-===== SK NBS export links
-https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/: 116064 bytes, 0 links
+===== SK NBS export strings
+https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/: 116064 bytes, 0 matches
 
-===== HU KSH lak tables
-https://www.ksh.hu/stadat_eng?lang=en&theme=lak: 35374 bytes, 0 links
+===== SK NBS real-estate-price-by-type
+"Ceny nehnuteľností na bývanie podľa typu bytu a domu v €/m2"
 
-===== NO SSB 06035
-Region region [('0', 'The whole country'), ('31', 'Østfold'), ('3101', 'Halden'), ('3103', 'Moss'), ('3105', 'Sarpsborg'), ('3107', 'Fredrikstad'), ('3110', 'Hvaler'), ('3112', 'Råde'), ('3114', 'Våler (Østfold)'), ('3116', 'Skiptvet'), ('3118', 'Indre Østfold'), ('3120', 'Rakkestad')] 972
-Boligtype type of dwelling [('01', 'Detached houses'), ('02', 'Row houses'), ('03', 'Multi-dwelling')] 3
-ContentsCode contents [('KvPris', 'Freeholder per km² (NOK)'), ('Omsetninger', 'Number of sales')] 2
-Tid year [('2002', '2002'), ('2003', '2003'), ('2004', '2004'), ('2005', '2005'), ('2006', '2006'), ('2007', '2007'), ('2008', '2008'), ('2009', '2009'), ('2010', '2010'), ('2011', '2011'), ('2012', '2012'), ('2013', '2013')] 23
+"Rok, Štvrťrok";"Byty spolu";1-izbové;2-izbové;3-izbové;4-izbové;"5-izbové a viac";"Domy a vily spolu";Dom;Vila;"SR spolu"
+"2Q 2026";"3 430,3676";"4 088,9462";"3 628,7541";"3 161,1908";"3 157,3762";"3 131,4591";"2 162,9123";0,0000;0,0000;"3 041,4123"
+"1Q 2026";"3 377,6921";"4 028,0110";"3 596,3144";"3 092,8614";"3 149,2015";"2 911,3095";"2 117,8958";0,0000;0,0000;"3 005,2500"
+2025;"3 148,3155";"3 666,6803";"3 343,6219";"2 892,5936";"2 933,3601";"2 881,6727";"2 092,3089";0,0000;0,0000;"2 799,4312"
+"4Q 2025";"3 262,4136";"3 819,4512";"3 464,7461";"3 015,0575";"3 049,7174";"2 974,8610";"2 138,9400";0,0000;0,0000;"2 906,3616"
+"3Q 2025";"3 176,6755";"3 750,3066";"3 362,0429";"2 914,0594";"2 944,0657";"2 984,6990";"2 101,1632";0,0000;0,0000;"2 814,0845"
+"2Q 2025";"3 113,1223";"3 615,2975";"3 312,8546";"2 853,9492";"2 872,2471";"2 880,2835";"2 098,1915";0,0000;0,0000;"2 777,3259"
+"1Q 2025";"3 041,0505";"3 481,6659";"3 234,8441";"2 787,3081";"2 867,4100";"2 686,8475";"2 030,9411";0,0000;0,0000;"2 699,9528"
+2024;"2 787,4845";"3 148,6991";"2 942,0050";"2 566,6216";"2 653,6207";"2 669,5519";"1 927,1826";0,0000;0,0000;"2 500,2402"
+"4Q 2024";"2 895,7433";"3 341,1322";"3 044,1930";"2 684,4086";"2 753,4918";"2 756,6773";"1 978,2128";0,0000;0,0000;"2 596,0585"
+"3Q 2024";"2 815,2518";"3 140,9312";"3 008,0916";"2 586,8606";"2 658,9898";"2 641,2603";"1 934,2311";0,0000;0,0000;"2 520,3183"
+"2Q 2024";"2 749,5422";"3 08
 
-===== DK statbank price tables
-PRIS03 Consumer price indices by group of households - 2026M08 ['commodity group', 'group of households', 'unit', 'time']
-EJ5 Price index for sales of property Index 2026Q2 ['category of real property', 'unit', 'time']
-EJ56 Price index for sales of property Index 2026Q2 ['region', 'category of real property', 'unit', 'time']
-EJ6 Price index for sales property Index 2025 ['category of real property', 'unit', 'time']
-EJ67 Price index for sales property Index 2025 ['region', 'category of real property', 'unit', 'time']
-PRIS90 Producer price index for construction of dwellings Index 2026Q2 ['type of dwelling', 'unit', 'time']
-ENERGI1 Prices of electricity for households DKK per unit 2026H1 ['annual consumption', 'price definition', 'energy unit', 'time']
-ENERGI2 Prices of electricity for non-households DKK per unit 2026H1 ['annual consumption', 'price definition', 'energy unit', 'time']
-ENERGI3 Prices of natural gas for households DKK per unit 2026H1 ['annual consumption', 'price definition', 'energy unit', 'time']
-ENERGI4 Prices of natural gas for non-households DKK per unit 2026H1 ['annual consumption', 'price definition', 'energy unit', 'time']
-
-===== SI SiStat search
-0419030S.px  House sales by type of residential real estate, Slovenia, quarterly 2026-09-23T10:30:00
-0419001S.px  House price indices by type of dwellings, Slovenia, quarterly 2026-09-23T10:30:00
-0419005S.px  House price indices by type of dwellings, Slovenia, annually 2026-07-02T15:00:00
-0419002S.px  House price indices and number of transactions by type of dwellings, Slovenia, 2000Q1 - 2006Q4 2022-01-24T10:30:00
-2490296S.PX  Exports and imports by 8-digit code of the Combined Nomenclature and by countries, Slovenia, 2003 2022-01-24T10:30:00
-2490297S.PX  Exports and imports by 8-digit code of the Combined Nomenclature and by countries, Slovenia, 2002 2022-01-24T10:30:00
-2490298S.PX  Exports and imports by 8-digit code of the Combined Nomenclature and by countries, Slovenia, 2001 2022-01-24T10:30:00
-2490299S.PX  Exports and imports by 8-digit code of the Combined Nomenclature and by countries, Slovenia, 2000 2022-01-24T10:30:00
-1706030S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2011), Slovenia, 2011 2022-01-24T10:30:00
-1706031S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2012), Slovenia, 2012 2022-01-24T10:30:00
-1706038S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2019), Slovenia, 2019 2022-01-05T10:30:00
-1706039S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP), Slovenia, 2020 2022-01-05T10:30:00
-1706040S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP), Slovenia, 2021 2022-09-23T10:30:00
-1706041S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP), Slovenia, 2022 2023-09-22T10:30:00
-1706042S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP), Slovenia, 2023 2024-09-19T10:30:00
-1706043S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP), Slovenia, 2024 2026-07-16T10:30:00
-1706044S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP), Slovenia, 2025 2026-09-16T10:30:00
-1706032S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2013), Slovenia, 2013 2022-01-24T10:30:00
-1706033S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2014), Slovenia, 2014 2022-01-24T10:30:00
-1706034S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2015), Slovenia, 2015 2022-01-24T10:30:00
-1706035S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2016), Slovenia, 2016 2022-01-24T10:30:00
-1706036S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2017), Slovenia, 2017 2022-01-24T10:30:00
-1706037S.px  Production and sold production of industrial products and services by Nomenclature of industrial products (NIP 2018), Slovenia, 2018 2022-01-24T10:30:00
-2490188S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2011 2023-04-06T10:30:00
-2490189S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2010 2023-04-06T10:30:00
-2490110S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, annually (cummulative data) 2026-10-05T10:30:00
-2490175S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2024 2026-06-12T10:30:00
-2490176S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2023 2026-03-06T10:30:00
-2490177S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2022 2025-03-07T10:30:00
-2490178S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2021 2024-03-06T10:30:00
-2490179S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2020 2024-03-06T10:30:00
-2490180S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2019 2024-03-06T10:30:00
-2490181S.px  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2018 2024-03-06T10:30:00
-2490182S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2017 2024-03-06T10:30:00
-2490183S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2016 2023-04-06T10:30:00
-2490184S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2015 2023-04-06T10:30:00
-2490185S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2014 2023-04-06T10:30:00
-2490186S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2013 2023-04-06T10:30:00
-2490187S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2012 2023-04-06T10:30:00
-2490190S.PX  Exports and imports by 6-digit code of the Combined Nomenclature and by countries, Slovenia, 2009 2022-01-24T10:30:00
-
-===== SI SiStat tree
-
-===== EE stat tree
-[rahvaloendus] Population and Housing Census
-  [rel2000] Population and Housing Census 2000
-  [rel2011] Population and Housing Census 2011
-  [rel2021] Population and Housing Census 2021
-  [rel_vordlus] Population and housing censuses: comparative data
-
-===== LV stat tree
-
-===== LT
-FAIL HTTPError: HTTP Error 403: Forbidden
-
-===== BG NSI
-https://www.nsi.bg/en/content/2924/average-market-prices-dwellings: 85530 bytes, 2 links
-   /sites/default/files/files/images/Sertificat_ISO_9001.pdf
-   /sites/default/files/files/images/Sertificat_ISO_IEC_27001.pdf
-
-===== BG NSI 2
-https://www.nsi.bg/en/statistical-data/245: 278296 bytes, 22 links
-   /en/file/17523/StatBook2024.pdf
-   /en/file/17539/StatBook2024_en.pdf
-   /en/file/28678/New_Dwellings2025q1_en_NL5E2ZS.pdf
-   /en/file/30263/God2024.pdf
-   /en/file/30421/Q2_2025_Жилища_EN_.png
-   /en/file/30604/New_Dwellings2025q2_en_FD74JL9.pdf
-   /en/file/30660/StatBook2025.pdf
-   /en/file/30723/StatBook2025_en.pdf
-   /en/file/32176/Жилища_EN_Q3_2025.png
-   /en/file/32345/short_term_statistics_of_residential_buildings.pdf
-   /en/file/33865/short_term_statistics_of_residential_buildings.pdf
-   /en/file/35500/short_term_statistics_of_residential_buildings.pdf
-   /en/file/35971/God2025.pdf
-   /en/file/35981/Инфографики към годишник_2026.pdf
-   /en/file/37098/Жилища_Q2_2026_EN.png
-   /en/file/37286/short_term_statistics_of_residential_buildings.pdf
-   /sites/default/files/statistical_metadata/ESMS.2.1_xml/../MSD/ESMS_MSD+BNSI+2.0+SDMX.2.1.xml
-   /sites/default/files/statistical_metadata/ESMS.2.1_xml/ESMS_0192_NSI_HousingFund-Short-termstatisticsonresidentialbuildings_2012-N1_SDMX.2.1.xml
-   /sites/default/files/statistical_metadata/ESMS_xml/../MSD/ESMS_MSD+BNSI+2.0+SDMX.2.0.xml
-   /sites/default/files/statistical_metadata/ESMS_xml/ESMS_0192_NSI_HousingFund-Short-termstatisticsonresidentialbuildings_2012-N1.xml
-   http://www.nsi.bg/sites/default/files/files/metadata/HFund_1_Methodology_EN.pdf
-   sites/default/files/files/metadata/HFund_1_Methodology_EN.pdf
-
-===== HR DZS
-https://podaci.dzs.hr/en/statistics/construction/: 1963513 bytes, 4 links
-   /en/statistics/construction/completed-buildings-and-dwellings/
-   /en/statistics/construction/demolished-dwellings/
-   /en/statistics/construction/prices-of-sold-new-dwellings/
-   /en/statistics/prices/
-
-===== HR DZS prices
-https://podaci.dzs.hr/en/statistics/prices/: 1331136 bytes, 4 links
-   /en/statistics/prices/
-   /en/statistics/prices/consumer-price-indices/
-   /en/statistics/prices/house-price-indices/
-   /en/statistics/prices/introduction-of-the-euro-average-retail-prices/
-
-===== CZ CZSO
+===== SK NBS real-estate-price-by-flat-type
 FAIL HTTPError: HTTP Error 404: Not Found
 
-===== CZ CZSO 2
+===== SK NBS real-estate-price-flats
 FAIL HTTPError: HTTP Error 404: Not Found
 
-===== AT Statistik
-https://www.statistik.at/statistiken/volkswirtschaft-und-oeffentliche-finanzen/preise-und-preisindizes/immobilien-durchschnittspreise: 149261 bytes, 34 links
-   /fileadmin/pages/222/Baugrundstueckspreise2015.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2016.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2017.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2018.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2019.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2020.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2021.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2022.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2023.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2024.ods
-   /fileadmin/pages/222/Baugrundstueckspreise2025.ods
-   /fileadmin/pages/222/Haeuserpreise2015.ods
-   /fileadmin/pages/222/Haeuserpreise2016.ods
-   /fileadmin/pages/222/Haeuserpreise2017.ods
-   /fileadmin/pages/222/Haeuserpreise2018.ods
-   /fileadmin/pages/222/Haeuserpreise2019.ods
-   /fileadmin/pages/222/Haeuserpreise2020.ods
-   /fileadmin/pages/222/Haeuserpreise2021.ods
-   /fileadmin/pages/222/Haeuserpreise2022.ods
-   /fileadmin/pages/222/Haeuserpreise2023.ods
-   /fileadmin/pages/222/Haeuserpreise2024.ods
-   /fileadmin/pages/222/Haeuserpreise2025.ods
-   /fileadmin/pages/222/SonderauswertungImmobilienDurchschnittspreise.ods
-   /fileadmin/pages/222/Wohnungspreise2015.ods
-   /fileadmin/pages/222/Wohnungspreise2016.ods
-   /fileadmin/pages/222/Wohnungspreise2017.ods
-   /fileadmin/pages/222/Wohnungspreise2018.ods
-   /fileadmin/pages/222/Wohnungspreise2019.ods
-   /fileadmin/pages/222/Wohnungspreise2020.ods
-   /fileadmin/pages/222/Wohnungspreise2021.ods
-   /fileadmin/pages/222/Wohnungspreise2022.ods
-   /fileadmin/pages/222/Wohnungspreise2023.ods
-   /fileadmin/pages/222/Wohnungspreise2024.ods
-   /fileadmin/pages/222/Wohnungspreise2025.ods
-
-===== AT data.gv.at
+===== SK NBS real-estate-price
 FAIL HTTPError: HTTP Error 404: Not Found
 
-===== BE Statbel
-FAIL HTTPError: HTTP Error 404: Not Found
+===== HU KSH lak strings
+https://www.ksh.hu/stadat_eng?lang=en&theme=lak: 35374 bytes, 0 matches
 
-===== IE CSO RPPI
-{"class":"dataset","dimension":{"STATISTIC":{"category":{"index":["HPM04C01","HPM04C02","HPM04C03","HPM04C04"],"label":{"HPM04C01":"Volume of Sales","HPM04C02":"Value of Sales","HPM04C03":"Mean Sale Price","HPM04C04":"Median Price"},"unit":{"HPM04C01":{"decimals":0,"label":"Number","position":"end"},"HPM04C02":{"decimals":1,"label":"Euro Million","position":"end"},"HPM04C03":{"decimals":0,"label":"Euro","position":"end"},"HPM04C04":{"decimals":0,"label":"Euro","position":"end"}}},"label":"Statistic"},"TLIST(M1)":{"category":{"index":["201001","201002","201003","201004","201005","201006","201007","201008","201009","201010","201011","201012","201101","201102","201103","201104","201105","201106","201107","201108","201109","201110","201111","201112","201201","201202","201203","201204","201205","201206","201207","201208","201209","201210","201211","201212","201301","201302","201303","201304","201305","201306","201307","201308","201309","201310","201311","201312","201401","201402","201403","201404","201405","201406","201407","201408","201409","201410","201411","201412","201501","201502","201503","201504","201505","201506","201507","201508","201509","201510","201511","201512","201601","201602","201603","201604","201605","201606","201607","201608","201609","201610","201611","201612","201701","201702","201703","201704","201705","201706","201707","201708","201709","201710","201711","201712","201801","201802","201803","201804","201805","201806","201807","201808","201809","201810","201811","201812","201901","201902","201903","201904","201905","201906","201907","201908","201909","201910","201911","201912","202001","202002","202003","202004","202005","202006","202007","202008","202009","202010","202011","202012","202101","202102","202103","202104","202105","202106","202107","202108","202109","202110","202111","202112","202201","202202","202203","202204","202205","202206","202207","202208","202209","202210","202211","202212","202301","202302","202303","202304","202305","202306","2
+===== NO SSB 06035 query
+"region","type of dwelling","Freeholder per km� (NOK) 2023","Freeholder per km� (NOK) 2024"
+"0 The whole country","Multi-dwelling",66663,69261
+"0301 Oslo - Oslove","Multi-dwelling",97949,102899
+"1103 Stavanger","Multi-dwelling",52980,57950
+"4601 Bergen","Multi-dwelling",62740,66048
+"5001 Trondheim - Tr�ante","Multi-dwelling",64829,65756
 
-===== NL CBS
-{
-  "odata.metadata":"https://opendata.cbs.nl/ODataApi/OData/83625NED/$metadata#Cbs.OData.WebAPI.DataProperties","value":[
-    {
-      "odata.type":"Cbs.OData.GeoDimension","ID":0,"Position":0,"ParentID":null,"Type":"GeoDimension","Key":"RegioS","Title":"Regio's","Description":"","MapYear":null
-    },{
-      "odata.type":"Cbs.OData.TimeDimension","ID":1,"Position":1,"ParentID":null,"Type":"TimeDimension","Key":"Perioden","Title":"Perioden","Description":"","ReleasePolicy":true
-    },{
-      "odata.type":"Cbs.OData.Topic","ID":2,"Position":2,"ParentID":null,"Type":"Topic","Key":"GemiddeldeVerkoopprijs_1","Title":"Gemiddelde verkoopprijs","Description":"De gemiddelde verkoopprijs geeft de gemiddelde waarde weer die betaald is in een verslagperiode voor bestaande woningen die zijn aangekocht door een particulier. Deze cijfers tonen niet het verloop van de prijsontwikkeling van alle bestaande koopwoningen. Daarvoor dient u gebruik te maken van de prijsindexcijfers. De gemiddelde koopsom weerspiegelt namelijk de gemiddelde prijs van woningen die verkocht zijn in een specifieke periode. Doordat elke periode andere woningen worden verkocht, wordt er geen rekening gehouden met eventuele verschillende kenmerken van de verkochte woningen. Een voorbeeld om uit te leggen welke problemen dit met zich meebrengt: Stel in februari van een jaar zijn voornamelijk grote grachtenpanden met tuin verkocht, terwijl in maart veel kleine tussenwoningen van eigenaar wisselden. Hierdoor zal de gemiddelde koopsom in februari hoger liggen dan in maart maar dit wil niet zeggen dat de huizenprijzen zijn gestegen.","Datatype":"Long","Unit":"euro","Decimals":0,"Default":"Impossible","PresentationType":"Relative"
-    }
-  ]
-}
 
-===== SE SCB
-[BO0303] Unlet dwellings in multi-dwelling buildings
-  [BO0303A] Unlet dwellings in multi-dwelling buildings
-[BO0601] Real estate tax assessments
-  [BO0601A] Special (annual) assessment of real estate 1998-
-  [BO0601C] General and simplified assessment of real estate for one- or twodwelling buildings
-  [BO0601D] General and simplified assessment of real estate for multi-dwelling building and commercial building
-  [BO0601B] Special (annual) assessment of real estate 1975-1997
-  [BO0601E] General and simplified assessment of real estate for agriculture and forestry units
-[BO0404] Charges/rents for newly constructed dwellings
-  [BO0404A] Rented dwellings and tenant-owned dwellings. Year 2022-
-  [BO0404B] Rented dwellings and tenant-owned dwellings. Old tables – not updated. Year 2014-2022
-[BO0406] Rents for dwellings
-  [BO0406A] Rents for rented dwellings 2003-2015
-[BO0201] Prices for newly produced dwellings
-  [BO0201A] Price per square metre for newly constructed conventional multi-dwelling buildings
-    TABLE /BO0201/BO0201A/PrisPerAreorFH02 Price per square metre for newly constructed conventional multi-dwelling buildings by region and gross-/net price. Year 1994 - 2024
-    TABLE /BO0201/BO0201A/PrisPerAreorFH04 Price per square metre for newly constructed conventional multi-dwelling buildings by region, type of tenure and gross-/net price. Year 1994 - 2024
-    TABLE /BO0201/BO0201A/PrisPerAreorFH03 Price per square metre for newly constructed conventional multi-dwelling buildings by region, type of investor and gross-/net price. Year 1994 - 2024
-  [BO0201B] Price per dwelling for newly constructed conventional multi-dwelling buildings
-    TABLE /BO0201/BO0201B/PrisPerLghFH02 Price per dwelling for newly constructed conventional multi-dwelling buildings by region and gross-/net price. Year 1998 - 2024
-    TABLE /BO0201/BO0201B/PrisPerLghFH04 Price per dwelling for newly constructed conventional multi-dwelling buildings by region, type of tenure and gross-/net price. Year 1998 - 2024
-    TABLE /BO0201/BO0201B/PrisPerLghFH03 Price per dwelling for newly constructed conventional multi-dwelling buildings by region, type of investor and gross-/net price. Year 1998 - 2024
-  [BO0201C] Price per sq. m for newly constructed conventional collectively built one- or two-dwelling buildings
-    TABLE /BO0201/BO0201C/PrisPerAreorSM02 Price per square metre for newly constructed conventional collectively built one- or two-dwelling buildings by region and gross-/net price. Year 1994 - 2024
-    TABLE /BO0201/BO0201C/PrisPerAreorSM04 Price per square metre for newly constructed conventional collectively built one- or two-dwelling buildings by region, type of tenure and gross-/net price. Year 1994 - 2024
-    TABLE /BO0201/BO0201C/PrisPerAreorSM03 Price per square metre for newly constructed conventional collectively built one- or two-dwelling buildings by region, type of investor and gross-/net price. Year 1994 - 2024
-  [BO0201D] Price/dwelling for newly constructed conventional collectively built one- or two-dwelling buildings
-    TABLE /BO0201/BO0201D/PrisPerLghSM02 Price per dwelling for newly constructed conventional collectively built one- or two-dwelling buildings by region and gross-/net price. Year 1998 - 2024
-    TABLE /BO0201/BO0201D/PrisPerLghSM04 Price per dwelling for newly constructed conventional collectively built one- or two-dwelling buildings by region, type of tenure and gross-/net price. Year 1998 - 2024
-    TABLE /BO0201/BO0201D/PrisPerLghSM03 Price per dwelling for newly constructed conventional collectively built one- or two-dwelling buildings by region, type of investor and gross-/net price. Year 1998 - 2024
-  [BO0201M] Technical data for the newly built ordinary multi-dwelling buildings
-  [BO0201S] Technical data for the newly built ordinary collectively built houses
-  [BO0201E] Floor spaces per dwelling in newly constructed conventional multi-dwelling buildings
-  [BO0201F] Dwellings/number of rooms (incl. kitchens) in newly constructed conventional residential buildings
-  [BO0201N] Cost per sq.m. and per dwelling (old, no update)
-    TABLE /BO0201/BO0201N/KostnaderPerAreorFH2 Cost per square metre for newly constructed conventional multi-dwelling buildings by region and gross-/net cost. Year 1994 - 2017
-    TABLE /BO0201/BO0201N/KostnaderPerAreorFH1 Cost per square metre for newly constructed conventional multi-dwelling buildings by region, development/reconstruction area and gross-/net cost. Year 1994 - 2006
-    TABLE /BO0201/BO0201N/KostnaderPerAreorSM2 Cost per square metre for newly constructed conventional collectively built one- or two-dwelling buildings by region and gross-/net cost. Year 1994 - 2017
-    TABLE /BO0201/BO0201N/KostnaderPerAreorFH3 Cost per square metre for newly constructed conventional multi-dwelling buildings by region, type of investor and gross-/net cost. Year 1994 - 2017
-    TABLE /BO0201/BO0201N/KostnaderPerAreorSM4 Cost per square metre for newly constructed conventional collectively built one- or two-dwelling buildings by region, type of tenure and gross-/net cost. Year 1994 - 2017
-    TABLE /BO0201/BO0201N/KostnaderPerAreorFH4 Cost per square metre for newly constructed conventional multi-dwelling buildings by region, type of tenure and gross-/net cost. Year 1994 - 2017
-    TABLE /BO0201/BO0201N/KostnaderPerAreorSM3 Cost per square metre for newly constructed conventional collectively built one- or two-dwelling buildings by region, type of investor and gross-/net cost. Year 1994 - 2017
-  [BO0201J] Floor spaces p. dwelling in newly constructed conventional multi-dwelling buildings (old, no update)
-  [BO0201K] Number of rooms in newly constructed conventional residential buildings (old, no update)
-  [BO0201L] Number of rooms (including kitchens) in newly constructed residential buildings (old, no update)
-[BO0101] Statistics on building permits, new construction and conversion
-  [BO0101G] Building permits for new construction
-  [BO0101C] New construction, preliminary data, quarter
-  [BO0101A] New construction, year
-[BO0301] Revenues and expenditure survey for multi-dwelling buildings
-  [BO0301A] Revenues and expenditure survey for multi-dwelling buildings
-[BO0104] Dwelling stock
-  [BO0104D] Dwellings
-[BO0501] Real estate prices and registrations of title
-  [BO0501A] Real estate price index
-  [BO0501B] Prices of real estate
+===== AT Wohnungspreise2025
+sheet Burgenland
+sheet Kärnten
+sheet Niederösterreich
+sheet Oberösterreich
+sheet Salzburg
+sheet Steiermark
+sheet Tirol
+sheet Vorarlberg
+sheet Wien
+Burgenland
+Durchschnittspreise Eigen
+Wohnfläche nach Baujahr
+Bezirke | Bis 1960 | 1961-1990 | Ab 1991
+Weniger als 68 m² | 68 - 84 m² | Mehr als 84 m² | Weniger als 68 m² | 68 - 84 m² | Mehr als 84 m² | Weniger als 68 m² | 68 - 84 m² | Mehr als 84 m²
+Eisenstadt(Stadt) | 2 245 | 1 859 | 1 895 | 1 867 | 1 546 | 1 576 | 2 726 | 2 257 | 2 301
+Rust(Stadt) 7) | 1 978 | 1 978 | 1 978 | 1 945 | 1 945 | 1 945 | 1 979 | 1 979 | 1 979
+Eisenstadt-Umgebung 4) | 1 978 | 1 978 | 1 978 | 1 945 | 1 945 | 1 945 | 1 979 | 1 979 | 1 979
+Güssing 6) | 1 216 | 814 | 839 | 1 249 | 836 | 862 | 1 726 | 1 156 | 1 191
+Jennersdorf 5) | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335
+Mattersburg 3) | 1 850 | 1 146 | 1 116 | 1 850 | 1 146 | 1 116 | 2 568 | 1 591 | 1 549
+Neusiedl am See 3) | 1 855 | 1 184 | 1 241 | 1 855 | 1 184 | 1 241 | 2 688 | 1 716 | 1 799
+Oberpullendorf 5) | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344
+Oberwart 4) | 1 005 | 1 005 | 1 005 | 1 170 | 1 170 | 1 170 | 1 446 | 1 446 | 1 446
+Durchschnittspreise Eigen
+Wohnfläche nach Baujahr
+Bezirke | Bis 1960 | 1961-1990 | Ab 1991
+Weniger als 68 m² | 68 - 84 m² | Mehr als 84 m² | Weniger als 68 m² | 68 - 84 m² | Mehr als 84 m² | Weniger als 68 m² | 68 - 84 m² | Mehr als 84 m²
+Eisenstadt(Stadt) | 2 505 | 2 074 | 2 115 | 2 335 | 1 933 | 1 971 | 4 495 | 3 720 | 3 794
+Rust(Stadt) 7) | 2 349 | 2 349 | 2 349 | 2 310 | 2 310 | 2 310 | 3 973 | 3 973 | 3 973
+Eisenstadt-Umgebung 4) | 2 349 | 2 349 | 2 349 | 2 310 | 2 310 | 2 310 | 3 973 | 3 973 | 3 973
+Güssing 6) | 1 216 | 814 | 839 | 1 249 | 836 | 862 | 1 726 | 1 156 | 1 191
+Jennersdorf 5) | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335 | 1 335
+Mattersburg 3) | 2 431 | 1 506 | 1 466 | 2 431 | 1 506 | 1 466 | 3 072 | 1 903 | 1 853
+Neusiedl am See 3) | 4 214 | 2 691 | 2 820 | 4 214 | 2 691 | 2 820 | 4 001 | 2 554 | 2 677
+Oberpullendorf 5) | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344 | 1 344
+Oberwart 4) | 1 047 | 1 047 | 1 047 | 1 218 | 1 218 | 1 218 | 1 970 | 1 970 | 1 970
+Q: STATISTIK AUSTRIA. Ers
+Kärnten
+Durchschnittspreise Eigen
+Wohnfläche nach Baujahr
+Bezirke | Bis 1960 | 1961-1990 | Ab 1991
+Weniger als 59 m² | 59 - 81 m² | Mehr als 81 m² | Weniger als 59 m² | 59 - 81 m² | Mehr als 81 m² | Weniger als 59 m² | 59 - 81 m² | Mehr als 81 m²
+Klagenfurt Stadt | 2 523 | 2 185 | 2 159 | 2 571 | 2 226 | 2 199 | 3 801 | 3 291 | 3 252
+Villach Stadt | 2 335 | 2 132 | 1 988 | 2 589 | 2 363 | 2 204 | 3 692 | 3 370 | 3 142
+Hermagor 4) | 1 415 | 1 415 | 1 415 | 1 884 | 1 884 | 1 884 | 3 593 | 3 593 | 3 593
+Klagenfurt Land | 2 391 | 2 113 | 1 905 | 2 581 | 2 280 | 2 056 | 3 300 | 2 916 | 2 629
+Sankt Veit an der Glan | 1 250 | 1 334 | 1 167 | 1 124 | 1 200 | 1 049 | 1 912 | 2 040 | 1 784
+Spittal an der Drau | 2 439 | 2 121 | 1 979 | 2 866 | 2 492 | 2 325 | 4 013 | 3 490 | 3 256
+Villach Land | 2 646 | 2 305 | 2 318 | 3 020 | 2 630 | 2 645 | 3 593 | 3 129 | 3 147
+Völkermarkt | 1 395 | 1 274 | 1 130 | 1 684 | 1 538 | 1 363 | 2 296 | 2 096 | 1 858
+Wolfsberg | 1 330 | 1 272 | 1 193 | 1 788 | 1 709 | 1 603 | 2 297 | 2 197 | 2 060
+Feldkirchen 3) | 2 353 | 2 049 | 1 963 | 2 353 | 2 049 | 1 963 | 3 571 | 3 109 | 2 979
+Durchschnittspreise Eigen
+Wohnfläche nach Baujahr
+Bezirke | Bis 1960 | 1961-1990 | Ab 1991
+Weniger als 59 m² | 59 - 81 m² | Mehr als 81 m² | Weniger als 59 m² | 59 - 81 m² | Mehr als 81 m² | Weniger als 59 m² | 59 - 81 m² | Mehr als 81 m²
+Klagenfurt Stadt | 3 203 | 2 774 | 2 740 | 2 720 | 2 355 | 2 327 | 4 882 | 4 228 | 4 177
+Villach Stadt | 3 147 | 2 872 | 2 679 | 3 233 | 2 951 | 2 752 | 4 798 | 4 380 | 4 084
+Hermagor 4) | 2 593 | 2 593 | 2 593 | 2 797 | 2 797 | 2 797 | 8 183 | 8 183 | 8 183
+Klagenfurt Land | 3 347 | 2 958 | 2 667 | 3 792 | 3 350 | 3 020 | 6 036 | 5 333 | 4 809
+Sankt Veit an der Glan | 957 | 1 021 | 893 | 1 259 | 1 343 | 1 175 | 2 724 | 2 906 | 2 542
+Spittal an der Drau | 3 234 | 2 812 | 2 624 | 3 250 | 2 826 | 2 637 | 5 931 | 5 157 | 4 811
+Villach Land | 4 530 | 3 945 | 3 968 | 4 153 | 3 617 | 3 638 | 5 357 | 4 666 | 4 692
+Völkermarkt | 2 805 | 2 561 | 2 271 | 4 235 | 3 867 | 3 429 | 4 208 | 3 842 | 3 407
+Wolfsberg | 1 796 | 1 717 | 1 610 | 1 726 | 1 650 | 1 548 | 3 369 | 3 222 | 3 021
+Feldkirchen 3) | 3 056 | 2 660 | 2 549 | 3 056 | 2 660 | 2 549 | 4 827 | 4 202 | 4 027
 
-===== DE AK OGA
-https://www.immobilienmarktbericht-deutschland.info/: 46294 bytes, 4 links
+===== SI 0419030S
+House sales by DWELLINGS, QUARTER and MEASURES
+  STANOVANJSKE NEPREMIČNINE DWELLINGS [('1', '1 Dwellings - TOTAL'), ('1.1', '1.1 Newly built dwellings'), ('1.1.1', '1.1.1 Newly built flats'), ('1.1.2', '1.1.2 Newly built family houses'), ('1.2', '1.2 Existing dwellings'), ('1.2.1', '1.2.1 Existing flats, Slovenia'), ('1.2.1.1', '1.2.1.1 Existing flats, Ljubljana municipality'), ('1.2.1.2', '1.2.1.2 Existing flats, rest of Slovenia (without the municipality of Ljubljana and Maribor)'), ('1.2.1.3', '1.2.1.3 Existing flats, Maribor municipality'), ('1.2.2', '1.2.2 Existing family houses')] 10
+  ČETRTLETJE QUARTER [('2010Q1', '2010Q1'), ('2010Q2', '2010Q2'), ('2010Q3', '2010Q3'), ('2010Q4', '2010Q4'), ('2011Q1', '2011Q1'), ('2011Q2', '2011Q2'), ('2011Q3', '2011Q3'), ('2011Q4', '2011Q4'), ('2012Q1', '2012Q1'), ('2012Q2', '2012Q2'), ('2012Q3', '2012Q3'), ('2012Q4', '2012Q4'), ('2013Q1', '2013Q1'), ('2013Q2', '2013Q2'), ('2013Q3', '2013Q3')] 66
+  MERITVE MEASURES [('1', 'Number of transactions'), ('2', 'Value of housing transactions (EUR)')] 2
+
+===== HR new dwellings page
+https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/: 195240 bytes, 0 matches
+
+===== HR house price page
+https://podaci.dzs.hr/en/statistics/prices/house-price-indices/: 241110 bytes, 0 matches
+
+===== DE AKOGA data
+https://redaktion-akoga.niedersachsen.de/startseite/download/daten_der_immobilienmarktberichte/download-daten-des-immobilienmarktberichtes-201850.html: 24931 bytes, 49 matches
+   #
+   //www.niedersachsen.de
+   /assets/css/csscol0.css
+   /assets/fonts/open-sans.css?v=1604497185
+   /assets/js/accessible-slick-1.0.1/slick/slick.min.css?v=1753091345
+   /barrierefreiheit
+   /bildrechte
+   /live/privacypage.php
+   https://redaktion-akoga.niedersachsen.de/download/178009
+   https://redaktion-akoga.niedersachsen.de/download/202358
+   https://redaktion-akoga.niedersachsen.de/download/224078
+   https://redaktion-akoga.niedersachsen.de/download/224079
+   https://redaktion-akoga.niedersachsen.de/download/224081
+   https://redaktion-akoga.niedersachsen.de/gutachterausschuesse/allgemeines/gutachterausschusse-72276.html
+   https://redaktion-akoga.niedersachsen.de/gutachterausschuesse/arbeitskreis_ga_oga/arbeitskreis-der-oberen-gutachterausschusse-zentralen-geschaftsstellen-und-gutachterausschusse-in-der-bundesrepublik-deutschland-ak-oga-105539.html
+   https://redaktion-akoga.niedersachsen.de/gutachterausschuesse/aufgaben/aufgaben-der-gutachterausschuesse-72297.html
+   https://redaktion-akoga.niedersachsen.de/gutachterausschuesse/kaufpreissammlung/kaufpreissammlung-72286.html
+   https://redaktion-akoga.niedersachsen.de/gutachterausschuesse/kontakt/kontakt-72291.html
+   https://redaktion-akoga.niedersachsen.de/immobilienmarktbericht_deutschland/inhalte_und_autoren/immobilienmarktbericht-deutschland-2025-inhalte-autorenschaft-redaktion-206872.html
+   https://redaktion-akoga.niedersachsen.de/immobilienmarktbericht_deutschland/zielsetzung/immobilienmarktbericht-deutschland-zielsetzung-72295.html
+   https://redaktion-akoga.niedersachsen.de/service/impressum-248342.html
+   https://redaktion-akoga.niedersachsen.de/service/links/links-72294.html
+   https://redaktion-akoga.niedersachsen.de/startseite/
    https://redaktion-akoga.niedersachsen.de/startseite/download/berichte/
    https://redaktion-akoga.niedersachsen.de/startseite/download/berichte/download-berichte-201849.html
    https://redaktion-akoga.niedersachsen.de/startseite/download/daten_der_immobilienmarktberichte
    https://redaktion-akoga.niedersachsen.de/startseite/download/daten_der_immobilienmarktberichte/download-daten-des-immobilienmarktberichtes-201850.html
+   https://redaktion-akoga.niedersachsen.de/startseite/download/daten_der_immobilienmarktberichtedownload-daten-des-immobilienmarktberichtes-201850.html
+   https://redaktion-akoga.niedersachsen.de/startseite/publikationen/
+   https://redaktion-akoga.niedersachsen.de/startseite/service/kontakt_redaktionsstelle/kontakt-redaktionsstelle-242988.html
+   https://redaktion-akoga.niedersachsen.de/startseite/service/online_dienste/bodenrichtwerte/bodenrichtwerte-online-72280.html
+   https://redaktion-akoga.niedersachsen.de/startseite/service/online_dienste/grundstucksmarktberichte/grundstuecksmarktberichte---online-72278.html
+   https://redaktion-akoga.niedersachsen.de/startseite/service/pressedokumente/medieninformationen-207090.html
+   https://tableau.bbsr.bund.de/t/bbr/views/Landing_Page/Start
+   https://www.dienstleisterportal.niedersachsen.de
+   https://www.mf.niedersachsen.de
+   https://www.mi.niedersachsen.de
+   https://www.mj.niedersachsen.de
+   https://www.mk.niedersachsen.de
+   https://www.ml.niedersachsen.de
+   https://www.mp.niedersachsen.de
+   https://www.ms.niedersachsen.de
+   https://www.mw.niedersachsen.de
+   https://www.mwk.niedersachsen.de
+   https://www.niedersachsen.de
+   https://www.niedersachsen.de/bildrechte
+   https://www.service.niedersachsen.de
+   https://www.stk.niedersachsen.de
+   https://www.umwelt.niedersachsen.de
 
-===== IT OMI
-https://www.agenziaentrate.gov.it/portale/web/guest/schede/fabbricatiterreni/omi/banche-dati/quotazioni-immobiliari: 116357 bytes, 0 links
+===== CZ CZSO search
+FAIL HTTPError: HTTP Error 404: Not Found
 
-===== GR BoG
-FAIL HTTPError: HTTP Error 403: Forbidden
+===== CZ CZSO EN
+FAIL HTTPError: HTTP Error 404: Not Found
 
-===== RO INS
-FAIL URLError: <urlopen error [Errno 101] Network is unreachable>
+===== EE Maa-amet
+FAIL HTTPError: HTTP Error 503: Service Unavailable
+
+===== ES notaries
+FAIL HTTPError: HTTP Error 404: 
+
+===== DK Finans Danmark
+https://finansdanmark.dk/tal-og-data/boligstatistik/: 66281 bytes, 18 matches
+   /gode-raad/koeb-af-bolig/
+   /tal-og-data/boligstatistik/
+   /tal-og-data/boligstatistik/boligmarkedsstatistikken/
+   /tal-og-data/boligstatistik/boligudbudsstatistik/
+   /tal-og-data/boligstatistik/definitioner-og-metode/
+   /tal-og-data/boligstatistik/laanetilbud/
+   /tal-og-data/boligstatistik/obligationsrenter/
+   /tal-og-data/boligstatistik/omregningskurstabeller/
+   /tal-og-data/boligstatistik/overtagne-ejendomme/
+   /tal-og-data/boligstatistik/restancer/
+   /tal-og-data/boligstatistik/udgivelseskalender-for-statistikker/
+   /tal-og-data/boligstatistik/udlaansstatistik/
+   /tal-og-data/investeringsfondsstatistikker/active-share-and-tracking-error/
+   /tal-og-data/investeringsfondsstatistikker/afkast-risiko-og-omkostninger/
+   /tal-og-data/investeringsfondsstatistikker/forklaring-til-statistikker/
+   /tal-og-data/investeringsfondsstatistikker/lukkede-fonde/
+   /tal-og-data/investeringsfondsstatistikker/statistikker-i-excel/
+   http://www.dst.dk/da/Statistik
+
+===== BG infostat
+https://infostat.nsi.bg/infostat/pages/module.jsf?x_2=223: 45567 bytes, 0 matches
