@@ -152,16 +152,11 @@ def ssb_regions():
 
 def fi_tables():
     base = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/"
-    for t in json.loads(fetch(base)):
-        print(t.get("id"), "|", t.get("text"))
-        if not t.get("id", "").endswith(".px"):
-            continue
-        try:
-            m = json.loads(fetch(base + t["id"]))
-            for v in m["variables"]:
-                print("    ", v["code"], v["text"], len(v["values"]), v["valueTexts"][:25])
-        except Exception as e:  # noqa: BLE001
-            print("    FAIL", e)
+    for t in ("13mw.px", "15is.px"):
+        m = json.loads(fetch(base + t))
+        for v in m["variables"]:
+            if not v["code"].startswith("timeperiod"):
+                print(t, v["code"], list(zip(v["values"], v["valueTexts"])))
 
 
 show("Statistics Finland flat price tables by region", fi_tables)
