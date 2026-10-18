@@ -120,7 +120,7 @@ function renderValue() {
 const BLUES = ['#DCE8F8', '#B4CDF0', '#86AEE6', '#5B8FD9', '#2F6FC4', '#1A4F96'];
 const METRICS = {
   m2: { title: 'Price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2000, 2500, 3000, 3500], colors: BLUES },
-  n1: { title: 'Price change in 1 year', get: k => DATA.countries[k]?.nominal['1y'], fmt: v => pct(v, 1), bins: [0, 3, 6, 9, 12], colors: ['#F2C9C4', ...BLUES.slice(1)] },
+  n1: { title: 'Price change in 1 year', get: k => DATA.countries[k]?.nominal['1y'], fmt: v => pct(v, 1), sfmt: v => pct(v, 0), bins: [0, 3, 6, 9, 12], colors: ['#F2C9C4', ...BLUES.slice(1)] },
   n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: ['#F2C9C4', ...BLUES.slice(1)] },
   n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: ['#F2C9C4', ...BLUES.slice(1)] },
   val: { title: 'Cheap or expensive against incomes and rents', get: k => DATA.countries[k]?.valuation, fmt: v => pct(v, 0),
@@ -141,8 +141,9 @@ function renderMap() {
   paths.sort((a, b) => a.includes(' sel') - b.includes(' sel'));
   $('map').innerHTML = `<svg viewBox="0 0 ${MAP.w} ${MAP.h}">${paths.join('')}</svg>`;
   const edges = [null, ...m.bins];
+  const f = m.sfmt || m.fmt;
   $('map-scale').innerHTML = m.colors.map((col, i) => `<span><i style="background:${col}"></i>${m.words ? m.words[i]
-    : i === 0 ? `under ${m.fmt(m.bins[0])}` : i === m.bins.length ? `${m.fmt(m.bins[i - 1])}+` : `${m.fmt(edges[i])} to ${m.fmt(m.bins[i])}`}</span>`).join('')
+    : i === 0 ? `under ${f(m.bins[0])}` : i === m.bins.length ? `${f(m.bins[i - 1])}+` : `${f(edges[i])} to ${f(m.bins[i])}`}</span>`).join('')
     + `<span><i style="background:var(--card2);border:1px solid var(--line2)"></i>no data</span>`;
 }
 
