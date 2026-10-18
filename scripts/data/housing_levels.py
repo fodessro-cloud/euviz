@@ -90,12 +90,22 @@ def france():
             nation = v
         elif lvl == "departement":
             deps.append((r["libelle_geo"], v, n))
-        elif lvl == "commune" and n >= 3000:
-            cities.append((r["libelle_geo"], v, n))
+        elif lvl == "commune":
+            # Paris, Marseille and Lyon come as arrondissements: fold them into the city.
+            name = re.sub(r" \d+(er|e) Arrondissement$", "", r["libelle_geo"])
+            cities.append((name, v, n))
     print(f"  FR levels: {levels}")
     if not nation:  # no national row: sales-weighted median of departments is close enough
         tot = sum(n for *_, n in deps)
         nation = sum(v * n for _, v, n in deps) / tot
+    by_city = {}
+    for name, v, n in cities:
+        by_city.setdefault(name, []).append((v, n))
+    cities = []
+    for name, parts in by_city.items():
+        n = sum(x for _, x in parts)
+        if n >= 3000:  # sales-weighted across arrondissements
+            cities.append((name, sum(v * x for v, x in parts) / n, n))
     cities.sort(key=lambda c: -c[2])
     return {"eur": round(nation), "unit": "m2", "basis": "sale", "period": "last 5 years",
             "what": "flats and houses, median sale price",
@@ -120,7 +130,7 @@ def pxweb(base, table, query):
 
 def finland():
     base = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/"
-    meta = json.loads(text(f"{base}statfin_ashi_pxt_13mx.px"))
+    meta = json.loads(text(f"{base}13mx.px"))
     print("  FI 13mx variables: " + "; ".join(f"{v['code']} {v['text']} {v['valueTexts'][:6]} ({len(v['values'])})" for v in meta["variables"]))
     var = {v["code"]: v for v in meta["variables"]}
     year = [v for v in meta["variables"] if v.get("time") or v["code"].lower() in ("vuosi", "year")][0]
@@ -133,7 +143,7 @@ def finland():
             continue
         tot = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"total|all|yhteensä", t, re.I)), v["values"][0])
         q.append({"code": code, "selection": {"filter": "item", "values": [tot]}})
-    rows = [(lab, val) for lab, _, val in pxweb(base, "statfin_ashi_pxt_13mx.px", q) if val]
+    rows = [(lab, val) for lab, _, val in pxweb(base, "13mx.px", q) if val]
     area = next(k for k in rows[0][0] if k.lower() in ("alue", "region", "kunta", "municipality", "area"))
     whole = next((v for lab, v in rows if re.search(r"whole country|koko maa", lab[area], re.I)), None)
     big = ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyväskylä", "Kuopio", "Lahti", "Pori"]
@@ -162,9 +172,17 @@ def portugal():
 
 
 def spain():
-    rows = list(csv.DictReader(io.StringIO(text("https://cdn.mivau.gob.es/portal-web-mivau/Datos_MIVAU/CSV/VDP006_01.csv", enc="latin-1")), delimiter=";"))
-    rows = [r for r in rows if r.get("Régimen", r.get("RÃ©gimen", "")).startswith("Libre") or "Libre" in str(r.values())]
-    key = lambda r: (int(r["Año" if "Año" in r else next(k for k in r if k.startswith("A"))]), int(r["Trimestre"]))
+    raw = fetch("https://cdn.mivau.gob.es/portal-web-mivau/Datos_MIVAU/CSV/VDP006_01.csv")
+    try:
+        body = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        body = raw.decode("latin-1")
+    rows = list(csv.DictReader(io.StringIO(body), delimiter=";"))
+    cols = list(rows[0])
+    print(f"  ES columns: {cols}")
+    year_col, reg_col = cols[0], cols[3]
+    rows = [r for r in rows if (r.get(reg_col) or "").startswith("Libre")]
+    key = lambda r: (int(r[year_col]), int(r["Trimestre"]))
     rows = [r for r in rows if num(r["Valor"])]
     last = max(key(r) for r in rows)
     now = [r for r in rows if key(r) == last]
@@ -194,10 +212,9 @@ def hungary():
             break  # next block (new dwellings) starts
         if len(r) > col and num(r[col]):
             second.append((r[0], r[1], num(r[col]) * 1000 / rate))
-    print("  HU rows: " + "; ".join(f"{a}/{b}" for a, b, _ in second if b not in ("towns", "villages", "county seats")))
-    nat = next((v for a, b, v in second if re.search(r"country|hungary|total", a, re.I)), None)
+    nat = next((v for a, b, v in second if a == "Country" and b == "total"), None)
     regions = [region("Budapest" if a == "Budapest" else f"{a}, county seats", v) for a, b, v in second
-               if a == "Budapest" or b == "county seats"]
+               if a == "Budapest" or (b == "county seats" and a != "Country")]
     return {"eur": round(nat) if nat else None, "unit": "m2", "basis": "sale", "period": year,
             "what": "second-hand dwellings, average sale price", "currency": "HUF", "rate": round(rate, 2),
             "source": "Hungarian Central Statistical Office (KSH)", "url": "https://www.ksh.hu/stadat_files/lak/en/lak0025.html",
