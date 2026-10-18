@@ -195,7 +195,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
     <div class="h-card i-eu"><div class="h-table-wrap"><table style="min-width:0">
       <thead><tr><th>Measure</th><th class="r">{esc(name)}</th><th class="r">Rank, highest first</th></tr></thead>
       <tbody>{"".join(ranks)}</tbody></table></div>
-      <p class="h-note">Flat prices per m² come from each country's own official source; see the note above each figure.
+      <p class="h-note">Price per m² compares countries' own official figures, which differ in method; see the note above each figure.
       The valuation compares each country with its own past, not with other countries. <a href="/property/undervalued">How it works</a>.</p></div>
   </section>''' if ranks and code != EU else ''
 
