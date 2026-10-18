@@ -248,9 +248,10 @@ def hungary():
 
 def luxembourg():
     d = json.loads(text("https://data.public.lu/api/1/datasets/57f26768cc765e23279433b0/"))
-    res = max(d["resources"], key=lambda r: r.get("created_at") or r.get("last_modified") or "")
+    # Newest file first; its name carries the quarter (…-2026t2.xls) or the year.
+    res = max(d["resources"], key=lambda r: re.search(r"(\d{4})(t\d)?\.xls", r["url"]).group(0) if re.search(r"(\d{4})(t\d)?\.xls", r["url"]) else "")
     rows = next(iter(sheets(fetch(res["url"])).values()))
-    head = next(i for i, r in enumerate(rows) if r and str(r[0]).strip() == "Commune")
+    head = next(i for i, r in enumerate(rows) if r and str(r[0] or "").strip().lower() == "commune")
     communes, total = [], None
     for r in rows[head + 1:]:
         name, n, v = str(r[0] or "").strip(), num(r[1]), r[2]
