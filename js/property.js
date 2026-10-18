@@ -121,8 +121,8 @@ function renderValue() {
 // ── Map of Europe ─────────────────────────────────────
 // Bins and colours per metric; prices and changes read light to dark, "cheap or expensive" too, always light to dark.
 // Cheap to dear reads green to red, like a heat map; price falls (below zero) in blue.
-// Two logo colours in shades, light to dark: cheapest pale gold, most expensive darkest navy (Lub, 2026-10-18).
-const HEAT = ['#F8EBC4', '#EFC75E', '#C9A23A', '#5B78B0', '#2E4A7D', '#0F1B33'];
+// Two logo colours in shades, light to dark: cheapest pale gold, most expensive darkest blue (no near-black) (Lub, 2026-10-18).
+const HEAT = ['#F8EBC4', '#EFC75E', '#C9A23A', '#8AA2CF', '#5677B4', '#2F4F8A'];
 const FALL = HEAT[0];
 const METRICS = {
   m2: { title: 'Flat price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2500, 3500, 5000, 7000], colors: HEAT, areas: true },
@@ -130,7 +130,7 @@ const METRICS = {
   n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: [FALL, ...HEAT.slice(1)] },
   n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: [FALL, ...HEAT.slice(1)] },
   val: { title: 'Cheap or expensive against incomes and rents', get: k => DATA.countries[k]?.valuation, fmt: v => pct(v, 0),
-    bins: [-15, -5, 5, 15], colors: ['#F8EBC4', '#EFC75E', '#A9B6CF', '#2E4A7D', '#0F1B33'], words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive'] },
+    bins: [-15, -5, 5, 15], colors: ['#F8EBC4', '#EFC75E', '#E6E9EF', '#8AA2CF', '#2F4F8A'], words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive'] },
 };
 const colorOf = (m, v) => m.colors[m.bins.filter(b => v >= b).length];
 
