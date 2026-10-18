@@ -41,24 +41,40 @@ def px_meta(url):
         print(" ", v["code"], v["text"], list(zip(v["values"], v["valueTexts"]))[:15], len(v["values"]))
 
 
-HREF = r'(?:href|src|data-[a-z-]+)="([^"]+)"'
-show("SK NBS export strings", lambda: grep("https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/", r"(?:export/[^\"'\s<]+|[^\"'\s<]+\.(?:csv|xlsx?))"))
-for kind in ("real-estate-price-by-type", "real-estate-price-by-flat-type", "real-estate-price-flats", "real-estate-price"):
-    show(f"SK NBS {kind}", lambda k=kind: print(fetch(f"https://nbs.sk/export/sk/{k}/csv")[:1500].decode("utf-8-sig", "replace")))
-show("HU KSH lak strings", lambda: grep("https://www.ksh.hu/stadat_eng?lang=en&theme=lak", r"[^\"'\s<>]*lak0\d+[^\"'\s<>]*"))
-show("NO SSB 06035 query", lambda: print(fetch("https://data.ssb.no/api/v0/en/table/06035", data=json.dumps({"query": [
-    {"code": "Region", "selection": {"filter": "item", "values": ["0", "0301", "4601", "5001", "1103"]}},
-    {"code": "Boligtype", "selection": {"filter": "item", "values": ["03"]}},
-    {"code": "ContentsCode", "selection": {"filter": "item", "values": ["KvPris"]}},
-    {"code": "Tid", "selection": {"filter": "top", "values": ["2"]}}], "response": {"format": "csv"}}).encode())[:1500].decode("utf-8", "replace")))
-show("AT Wohnungspreise2025", lambda: ods("https://www.statistik.at/fileadmin/pages/222/Wohnungspreise2025.ods", 60))
-show("SI 0419030S", lambda: px_meta("https://pxweb.stat.si/SiStatData/api/v1/en/Data/0419030S.px"))
-show("HR new dwellings page", lambda: grep("https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/", r'href="([^"]+\.(?:xlsx?|csv|pdf|px)[^"]*)"'))
-show("HR house price page", lambda: grep("https://podaci.dzs.hr/en/statistics/prices/house-price-indices/", r'href="([^"]+\.(?:xlsx?|csv|pdf|px)[^"]*)"'))
-show("DE AKOGA data", lambda: grep("https://redaktion-akoga.niedersachsen.de/startseite/download/daten_der_immobilienmarktberichte/download-daten-des-immobilienmarktberichtes-201850.html", r'href="([^"]+)"'))
-show("CZ CZSO search", lambda: grep("https://csu.gov.cz/vyhledavani?q=ceny%20byt%C5%AF", r'href="([^"]*(?:cen|byt)[^"]*)"'))
-show("CZ CZSO EN", lambda: grep("https://csu.gov.cz/prices-of-dwellings", r'href="([^"]+)"', 40))
-show("EE Maa-amet", lambda: grep("https://www.maaamet.ee/kinnisvara/htraru/FilterUI.aspx", r'(?:href|value)="([^"]+)"', 40))
-show("ES notaries", lambda: grep("https://www.notariado.org/portal/estad%C3%ADsticas", r'href="([^"]*(?:estad|precio|vivienda|xls|csv)[^"]*)"', 40))
-show("DK Finans Danmark", lambda: grep("https://finansdanmark.dk/tal-og-data/boligstatistik/", r'href="([^"]*(?:xls|csv|bolig|statistik)[^"]*)"', 40))
-show("BG infostat", lambda: grep("https://infostat.nsi.bg/infostat/pages/module.jsf?x_2=223", r'(?:href|title)="([^"]*(?:price|dwell|цени|жилищ)[^"]*)"', 40))
+
+
+def sniff(url):
+    b = fetch(url)
+    kind = "xlsx/zip" if b[:2] == b"PK" else "xls" if b[:4] == b"\xd0\xcf\x11\xe0" else "pdf" if b[:4] == b"%PDF" else "other"
+    print(url, kind, len(b))
+    if kind == "xlsx/zip":
+        z = zipfile.ZipFile(io.BytesIO(b))
+        names = z.namelist()
+        if "content.xml" in names:
+            return ods(url, 30)
+        from housing_levels import sheets
+        for name, rows in sheets(b).items():
+            print("--- sheet", name, len(rows))
+            for r in rows[:25]:
+                print(" | ".join(str(c)[:22] for c in r if c not in (None, "")))
+    elif kind == "other":
+        print(b[:400])
+
+
+def ods_text(url, n=12):
+    """First header lines of each sheet, untruncated."""
+    z = zipfile.ZipFile(io.BytesIO(fetch(url)))
+    x = z.read("content.xml").decode("utf-8")
+    for tab in re.findall(r'<table:table [^>]*table:name="([^"]+)".*?</table:table>', x, re.S)[:2]:
+        print("sheet", tab)
+    for row in re.findall(r"<table:table-row[^>]*>(.*?)</table:table-row>", x, re.S)[:n]:
+        print("  ", " | ".join(t for t in (re.sub(r"<[^>]+>", " ", c).strip() for c in re.findall(r"<table:table-cell[^>]*>(.*?)</table:table-cell>", row, re.S)) if t))
+
+
+show("AT Sonderauswertung", lambda: ods("https://www.statistik.at/fileadmin/pages/222/SonderauswertungImmobilienDurchschnittspreise.ods", 80))
+show("AT Wohnungspreise2025 headers", lambda: ods_text("https://www.statistik.at/fileadmin/pages/222/Wohnungspreise2025.ods"))
+for n in ("224078", "224079", "224081", "202358", "178009"):
+    show(f"DE AKOGA {n}", lambda n=n: sniff(f"https://redaktion-akoga.niedersachsen.de/download/{n}"))
+show("DK boligmarkedsstatistik", lambda: grep("https://finansdanmark.dk/tal-og-data/boligstatistik/boligmarkedsstatistikken/", r'href="([^"]*(?:xls|csv|media|download)[^"]*)"'))
+show("HR new dwellings any file", lambda: grep("https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/", r"[^\"'\s<>]+\.(?:xlsx?|csv|px|pdf)"))
+show("HU KSH lak0025 neighbours", lambda: [print(t, fetch(f"https://www.ksh.hu/stadat_files/lak/en/{t}.csv")[:600].decode("utf-8-sig", "replace")) for t in ("lak0024", "lak0026", "lak0027", "lak0028")])
