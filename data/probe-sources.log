@@ -1,10 +1,66 @@
 
-===== Statistics Finland flat price tables by region
-13mw.px alue_43_20220407 [('ksu', 'Whole country'), ('pks', 'Greater Helsinki'), ('msu', 'Whole country excluding Greater Helsinki'), ('kas', 'Major cities (total)'), ('muu', 'Whole country excluding major cities'), ('MK01', 'Uusimaa'), ('091', 'Helsinki'), ('091-1', 'Helsinki 1'), ('091-2', 'Helsinki 2'), ('091-3', 'Helsinki 3'), ('091-4', 'Helsinki 4'), ('049', 'Espoo-Kauniainen'), ('049-1', 'Espoo-Kauniainen 1'), ('049-2', 'Espoo-Kauniainen 2'), ('049-3', 'Espoo-Kauniainen 3'), ('092', 'Vantaa'), ('092-1', 'Vantaa 1'), ('092-2', 'Vantaa 2'), ('092-3', 'Vantaa 3'), ('sat', 'Satellite municipalities'), ('638', 'Porvoo'), ('106', 'Hyvinkää'), ('186', 'Järvenpää'), ('245', 'Kerava'), ('MK02', 'Varsinais-Suomi'), ('853', 'Turku'), ('853-1', 'Turku 1'), ('853-2', 'Turku 2'), ('853-3', 'Turku 3'), ('MK04', 'Satakunta'), ('609', 'Pori'), ('609-1', 'Pori 1'), ('609-2', 'Pori 2'), ('684', 'Rauma'), ('MK05', 'Kanta-Häme'), ('109', 'Hämeenlinna'), ('109-1', 'Hämeenlinna 1'), ('109-2', 'Hämeenlinna 2'), ('694', 'Riihimäki'), ('MK06', 'Pirkanmaa'), ('837', 'Tampere'), ('837-1', 'Tampere 1'), ('837-2', 'Tampere 2'), ('837-3', 'Tampere 3'), ('MK07', 'Päijät-Häme'), ('398', 'Lahti'), ('398-1', 'Lahti 1'), ('398-2', 'Lahti 2'), ('MK08', 'Kymenlaakso'), ('285', 'Kotka'), ('285-1', 'Kotka 1'), ('285-2', 'Kotka 2'), ('286', 'Kouvola'), ('MK09', 'South Karelia'), ('405', 'Lappeenranta'), ('405-1', 'Lappeenranta 1'), ('405-2', 'Lappeenranta 2'), ('MK10', 'Etelä-Savo'), ('491', 'Mikkeli'), ('MK11', 'Pohjois-Savo'), ('297', 'Kuopio'), ('297-1', 'Kuopio 1'), ('297-2', 'Kuopio 2'), ('MK12', 'Northern Karelia'), ('167', 'Joensuu'), ('167-1', 'Joensuu 1'), ('167-2', 'Joensuu 2'), ('MK13', 'Central Finland'), ('179', 'Jyväskylä'), ('179-1', 'Jyväskylä 1'), ('179-2', 'Jyväskylä 2'), ('MK14', 'Southern Ostrobothnia'), ('743', 'Seinäjoki'), ('MK15', 'Ostrobothnia'), ('905', 'Vaasa'), ('905-1', 'Vaasa 1'), ('905-2', 'Vaasa 2'), ('MK16', 'Central Ostrobothnia'), ('272', 'Kokkola'), ('MK17', 'Northern Ostrobothnia'), ('564', 'Oulu'), ('564-1', 'Oulu 1'), ('564-2', 'Oulu 2'), ('MK18', 'Kainuu'), ('205', 'Kajaani'), ('MK19', 'Lapland'), ('698', 'Rovaniemi')]
-13mw.px talotyyppi_6_20131021 [('1', 'Blocks of flats, one-room flat'), ('2', 'Blocks of flats, two-room flat'), ('3', 'Blocks of flats, three-room flat+'), ('4', 'Blocks of flats total'), ('5', 'Terraced houses total'), ('6', 'Building types total')]
-13mw.px vuokratontti_1_20191126 [('0', 'Own plot'), ('1', 'Rented plot'), ('2', 'Plot forms in total')]
-13mw.px contentscode [('keskihinta_aritm', 'Price per square meter (EUR/m2)'), ('lkm_julk19', 'Number of sales, asset transfer tax data, until 2019'), ('lkm_julk20', 'Number of sales, asset transfer tax data starting from 2020')]
-15is.px alue_43_20260625 [('SSS', 'WHOLE COUNTRY'), ('pks', 'Greater Helsinki'), ('msu', 'Whole country excluding Greater Helsinki'), ('kas', 'Major cities'), ('muu', 'Whole country excluding major cities'), ('MK01', 'MK01 Uusimaa'), ('091', 'Helsinki'), ('091-1', 'Helsinki 1'), ('091-2', 'Helsinki 2'), ('091-3', 'Helsinki 3'), ('091-4', 'Helsinki 4'), ('049', 'Espoo-Kauniainen'), ('049-1', 'Espoo-Kauniainen 1'), ('049-2', 'Espoo-Kauniainen 2'), ('049-3', 'Espoo-Kauniainen 3'), ('092', 'Vantaa'), ('092-1', 'Vantaa 1'), ('092-2', 'Vantaa 2'), ('092-3', 'Vantaa 3'), ('keh', 'Satellite municipalities'), ('638', 'Porvoo'), ('106', 'Hyvinkää'), ('186', 'Järvenpää'), ('245', 'Kerava'), ('MK02', 'MK02 Varsinais-Suomi'), ('853', 'Turku'), ('853-1', 'Turku 1'), ('853-2', 'Turku 2'), ('853-3', 'Turku 3'), ('MK04', 'MK04 Satakunta'), ('609', 'Pori'), ('609-1', 'Pori 1'), ('609-2', 'Pori 2'), ('684', 'Rauma'), ('MK05', 'MK05 Kanta-Häme'), ('109', 'Hämeenlinna'), ('109-1', 'Hämeenlinna 1'), ('109-2', 'Hämeenlinna 2'), ('694', 'Riihimäki'), ('MK06', 'MK06 Pirkanmaa'), ('837', 'Tampere'), ('837-1', 'Tampere 1'), ('837-2', 'Tampere 2'), ('837-3', 'Tampere 3'), ('MK07', 'MK07 Päijät-Häme'), ('398', 'Lahti'), ('398-1', 'Lahti 1'), ('398-2', 'Lahti 2'), ('MK08', 'MK08 Kymenlaakso'), ('285', 'Kotka'), ('285-1', 'Kotka 1'), ('285-2', 'Kotka 2'), ('286', 'Kouvola'), ('MK09', 'MK09 South Karelia'), ('405', 'Lappeenranta'), ('405-1', 'Lappeenranta 1'), ('405-2', 'Lappeenranta 2'), ('MK10', 'MK10 Etelä-Savo'), ('491', 'Mikkeli'), ('MK11', 'MK11 Pohjois-Savo'), ('297', 'Kuopio'), ('297-1', 'Kuopio 1'), ('297-2', 'Kuopio 2'), ('MK12', 'MK12 Northern Karelia'), ('167', 'Joensuu'), ('167-1', 'Joensuu 1'), ('167-2', 'Joensuu 2'), ('MK13', 'MK13 Central Finland'), ('179', 'Jyväskylä'), ('179-1', 'Jyväskylä 1'), ('179-2', 'Jyväskylä 2'), ('MK14', 'MK14 Southern Ostrobothnia'), ('743', 'Seinäjoki'), ('MK15', 'MK15 Ostrobothnia'), ('905', 'Vaasa'), ('905-1', 'Vaasa 1'), ('905-2', 'Vaasa 2'), ('MK16', 'MK16 Central Ostrobothnia'), ('272', 'Kokkola'), ('MK17', 'MK17 Northern Ostrobothnia'), ('564', 'Oulu'), ('564-1', 'Oulu 1'), ('564-2', 'Oulu 2'), ('MK18', 'MK18 Kainuu'), ('205', 'Kajaani'), ('MK19', 'MK19 Lapland'), ('698', 'Rovaniemi')]
-15is.px talotyyppi_5_20111209 [('0', 'Building types total'), ('1', 'Terraced houses'), ('3', 'Blocks of flats')]
-15is.px huoneluku_1_20111212 [('00', 'Total'), ('01', 'One-room flat'), ('02', 'Two-room flat'), ('03', 'Three-room flat+')]
-15is.px contentscode [('ashivq_indeksi_2025', 'Price index of old dwellings in housing companies (2025=100)'), ('ashivq_indeksi_nmuutos_2025', 'Quarterly change of price index (2025=100) of old dwellings in housing companies, %'), ('ashivq_indeksi_vmuutos_2025', 'Annual change of price index (2025=100) of old dwellings in housing companies, %'), ('ashivq_realindeksi_2025', 'Real price index of old dwellings in housing companies (2025=100)'), ('ashivq_realindeksi_nmuutos_2025', 'Quarterly change of real price index (2025=100) of old dwellings in housing companies, %'), ('ashivq_realindeksi_vmuutos_2025', 'Annual change of real price index (2025=100) of old dwellings in housing companies, %'), ('ashivq_keskineliohinta', 'Average price per square metre of old dwellings in housing companies (eur/m2)'), ('ashivq_kauppamaara_vvero', 'Number of transactions of old dwellings in housing companies from asset transfer tax data')]
+===== Portugal INE regions
+August 2026 1041 keys ['geocod', 'geodsg', 'dim_3', 'dim_3_t', 'sinal_conv', 'sinal_conv_desc', 'ind_string']
+1B Península de Setúbal 2864
+1B0 Península de Setúbal 2864
+1C Alentejo 1771
+1C1 Alentejo Litoral 2508
+3 Região Autónoma da Madeira 2911
+30 Região Autónoma da Madeira 2911
+300 Região Autónoma da Madeira 2911
+11E Terras de Trás-os-Montes 1281
+1C4 Alentejo Central 2067
+1D Oeste e Vale do Tejo 1963
+1D1 Oeste 2279
+192 Região de Coimbra 1984
+193 Região de Leiria 1694
+1A Grande Lisboa 3487
+1A0 Grande Lisboa 3487
+1D2 Médio Tejo 1657
+194 Viseu Dão Lafões 1496
+11B Alto Tâmega e Barroso 1303
+195 Beira Baixa 1276
+1D3 Lezíria do Tejo 1932
+2 Região Autónoma dos Açores 2494
+20 Região Autónoma dos Açores 2494
+200 Região Autónoma dos Açores 2494
+196 Beiras e Serra da Estrela 1335
+11C Tâmega e Sousa 1640
+1 Continente 2650
+11 Norte 2223
+111 Alto Minho 1914
+112 Cávado 2107
+119 Ave 1801
+11A Área Metropolitana do Porto 2443
+15 Algarve 3010
+150 Algarve 3010
+19 Centro 1750
+191 Região de Aveiro 2005
+11D Douro 1524
+1C3 Alto Alentejo 1210
+PT Portugal 2655
+1C2 Baixo Alentejo 1501
+
+===== Slovakia NBS exports
+real-estate-price-by-region 11875
+﻿"Ceny nehnuteľností na bývanie podľa krajov v €/m2"
+
+"Rok, Štvrťrok";"SR spolu";BA;TT;NR;TN;ZA;BB;KE;PO
+"2Q 2026";"3 041,4123";"3 882,1571";"2 063,8961";"1 674,0713";"1 908,3343";"2 303,4211";"1 841,3390";"2 796,0716";"2 309,7950"
+"1Q 2026";"3 005,2500";"3 844,9670";"2 014,5442";"1 627,1946";"1 878,1761";"2 282,4596";"1 864,6673";"2 682,3243";"2 411,7708"
+2025;"2 799,4312";"3 598,2875";"1 945,1431";"1 500,7442";"1 719,8805";"2 048,7250";"1 692,8017";"2 468,9386";"2 128,5496"
+"4Q 2025";"2 906,3616";"3 730,6776";"1 981,6148";"1 588,9613";"1 787,2900";"2 180,2886";"1 744,1618";"2 607,7836";"2 171,8765"
+"3Q 2025";"2 814,0845";"3 627,7310";"1 943,5946";"1 521,9069";"1 743,4202";"2 046,4768";"1 708,0632";"2 410,6321";"2 179,3889"
+"2Q 2025";"2 777,3259";"3 548,6608";"1 935,2708";"1 502,7665";"1 690,0577";"2 038,2021";"1 714,3255";"2 508,4764";"2 177,5390"
+"1Q 2025";"2 699,9528";"3 486,0807";"1
+real-estate-price-by-type 14775
+﻿"Ceny nehnuteľností na bývanie podľa typu bytu a domu v €/m2"
+
+"Rok, Štvrťrok";"Byty spolu";1-izbové;2-izbové;3-izbové;4-izbové;"5-izbové a viac";"Domy a vily spolu";Dom;Vila;"SR spolu"
+"2Q 2026";"3 430,3676";"4 088,9462";"3 628,7541";"3 161,1908";"3 157,3762";"3 131,4591";"2 162,9123";0,0000;0,0000;"3 041,4123"
+"1Q 2026";"3 377,6921";"4 028,0110";"3 596,3144";"3 092,8614";"3 149,2015";"2 911,3095";"2 117,8958";0,0000;0,0000;"3 005,2500"
+2025;"3 148,3155";"3 666,6803";"3 343,6219";"2 892,5936";"2 933,3601";"2 881,6727";"2 092,3089";0,0000;0,0000;"2 799,4312"
+"4Q 2025";"3 262,4136";"3 819,4512";"3 464,7461";"3 015,0575";"3 049,7174";"2 974,8610";"2 138,9400";0,0000;0,0000;"2 906,3616"
+"3Q 2025";"3 176,6755";"3 750,3066";"3 362,0429";"2 914,0594";"2 944,0657";"2 984,6990";"2 101,1632";0,0000;0,0000;"2 814,0845"
+"2Q 2025";"3 113,1223";"3 615,2975";"3 312,8546";"2 853,9492";"2 872,2471";"2 
+real-estate-price FAIL HTTP Error 404: Not Found
