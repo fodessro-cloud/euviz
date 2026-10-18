@@ -1,14 +1,15 @@
 
 ===== Spain notaries and datos.gob.es
-https://www.penotariado.com/inmobiliario/: 52869 bytes, 4 matches
-   ('/inmobiliario/buscador-precio-vivienda', '')
-   ('/inmobiliario/herramientas-compraventa-vivienda', '')
-   ('/inmobiliario/manifest.json', '')
-   ('/inmobiliario/noticias-vivienda', '')
-https://www.notariado.org/portal/estadisticas FAIL HTTP Error 404: 
-https://www.penotariado.com/: 52869 bytes, 4 matches
-   ('/inmobiliario/buscador-precio-vivienda', '')
-   ('/inmobiliario/herramientas-compraventa-vivienda', '')
-   ('/inmobiliario/manifest.json', '')
-   ('/inmobiliario/noticias-vivienda', '')
-https://datos.gob.es/apidata/catalog/dataset/title/vivienda.json?_pageSize=50: 234756 bytes, 0 matches
+scripts ['/inmobiliario/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js', '/inmobiliario/_next/static/chunks/1255-ceafae87d72752c0.js', '/inmobiliario/_next/static/chunks/main-app-234525b5e3ddebfb.js', '/inmobiliario/_next/static/chunks/4051-09944c282b1ad324.js', '/inmobiliario/_next/static/chunks/6643-4b69bbb5163dba2e.js', '/inmobiliario/_next/static/chunks/8056-e7e1c88b10ee9be4.js', '/inmobiliario/_next/static/chunks/app/layout-9b23e12e065b5edb.js', '/inmobiliario/_next/static/chunks/d3501280-6c30f25b14610f09.js', '/inmobiliario/_next/static/chunks/c907fe73-ed2f49d45327b46f.js', '/inmobiliario/_next/static/chunks/c16f53c3-52c08eef8dba942f.js', '/inmobiliario/_next/static/chunks/6756-780cfb9c46f5d2cb.js', '/inmobiliario/_next/static/chunks/8984-f663daffe68cd086.js', '/inmobiliario/_next/static/chunks/4633-40ed79c87082b0d0.js', '/inmobiliario/_next/static/chunks/2094-015193f5699c47c6.js', '/inmobiliario/_next/static/chunks/2127-3ce513c69e542fc2.js', '/inmobiliario/_next/static/chunks/5775-d4a6aea2b51fe6b0.js', '/inmobiliario/_next/static/chunks/6405-1ce4a7d01aef1b61.js', '/inmobiliario/_next/static/chunks/375-11175504729d698e.js', '/inmobiliario/_next/static/chunks/4039-37f75b2a36d9c38a.js', '/inmobiliario/_next/static/chunks/4471-1cec8406d47b6bc6.js']
+/inmobiliario/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js 173025 []
+/inmobiliario/_next/static/chunks/1255-ceafae87d72752c0.js 174609 ['restore', 'restoreReducer']
+/inmobiliario/_next/static/chunks/main-app-234525b5e3ddebfb.js 525 []
+/inmobiliario/_next/static/chunks/4051-09944c282b1ad324.js 44664 []
+/inmobiliario/_next/static/chunks/6643-4b69bbb5163dba2e.js 399589 ['apirilaren']
+/inmobiliario/_next/static/chunks/8056-e7e1c88b10ee9be4.js 21058 []
+/inmobiliario/_next/static/chunks/app/layout-9b23e12e065b5edb.js 10046 ['https://www.ctnotariado.com/liferay/web/ancert/inicio', 'https://www.notariado.org/portal/', 'https://www.portalnotarial.es/']
+/inmobiliario/_next/static/chunks/d3501280-6c30f25b14610f09.js 117580 []
+/inmobiliario/_next/static/chunks/c907fe73-ed2f49d45327b46f.js 62403 []
+/inmobiliario/_next/static/chunks/c16f53c3-52c08eef8dba942f.js 10422 []
+/inmobiliario/_next/static/chunks/6756-780cfb9c46f5d2cb.js 343211 []
+/inmobiliario/_next/static/chunks/8984-f663daffe68cd086.js 11101 []
