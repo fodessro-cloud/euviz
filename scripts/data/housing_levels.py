@@ -292,6 +292,33 @@ def croatia():
 HR_URL = "/media/4neprvvo/msi-gradevinarstvo.xlsx"
 
 
+def czechia():
+    # ČSÚ: average purchase price per m² of flats from property-transfer records, by region; a new
+    # edition comes every three years (the next one covers 2026-2028).
+    book = sheets(fetch(CZ_URL))
+    rows = next(iter(book.values()))
+    head = next(r for r in rows if r and any(str(c).strip() == "Byty" for c in r if c))
+    years = rows[rows.index(head) + 1]
+    first = next(i for i, c in enumerate(head) if str(c or "").strip() == "Byty")
+    col = max(i for i in range(first, len(years)) if re.fullmatch(r"20\d\d", str(years[i] or "").strip()))
+    year = str(years[col]).strip()
+    rate = eur_rate("CZK", year)
+    vals = {str(r[0]).strip(): num(r[col]) / rate for r in rows if r and r[0] and len(r) > col and num(r[col])}
+    return {"eur": round(vals["Česko"]), "unit": "m2", "basis": "sale", "period": year,
+            "type": "flats", "what": "flats, sale prices from tax records", "currency": "CZK", "rate": round(rate, 2),
+            "source": "Czech Statistical Office (ČSÚ)", "url": "https://csu.gov.cz/pak/ceny-nemovitosti-v-pardubickem-kraji-v-letech-2023-az-2025",
+            "regions": sorted([region(en, vals[cz]) for cz, en in CZ_REGIONS.items() if cz in vals], key=lambda r: -r["eur"])}
+
+
+CZ_URL = "https://csu.gov.cz/docs/107823/0dc51dfa-22cd-d7b7-1dbb-29198fc9cf6a/Tab1_ceny_nemovitosti_kraje_okresy_2023_2025.xlsx?version=1.0"
+CZ_REGIONS = {"Hlavní město Praha": "Prague", "Brno-město": "Brno", "Ostrava-město": "Ostrava", "Plzeň-město": "Plzeň",
+              "Středočeský": "Central Bohemia", "Jihočeský": "South Bohemia", "Plzeňský": "Plzeň region",
+              "Karlovarský": "Karlovy Vary region", "Ústecký": "Ústí nad Labem region", "Liberecký": "Liberec region",
+              "Královéhradecký": "Hradec Králové region", "Pardubický": "Pardubice region", "Kraj Vysočina": "Vysočina",
+              "Vysočina": "Vysočina", "Jihomoravský": "South Moravia", "Olomoucký": "Olomouc region",
+              "Zlínský": "Zlín region", "Moravskoslezský": "Moravia-Silesia"}
+
+
 AT_STATES = {"Wien": "Vienna", "Niederösterreich": "Lower Austria", "Oberösterreich": "Upper Austria", "Kärnten": "Carinthia",
              "Steiermark": "Styria", "Tirol": "Tyrol", "Salzburg": "Salzburg", "Vorarlberg": "Vorarlberg", "Burgenland": "Burgenland"}
 
@@ -373,7 +400,8 @@ NO_AREAS = {"0": "Norway", "0301": "Oslo", "4601": "Bergen", "5001": "Trondheim"
 COUNTRIES = {"SK": ("Slovakia", slovakia), "FR": ("France", france), "FI": ("Finland", finland),
              "PT": ("Portugal", portugal), "ES": ("Spain", spain), "HU": ("Hungary", hungary),
              "LU": ("Luxembourg", luxembourg), "PL": ("Poland", poland), "NO": ("Norway", norway),
-             "AT": ("Austria", austria), "HR": ("Croatia", croatia)}
+             "AT": ("Austria", austria), "HR": ("Croatia", croatia),
+             "CZ": ("Czechia", czechia)}
 
 
 def main():
