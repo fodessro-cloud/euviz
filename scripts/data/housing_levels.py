@@ -398,7 +398,7 @@ def poland():
 
 def norway():
     # SSB 06035: freehold flats ("Multi-dwelling"), sale price per m², yearly, in NOK.
-    q = {"query": [{"code": "Region", "selection": {"filter": "item", "values": list(NO_AREAS)}},
+    q = {"query": [{"code": "Region", "selection": {"filter": "item", "values": list(NO_AREAS) + list(NO_COUNTIES)}},
                    {"code": "Boligtype", "selection": {"filter": "item", "values": ["03"]}},
                    {"code": "ContentsCode", "selection": {"filter": "item", "values": ["KvPris"]}},
                    {"code": "Tid", "selection": {"filter": "top", "values": ["1"]}}], "response": {"format": "json-stat2"}}
@@ -410,11 +410,16 @@ def norway():
     return {"eur": round(vals["0"]), "unit": "m2", "basis": "sale", "period": year,
             "type": "flats", "what": "freehold flats, sale prices", "currency": "NOK", "rate": round(rate, 2),
             "source": "Statistics Norway (SSB, CC BY 4.0)", "url": "https://www.ssb.no/en/statbank/table/06035",
-            "regions": sorted([region(NO_AREAS[k], v) for k, v in vals.items() if k != "0"], key=lambda r: -r["eur"])}
+            "regions": sorted([region(NO_AREAS[k], v) for k, v in vals.items() if k in NO_AREAS and k != "0"], key=lambda r: -r["eur"]),
+            "areas": {NO_COUNTIES[k]: round(v) for k, v in vals.items() if k in NO_COUNTIES}}
 
 
 NO_AREAS = {"0": "Norway", "0301": "Oslo", "4601": "Bergen", "5001": "Trondheim", "1103": "Stavanger",
             "3107": "Fredrikstad", "3301": "Drammen"}
+# Counties (fylker, 2024 borders) -> NUTS 2024 codes for the map.
+NO_COUNTIES = {"03": "NO081", "31": "NO083", "32": "NO084", "33": "NO085", "34": "NO020", "39": "NO093",
+               "40": "NO094", "42": "NO092", "11": "NO0A1", "46": "NO0A2", "15": "NO0A3", "50": "NO060",
+               "18": "NO071", "55": "NO072", "56": "NO073"}
 
 
 COUNTRIES = {"SK": ("Slovakia", slovakia), "FR": ("France", france), "FI": ("Finland", finland),
