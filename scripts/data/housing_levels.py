@@ -394,7 +394,8 @@ def luxembourg():
             "period": f"{period.group(1)}-Q{period.group(2)}, last 12 months" if period else res["title"],
             "what": "existing flats, sale prices from notarial deeds",
             "source": "Observatoire de l'Habitat (CC0)", "url": "https://data.public.lu/en/datasets/prix-de-vente-des-appartements-par-commune/",
-            "regions": sorted([region(n, v) for n, v, _ in communes[:12]], key=lambda r: -r["eur"])}
+            "regions": sorted([region(n, v) for n, v, _ in communes[:12]], key=lambda r: -r["eur"]),
+            "areas": {"LU00": round(total)}}  # the whole country is one map region
 
 
 def poland():
