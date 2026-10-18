@@ -150,13 +150,25 @@ def ssb_regions():
         print(h.get("id"), h.get("title"))
 
 
-def fi_tables():
-    base = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/"
-    for t in ("13mw.px", "15is.px"):
-        m = json.loads(fetch(base + t))
-        for v in m["variables"]:
-            if not v["code"].startswith("timeperiod"):
-                print(t, v["code"], list(zip(v["values"], v["valueTexts"])))
+def pt_regions():
+    d = json.loads(fetch("https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012248&lang=EN"))[0]
+    rows = d["Dados"][d["UltimoPref"]]
+    print(d["UltimoPref"], len(rows), "keys", list(rows[0]))
+    seen = set()
+    for r in rows:
+        if r.get("dim_3_t", "").lower() == "flats" and len(r.get("geocod", "")) <= 3 and r["geocod"] not in seen:
+            seen.add(r["geocod"])
+            print(r.get("geocod"), r.get("geodsg"), r.get("valor"))
 
 
-show("Statistics Finland flat price tables by region", fi_tables)
+def sk_exports():
+    for name in ("real-estate-price-by-region", "real-estate-price-by-type", "real-estate-price"):
+        try:
+            t = fetch(f"https://nbs.sk/export/sk/{name}/csv").decode("utf-8", "replace")
+            print(name, len(t)); print(t[:900])
+        except Exception as e:  # noqa: BLE001
+            print(name, "FAIL", e)
+
+
+show("Portugal INE regions", pt_regions)
+show("Slovakia NBS exports", sk_exports)
