@@ -22,8 +22,8 @@
 .p-map-card { flex: 3 1 520px; min-width: 0; padding: 12px; }
 .p-map-svg svg { display: block; width: 100%; height: auto; }
 .p-map-svg path { stroke: var(--card); stroke-width: .6; }
-.p-map-svg path.ctx { fill: var(--line); }
-.p-map-svg path.nd { fill: var(--card2); stroke: var(--line2); }
+.p-map-svg path.ctx { fill: #EEF0F3; }  /* countries outside the comparison: paler than any data colour */
+.p-map-svg path.nd { fill: url(#nd-hatch); stroke: var(--line2); }
 .p-map-svg path.has { cursor: pointer; }
 .p-map-svg path.has:hover { stroke: var(--text); stroke-width: 1.2; }
 .p-map-svg path.sel { stroke: var(--text); stroke-width: 1.8; }

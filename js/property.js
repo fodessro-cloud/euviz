@@ -123,7 +123,7 @@ function renderValue() {
 // Cheap to dear reads green to red, like a heat map; price falls (below zero) in blue.
 // Two logo colours in shades, light to dark: cheapest pale gold, most expensive darkest blue (no near-black) (Lub, 2026-10-18).
 // Soft middle shades; only the top step is dark, so it marks the critical places (Lub, 2026-10-18).
-const HEAT = ['#FAF0D2', '#F1D27E', '#DDB45A', '#BCCBE6', '#7F9BCF', '#2F4F8A'];
+const HEAT = ['#FAF0D2', '#F1D27E', '#DDB45A', '#A9C1EC', '#6F90D2', '#2F4F8A'];
 const FALL = HEAT[0];
 const METRICS = {
   m2: { title: 'Flat price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2500, 3500, 5000, 7000], colors: HEAT, areas: true,
@@ -132,7 +132,7 @@ const METRICS = {
   n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: [FALL, ...HEAT.slice(1)] },
   n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: [FALL, ...HEAT.slice(1)] },
   val: { title: 'Cheap or expensive against incomes and rents', get: k => DATA.countries[k]?.valuation, fmt: v => pct(v, 0),
-    bins: [-15, -5, 5, 15, 30, 45], colors: ['#F1D27E', '#FAF0D2', '#ECEEF2', '#D3DDEF', '#A3B7DE', '#6383C2', '#2F4F8A'],
+    bins: [-15, -5, 5, 15, 30, 45], colors: ['#F1D27E', '#FAF0D2', '#E2DED2', '#C3D5F4', '#93B0E4', '#5F82C8', '#2F4F8A'],
     words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive', 'very expensive', 'extremely expensive'] },
 };
 const colorOf = (m, v) => m.colors[m.bins.filter(b => v >= b).length];
@@ -158,12 +158,15 @@ function renderMap() {
   // The selected country's outline goes on top of everything, regions included.
   const selected = MAP.countries.find(c => c.id === code);
   if (selected) paths.push(`<path class="sel-line" d="${selected.d}"/>`);
-  $('map').innerHTML = `<svg viewBox="0 0 ${MAP.w} ${MAP.h}">${paths.join('')}</svg>`;
+  // Countries with no figure get fine diagonal hatching, so they never look like a measured colour.
+  const hatch = '<defs><pattern id="nd-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
+    + '<rect width="6" height="6" fill="#FFFFFF"/><line x1="0" y1="0" x2="0" y2="6" stroke="#C3CCDB" stroke-width="1.6"/></pattern></defs>';
+  $('map').innerHTML = `<svg viewBox="0 0 ${MAP.w} ${MAP.h}">${hatch}${paths.join('')}</svg>`;
   const edges = [null, ...m.bins];
   const f = m.sfmt || m.fmt;
   $('map-scale').innerHTML = m.colors.map((col, i) => `<span><i style="background:${col}"></i>${m.words ? m.words[i]
     : i === 0 ? `under ${f(m.bins[0])}` : i === m.bins.length ? `${f(m.bins[i - 1])}+` : `${f(edges[i])} to ${f(m.bins[i])}`}</span>`).join('')
-    + `<span><i style="background:var(--card2);border:1px solid var(--line2)"></i>no data</span>`;
+    + `<span><i style="background:repeating-linear-gradient(45deg,#fff 0 3px,#C3CCDB 3px 4.5px);border:1px solid var(--line2)"></i>no data</span>`;
 }
 
 // The selected country close up, region by region, so small regions such as Prague can be seen.
