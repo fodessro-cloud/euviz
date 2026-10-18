@@ -1,45 +1,6 @@
 
 ===== Portugal INE regions
-August 2026 1041 keys ['geocod', 'geodsg', 'dim_3', 'dim_3_t', 'sinal_conv', 'sinal_conv_desc', 'ind_string']
-1B Península de Setúbal 2864
-1B0 Península de Setúbal 2864
-1C Alentejo 1771
-1C1 Alentejo Litoral 2508
-3 Região Autónoma da Madeira 2911
-30 Região Autónoma da Madeira 2911
-300 Região Autónoma da Madeira 2911
-11E Terras de Trás-os-Montes 1281
-1C4 Alentejo Central 2067
-1D Oeste e Vale do Tejo 1963
-1D1 Oeste 2279
-192 Região de Coimbra 1984
-193 Região de Leiria 1694
-1A Grande Lisboa 3487
-1A0 Grande Lisboa 3487
-1D2 Médio Tejo 1657
-194 Viseu Dão Lafões 1496
-11B Alto Tâmega e Barroso 1303
-195 Beira Baixa 1276
-1D3 Lezíria do Tejo 1932
-2 Região Autónoma dos Açores 2494
-20 Região Autónoma dos Açores 2494
-200 Região Autónoma dos Açores 2494
-196 Beiras e Serra da Estrela 1335
-11C Tâmega e Sousa 1640
-1 Continente 2650
-11 Norte 2223
-111 Alto Minho 1914
-112 Cávado 2107
-119 Ave 1801
-11A Área Metropolitana do Porto 2443
-15 Algarve 3010
-150 Algarve 3010
-19 Centro 1750
-191 Região de Aveiro 2005
-11D Douro 1524
-1C3 Alto Alentejo 1210
-PT Portugal 2655
-1C2 Baixo Alentejo 1501
+FAIL URLError: <urlopen error [Errno 110] Connection timed out>
 
 ===== Slovakia NBS exports
 real-estate-price-by-region 11875
