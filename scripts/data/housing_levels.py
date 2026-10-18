@@ -1,8 +1,8 @@
 """Actual home prices in euros: price per m² by country and by region or city, from national
 statistics offices, central banks and land registries (all free to reuse with attribution).
 
-Only official figures. Some countries publish sale prices, some bank appraisals; the page says
-which. Writes js/housing-levels.json:
+Only official figures. Countries publish sale prices, bank appraisals or (Slovakia) asking prices
+in listings; the page says which. Writes js/housing-levels.json:
 {updated, failed, countries: {code: {name, eur, unit, basis, period, source, url, regions: [...]}}}
 """
 import csv, io, json, re, sys, urllib.request
@@ -67,8 +67,9 @@ def slovakia():
              "KE": "Košice region", "PO": "Prešov region"}
     vals = dict(zip(head, latest))
     q, y = latest[0].split()
-    return {"eur": round(num(vals["SR spolu"])), "unit": "m2", "basis": "sale", "period": f"{y}-Q{q[0]}",
-            "what": "all dwellings, sale prices",
+    # NBS builds these from listings on property portals: asking prices, above what buyers finally pay.
+    return {"eur": round(num(vals["SR spolu"])), "unit": "m2", "basis": "asking", "period": f"{y}-Q{q[0]}",
+            "what": "all dwellings, asking prices in listings",
             "source": "Národná banka Slovenska", "url": "https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/",
             "regions": sorted([region(names[k], num(vals[k])) for k in head[2:] if k in names], key=lambda r: -r["eur"])}
 
