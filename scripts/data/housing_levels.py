@@ -251,10 +251,12 @@ def luxembourg():
     # Newest file first; its name carries the quarter (…-2026t2.xls) or the year.
     res = max(d["resources"], key=lambda r: re.search(r"(\d{4})(t\d)?\.xls", r["url"]).group(0) if re.search(r"(\d{4})(t\d)?\.xls", r["url"]) else "")
     rows = next(iter(sheets(fetch(res["url"])).values()))
-    head = next(i for i, r in enumerate(rows) if r and str(r[0] or "").strip().lower() == "commune")
+    head, c0 = next((i, j) for i, r in enumerate(rows) for j, c in enumerate(r) if str(c or "").strip().lower() == "commune")
     communes, total = [], None
     for r in rows[head + 1:]:
-        name, n, v = str(r[0] or "").strip(), num(r[1]), r[2]
+        if len(r) < c0 + 3:
+            continue
+        name, n, v = str(r[c0] or "").strip(), num(r[c0 + 1]), r[c0 + 2]
         if not name:
             continue
         v = v if isinstance(v, (int, float)) else num(v)
