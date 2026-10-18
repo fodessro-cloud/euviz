@@ -6,7 +6,7 @@ on:
     - cron: '35 5 * * *'
   push:
     branches: [claude/project-thread-ms2i2k]
-    paths: ['scripts/data/housing_levels.py', '.github/workflows/housing-levels.yml']
+    paths: ['scripts/data/housing_levels.py', '.github/workflows/housing-levels.yml', 'data/probe-urls.txt']
   workflow_dispatch:
 
 permissions:
@@ -31,12 +31,15 @@ jobs:
           mkdir -p data
           python scripts/data/housing_levels.py 2>&1 | tee data/housing-levels.log || { echo "::error::$(grep -E 'FAIL|Error' data/housing-levels.log | head -5 | tr '\n' ' ')"; exit 1; }
           grep -E "^(ok|FAIL)" data/housing-levels.log | while read -r l; do echo "::notice::$l"; done || true
+      - name: Probe new sources (urls in data/probe-urls.txt, work branch only)
+        if: github.ref != 'refs/heads/main' && hashFiles('data/probe-urls.txt') != ''
+        run: python scripts/data/housing_levels.py --probe $(cat data/probe-urls.txt) > data/probe.log 2>&1 || true
       - name: Commit results
         if: always()
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/housing-levels.log js/housing-levels.json 2>/dev/null || true
+          git add data/housing-levels.log js/housing-levels.json data/probe.log 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -m "Update home prices per m² [data refresh]"
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done

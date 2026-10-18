@@ -276,5 +276,23 @@ def main():
     print(f"wrote {OUT.relative_to(ROOT)}: {len(countries)} countries, failed: {failed or 'none'}")
 
 
+def probe(urls):
+    """Log the start of each response, to write parsers for new sources (hosts are unreachable from the editor)."""
+    for url in urls:
+        try:
+            body = fetch(url, limit=300_000)
+            try:
+                t = body.decode("utf-8-sig")
+            except UnicodeDecodeError:
+                t = body.decode("cp1250", "replace")
+            links = sorted(set(re.findall(r'href="([^"]+\.(?:xlsx?|csv|json|px)[^"]*)"', t)))[:60]
+            print(f"\n===== {url} OK {len(body)} bytes\n{t[:3000]}\n--- data links: {links}")
+        except Exception as e:  # noqa: BLE001
+            print(f"\n===== {url} FAIL {e}")
+
+
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:2] == ["--probe"]:
+        probe(sys.argv[2:])
+    else:
+        main()
