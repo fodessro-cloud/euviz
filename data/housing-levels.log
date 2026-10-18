@@ -17,4 +17,5 @@ ok    PL 2152 €/m2 2026-Q2 (17 regions: Warsaw 3944, Kraków 3489, Gdańsk 331
 ok    NO 5956 €/m2 2024 (6 regions: Oslo 8848, Bergen 5680, Trondheim 5654, Drammen 5151, Stavanger 4983, Fredrikstad 4776)
 ok    AT 4162 €/m2 2025 (9 regions: Vienna 5212, Vorarlberg 5000, Salzburg 4968, Tyrol 4965, Upper Austria 3373, Carinthia 3260)
 ok    HR 2809 €/m2 2025 (2 regions: Zagreb 3129, Rest of Croatia 2581)
-wrote js/housing-levels.json: 11 countries, failed: none
+ok    CZ 2933 €/m2 2025 (17 regions: Prague 5327, Brno 4039, South Moravia 3307, Plzeň 2973, Central Bohemia 2629, Ostrava 2451)
+wrote js/housing-levels.json: 12 countries, failed: none
