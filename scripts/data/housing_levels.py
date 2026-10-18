@@ -5,7 +5,7 @@ Only official figures. Countries publish sale prices, bank appraisals or (Slovak
 in listings; the page says which. Writes js/housing-levels.json:
 {updated, failed, countries: {code: {name, eur, unit, basis, period, source, url, regions: [...]}}}
 """
-import csv, io, json, re, sys, urllib.request
+import csv, io, json, os, re, sys, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -358,7 +358,7 @@ def probe(urls):
             except UnicodeDecodeError:
                 t = body.decode("cp1250", "replace")
             links = sorted(set(re.findall(r'href="([^"]+\.(?:xlsx?|csv|json|px)[^"]*)"', t)))[:60]
-            print(f"\n===== {url} OK {len(body)} bytes\n{t[:3000]}\n--- data links: {links}")
+            print(f"\n===== {url} OK {len(body)} bytes\n{t[:int(os.environ.get("PROBE_CHARS", "6000"))]}\n--- data links: {links}")
         except Exception as e:  # noqa: BLE001
             print(f"\n===== {url} FAIL {e}")
 

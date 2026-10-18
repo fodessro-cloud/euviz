@@ -1,0 +1,11 @@
+https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/
+https://www.ksh.hu/stadat_eng?lang=en&theme=lak
+https://pxweb.stat.si/SiStatData/api/v1/en/Data?query=square&filter=*
+https://andmed.stat.ee/api/v1/en/stat?query=square&filter=*
+https://data.ssb.no/api/v0/en/table/06035
+https://api.statbank.dk/v1/tables?lang=en&format=CSV&search=square
+https://www.data.gv.at/katalog/api/3/action/package_search?q=Immobiliendurchschnittspreise
+https://www.nsi.bg/en/content/2924/average-market-prices-dwellings
+https://podaci.dzs.hr/en/statistics/construction/
+https://data.stat.gov.lv/api/v1/en/OSP_PUB?query=square&filter=*
+https://csu.gov.cz/ceny-bytu
