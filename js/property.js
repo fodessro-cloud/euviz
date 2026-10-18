@@ -4,9 +4,10 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const isNum = v => typeof v === 'number' && isFinite(v);
 const pct = (v, d = 1) => { if (!isNum(v)) return '—'; const s = v.toFixed(d); return `${v > 0 && Number(s) !== 0 ? '+' : ''}${Number(s) === 0 ? (0).toFixed(d) : s} %`; };
 const cls = v => isNum(v) ? (v > 0 ? 'pos' : v < 0 ? 'neg' : '') : '';
-const COLORS = { nominal: '#1F6FEB', real: '#B97A0A' };
+const COLORS = { nominal: '#1F6FEB', real: '#B97A0A', eu: '#8A94A6' };
+const EU = 'EU';
 
-let DATA = null, code = 'SK', years = 10, sortKey = 'n10', sortDir = -1;
+let DATA = null, code = EU, years = 10, sortKey = 'n10', sortDir = -1;
 
 // "+23 %" against incomes reads as "expensive"; the words help readers who skip the numbers.
 function valuationWord(v) {
@@ -43,8 +44,11 @@ function renderChart() {
   const c = DATA.countries[code];
   const keys = Object.keys(c.series.nominal).sort();
   const start = years ? keys[Math.max(0, keys.length - 1 - years * 4)] : keys[0];
-  const lines = ['nominal', 'real'].filter(k => c.series[k]).map(k => {
-    const s = c.series[k], ks = Object.keys(s).sort().filter(q => q >= start);
+  const src = ['nominal', 'real'].filter(k => c.series[k]).map(k => [k, c.series[k]]);
+  // Europe as a whole next to the chosen country, so every country reads against the EU.
+  if (code !== EU && DATA.countries[EU]) src.push(['eu', DATA.countries[EU].series.nominal]);
+  const lines = src.map(([k, s]) => {
+    const ks = Object.keys(s).sort().filter(q => q >= start && q <= c.latest);
     const base = s[ks[0]];
     return { k, pts: ks.map(q => [q, (s[q] / base - 1) * 100]) };
   }).filter(l => l.pts.length > 1);
@@ -65,10 +69,11 @@ function renderChart() {
     const q = qs.find(k => k.startsWith(yr));
     if (i % every === 0) grid += `<text class="ax" x="${x(q)}" y="${H - 6}" text-anchor="middle">${yr}</text>`;
   });
-  const paths = lines.map(l => `<path class="ln" stroke="${COLORS[l.k]}" d="${l.pts.map((p, i) => `${i ? 'L' : 'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join('')}"/>`).join('');
+  const paths = lines.map(l => `<path class="ln${l.k === 'eu' ? ' dash' : ''}" stroke="${COLORS[l.k]}" d="${l.pts.map((p, i) => `${i ? 'L' : 'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join('')}"/>`).join('');
   $('chart').innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${grid}${paths}</svg>`;
-  $('legend').innerHTML = lines.map(l => `<span><i style="background:${COLORS[l.k]}"></i>${l.k === 'nominal' ? 'Price change' : 'After inflation'}</span>`).join('');
-  $('chart-title').textContent = `House prices in ${c.name}`;
+  const LABEL = { nominal: 'Price change', real: 'After inflation', eu: 'European Union, price change' };
+  $('legend').innerHTML = lines.map(l => `<span><i class="${l.k === 'eu' ? 'dash' : ''}" style="background:${COLORS[l.k]}"></i>${LABEL[l.k]}</span>`).join('');
+  $('chart-title').textContent = code === EU ? 'House prices in the European Union' : `House prices in ${c.name}`;
   $('chart-sub').textContent = `Change since ${quarterLabel(start)}, all dwellings`;
 }
 
@@ -86,20 +91,21 @@ const COLS = [
 function renderTable() {
   $('eu-head').innerHTML = `<tr>${COLS.map(col => `<th class="${col.key === 'name' ? '' : 'r'} sort" data-sort="${col.key}" ${col.title ? `title="${esc(col.title)}"` : ''}>${esc(col.label)}${sortKey === col.key ? (sortDir < 0 ? ' ▼' : ' ▲') : ''}</th>`).join('')}</tr>`;
   const col = COLS.find(c => c.key === sortKey);
-  const rows = Object.entries(DATA.countries).sort(([, a], [, b]) => {
+  const agg = Object.entries(DATA.countries).filter(([, c]) => c.agg);
+  const rows = Object.entries(DATA.countries).filter(([, c]) => !c.agg).sort(([, a], [, b]) => {
     const x = col.get(a), y = col.get(b);
     if (typeof x === 'string') return x.localeCompare(y) * sortDir;
     if (!isNum(x)) return 1;
     if (!isNum(y)) return -1;
     return (x - y) * sortDir;
   });
-  $('eu-body').innerHTML = rows.map(([k, c]) => `<tr class="${k === code ? 'sel' : ''}" data-code="${k}">${COLS.map(col =>
+  $('eu-body').innerHTML = agg.concat(rows).map(([k, c]) => `<tr class="${k === code ? 'sel' : ''} ${c.agg ? 'agg' : ''}" data-code="${k}">${COLS.map(col =>
     col.key === 'name' ? `<td>${esc(c.name)}</td>` : `<td class="r m ${cls(col.get(c))}">${pct(col.get(c), col.key === 'n1' ? 1 : 0)}</td>`).join('')}</tr>`).join('');
 }
 
 // Cheapest and dearest against incomes and rents: a fact about today's prices, not a forecast.
 function renderValue() {
-  const list = Object.entries(DATA.countries).filter(([, c]) => isNum(c.valuation)).sort((a, b) => a[1].valuation - b[1].valuation);
+  const list = Object.entries(DATA.countries).filter(([, c]) => !c.agg && isNum(c.valuation)).sort((a, b) => a[1].valuation - b[1].valuation);
   const li = ([k, c]) => `<li><a href="?c=${k}" data-code="${k}">${esc(c.name)}</a><span class="m ${cls(c.valuation)}">${pct(c.valuation, 0)}</span></li>`;
   $('cheap').innerHTML = list.slice(0, 5).map(li).join('');
   $('dear').innerHTML = list.slice(-5).reverse().map(li).join('');
@@ -117,7 +123,7 @@ async function init() {
   const params = new URLSearchParams(location.search);
   if (DATA.countries[params.get('c')]) code = params.get('c');
   else if (!DATA.countries[code]) code = Object.keys(DATA.countries)[0];
-  $('region').innerHTML = Object.entries(DATA.countries).sort((a, b) => a[1].name.localeCompare(b[1].name))
+  $('region').innerHTML = Object.entries(DATA.countries).sort((a, b) => (b[1].agg ? 1 : 0) - (a[1].agg ? 1 : 0) || a[1].name.localeCompare(b[1].name))
     .map(([k, c]) => `<option value="${k}" ${k === code ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
   $('updated').textContent = `Updated ${DATA.updated.slice(0, 10)}`;
   $('sources').innerHTML = DATA.sources.map(([n, u]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join('');

@@ -1,7 +1,10 @@
-ok    eurostat: 29 series
+ok    eurostat: 30 series
 OECD measures: nominal house price indices (4739); price to income ratio (4136); price to rent ratio (4307); real house price indices (4739); rent prices (4819); standardised price-income ratio (2916); standardised price-rent ratio (2837)
+OECD areas not used: AUS Australia, BRA Brazil, CAN Canada, CHL Chile, CHN China (People’s Republic of), COL Colombia, CRI Costa Rica, EA Euro area, EA17 Euro area (17 countries), IDN Indonesia, IND India, ISR Israel, JPN Japan, KOR Korea, MEX Mexico, NZL New Zealand, OECD OECD, RUS Russia, SAU Saudi Arabia, TUR Türkiye, USA United States, ZAF South Africa
 ok    oecd: 5 series
-wrote js/housing.json (183 KB), 31 countries, failed: none
+HICP prc_hicp_minx: HTTP Error 404: Not Found
+ok    hicp_eu: 104 series
+wrote js/housing.json (186 KB), 32 countries, failed: none
   AT 2026-Q2 nominal {'1y': 5.1, '5y': 17.6, '10y': 64.4} real {'1y': 1.5, '5y': -7.9, '10y': 18.8} vsIncome 22.9 vsRent 11.5
   BE 2026-Q2 nominal {'1y': 2.1, '5y': 17.0, '10y': 43.9} real {'1y': -1.6, '5y': -8.0, '10y': 4.6} vsIncome 1.2 vsRent 12.2
   BG 2026-Q2 nominal {'1y': 15.5, '5y': 94.8, '10y': 168.1} real {'1y': 6.4, '5y': 31.4, '10y': 57.2} vsIncome -13.4 vsRent 32.4
@@ -33,3 +36,4 @@ wrote js/housing.json (183 KB), 31 countries, failed: none
   IS 2026-Q2 nominal {'1y': 2.7, '5y': 54.0, '10y': 152.7} real {'1y': -1.6, '5y': 17.6, '10y': 67.2} vsIncome 15.3 vsRent 21.7
   CH 2026-Q2 nominal {'1y': 4.3, '5y': 24.3, '10y': 48.7} real {'1y': 3.7, '5y': 16.8, '10y': 38.3} vsIncome 32.9 vsRent 35.4
   GB 2026-Q2 nominal {'1y': 3.0, '5y': 15.9, '10y': 40.8} real {'1y': 0.4, '5y': -9.5, '10y': 2.0} vsIncome 2.1 vsRent 7.6
+  EU 2026-Q2 nominal {'1y': 4.7, '5y': 24.0, '10y': 62.5} real {'1y': 2.9, '5y': 0.3, '10y': 21.8} vsIncome None vsRent None

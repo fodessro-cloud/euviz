@@ -24,13 +24,16 @@ COUNTRIES = {
     "HU": "Hungary", "IE": "Ireland", "IT": "Italy", "LV": "Latvia", "LT": "Lithuania", "LU": "Luxembourg",
     "MT": "Malta", "NL": "Netherlands", "PL": "Poland", "PT": "Portugal", "RO": "Romania", "SK": "Slovakia",
     "SI": "Slovenia", "ES": "Spain", "SE": "Sweden", "NO": "Norway", "IS": "Iceland", "CH": "Switzerland",
-    "GB": "United Kingdom",
+    "GB": "United Kingdom", "EU": "European Union",
 }
-ESTAT_GEO = {"GR": "EL", "GB": "UK"}
+ESTAT_GEO = {"GR": "EL", "GB": "UK", "EU": "EU27_2020"}
+# Aggregates: shown as "Europe as a whole", left out of country rankings.
+AGGREGATES = {"EU"}
 ISO3 = {"AUT": "AT", "BEL": "BE", "BGR": "BG", "HRV": "HR", "CYP": "CY", "CZE": "CZ", "DNK": "DK", "EST": "EE",
         "FIN": "FI", "FRA": "FR", "DEU": "DE", "GRC": "GR", "HUN": "HU", "IRL": "IE", "ITA": "IT", "LVA": "LV",
         "LTU": "LT", "LUX": "LU", "MLT": "MT", "NLD": "NL", "POL": "PL", "PRT": "PT", "ROU": "RO", "SVK": "SK",
-        "SVN": "SI", "ESP": "ES", "SWE": "SE", "NOR": "NO", "ISL": "IS", "CHE": "CH", "GBR": "GB"}
+        "SVN": "SI", "ESP": "ES", "SWE": "SE", "NOR": "NO", "ISL": "IS", "CHE": "CH", "GBR": "GB",
+        "EU27_2020": "EU", "EU27": "EU", "EU": "EU"}
 
 ESTAT = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
 OECD = ("https://sdmx.oecd.org/public/rest/data/OECD.ECO.MPD,DSD_AN_HOUSE_PRICES@DF_HOUSE_PRICES,1.0/all"
@@ -79,12 +82,13 @@ def oecd():
     rows = list(csv.DictReader(io.StringIO(fetch(OECD))))
     if not rows:
         raise RuntimeError("OECD returned no rows")
-    labels = {}
+    labels, areas = {}, {}
     out = {}
     for r in rows:
         if r.get("FREQ") not in (None, "Q"):
             continue
         code = ISO3.get(r.get("REF_AREA", ""))
+        areas[r.get("REF_AREA", "")] = r.get("Reference area", "")
         label = (r.get("Measure") or r.get("MEASURE") or "").lower()
         labels[label] = labels.get(label, 0) + 1
         key = next((k for k, words in OECD_MEASURES.items() if any(w in label for w in words)), None)
@@ -92,7 +96,34 @@ def oecd():
             continue
         out.setdefault(key, {}).setdefault(code, {})[r["TIME_PERIOD"]] = float(r["OBS_VALUE"])
     print("OECD measures: " + "; ".join(f"{k} ({v})" for k, v in sorted(labels.items())))
+    print("OECD areas not used: " + ", ".join(f"{k} {v}" for k, v in sorted(areas.items()) if k not in ISO3))
     return {k: {c: dict(sorted(v.items())) for c, v in by.items()} for k, by in out.items()}
+
+
+HICP_URLS = [  # EU consumer prices, monthly index; Eurostat moved to COICOP 2018 in 2026, so try both
+    f"{ESTAT}prc_hicp_minx?geo=EU27_2020&coicop18=TOTAL&unit=I15&sinceTimePeriod={START}-01",
+    f"{ESTAT}prc_hicp_midx?geo=EU27_2020&coicop=CP00&unit=I15&sinceTimePeriod={START}-01",
+]
+
+
+def hicp_eu():
+    """{"2024-Q1": EU consumer price index} as quarterly averages, from the first URL that answers."""
+    for url in HICP_URLS:
+        try:
+            d = json.loads(fetch(url))
+        except Exception as e:  # noqa: BLE001
+            print(f"HICP {url.split('?')[0].rsplit('/', 1)[1]}: {e}")
+            continue
+        t = d["dimension"]["time"]["category"]["index"]
+        by_q = {}
+        for month, i in t.items():
+            if str(i) in d["value"]:
+                y, m = month.split("-")[0], int(month[-2:])
+                by_q.setdefault(f"{y}-Q{(m - 1) // 3 + 1}", []).append(float(d["value"][str(i)]))
+        out = {q: sum(v) / len(v) for q, v in by_q.items() if len(v) == 3}
+        if out:
+            return dict(sorted(out.items()))
+    raise RuntimeError("no HICP source answered")
 
 
 def change(s, quarters):
@@ -118,7 +149,7 @@ def main():
     except Exception:  # noqa: BLE001
         old = {}
     raw, failed = {}, []
-    for name, job in (("eurostat", eurostat), ("oecd", oecd)):
+    for name, job in (("eurostat", eurostat), ("oecd", oecd), ("hicp_eu", hicp_eu)):
         try:
             raw[name] = job()
             print(f"ok    {name}: {len(raw[name])} series")
@@ -137,12 +168,17 @@ def main():
         nominal = max([es.get(code) or {}, oe.get("nominal_oecd", {}).get(code) or {}],
                       key=lambda x: max(x) if x else "")
         real = oe.get("real", {}).get(code) or {}
+        if code == "EU" and not real and nominal and raw.get("hicp_eu"):
+            # No OECD series for the EU: deflate the Eurostat index by EU consumer prices.
+            hicp = raw["hicp_eu"]
+            real = {q: v / hicp[q] * 100 for q, v in nominal.items() if q in hicp}
         income = oe.get("income", {}).get(code) or {}
         rent = oe.get("rent", {}).get(code) or {}
         if not nominal:
             continue
         countries[code] = {
             "name": name,
+            **({"agg": True} if code in AGGREGATES else {}),
             "latest": max(nominal),
             "nominal": {"1y": change(nominal, 4), "5y": change(nominal, 20), "10y": change(nominal, 40)},
             "real": {"1y": change(real, 4), "5y": change(real, 20), "10y": change(real, 40)} if real else None,

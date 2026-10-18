@@ -193,7 +193,7 @@ function renderData(ins, sh) {
 function renderProperty(h) {
   const box = document.getElementById('property');
   if (!h || !h.countries) { box.hidden = true; return; }
-  const all = Object.entries(h.countries);
+  const all = Object.entries(h.countries).filter(([, c]) => !c.agg);
   const sign = v => `${v > 0 ? '+' : ''}${fmt(v, 0)}%`;
   const li = (k, c, v) => `<li><span><a href="/property?c=${k}">${esc(c.name)}</a></span><span class="v">${sign(v)}</span></li>`;
   const val = all.filter(([, c]) => isNum(c.valuation)).sort((a, b) => a[1].valuation - b[1].valuation);
