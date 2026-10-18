@@ -158,7 +158,7 @@ function renderSide() {
     .sort((a, b) => m.get(b) - m.get(a));
   const name = k => DATA.countries[k]?.name || LEVELS.countries[k].name;
   // Asking prices and appraisals are not sale prices; say so next to the number.
-  const BASIS = { asking: 'asking price', appraisal: 'bank appraisal' };
+  const BASIS = { asking: 'asking price', appraisal: 'bank appraisal', new: 'new build' };
   const basis = k => {
     if (metric !== 'm2') return '';
     const l = LEVELS.countries[k];

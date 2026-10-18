@@ -105,6 +105,18 @@ def xlsx_sheet(url, names, n=45):
                 print(" | ".join(str(c)[:30] for c in r if c not in (None, "")))
 
 
-show("HR 3.1.8 / 3.1.9", lambda: xlsx_sheet("https://podaci.dzs.hr/media/4neprvvo/msi-gradevinarstvo.xlsx", ("3.1.8.", "3.1.9.", "3.1.8", "3.1.9")))
-show("DE AKOGA 224079 csv head", lambda: print(fetch("https://redaktion-akoga.niedersachsen.de/download/224079")[:1200].decode("latin-1")))
-show("DE AKOGA 224078 zip", lambda: zlist("https://redaktion-akoga.niedersachsen.de/download/224078"))
+def ee_root():
+    d = json.loads(fetch("https://andmed.stat.ee/api/v1/en/stat"))
+    for t in d:
+        print(t["id"], t.get("text"))
+        if re.search(r"econom|majandus", t["id"] + t.get("text", ""), re.I):
+            for u in json.loads(fetch("https://andmed.stat.ee/api/v1/en/stat/" + t["id"])):
+                print("   ", u["id"], u.get("text"))
+                if re.search(r"real|kinnis", u["id"] + u.get("text", ""), re.I):
+                    for w in json.loads(fetch(f"https://andmed.stat.ee/api/v1/en/stat/{t['id']}/{u['id']}")):
+                        print("      ", w["id"], w.get("text"))
+
+
+show("EE tree", ee_root)
+show("DK Finance Denmark", lambda: grep("https://financedenmark.dk/hard-figures/housing-statistics/house-price-statistics/", r'href="([^"]+)"', 80))
+show("CZ CZSO ceny nemovitosti", lambda: grep("https://csu.gov.cz/pak/ceny-nemovitosti-v-pardubickem-kraji-v-letech-2023-az-2025", r'href="([^"]+)"', 80))

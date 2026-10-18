@@ -8,6 +8,7 @@ in listings; the page says which. Writes js/housing-levels.json:
 import csv, io, json, os, re, sys, urllib.request, zipfile
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urljoin
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "js" / "housing-levels.json"
@@ -268,6 +269,29 @@ def austria():
             "regions": sorted([region(AT_STATES.get(k, k), v[col]) for k, v in data.items() if k != "Österreich" and v[col]], key=lambda r: -r["eur"])}
 
 
+def croatia():
+    # DZS: average price per m² of new flats sold, by half-year and year (sheet 3.1.8, euro block first).
+    page = fetch("https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/").decode("utf-8", "replace")
+    links = list(dict.fromkeys(re.findall(r"/media/[^\"'\s<>]+msi-gradevinarstvo\.xlsx", page))) or [HR_URL]
+    # The page links more than one edition; the one with the most columns is the newest.
+    books = [sheets(fetch(urljoin("https://podaci.dzs.hr/", u))).get("3.1.8.") or [] for u in links]
+    rows = max(books, key=lambda b: max((len(r) for r in b), default=0))
+    years = next(r for r in rows if sum(1 for c in r if re.fullmatch(r"20\d\d\.", str(c or "").strip())) > 2)
+    halves = next(r for r in rows if any("XII" in str(c or "") for c in r))
+    full = [j for j, c in enumerate(halves) if re.match(r"I\.\s*[–-]\s*XII", str(c or ""))]
+    first = lambda name: next(r for r in rows if len(r) > 1 and str(r[1] or "").strip() == name)
+    nat = first("Republic of Croatia")
+    j = max(j for j in full if num(nat[j]))
+    year = next(str(years[k]).strip(". ") for k in range(j, -1, -1) if years[k] not in (None, ""))
+    return {"eur": round(num(nat[j])), "unit": "m2", "basis": "new", "period": year,
+            "type": "flats", "what": "new flats, sale prices", "source": "Croatian Bureau of Statistics (DZS)",
+            "url": "https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/",
+            "regions": [region("Zagreb", num(first("Zagreb")[j])), region("Rest of Croatia", num(first("Other settlements")[j]))]}
+
+
+HR_URL = "/media/4neprvvo/msi-gradevinarstvo.xlsx"
+
+
 AT_STATES = {"Wien": "Vienna", "Niederösterreich": "Lower Austria", "Oberösterreich": "Upper Austria", "Kärnten": "Carinthia",
              "Steiermark": "Styria", "Tirol": "Tyrol", "Salzburg": "Salzburg", "Vorarlberg": "Vorarlberg", "Burgenland": "Burgenland"}
 
@@ -349,7 +373,7 @@ NO_AREAS = {"0": "Norway", "0301": "Oslo", "4601": "Bergen", "5001": "Trondheim"
 COUNTRIES = {"SK": ("Slovakia", slovakia), "FR": ("France", france), "FI": ("Finland", finland),
              "PT": ("Portugal", portugal), "ES": ("Spain", spain), "HU": ("Hungary", hungary),
              "LU": ("Luxembourg", luxembourg), "PL": ("Poland", poland), "NO": ("Norway", norway),
-             "AT": ("Austria", austria)}
+             "AT": ("Austria", austria), "HR": ("Croatia", croatia)}
 
 
 def main():
