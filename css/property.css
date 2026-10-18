@@ -1,0 +1,17 @@
+/* FINILA — property prices page (builds on invest.css) */
+.i-tile-real.pos { color: var(--up); }
+.i-tile-real.neg { color: var(--down); }
+.i-eu td.pos { color: var(--up); }
+.i-eu td.neg { color: var(--down); }
+.i-eu th.sort { cursor: pointer; }
+.p-value { display: flex; flex-wrap: wrap; gap: 16px; }
+.p-value .h-card { flex: 1 1 300px; padding: 18px 20px; }
+.p-value h3 { font-size: 15px; font-weight: 600; margin: 0 0 10px; color: var(--text2); }
+.p-value ol { margin: 0; padding-left: 22px; }
+.p-value li { padding: 6px 0; border-top: 1px solid var(--line); }
+.p-value li:first-child { border-top: 0; }
+.p-value li a { color: var(--text); text-decoration: none; }
+.p-value li a:hover { text-decoration: underline; }
+.p-value li span { float: right; }
+.p-value .pos { color: var(--down); }
+.p-value .neg { color: var(--up); }
