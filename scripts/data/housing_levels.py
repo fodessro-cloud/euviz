@@ -69,7 +69,7 @@ def slovakia():
     q, y = latest[0].split()
     # NBS builds these from listings on property portals: asking prices, above what buyers finally pay.
     return {"eur": round(num(vals["SR spolu"])), "unit": "m2", "basis": "asking", "period": f"{y}-Q{q[0]}",
-            "what": "all dwellings, asking prices in listings",
+            "type": "mixed", "what": "flats and houses, asking prices in listings",
             "source": "Národná banka Slovenska", "url": "https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/",
             "regions": sorted([region(names[k], num(vals[k])) for k in head[2:] if k in names], key=lambda r: -r["eur"])}
 
@@ -83,8 +83,8 @@ def france():
     for r in rows:
         lvl = r.get("echelle_geo")
         levels[lvl] = levels.get(lvl, 0) + 1
-        v = num(r.get("med_prix_m2_whole_apt_maison"))
-        n = num(r.get("nb_ventes_whole_apt_maison")) or 0
+        v = num(r.get("med_prix_m2_whole_appartement"))
+        n = num(r.get("nb_ventes_whole_appartement")) or 0
         if not v:
             continue
         if lvl == "nation":
@@ -109,7 +109,7 @@ def france():
             cities.append((name, sum(v * x for v, x in parts) / n, n))
     cities.sort(key=lambda c: -c[2])
     return {"eur": round(nation), "unit": "m2", "basis": "sale", "period": "last 5 years",
-            "what": "flats and houses, median sale price",
+            "type": "flats", "what": "flats, median sale price",
             "source": "DVF, Etalab (Licence Ouverte)", "url": "https://www.data.gouv.fr/datasets/statistiques-dvf/",
             "regions": sorted([region(n, v) for n, v, _ in cities[:20]], key=lambda r: -r["eur"])}
 
@@ -144,7 +144,8 @@ def finland():
     for code, v in var.items():  # every other dimension: its total ("all", "total")
         if code in (year["code"], price["code"], area_var["code"]):
             continue
-        tot = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"total|all|yhteensä", t, re.I)), v["values"][0])
+        tot = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"blocks of flats", t, re.I)), None) \
+            or next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"total|all|yhteensä", t, re.I)), v["values"][0])
         q.append({"code": code, "selection": {"filter": "item", "values": [tot]}})
     rows = [(lab, val) for lab, _, val in pxweb(base, "13mx.px", q) if val]
     area = area_var["code"]
@@ -159,13 +160,14 @@ def finland():
         elif v["code"].lower() == "contentscode":
             nq.append({"code": v["code"], "selection": {"filter": "item", "values": [next(c for c, t in zip(v["values"], v["valueTexts"]) if "square" in t.lower())]}})
         else:
-            pick = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"whole country|total", t, re.I)), v["values"][0])
+            pick = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"whole country|blocks of flats", t, re.I)), None) \
+                or next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"total", t, re.I)), v["values"][0])
             nq.append({"code": v["code"], "selection": {"filter": "item", "values": [pick]}})
     whole = next(val for *_, val in pxweb(base, "13mv.px", nq) if val)
     big = ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyväskylä", "Kuopio", "Lahti", "Pori"]
     regions = [region(lab[area], v) for lab, v in rows if lab[area] in big]
     return {"eur": round(whole), "unit": "m2", "basis": "sale", "period": quarter.rstrip("*").replace("Q", "-Q"),
-            "what": "old flats in housing companies, sale prices (cities: last full year)",
+            "type": "flats", "what": "flats in blocks, resale prices (cities: last full year)",
             "source": "Statistics Finland (CC BY 4.0)", "url": "https://stat.fi/en/statistics/ashi",
             "regions": sorted(regions, key=lambda r: -r["eur"])}
 
@@ -174,15 +176,16 @@ def portugal():
     d = json.loads(text("https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012248&lang=EN"))[0]
     period = d["UltimoPref"]
     rows = d["Dados"][period]
-    total = [r for r in rows if r.get("dim_3_t", "").lower().startswith("total") or r.get("dim_3") == "T"]
-    rows = total or rows
+    flats = [r for r in rows if r.get("dim_3_t", "").lower() == "flats"]
+    print(f"  PT types: {sorted({r.get('dim_3_t') for r in rows})}, flats rows: {len(flats)}")
+    rows = flats or rows
     nat = next((num(r.get("valor")) for r in rows if r.get("geodsg") == "Portugal"), None)
     big = ["Lisboa", "Porto", "Sintra", "Vila Nova de Gaia", "Cascais", "Loures", "Braga", "Almada", "Matosinhos",
            "Amadora", "Oeiras", "Seixal", "Gondomar", "Odivelas", "Coimbra", "Funchal", "Faro", "Loulé", "Setúbal", "Aveiro"]
     regions = [region(r["geodsg"], num(r["valor"])) for r in rows if r.get("geodsg") in big and num(r.get("valor"))]
     m = datetime.strptime(period, "%B %Y")
     return {"eur": round(nat), "unit": "m2", "basis": "appraisal", "period": m.strftime("%Y-%m"),
-            "what": "all dwellings, median bank appraisal",
+            "type": "flats", "what": "flats, median bank appraisal",
             "source": "Statistics Portugal, INE (CC BY 4.0)", "url": "https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0012248",
             "regions": sorted({r["name"]: r for r in regions}.values(), key=lambda r: -r["eur"])}
 
@@ -216,7 +219,7 @@ def spain():
             regions.append(region(name, num(r["Valor"])))
     nat_v = num(nat[0]["Valor"]) if nat else None
     return {"eur": round(nat_v) if nat_v else None, "unit": "m2", "basis": "appraisal", "period": f"{last[0]}-Q{last[1]}",
-            "what": "free-market housing, average appraised value",
+            "type": "mixed", "what": "flats and houses, average bank appraisal",
             "source": "Ministry of Housing (MIVAU)", "url": "https://datos.gob.es/catalogo/e05233601-valor-tasado-de-la-vivienda",
             "regions": sorted(regions, key=lambda r: -r["eur"])}
 
@@ -238,7 +241,7 @@ def hungary():
     regions = [region("Budapest" if a == "Budapest" else f"{a}, county seats", v) for a, b, v in second
                if a == "Budapest" or (b == "county seats" and a != "Country")]
     return {"eur": round(nat) if nat else None, "unit": "m2", "basis": "sale", "period": year,
-            "what": "second-hand dwellings, average sale price", "currency": "HUF", "rate": round(rate, 2),
+            "type": "mixed", "what": "flats and houses, resale prices", "currency": "HUF", "rate": round(rate, 2),
             "source": "Hungarian Central Statistical Office (KSH)", "url": "https://www.ksh.hu/stadat_files/lak/en/lak0025.html",
             "regions": sorted(regions, key=lambda r: -r["eur"])}
 
