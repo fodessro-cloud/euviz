@@ -213,7 +213,9 @@ def portugal():
     return {"eur": round(nat), "unit": "m2", "basis": "appraisal", "period": m.strftime("%Y-%m"),
             "type": "flats", "what": "flats, median bank appraisal",
             "source": "Statistics Portugal, INE (CC BY 4.0)", "url": "https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0012248",
-            "regions": sorted({r["name"]: r for r in regions}.values(), key=lambda r: -r["eur"])}
+            "regions": sorted({r["name"]: r for r in regions}.values(), key=lambda r: -r["eur"]),
+            # NUTS III rows have 3-character codes ("11A" -> PT11A on the map).
+            "areas": {f"PT{r['geocod']}": round(num(r["valor"])) for r in rows if len(r.get("geocod", "")) == 3 and num(r.get("valor"))}}
 
 
 def spain():
@@ -319,7 +321,9 @@ def croatia():
     return {"eur": round(num(nat[j])), "unit": "m2", "basis": "new", "period": year,
             "type": "flats", "what": "new flats, sale prices", "source": "Croatian Bureau of Statistics (DZS)",
             "url": "https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/",
-            "regions": [region("Zagreb", num(first("Zagreb")[j])), region("Rest of Croatia", num(first("Other settlements")[j]))]}
+            "regions": [region("Zagreb", num(first("Zagreb")[j])), region("Rest of Croatia", num(first("Other settlements")[j]))],
+            # Only the City of Zagreb has its own figure; the counties keep the national colour.
+            "areas": {"HR050": round(num(first("Zagreb")[j]))}}
 
 
 HR_URL = "/media/4neprvvo/msi-gradevinarstvo.xlsx"
