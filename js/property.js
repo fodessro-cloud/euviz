@@ -83,6 +83,7 @@ function renderChart() {
 
 const COLS = [
   { key: 'name', label: 'Country', get: c => c.name, fmt: c => esc(c.name) },
+  { key: 'm2', label: '€ per m²', get: c => c.m2, title: 'Flats where published separately; see the map section for what each figure covers' },
   { key: 'n1', label: '1 year', get: c => c.nominal['1y'] },
   { key: 'n5', label: '5 years', get: c => c.nominal['5y'] },
   { key: 'n10', label: '10 years', get: c => c.nominal['10y'] },
@@ -104,7 +105,7 @@ function renderTable() {
     return (x - y) * sortDir;
   });
   $('eu-body').innerHTML = agg.concat(rows).map(([k, c]) => `<tr class="${k === code ? 'sel' : ''} ${c.agg ? 'agg' : ''}" data-code="${k}">${COLS.map(col =>
-    col.key === 'name' ? `<td>${esc(c.name)}</td>` : `<td class="r m ${cls(col.get(c))}">${pct(col.get(c), col.key === 'n1' ? 1 : 0)}</td>`).join('')}</tr>`).join('');
+    col.key === 'name' ? `<td>${esc(c.name)}</td>` : col.key === 'm2' ? `<td class="r m">${isNum(c.m2) ? eur(c.m2) : '—'}</td>` : `<td class="r m ${cls(col.get(c))}">${pct(col.get(c), col.key === 'n1' ? 1 : 0)}</td>`).join('')}</tr>`).join('');
 }
 
 // Cheapest and dearest against incomes and rents: a fact about today's prices, not a forecast.
@@ -191,6 +192,7 @@ async function init() {
     $('now').innerHTML = '<p class="h-note">House price data could not be loaded. Please try again later.</p>';
     return;
   }
+  Object.entries(LEVELS?.countries || {}).forEach(([k, l]) => { if (DATA.countries[k]) DATA.countries[k].m2 = l.eur; });
   const params = new URLSearchParams(location.search);
   if (DATA.countries[params.get('c')]) code = params.get('c');
   else if (!DATA.countries[code]) code = Object.keys(DATA.countries)[0];
