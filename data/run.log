@@ -171,7 +171,7 @@ FCA FULINS_E_20261017_01of01.zip: 2149 new issuers
 3533 issuers with a report for 2024 or later (13 pages)
 34 reports to read, 3499 cached
 read 34 reports this run
-4904 listed companies with an LEI on Wikidata
+  ! Wikidata: Invalid control character at: line 130150 column 77 (char 3071922); using the last saved copy
 18568 issuers with listed shares (FIRDS); 1926 of them file reports here
 Wikidata by ISIN/LEI: labels for 1628 of 3343 keys
 sector found for 662 of 1672 without a Wikidata industry: {'wikidata': 302, 'bank': 54, 'name': 306}
