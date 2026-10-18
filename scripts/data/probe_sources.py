@@ -96,13 +96,15 @@ def ksh(t, pat):
             print("  ", l)
 
 
-AT = "https://www.statistik.at/fileadmin/pages/222/SonderauswertungImmobilienDurchschnittspreise.ods"
-show("AT Bundesländer", lambda: ods_sheet(AT, "Bundesländer"))
-show("AT Bundesländer_und_Bauperioden", lambda: ods_sheet(AT, "Bundesländer_und_Bauperioden", 30))
-show("HU lak0028 country", lambda: ksh("lak0028", r"^(Country|Budapest|Hungary|Total)"))
-for t in ("lak0029", "lak0030", "lak0031"):
-    show(f"HU {t}", lambda t=t: ksh(t, r"^(Country|Hungary|Total)"))
-show("HR msi xlsx", lambda: sniff("https://podaci.dzs.hr/media/4neprvvo/msi-gradevinarstvo.xlsx"))
-show("HR msi xlsx 2", lambda: sniff("https://podaci.dzs.hr/media/1sto04x3/msi-gradevinarstvo.xlsx"))
+def xlsx_sheet(url, names, n=45):
+    from housing_levels import sheets
+    for name, rows in sheets(fetch(url)).items():
+        if name in names:
+            print("--- sheet", name)
+            for r in rows[:n]:
+                print(" | ".join(str(c)[:30] for c in r if c not in (None, "")))
+
+
+show("HR 3.1.8 / 3.1.9", lambda: xlsx_sheet("https://podaci.dzs.hr/media/4neprvvo/msi-gradevinarstvo.xlsx", ("3.1.8.", "3.1.9.", "3.1.8", "3.1.9")))
+show("DE AKOGA 224079 csv head", lambda: print(fetch("https://redaktion-akoga.niedersachsen.de/download/224079")[:1200].decode("latin-1")))
 show("DE AKOGA 224078 zip", lambda: zlist("https://redaktion-akoga.niedersachsen.de/download/224078"))
-show("DE AKOGA 224079 csv head", lambda: print(fetch("https://redaktion-akoga.niedersachsen.de/download/224079")[:1500].decode("latin-1")))
