@@ -65,18 +65,27 @@ def region(name, value, note=None):
 
 # ── Countries ─────────────────────────────────────────────
 
+SK_KRAJE = {"BA": "SK010", "TT": "SK021", "TN": "SK022", "NR": "SK023", "ZA": "SK031", "BB": "SK032", "PO": "SK041", "KE": "SK042"}
+
+
 def slovakia():
-    # Flats alone ("Byty spolu"); NBS splits by region only for flats and houses together, so no regions here.
+    # Flats alone ("Byty spolu"). NBS splits by region only for flats and houses together ("SR spolu"),
+    # so each region's flat price is an ESTIMATE: its all-homes price times the national flats / all-homes ratio.
     rows = list(csv.reader(io.StringIO(text("https://nbs.sk/export/sk/real-estate-price-by-type/csv")), delimiter=";"))
     head = next(r for r in rows if r and r[0].startswith("Rok"))
     latest = next(r for r in rows if r and re.match(r"\dQ \d{4}", r[0]))
     vals = dict(zip(head, latest))
     q, y = latest[0].split()
+    ratio = num(vals["Byty spolu"]) / num(vals["SR spolu"])
+    reg = list(csv.reader(io.StringIO(text("https://nbs.sk/export/sk/real-estate-price-by-region/csv")), delimiter=";"))
+    rhead = next(r for r in reg if r and r[0].startswith("Rok"))
+    rrow = dict(zip(rhead, next(r for r in reg if r and r[0] == latest[0])))  # same quarter as the flats figure
+    areas = {nuts: round(num(rrow[k]) * ratio) for k, nuts in SK_KRAJE.items() if num(rrow.get(k))}
     # NBS builds these from listings on property portals: asking prices, above what buyers finally pay.
     return {"eur": round(num(vals["Byty spolu"])), "unit": "m2", "basis": "asking", "period": f"{y}-Q{q[0]}",
             "type": "flats", "what": "flats, asking prices in listings",
             "source": "Národná banka Slovenska", "url": "https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/",
-            "regions": []}
+            "regions": [], "areas": areas, "areasEstimate": f"regions: all-homes price × national flats ratio {ratio:.2f}"}
 
 
 def france():

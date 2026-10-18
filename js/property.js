@@ -153,7 +153,7 @@ function renderMap() {
   // Regions on top of their country where the country publishes flat prices by region.
   if (m.areas) for (const r of MAP.regions || []) {
     const v = areaValue(r);
-    if (isNum(v)) paths.push(`<path class="has reg" data-code="${r.c}" data-area="${esc(r.name)}" data-v="${v}" fill="${colorOf(m, v)}" d="${r.d}"/>`);
+    if (isNum(v)) paths.push(`<path class="has reg${LEVELS?.countries[r.c]?.areasEstimate ? ' est' : ''}" data-code="${r.c}" data-area="${esc(r.name)}" data-v="${v}" fill="${colorOf(m, v)}" d="${r.d}"/>`);
   }
   // The selected country's outline goes on top of everything, regions included.
   const selected = MAP.countries.find(c => c.id === code);
@@ -176,7 +176,7 @@ function renderInset() {
   const regs = metric === 'm2' && MAP ? (MAP.regions || []).filter(r => r.c === code && isNum(areaValue(r))) : [];
   box.hidden = !regs.length;
   if (!regs.length) { box.innerHTML = ''; return; }
-  box.innerHTML = `<svg><g>${regs.map(r => `<path class="has reg" data-code="${r.c}" data-area="${esc(r.name)}" data-v="${areaValue(r)}" fill="${colorOf(m, areaValue(r))}" d="${r.d}"/>`).join('')}</g></svg>`;
+  box.innerHTML = `<svg><g>${regs.map(r => `<path class="has reg${LEVELS?.countries[r.c]?.areasEstimate ? ' est' : ''}" data-code="${r.c}" data-area="${esc(r.name)}" data-v="${areaValue(r)}" fill="${colorOf(m, areaValue(r))}" d="${r.d}"/>`).join('')}</g></svg>`;
   const g = box.querySelector('g').getBBox();
   const pad = Math.max(g.width, g.height) * 0.04;
   box.querySelector('svg').setAttribute('viewBox', `${g.x - pad} ${g.y - pad} ${g.width + 2 * pad} ${g.height + 2 * pad}`);
@@ -209,7 +209,7 @@ function renderSide() {
     $('regions').innerHTML = l.regions.map(r => `<li>${esc(r.name)}<span class="m">${eur(r.eur)}</span></li>`).join('');
   }
   $('map-note').innerHTML = metric === 'm2'
-    ? `Flats only, official figures in euros. The map colours regions only; a country without official prices by region stays blank (its national figure is in the list). ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Asking prices and bank appraisals are usually higher than what buyers finally pay, so compare countries with care. More countries are being added.`
+    ? `Flats only, official figures in euros. The map colours regions only; a country without official prices by region stays blank (its national figure is in the list). ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}${c.areasEstimate ? ` (${esc(c.areasEstimate)}, shown lighter as an estimate)` : ''}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Asking prices and bank appraisals are usually higher than what buyers finally pay, so compare countries with care. More countries are being added.`
     : 'Eurostat house price index; OECD for the United Kingdom and for incomes and rents.';
 }
 
@@ -293,7 +293,13 @@ async function init() {
     const el = e.target.closest('[data-code]');
     const v = el.dataset.area ? Number(el.dataset.v) : m.get(k);
     const country = esc(DATA.countries[k]?.name || LEVELS?.countries[k]?.name || k);
-    tip.innerHTML = `<b>${el.dataset.area ? `${esc(el.dataset.area)}, ${country}` : country}</b> ${isNum(v) ? m.fmt(v) : metric === 'm2' ? 'no flat price yet' : 'no data yet'}`;
+    const est = el.dataset.area && metric === 'm2' && LEVELS?.countries[k]?.areasEstimate;
+    const nat = LEVELS?.countries[k]?.eur;
+    const text = isNum(v) ? (est ? `≈ ${m.fmt(v)}, estimate` : m.fmt(v))
+      : metric !== 'm2' ? 'no data yet'
+      : isNum(nat) ? `${eur(nat)} for the whole country; no official prices by region yet`
+      : 'no official flat price yet';
+    tip.innerHTML = `<b>${el.dataset.area ? `${esc(el.dataset.area)}, ${country}` : country}</b> ${text}`;
     tip.style.left = `${e.clientX + 12}px`;
     tip.style.top = `${e.clientY + 12}px`;
     tip.hidden = false;
