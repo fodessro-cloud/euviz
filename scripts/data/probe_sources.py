@@ -71,10 +71,38 @@ def ods_text(url, n=12):
         print("  ", " | ".join(t for t in (re.sub(r"<[^>]+>", " ", c).strip() for c in re.findall(r"<table:table-cell[^>]*>(.*?)</table:table-cell>", row, re.S)) if t))
 
 
-show("AT Sonderauswertung", lambda: ods("https://www.statistik.at/fileadmin/pages/222/SonderauswertungImmobilienDurchschnittspreise.ods", 80))
-show("AT Wohnungspreise2025 headers", lambda: ods_text("https://www.statistik.at/fileadmin/pages/222/Wohnungspreise2025.ods"))
-for n in ("224078", "224079", "224081", "202358", "178009"):
-    show(f"DE AKOGA {n}", lambda n=n: sniff(f"https://redaktion-akoga.niedersachsen.de/download/{n}"))
-show("DK boligmarkedsstatistik", lambda: grep("https://finansdanmark.dk/tal-og-data/boligstatistik/boligmarkedsstatistikken/", r'href="([^"]*(?:xls|csv|media|download)[^"]*)"'))
-show("HR new dwellings any file", lambda: grep("https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/", r"[^\"'\s<>]+\.(?:xlsx?|csv|px|pdf)"))
-show("HU KSH lak0025 neighbours", lambda: [print(t, fetch(f"https://www.ksh.hu/stadat_files/lak/en/{t}.csv")[:600].decode("utf-8-sig", "replace")) for t in ("lak0024", "lak0026", "lak0027", "lak0028")])
+def ods_sheet(url, name, n=60):
+    z = zipfile.ZipFile(io.BytesIO(fetch(url)))
+    x = z.read("content.xml").decode("utf-8")
+    m = re.search(r'<table:table [^>]*table:name="%s".*?</table:table>' % re.escape(name), x, re.S)
+    for row in re.findall(r"<table:table-row[^>]*>(.*?)</table:table-row>", m.group(0), re.S)[:n]:
+        cells = [re.sub(r"<[^>]+>", " ", c).strip() for c in re.findall(r"<table:table-cell[^>]*>(.*?)</table:table-cell>", row, re.S)]
+        if any(cells):
+            print("  ", " | ".join(cells))
+
+
+def zlist(url):
+    z = zipfile.ZipFile(io.BytesIO(fetch(url)))
+    for i in z.infolist()[:80]:
+        print("  ", i.filename, i.file_size)
+
+
+def ksh(t, pat):
+    raw = fetch(f"https://www.ksh.hu/stadat_files/lak/en/{t}.csv").decode("utf-8-sig", "replace")
+    lines = raw.splitlines()
+    print(lines[0]); print(lines[1])
+    for l in lines[2:]:
+        if re.search(pat, l):
+            print("  ", l)
+
+
+AT = "https://www.statistik.at/fileadmin/pages/222/SonderauswertungImmobilienDurchschnittspreise.ods"
+show("AT Bundesländer", lambda: ods_sheet(AT, "Bundesländer"))
+show("AT Bundesländer_und_Bauperioden", lambda: ods_sheet(AT, "Bundesländer_und_Bauperioden", 30))
+show("HU lak0028 country", lambda: ksh("lak0028", r"^(Country|Budapest|Hungary|Total)"))
+for t in ("lak0029", "lak0030", "lak0031"):
+    show(f"HU {t}", lambda t=t: ksh(t, r"^(Country|Hungary|Total)"))
+show("HR msi xlsx", lambda: sniff("https://podaci.dzs.hr/media/4neprvvo/msi-gradevinarstvo.xlsx"))
+show("HR msi xlsx 2", lambda: sniff("https://podaci.dzs.hr/media/1sto04x3/msi-gradevinarstvo.xlsx"))
+show("DE AKOGA 224078 zip", lambda: zlist("https://redaktion-akoga.niedersachsen.de/download/224078"))
+show("DE AKOGA 224079 csv head", lambda: print(fetch("https://redaktion-akoga.niedersachsen.de/download/224079")[:1500].decode("latin-1")))
