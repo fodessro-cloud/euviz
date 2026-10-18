@@ -147,11 +147,24 @@ def finland():
         q.append({"code": code, "selection": {"filter": "item", "values": [tot]}})
     rows = [(lab, val) for lab, _, val in pxweb(base, "13mx.px", q) if val]
     area = area_var["code"]
-    whole = next((v for lab, v in rows if re.search(r"whole country|koko maa", lab[area], re.I)), None)
+    # The municipality table has no national row: take it from the quarterly whole-country table.
+    nmeta = json.loads(text(f"{base}13mv.px"))
+    print("  FI 13mv variables: " + "; ".join(f"{v['code']} {v['valueTexts'][:4]} ({len(v['values'])})" for v in nmeta["variables"]))
+    nq = []
+    for v in nmeta["variables"]:
+        if v.get("time") or "time" in v["code"].lower():
+            nq.append({"code": v["code"], "selection": {"filter": "item", "values": [v["values"][-1]]}})
+            quarter = v["valueTexts"][-1]
+        elif v["code"].lower() == "contentscode":
+            nq.append({"code": v["code"], "selection": {"filter": "item", "values": [next(c for c, t in zip(v["values"], v["valueTexts"]) if "square" in t.lower())]}})
+        else:
+            pick = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"whole country|total", t, re.I)), v["values"][0])
+            nq.append({"code": v["code"], "selection": {"filter": "item", "values": [pick]}})
+    whole = next(val for *_, val in pxweb(base, "13mv.px", nq) if val)
     big = ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyväskylä", "Kuopio", "Lahti", "Pori"]
     regions = [region(lab[area], v) for lab, v in rows if lab[area] in big]
-    return {"eur": round(whole), "unit": "m2", "basis": "sale", "period": year["valueTexts"][-1],
-            "what": "old flats in housing companies, sale prices",
+    return {"eur": round(whole), "unit": "m2", "basis": "sale", "period": quarter.replace("Q", "-Q"),
+            "what": "old flats in housing companies, sale prices (cities: last full year)",
             "source": "Statistics Finland (CC BY 4.0)", "url": "https://stat.fi/en/statistics/ashi",
             "regions": sorted(regions, key=lambda r: -r["eur"])}
 
@@ -195,6 +208,11 @@ def spain():
     big = ["Madrid", "Barcelona", "Valencia/València", "Valencia", "Sevilla", "Málaga", "Alicante/Alacant", "Balears (Illes)",
            "Illes Balears", "Bizkaia", "Las Palmas", "Murcia", "Zaragoza", "Gipuzkoa", "Girona", "Santa Cruz de Tenerife"]
     regions = [region(r["Provincia"], num(r["Valor"])) for r in prov if r["Provincia"] in big]
+    # Single-province regions appear only as regional totals.
+    for r in other:
+        name = {"Madrid, Comunidad de": "Madrid", "Balears, Illes": "Balearic Islands"}.get(r.get("Comunidad_Autónoma"))
+        if r.get("Provincia") == "Total CCAA" and name and num(r["Valor"]) and name not in [x["name"] for x in regions]:
+            regions.append(region(name, num(r["Valor"])))
     nat_v = num(nat[0]["Valor"]) if nat else None
     return {"eur": round(nat_v) if nat_v else None, "unit": "m2", "basis": "appraisal", "period": f"{last[0]}-Q{last[1]}",
             "what": "free-market housing, average appraised value",
