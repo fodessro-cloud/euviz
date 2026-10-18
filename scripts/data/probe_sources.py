@@ -170,5 +170,12 @@ def sk_exports():
             print(name, "FAIL", e)
 
 
-show("Portugal INE regions", pt_regions)
-show("Slovakia NBS exports", sk_exports)
+def pt_run():
+    import traceback, housing_levels
+    try:
+        print(housing_levels.portugal().get("areas"))
+    except Exception:  # noqa: BLE001
+        traceback.print_exc(file=sys.stdout)
+
+
+show("Portugal fetcher", pt_run)
