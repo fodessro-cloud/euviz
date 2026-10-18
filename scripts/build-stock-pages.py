@@ -513,7 +513,7 @@ def main():
     old = sorted(f'{SITE}/{p.parent.relative_to(SRC / "archive-site").as_posix()}/' for p in (SRC / 'archive-site').glob('*/**/index.html'))
     # Property pages by country (scripts/build-property-pages.py names them the same way).
     housing = json.loads((SRC / 'js' / 'housing.json').read_text()) if (SRC / 'js' / 'housing.json').exists() else {'countries': {}}
-    prop = ['property/overvalued'] + sorted(f'property/{re.sub(r"[^a-z0-9]+", "-", c["name"].lower()).strip("-")}'
+    prop = ['property/undervalued'] + sorted(f'property/{re.sub(r"[^a-z0-9]+", "-", c["name"].lower()).strip("-")}'
                                             for c in housing['countries'].values() if not c.get('agg'))
     urls = [f'{SITE}/{p}' for p in PAGES + prop] + [f'{SITE}/stock/{c["slug"]}' for c in sorted(rows, key=lambda c: c['slug'])] + old
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
