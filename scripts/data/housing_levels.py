@@ -1,81 +1,238 @@
-"""Actual home prices (price per m², or per dwelling where that is all a country publishes),
-from national statistics offices, central banks and land registries.
+"""Actual home prices in euros: price per m² by country and by region or city, from national
+statistics offices, central banks and land registries (all free to reuse with attribution).
 
-Step 1 (this version): probe each source and log what it returns, so the parsers can be written
-against real responses. The container that writes this code cannot reach these hosts.
+Only official figures. Some countries publish sale prices, some bank appraisals; the page says
+which. Writes js/housing-levels.json:
+{updated, failed, countries: {code: {name, eur, unit, basis, period, source, url, regions: [...]}}}
 """
-import json, sys, urllib.request
+import csv, io, json, re, sys, urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+OUT = ROOT / "js" / "housing-levels.json"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
 
-PROBES = {
-    "FI ashi tables": "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/",
-    "FI 13mt meta": "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/statfin_ashi_pxt_13mt.px",
-    "LU dataset": "https://data.public.lu/api/1/datasets/57f26768cc765e23279433b0/",
-    "FR DVF dataset": "https://www.data.gouv.fr/api/1/datasets/statistiques-dvf/",
-    "DK EJEN77": "https://api.statbank.dk/v1/tableinfo/EJEN77?format=JSON",
-    "ES MIVAU VDP006_01": "https://cdn.mivau.gob.es/portal-web-mivau/Datos_MIVAU/CSV/VDP006_01.csv",
-    "SE SCB BO0501C": "https://api.scb.se/OV0104/v1/doris/en/ssd/BO/BO0501/BO0501C/",
-    "SE SCB BO0501B": "https://api.scb.se/OV0104/v1/doris/en/ssd/BO/BO0501/BO0501B/",
-    "PL GUS BDL search m2": "https://bdl.stat.gov.pl/api/v1/variables/search?name=1%20m2&format=json&page-size=100&lang=en",
-    "PL GUS BDL subjects": "https://bdl.stat.gov.pl/api/v1/subjects/search?name=price&format=json&lang=en",
-    "IE CSO catalogue HPM": "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadCollection",
-    "CZ CSU": "https://csu.gov.cz/ceny-sledovanych-druhu-nemovitosti",
-    "ECB HUF": "https://data-api.ecb.europa.eu/service/data/EXR/Q.HUF+PLN+SEK+DKK+CZK+GBP+CHF+NOK+RON+ISK.EUR.SP00.A?format=csvdata&startPeriod=2024-Q1",
-}
+
+def fetch(url, data=None, limit=None):
+    req = urllib.request.Request(url, data=data, headers={**UA, **({"Content-Type": "application/json"} if data else {})})
+    with urllib.request.urlopen(req, timeout=600) as r:
+        return r.read(limit) if limit else r.read()
 
 
-def summary(name, text):
-    """What the parser needs to know about each response, short enough to read."""
+def text(url, data=None, enc="utf-8-sig"):
+    return fetch(url, data).decode(enc)
+
+
+def num(s):
+    """'3 041,4123' / '1 194' / '2.736' -> float, or None."""
+    s = str(s or "").replace("\xa0", "").replace(" ", "").strip()
+    if not s or not re.search(r"\d", s):
+        return None
+    if "," in s:
+        s = s.replace(".", "").replace(",", ".")
     try:
-        if name.startswith("FI") and "tables" in name:
-            return "\n".join(f"{x['id']} {x['text']}" for x in json.loads(text))
-        if name.startswith(("FI", "DK", "SE")):
-            d = json.loads(text)
-            if isinstance(d, list):
-                return "\n".join(f"{x.get('id')} {x.get('text')}" for x in d)
-            return json.dumps({k: d[k] for k in d if k != "variables"})[:600] + "\n" + "\n".join(
-                f"{v.get('code') or v.get('id')} {v.get('text')}: {[str(x)[:60] for x in (v.get('valueTexts') or [y.get('text') for y in v.get('values', [])])][:25]} ({len(v.get('valueTexts') or v.get('values', []))})"
-                for v in d.get("variables", []))
-        if name.startswith(("LU", "FR")):
-            d = json.loads(text)
-            return f"{d.get('title')} | license {d.get('license')}\n" + "\n".join(
-                f"{r.get('title')} | {r.get('format')} | {r.get('filesize')} | {r.get('url')}" for r in d.get("resources", []))
-        if name.startswith("IE"):
-            d = json.loads(text)
-            out = []
-            for item in (d.get("link", {}).get("item", []) if isinstance(d, dict) else d):
-                lab = item.get("label", "")
-                if any(w in lab.lower() for w in ("price", "house", "dwelling", "property")):
-                    out.append(f"{item.get('extension', {}).get('matrix')} {lab}")
-            return "\n".join(out[:80])
-        if name.startswith("PL"):
-            d = json.loads(text)
-            return "\n".join(json.dumps(r, ensure_ascii=False)[:300] for r in d.get("results", [])[:60])
-    except Exception as e:  # noqa: BLE001
-        return f"(summary failed: {e})\n{text[:2500]}"
-    return text[:4000]
+        return float(s)
+    except ValueError:
+        return None
 
 
-def probe(name, url):
+RATES = {}
+
+
+def eur_rate(cur, year):
+    """Units of `cur` per euro, ECB reference rate averaged over `year` (or the latest year)."""
+    if cur == "EUR":
+        return 1.0
+    if cur not in RATES:
+        rows = csv.DictReader(io.StringIO(text(
+            f"https://data-api.ecb.europa.eu/service/data/EXR/A.{cur}.EUR.SP00.A?format=csvdata&startPeriod=2015")))
+        RATES[cur] = {r["TIME_PERIOD"]: float(r["OBS_VALUE"]) for r in rows if r.get("OBS_VALUE")}
+    r = RATES[cur]
+    return r.get(str(year)) or r[max(r)]
+
+
+def region(name, value, note=None):
+    return {"name": name, "eur": round(value), **({"note": note} if note else {})}
+
+
+# ── Countries ─────────────────────────────────────────────
+
+def slovakia():
+    rows = list(csv.reader(io.StringIO(text("https://nbs.sk/export/sk/real-estate-price-by-region/csv")), delimiter=";"))
+    head = next(r for r in rows if r and r[0].startswith("Rok"))
+    latest = next(r for r in rows if r and re.match(r"\dQ \d{4}", r[0]))
+    names = {"SR spolu": None, "BA": "Bratislava region", "TT": "Trnava region", "NR": "Nitra region",
+             "TN": "Trenčín region", "ZA": "Žilina region", "BB": "Banská Bystrica region",
+             "KE": "Košice region", "PO": "Prešov region"}
+    vals = dict(zip(head, latest))
+    q, y = latest[0].split()
+    return {"eur": round(num(vals["SR spolu"])), "unit": "m2", "basis": "sale", "period": f"{y}-Q{q[0]}",
+            "what": "all dwellings, sale prices",
+            "source": "Národná banka Slovenska", "url": "https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/",
+            "regions": sorted([region(names[k], num(vals[k])) for k in head[2:] if k in names], key=lambda r: -r["eur"])}
+
+
+def france():
+    # Whole DVF period (last five years of notarised sales): median €/m², flats and houses together.
+    url = "https://data-pipeline-open.s3.sbg.io.cloud.ovh.net/dvf/stats_whole_period.csv"
+    rows = csv.DictReader(io.StringIO(text(url)))
+    nation, deps, cities = None, [], []
+    levels = {}
+    for r in rows:
+        lvl = r.get("echelle_geo")
+        levels[lvl] = levels.get(lvl, 0) + 1
+        v = num(r.get("med_prix_m2_whole_apt_maison"))
+        n = num(r.get("nb_ventes_whole_apt_maison")) or 0
+        if not v:
+            continue
+        if lvl == "nation":
+            nation = v
+        elif lvl == "departement":
+            deps.append((r["libelle_geo"], v, n))
+        elif lvl == "commune" and n >= 3000:
+            cities.append((r["libelle_geo"], v, n))
+    print(f"  FR levels: {levels}")
+    if not nation:  # no national row: sales-weighted median of departments is close enough
+        tot = sum(n for *_, n in deps)
+        nation = sum(v * n for _, v, n in deps) / tot
+    cities.sort(key=lambda c: -c[2])
+    return {"eur": round(nation), "unit": "m2", "basis": "sale", "period": "last 5 years",
+            "what": "flats and houses, median sale price",
+            "source": "DVF, Etalab (Licence Ouverte)", "url": "https://www.data.gouv.fr/datasets/statistiques-dvf/",
+            "regions": sorted([region(n, v) for n, v, _ in cities[:20]], key=lambda r: -r["eur"])}
+
+
+def pxweb(base, table, query):
+    d = json.loads(text(f"{base}{table}", data=json.dumps({"query": query, "response": {"format": "json-stat2"}}).encode()))
+    dims = d["id"]
+    cats = {k: list(d["dimension"][k]["category"]["index"]) for k in dims}
+    labels = {k: d["dimension"][k]["category"].get("label", {}) for k in dims}
+    out, sizes = [], d["size"]
+    for i, v in enumerate(d["value"]):
+        idx, rem = {}, i
+        for k, n in zip(reversed(dims), reversed(sizes)):
+            idx[k] = cats[k][rem % n]
+            rem //= n
+        out.append(({k: labels[k].get(c, c) for k, c in idx.items()}, {k: c for k, c in idx.items()}, v))
+    return out
+
+
+def finland():
+    base = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/"
+    meta = json.loads(text(f"{base}statfin_ashi_pxt_13mx.px"))
+    print("  FI 13mx variables: " + "; ".join(f"{v['code']} {v['text']} {v['valueTexts'][:6]} ({len(v['values'])})" for v in meta["variables"]))
+    var = {v["code"]: v for v in meta["variables"]}
+    year = [v for v in meta["variables"] if v.get("time") or v["code"].lower() in ("vuosi", "year")][0]
+    price = [v for v in meta["variables"] if v["code"].lower() in ("tiedot", "information")][0]
+    pcode = next(c for c, t in zip(price["values"], price["valueTexts"]) if "per square" in t.lower() or "€/m" in t)
+    q = [{"code": year["code"], "selection": {"filter": "item", "values": [year["values"][-1]]}},
+         {"code": price["code"], "selection": {"filter": "item", "values": [pcode]}}]
+    for code, v in var.items():  # every other dimension: its total ("all", "total")
+        if code in (year["code"], price["code"]) or code.lower() in ("alue", "region", "kunta", "municipality"):
+            continue
+        tot = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"total|all|yhteensä", t, re.I)), v["values"][0])
+        q.append({"code": code, "selection": {"filter": "item", "values": [tot]}})
+    rows = [(lab, val) for lab, _, val in pxweb(base, "statfin_ashi_pxt_13mx.px", q) if val]
+    area = next(k for k in rows[0][0] if k.lower() in ("alue", "region", "kunta", "municipality", "area"))
+    whole = next((v for lab, v in rows if re.search(r"whole country|koko maa", lab[area], re.I)), None)
+    big = ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyväskylä", "Kuopio", "Lahti", "Pori"]
+    regions = [region(lab[area], v) for lab, v in rows if lab[area] in big]
+    return {"eur": round(whole), "unit": "m2", "basis": "sale", "period": year["valueTexts"][-1],
+            "what": "old flats in housing companies, sale prices",
+            "source": "Statistics Finland (CC BY 4.0)", "url": "https://stat.fi/en/statistics/ashi",
+            "regions": sorted(regions, key=lambda r: -r["eur"])}
+
+
+def portugal():
+    d = json.loads(text("https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012248&lang=EN"))[0]
+    period = d["UltimoPref"]
+    rows = d["Dados"][period]
+    total = [r for r in rows if r.get("dim_3_t", "").lower().startswith("total") or r.get("dim_3") == "T"]
+    rows = total or rows
+    nat = next((num(r.get("valor")) for r in rows if r.get("geodsg") == "Portugal"), None)
+    big = ["Lisboa", "Porto", "Sintra", "Vila Nova de Gaia", "Cascais", "Loures", "Braga", "Almada", "Matosinhos",
+           "Amadora", "Oeiras", "Seixal", "Gondomar", "Odivelas", "Coimbra", "Funchal", "Faro", "Loulé", "Setúbal", "Aveiro"]
+    regions = [region(r["geodsg"], num(r["valor"])) for r in rows if r.get("geodsg") in big and num(r.get("valor"))]
+    m = datetime.strptime(period, "%B %Y")
+    return {"eur": round(nat), "unit": "m2", "basis": "appraisal", "period": m.strftime("%Y-%m"),
+            "what": "all dwellings, median bank appraisal",
+            "source": "Statistics Portugal, INE (CC BY 4.0)", "url": "https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0012248",
+            "regions": sorted({r["name"]: r for r in regions}.values(), key=lambda r: -r["eur"])}
+
+
+def spain():
+    rows = list(csv.DictReader(io.StringIO(text("https://cdn.mivau.gob.es/portal-web-mivau/Datos_MIVAU/CSV/VDP006_01.csv", enc="latin-1")), delimiter=";"))
+    rows = [r for r in rows if r.get("Régimen", r.get("RÃ©gimen", "")).startswith("Libre") or "Libre" in str(r.values())]
+    key = lambda r: (int(r["Año" if "Año" in r else next(k for k in r if k.startswith("A"))]), int(r["Trimestre"]))
+    rows = [r for r in rows if num(r["Valor"])]
+    last = max(key(r) for r in rows)
+    now = [r for r in rows if key(r) == last]
+    prov = [r for r in now if r.get("CPRO") not in (None, "", "null")]
+    nat = [r for r in now if re.search(r"nacional|total", r.get("Provincia", "") + r.get("Comunidad_Autónoma", ""), re.I)]
+    print(f"  ES {last}: {len(now)} rows, {len(prov)} provinces, national rows: {[r.get('Provincia') for r in nat]}")
+    big = ["Madrid", "Barcelona", "Valencia/València", "Valencia", "Sevilla", "Málaga", "Alicante/Alacant", "Balears (Illes)",
+           "Illes Balears", "Bizkaia", "Las Palmas", "Murcia", "Zaragoza", "Gipuzkoa", "Girona", "Santa Cruz de Tenerife"]
+    regions = [region(r["Provincia"], num(r["Valor"])) for r in prov if r["Provincia"] in big]
+    nat_v = num(nat[0]["Valor"]) if nat else None
+    return {"eur": round(nat_v) if nat_v else None, "unit": "m2", "basis": "appraisal", "period": f"{last[0]}-Q{last[1]}",
+            "what": "free-market housing, average appraised value",
+            "source": "Ministry of Housing (MIVAU)", "url": "https://datos.gob.es/catalogo/e05233601-valor-tasado-de-la-vivienda",
+            "regions": sorted(regions, key=lambda r: -r["eur"])}
+
+
+def hungary():
+    raw = fetch("https://www.ksh.hu/stadat_files/lak/en/lak0025.csv")
+    rows = list(csv.reader(io.StringIO(raw.decode("utf-8-sig", "replace")), delimiter=";"))
+    head = next(r for r in rows if r and r[0] == "Region")
+    year = head[-1] if head[-1] else head[-2]
+    col = head.index(year)
+    rate = eur_rate("HUF", year)
+    second = []
+    for r in rows[rows.index(head) + 1:]:
+        if r and r[0] and not r[1] and second:
+            break  # next block (new dwellings) starts
+        if len(r) > col and num(r[col]):
+            second.append((r[0], r[1], num(r[col]) * 1000 / rate))
+    print("  HU rows: " + "; ".join(f"{a}/{b}" for a, b, _ in second if b not in ("towns", "villages", "county seats")))
+    nat = next((v for a, b, v in second if re.search(r"country|hungary|total", a, re.I)), None)
+    regions = [region("Budapest" if a == "Budapest" else f"{a}, county seats", v) for a, b, v in second
+               if a == "Budapest" or b == "county seats"]
+    return {"eur": round(nat) if nat else None, "unit": "m2", "basis": "sale", "period": year,
+            "what": "second-hand dwellings, average sale price", "currency": "HUF", "rate": round(rate, 2),
+            "source": "Hungarian Central Statistical Office (KSH)", "url": "https://www.ksh.hu/stadat_files/lak/en/lak0025.html",
+            "regions": sorted(regions, key=lambda r: -r["eur"])}
+
+
+COUNTRIES = {"SK": ("Slovakia", slovakia), "FR": ("France", france), "FI": ("Finland", finland),
+             "PT": ("Portugal", portugal), "ES": ("Spain", spain), "HU": ("Hungary", hungary)}
+
+
+def main():
     try:
-        req = urllib.request.Request(url, headers=UA)
-        with urllib.request.urlopen(req, timeout=90) as r:
-            body = r.read(400_000)
-            ctype = r.headers.get("Content-Type", "")
+        old = json.loads(OUT.read_text())["countries"] if OUT.exists() else {}
+    except Exception:  # noqa: BLE001
+        old = {}
+    countries, failed = {}, []
+    for code, (name, job) in COUNTRIES.items():
         try:
-            text = body.decode("utf-8-sig")
-        except UnicodeDecodeError:
-            text = body.decode("cp1250", "replace")
-        print(f"\n===== {name} OK {ctype} {len(body)} bytes\n{summary(name, text)}")
-    except Exception as e:  # noqa: BLE001
-        print(f"\n===== {name} FAIL {e}")
+            c = job()
+            if not c.get("eur"):
+                raise RuntimeError("no national figure")
+            countries[code] = {"name": name, **c}
+            print(f"ok    {code} {c['eur']} €/{c['unit']} {c['period']} ({len(c['regions'])} regions: "
+                  + ", ".join(f"{r['name']} {r['eur']}" for r in c["regions"][:6]) + ")")
+        except Exception as e:  # noqa: BLE001 - each country fails on its own
+            failed.append(code)
+            print(f"FAIL  {code}: {type(e).__name__}: {e}", file=sys.stderr)
+            if code in old:
+                countries[code] = old[code]
+    if not countries:
+        sys.exit(1)
+    OUT.write_text(json.dumps({"updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
+                               "failed": failed, "countries": countries}, ensure_ascii=False, separators=(",", ":")))
+    print(f"wrote {OUT.relative_to(ROOT)}: {len(countries)} countries, failed: {failed or 'none'}")
 
 
 if __name__ == "__main__":
-    only = sys.argv[1:]
-    for n, u in PROBES.items():
-        if not only or any(o in n for o in only):
-            probe(n, u)
+    main()
