@@ -63,4 +63,6 @@ jobs:
           FTP_USERNAME: ${{ vars.FTP_USERNAME || 'finila.com' }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_DIR: ${{ vars.FTP_DIR || '/' }}
-        run: scripts/upload-data.sh
+        run: |
+          scripts/upload-data.sh
+          scripts/upload-property-pages.sh

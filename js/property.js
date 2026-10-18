@@ -6,6 +6,7 @@ const pct = (v, d = 1) => { if (!isNum(v)) return '—'; const s = v.toFixed(d);
 const cls = v => isNum(v) ? (v > 0 ? 'pos' : v < 0 ? 'neg' : '') : '';
 const COLORS = { nominal: '#1F6FEB', real: '#B97A0A', eu: '#8A94A6' };
 const EU = 'EU';
+const slug = name => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 let DATA = null, LEVELS = null, MAP = null, code = EU, years = 10, sortKey = 'n10', sortDir = -1, metric = 'm2';
 const eur = v => `€${Math.round(v).toLocaleString('en-GB')}`;
@@ -41,7 +42,8 @@ function renderNow() {
     const l = LEVELS.countries[code];
     return tile('Price per m²', eur(l.eur), `${esc(l.what)}, ${esc(l.period)}`);
   })() : '');
-  $('now-sub').innerHTML = `${esc(c.name)} · prices to <b>${esc(quarterLabel(c.latest))}</b>`;
+  $('now-sub').innerHTML = `${esc(c.name)} · prices to <b>${esc(quarterLabel(c.latest))}</b>`
+    + (c.agg ? '' : ` · <a href="/property/${slug(c.name)}">Full page for ${esc(c.name)}</a>`);
 }
 
 function renderChart() {
@@ -105,7 +107,7 @@ function renderTable() {
     return (x - y) * sortDir;
   });
   $('eu-body').innerHTML = agg.concat(rows).map(([k, c]) => `<tr class="${k === code ? 'sel' : ''} ${c.agg ? 'agg' : ''}" data-code="${k}">${COLS.map(col =>
-    col.key === 'name' ? `<td>${esc(c.name)}</td>` : col.key === 'm2' ? `<td class="r m">${isNum(c.m2) ? eur(c.m2) : '—'}</td>` : `<td class="r m ${cls(col.get(c))}">${pct(col.get(c), col.key === 'n1' ? 1 : 0)}</td>`).join('')}</tr>`).join('');
+    col.key === 'name' ? `<td>${c.agg ? esc(c.name) : `<a href="/property/${slug(c.name)}">${esc(c.name)}</a>`}</td>` : col.key === 'm2' ? `<td class="r m">${isNum(c.m2) ? eur(c.m2) : '—'}</td>` : `<td class="r m ${cls(col.get(c))}">${pct(col.get(c), col.key === 'n1' ? 1 : 0)}</td>`).join('')}</tr>`).join('');
 }
 
 // Cheapest and dearest against incomes and rents: a fact about today's prices, not a forecast.
@@ -217,6 +219,7 @@ async function init() {
     renderTable();
   });
   $('eu-body').addEventListener('click', e => {
+    if (e.target.closest('a')) return; // the country's own page
     const tr = e.target.closest('[data-code]');
     if (!tr) return;
     code = tr.dataset.code;

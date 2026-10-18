@@ -511,7 +511,11 @@ def main():
     today = date.today().isoformat()
     # The old articles (archive-site/, served under their original addresses) keep their search ranking.
     old = sorted(f'{SITE}/{p.parent.relative_to(SRC / "archive-site").as_posix()}/' for p in (SRC / 'archive-site').glob('*/**/index.html'))
-    urls = [f'{SITE}/{p}' for p in PAGES] + [f'{SITE}/stock/{c["slug"]}' for c in sorted(rows, key=lambda c: c['slug'])] + old
+    # Property pages by country (scripts/build-property-pages.py names them the same way).
+    housing = json.loads((SRC / 'js' / 'housing.json').read_text()) if (SRC / 'js' / 'housing.json').exists() else {'countries': {}}
+    prop = ['property/overvalued'] + sorted(f'property/{re.sub(r"[^a-z0-9]+", "-", c["name"].lower()).strip("-")}'
+                                            for c in housing['countries'].values() if not c.get('agg'))
+    urls = [f'{SITE}/{p}' for p in PAGES + prop] + [f'{SITE}/stock/{c["slug"]}' for c in sorted(rows, key=lambda c: c['slug'])] + old
     (OUT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
                                      ''.join(f'  <url><loc>{esc(u)}</loc><lastmod>{today}</lastmod></url>\n' for u in urls) + '</urlset>\n', encoding='utf-8')
     print(f'Built {len(rows)} company pages in {out}, sitemap with {len(urls)} addresses.')
