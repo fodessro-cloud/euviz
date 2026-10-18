@@ -53,6 +53,12 @@ def eur_rate(cur, year):
     return r.get(str(year)) or r[max(r)]
 
 
+def area_key(name):
+    """Region name as the map matches it when no NUTS code is known: 'Côtes-d’Armor' -> 'cotesdarmor'."""
+    import unicodedata
+    return "name:" + re.sub(r"[^a-z0-9]", "", unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode().lower())
+
+
 def region(name, value, note=None):
     return {"name": name, "eur": round(value), **({"note": note} if note else {})}
 
@@ -110,7 +116,8 @@ def france():
     return {"eur": round(nation), "unit": "m2", "basis": "sale", "period": "last 5 years",
             "type": "flats", "what": "flats, median sale price",
             "source": "DVF, Etalab (Licence Ouverte)", "url": "https://www.data.gouv.fr/datasets/statistiques-dvf/",
-            "regions": sorted([region(n, v) for n, v, _ in cities[:20]], key=lambda r: -r["eur"])}
+            "regions": sorted([region(n, v) for n, v, _ in cities[:20]], key=lambda r: -r["eur"]),
+            "areas": {area_key(n): round(v) for n, v, _ in deps}}
 
 
 def pxweb(base, table, query):
@@ -242,7 +249,12 @@ def hungary():
     return {"eur": round(flats("Country")), "unit": "m2", "basis": "sale", "period": year,
             "type": "flats", "what": "flats (brick and panel blocks), resale prices", "currency": "HUF", "rate": round(rate, 2),
             "source": "Hungarian Central Statistical Office (KSH)", "url": "https://www.ksh.hu/stadat_files/lak/en/lak0028.html",
-            "regions": sorted(regions, key=lambda r: -r["eur"])}
+            "regions": sorted(regions, key=lambda r: -r["eur"]),
+            "areas": {HU_NUTS[a]: round(flats(a)) for a in ["Budapest", *areas] if a in HU_NUTS and flats(a)}}
+
+
+HU_NUTS = {"Budapest": "HU11", "Pest": "HU12", "Central Transdanubia": "HU21", "Western Transdanubia": "HU22",
+           "Southern Transdanubia": "HU23", "Northern Hungary": "HU31", "Northern Great Plain": "HU32", "Southern Great Plain": "HU33"}
 
 
 def austria():
@@ -266,7 +278,8 @@ def austria():
     return {"eur": round(data["Österreich"][col]), "unit": "m2", "basis": "sale", "period": years[col],
             "type": "flats", "what": "owner-occupied flats, median sale price", "source": "Statistik Austria",
             "url": "https://www.statistik.at/statistiken/volkswirtschaft-und-oeffentliche-finanzen/preise-und-preisindizes/immobilien-durchschnittspreise",
-            "regions": sorted([region(AT_STATES.get(k, k), v[col]) for k, v in data.items() if k != "Österreich" and v[col]], key=lambda r: -r["eur"])}
+            "regions": sorted([region(AT_STATES.get(k, k), v[col]) for k, v in data.items() if k != "Österreich" and v[col]], key=lambda r: -r["eur"]),
+            "areas": {AT_NUTS[k]: round(v[col]) for k, v in data.items() if k in AT_NUTS and v[col]}}
 
 
 def croatia():
@@ -307,10 +320,15 @@ def czechia():
     return {"eur": round(vals["Česko"]), "unit": "m2", "basis": "sale", "period": year,
             "type": "flats", "what": "flats, sale prices from tax records", "currency": "CZK", "rate": round(rate, 2),
             "source": "Czech Statistical Office (ČSÚ)", "url": "https://csu.gov.cz/pak/ceny-nemovitosti-v-pardubickem-kraji-v-letech-2023-az-2025",
-            "regions": sorted([region(en, vals[cz]) for cz, en in CZ_REGIONS.items() if cz in vals], key=lambda r: -r["eur"])}
+            "regions": sorted([region(en, vals[cz]) for cz, en in CZ_REGIONS.items() if cz in vals], key=lambda r: -r["eur"]),
+            "areas": {nuts: round(vals[cz]) for cz, nuts in CZ_NUTS.items() if cz in vals}}
 
 
 CZ_URL = "https://csu.gov.cz/docs/107823/0dc51dfa-22cd-d7b7-1dbb-29198fc9cf6a/Tab1_ceny_nemovitosti_kraje_okresy_2023_2025.xlsx?version=1.0"
+CZ_NUTS = {"Hlavní město Praha": "CZ010", "Středočeský": "CZ020", "Jihočeský": "CZ031", "Plzeňský": "CZ032",
+           "Karlovarský": "CZ041", "Ústecký": "CZ042", "Liberecký": "CZ051", "Královéhradecký": "CZ052",
+           "Pardubický": "CZ053", "Kraj Vysočina": "CZ063", "Vysočina": "CZ063", "Jihomoravský": "CZ064",
+           "Olomoucký": "CZ071", "Zlínský": "CZ072", "Moravskoslezský": "CZ080"}
 CZ_REGIONS = {"Hlavní město Praha": "Prague", "Brno-město": "Brno", "Ostrava-město": "Ostrava", "Plzeň-město": "Plzeň",
               "Středočeský": "Central Bohemia", "Jihočeský": "South Bohemia", "Plzeňský": "Plzeň region",
               "Karlovarský": "Karlovy Vary region", "Ústecký": "Ústí nad Labem region", "Liberecký": "Liberec region",
@@ -319,6 +337,8 @@ CZ_REGIONS = {"Hlavní město Praha": "Prague", "Brno-město": "Brno", "Ostrava-
               "Zlínský": "Zlín region", "Moravskoslezský": "Moravia-Silesia"}
 
 
+AT_NUTS = {"Burgenland": "AT11", "Niederösterreich": "AT12", "Wien": "AT13", "Kärnten": "AT21", "Steiermark": "AT22",
+           "Oberösterreich": "AT31", "Salzburg": "AT32", "Tirol": "AT33", "Vorarlberg": "AT34"}
 AT_STATES = {"Wien": "Vienna", "Niederösterreich": "Lower Austria", "Oberösterreich": "Upper Austria", "Kärnten": "Carinthia",
              "Steiermark": "Styria", "Tirol": "Tyrol", "Salzburg": "Salzburg", "Vorarlberg": "Vorarlberg", "Burgenland": "Burgenland"}
 
