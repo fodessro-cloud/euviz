@@ -122,15 +122,18 @@ function renderValue() {
 // Bins and colours per metric; prices and changes read light to dark, "cheap or expensive" too, always light to dark.
 // Cheap to dear reads green to red, like a heat map; price falls (below zero) in blue.
 // Two logo colours in shades, light to dark: cheapest pale gold, most expensive darkest blue (no near-black) (Lub, 2026-10-18).
-const HEAT = ['#F8EBC4', '#EFC75E', '#C9A23A', '#8AA2CF', '#5677B4', '#2F4F8A'];
+// Soft middle shades; only the top step is dark, so it marks the critical places (Lub, 2026-10-18).
+const HEAT = ['#FAF0D2', '#F1D27E', '#DDB45A', '#BCCBE6', '#7F9BCF', '#2F4F8A'];
 const FALL = HEAT[0];
 const METRICS = {
-  m2: { title: 'Flat price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2500, 3500, 5000, 7000], colors: HEAT, areas: true },
+  m2: { title: 'Flat price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2500, 3500, 5000, 7000], colors: HEAT, areas: true,
+    regionsOnly: true },  // only regions are coloured; a country with no regional figures stays blank, never one national average (Lub)
   n1: { title: 'Price change in 1 year', get: k => DATA.countries[k]?.nominal['1y'], fmt: v => pct(v, 1), sfmt: v => pct(v, 0), bins: [0, 3, 6, 9, 12], colors: [FALL, ...HEAT.slice(1)] },
   n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: [FALL, ...HEAT.slice(1)] },
   n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: [FALL, ...HEAT.slice(1)] },
   val: { title: 'Cheap or expensive against incomes and rents', get: k => DATA.countries[k]?.valuation, fmt: v => pct(v, 0),
-    bins: [-15, -5, 5, 15], colors: ['#F8EBC4', '#EFC75E', '#E6E9EF', '#8AA2CF', '#2F4F8A'], words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive'] },
+    bins: [-15, -5, 5, 15, 30, 45], colors: ['#F1D27E', '#FAF0D2', '#ECEEF2', '#D3DDEF', '#A3B7DE', '#6383C2', '#2F4F8A'],
+    words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive', 'very expensive', 'extremely expensive'] },
 };
 const colorOf = (m, v) => m.colors[m.bins.filter(b => v >= b).length];
 
@@ -142,7 +145,7 @@ function renderMap() {
   if (!MAP) { $('map-section').hidden = true; return; }
   const m = METRICS[metric];
   const paths = MAP.countries.map(c => {
-    const v = c.id && !DATA.countries[c.id]?.agg ? m.get(c.id) : undefined;
+    const v = c.id && !DATA.countries[c.id]?.agg && !m.regionsOnly ? m.get(c.id) : undefined;
     if (!c.id) return `<path class="ctx" d="${c.d}"/>`;
     if (!isNum(v)) return `<path class="nd ${c.id === code ? 'sel' : ''}" data-code="${c.id}" d="${c.d}"/>`;
     return `<path class="has ${c.id === code ? 'sel' : ''}" data-code="${c.id}" fill="${colorOf(m, v)}" d="${c.d}"/>`;
@@ -203,7 +206,7 @@ function renderSide() {
     $('regions').innerHTML = l.regions.map(r => `<li>${esc(r.name)}<span class="m">${eur(r.eur)}</span></li>`).join('');
   }
   $('map-note').innerHTML = metric === 'm2'
-    ? `Flats only, official figures in euros. Countries without an official price for flats alone are left out until one is found. ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Asking prices and bank appraisals are usually higher than what buyers finally pay, so compare countries with care. More countries are being added.`
+    ? `Flats only, official figures in euros. The map colours regions only; a country without official prices by region stays blank (its national figure is in the list). ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Asking prices and bank appraisals are usually higher than what buyers finally pay, so compare countries with care. More countries are being added.`
     : 'Eurostat house price index; OECD for the United Kingdom and for incomes and rents.';
 }
 
