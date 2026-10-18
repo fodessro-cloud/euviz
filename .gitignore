@@ -4,3 +4,4 @@ __pycache__/
 /stock/
 /sitemap.xml
 /js/stock-slugs.json
+/js/intraday/

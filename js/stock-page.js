@@ -16,47 +16,75 @@
   box.querySelector('[data-f=badge]').textContent = `Real price · ${venue} · ${day}${final ? '' : ' · 15 min delayed'}`;
 })();
 
-// Price chart: the range buttons redraw the line from the closes embedded in the page,
-// and moving over the chart shows the close of that day.
-(function () {
+// Price chart: 1H, 4H and 1D use the minute prices of the last trading day (/js/intraday/<ISIN>.json,
+// times shown in Frankfurt time), the longer ranges the daily closes embedded in the page.
+// 1H is shown first when the minute prices load; moving over the chart shows that price.
+(async function () {
   const fig = document.querySelector('.sp-chart');
-  const data = fig && fig.querySelector('.sp-hist');
-  if (!data) return;
-  const all = JSON.parse(data.textContent);
+  if (!fig) return;
+  const daily = JSON.parse(fig.querySelector('.sp-hist').textContent);
   const svg = fig.querySelector('svg'), line = svg.querySelector('polyline'), area = svg.querySelector('polygon');
   const cap = fig.querySelectorAll('figcaption span'), axis = fig.querySelectorAll('.sp-chart-axis span');
   const W = 600, H = 150, P = 4;
   const fmt = (v, d = 2) => v.toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
-  let pts = all, xy = [];
-  function draw(days) {
-    const from = days ? new Date(new Date(all[all.length - 1][0]).getTime() - days * 864e5).toISOString().slice(0, 10) : '';
-    pts = all.filter(p => p[0] >= from);
-    if (pts.length < 2) pts = all.slice(-2);
+  let intra = null, pts = [], xy = [];
+  try {
+    const r = await fetch(`/js/intraday/${fig.dataset.isin}.json`, { cache: 'no-cache' });
+    if (r.ok) intra = await r.json();
+  } catch { /* no minute prices: daily ranges only */ }
+  // Minute of the day (UTC) -> "15:42" in Frankfurt time.
+  const clock = m => intra && new Date(Date.UTC(...intra.date.split('-').map((v, i) => i === 1 ? v - 1 : +v), 0, m))
+    .toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
+  const day = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  function draw(range) {
+    if (range[0] === 'i') {
+      const bars = intra.bars, mins = +range.slice(1), end = bars[bars.length - 1][0];
+      pts = bars.filter(b => !mins || b[0] > end - mins).map(b => [clock(b[0]), b[1]]);
+      if (pts.length < 2) pts = bars.slice(-2).map(b => [clock(b[0]), b[1]]);
+      cap[0].textContent = `${range === 'i0' ? 'Trading day' : range === 'i60' ? 'Last hour' : 'Last 4 hours'} · ${day(intra.date)} · ${intra.venue}`;
+    } else {
+      const days = +range.slice(1);
+      const from = days ? new Date(new Date(daily[daily.length - 1][0]).getTime() - days * 864e5).toISOString().slice(0, 10) : '';
+      pts = daily.filter(p => p[0] >= from);
+      if (pts.length < 2) pts = daily.slice(-2);
+      cap[0].textContent = 'Price since ' + day(pts[0][0]);
+    }
     const vals = pts.map(p => p[1]), lo = Math.min(...vals), hi = Math.max(...vals), span = hi - lo || 1;
-    xy = vals.map((v, i) => [P + i * (W - 2 * P) / (vals.length - 1), P + (hi - v) * (H - 2 * P) / span]);
+    xy = vals.map((v, i) => [P + i * (W - 2 * P) / Math.max(1, vals.length - 1), P + (hi - v) * (H - 2 * P) / span]);
     const pl = xy.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
     const chg = (vals[vals.length - 1] / vals[0] - 1) * 100, cls = chg >= 0 ? 'pos' : 'neg';
     line.setAttribute('points', pl); line.setAttribute('class', 'sp-chart-line ' + cls);
     area.setAttribute('points', `${P},${H} ${pl} ${W - P},${H}`); area.setAttribute('class', 'sp-chart-area ' + cls);
-    cap[0].textContent = 'Price since ' + pts[0][0];
-    cap[1].textContent = (chg >= 0 ? '+' : '') + fmt(chg, 1) + '%'; cap[1].className = cls;
-    axis[0].textContent = pts[0][0]; axis[1].textContent = `low €${fmt(lo)} · high €${fmt(hi)}`; axis[2].textContent = pts[pts.length - 1][0];
+    cap[1].textContent = (chg >= 0 ? '+' : '') + fmt(chg, 2) + '%'; cap[1].className = cls;
+    axis[0].textContent = pts[0][0].length === 10 ? day(pts[0][0]) : pts[0][0];
+    axis[1].textContent = `low €${fmt(lo)} · high €${fmt(hi)}`;
+    const last = pts[pts.length - 1][0];
+    axis[2].textContent = last.length === 10 ? day(last) : last;
+    fig.querySelectorAll('[data-range]').forEach(b => b.classList.toggle('active', b.dataset.range === range));
   }
-  fig.querySelectorAll('[data-days]').forEach(b => b.addEventListener('click', () => {
-    fig.querySelectorAll('[data-days]').forEach(x => x.classList.toggle('active', x === b));
-    draw(Number(b.dataset.days));
-  }));
-  const dot = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-  dot.setAttribute('class', 'sp-chart-cursor'); dot.setAttribute('y1', 0); dot.setAttribute('y2', H); dot.style.display = 'none';
-  svg.appendChild(dot);
+
+  const usable = intra && intra.bars && intra.bars.length >= 2;
+  if (usable) fig.querySelectorAll('[data-range^="i"]').forEach(b => { b.hidden = false; });
+  if (!usable && daily.length < 5) {
+    // Nothing to draw yet: a single close, no minute prices.
+    fig.querySelector('.sp-chart-ranges').remove(); svg.remove(); fig.querySelector('.sp-chart-axis').remove();
+    cap[0].textContent = `Price chart: FINILA started recording daily closing prices on ${day(daily[0] ? daily[0][0] : new Date().toISOString().slice(0, 10))}; the chart fills in day by day.`;
+    return;
+  }
+  fig.querySelectorAll('[data-range]').forEach(b => b.addEventListener('click', () => draw(b.dataset.range)));
+  const cursor = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  cursor.setAttribute('class', 'sp-chart-cursor'); cursor.setAttribute('y1', 0); cursor.setAttribute('y2', H); cursor.style.display = 'none';
+  svg.appendChild(cursor);
   const tip = document.createElement('div'); tip.className = 'sp-chart-tip'; fig.appendChild(tip);
   svg.addEventListener('pointermove', e => {
     const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * W;
     const i = Math.max(0, Math.min(pts.length - 1, Math.round((x - P) / (W - 2 * P) * (pts.length - 1))));
-    dot.setAttribute('x1', xy[i][0]); dot.setAttribute('x2', xy[i][0]); dot.style.display = '';
-    tip.textContent = `${pts[i][0]} · €${fmt(pts[i][1])}`; tip.style.display = 'block';
+    cursor.setAttribute('x1', xy[i][0]); cursor.setAttribute('x2', xy[i][0]); cursor.style.display = '';
+    const when = pts[i][0].length === 10 ? day(pts[i][0]) : pts[i][0];
+    tip.textContent = `${when} · €${fmt(pts[i][1])}`; tip.style.display = 'block';
     tip.style.left = Math.min(r.width - tip.offsetWidth, Math.max(0, xy[i][0] / W * r.width - tip.offsetWidth / 2)) + 'px';
   });
-  svg.addEventListener('pointerleave', () => { dot.style.display = 'none'; tip.style.display = 'none'; });
-  draw(0);
+  svg.addEventListener('pointerleave', () => { cursor.style.display = 'none'; tip.style.display = 'none'; });
+  draw(usable ? 'i60' : 'd0');
 })();
