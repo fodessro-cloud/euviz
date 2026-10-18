@@ -137,4 +137,17 @@ def ecb_units():
             print(r["KEY"], r["TIME_PERIOD"], r["OBS_VALUE"])
 
 
-show("ECB RESR units", ecb_units)
+def ssb_regions():
+    for t in ("06035",):
+        d = json.loads(fetch(f"https://data.ssb.no/api/v0/no/table/{t}"))
+        print(t, d.get("title"))
+        for v in d["variables"]:
+            print(" ", v["code"], v["text"], len(v["values"]))
+            if v["code"] in ("Region", "Boligtype"):
+                print("   ", list(zip(v["values"], v["valueTexts"])))
+    hits = json.loads(fetch("https://data.ssb.no/api/v0/no/table/?query=kvadratmeterpris&filter=*"))
+    for h in hits[:40]:
+        print(h.get("id"), h.get("title"))
+
+
+show("SSB Norway regions for price per m2", ssb_regions)
