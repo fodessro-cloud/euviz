@@ -150,4 +150,13 @@ def ssb_regions():
         print(h.get("id"), h.get("title"))
 
 
-show("SSB Norway regions for price per m2", ssb_regions)
+def fi_tables():
+    base = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/"
+    for t in ("13mw.px", "15is.px"):
+        m = json.loads(fetch(base + t))
+        for v in m["variables"]:
+            if not v["code"].startswith("timeperiod"):
+                print(t, v["code"], list(zip(v["values"], v["valueTexts"])))
+
+
+show("Statistics Finland flat price tables by region", fi_tables)
