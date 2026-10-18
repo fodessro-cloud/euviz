@@ -7,7 +7,8 @@ const cls = v => isNum(v) ? (v > 0 ? 'pos' : v < 0 ? 'neg' : '') : '';
 const COLORS = { nominal: '#1F6FEB', real: '#B97A0A', eu: '#8A94A6' };
 const EU = 'EU';
 
-let DATA = null, code = EU, years = 10, sortKey = 'n10', sortDir = -1;
+let DATA = null, LEVELS = null, MAP = null, code = EU, years = 10, sortKey = 'n10', sortDir = -1, metric = 'm2';
+const eur = v => `€${Math.round(v).toLocaleString('en-GB')}`;
 
 // "+23 %" against incomes reads as "expensive"; the words help readers who skip the numbers.
 function valuationWord(v) {
@@ -36,7 +37,10 @@ function renderNow() {
       isNum(c.vsIncome) ? `against the average since 2000: ${valuationWord(c.vsIncome)}` : 'not published for this country', cls(c.vsIncome)),
     tile('Price vs. rents', isNum(c.vsRent) ? pct(c.vsRent, 0) : '—',
       isNum(c.vsRent) ? `against the average since 2000: ${valuationWord(c.vsRent)}` : 'not published for this country', cls(c.vsRent)),
-  ].join('');
+  ].join('') + (LEVELS?.countries[code] ? (() => {
+    const l = LEVELS.countries[code];
+    return tile('Price per m²', eur(l.eur), `${esc(l.what)}, ${esc(l.period)}`);
+  })() : '');
   $('now-sub').innerHTML = `${esc(c.name)} · prices to <b>${esc(quarterLabel(c.latest))}</b>`;
 }
 
@@ -111,11 +115,68 @@ function renderValue() {
   $('dear').innerHTML = list.slice(-5).reverse().map(li).join('');
 }
 
-function renderAll() { renderNow(); renderChart(); renderTable(); }
+// ── Map of Europe ─────────────────────────────────────
+// Bins and colours per metric; prices and changes read light to dark, "cheap or expensive" blue to orange.
+const BLUES = ['#DCE8F8', '#B4CDF0', '#86AEE6', '#5B8FD9', '#2F6FC4', '#1A4F96'];
+const METRICS = {
+  m2: { title: 'Price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2000, 2500, 3000, 3500], colors: BLUES },
+  n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: ['#F2C9C4', ...BLUES.slice(1)] },
+  n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: ['#F2C9C4', ...BLUES.slice(1)] },
+  val: { title: 'Cheap or expensive against incomes and rents', get: k => DATA.countries[k]?.valuation, fmt: v => pct(v, 0),
+    bins: [-15, -5, 5, 15], colors: ['#2F6FC4', '#9DBDEB', '#E6E8EC', '#F2B98A', '#D9772B'], words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive'] },
+};
+const colorOf = (m, v) => m.colors[m.bins.filter(b => v >= b).length];
+
+function renderMap() {
+  if (!MAP) { $('map-section').hidden = true; return; }
+  const m = METRICS[metric];
+  const paths = MAP.countries.map(c => {
+    const v = c.id && !DATA.countries[c.id]?.agg ? m.get(c.id) : undefined;
+    if (!c.id) return `<path class="ctx" d="${c.d}"/>`;
+    if (!isNum(v)) return `<path class="nd ${c.id === code ? 'sel' : ''}" data-code="${c.id}" d="${c.d}"/>`;
+    return `<path class="has ${c.id === code ? 'sel' : ''}" data-code="${c.id}" fill="${colorOf(m, v)}" d="${c.d}"/>`;
+  });
+  // Selected country drawn last so its outline sits on top.
+  paths.sort((a, b) => a.includes(' sel') - b.includes(' sel'));
+  $('map').innerHTML = `<svg viewBox="0 0 ${MAP.w} ${MAP.h}">${paths.join('')}</svg>`;
+  const edges = [null, ...m.bins];
+  $('map-scale').innerHTML = m.colors.map((col, i) => `<span><i style="background:${col}"></i>${m.words ? m.words[i]
+    : i === 0 ? `under ${m.fmt(m.bins[0])}` : i === m.bins.length ? `${m.fmt(m.bins[i - 1])}+` : `${m.fmt(edges[i])} to ${m.fmt(m.bins[i])}`}</span>`).join('')
+    + `<span><i style="background:var(--card2);border:1px solid var(--line2)"></i>no data</span>`;
+}
+
+function renderSide() {
+  const m = METRICS[metric];
+  $('side-title').textContent = m.title;
+  const list = Object.keys(DATA.countries).concat(Object.keys(LEVELS?.countries || {}))
+    .filter((k, i, a) => a.indexOf(k) === i && !DATA.countries[k]?.agg && isNum(m.get(k)))
+    .sort((a, b) => m.get(b) - m.get(a));
+  const name = k => DATA.countries[k]?.name || LEVELS.countries[k].name;
+  $('rank').innerHTML = list.map(k => `<li class="${k === code ? 'sel' : ''}"><a data-code="${k}">${esc(name(k))}</a><span class="m">${m.fmt(m.get(k))}</span></li>`).join('');
+  const l = LEVELS?.countries[code];
+  $('regions-box').hidden = !l?.regions?.length;
+  if (l?.regions?.length) {
+    $('regions-title').textContent = `Price per m² in ${l.name}: regions and cities`;
+    $('regions').innerHTML = l.regions.map(r => `<li>${esc(r.name)}<span class="m">${eur(r.eur)}</span></li>`).join('');
+  }
+  $('map-note').innerHTML = metric === 'm2'
+    ? `Official figures only, in euros. ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Bank appraisals are estimates, not sale prices. More countries are being added.`
+    : 'Eurostat house price index; OECD for the United Kingdom and for incomes and rents.';
+}
+
+function select(k) {
+  code = k;
+  if ([...$('region').options].some(o => o.value === k)) $('region').value = k;
+  renderAll();
+}
+
+function renderAll() { renderNow(); renderChart(); renderTable(); renderMap(); renderSide(); }
 
 async function init() {
   try {
     DATA = await (await fetch('js/housing.json', { cache: 'no-cache' })).json();
+    [LEVELS, MAP] = await Promise.all(['js/housing-levels.json', 'js/europe-map.json']
+      .map(f => fetch(f, { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null)));
   } catch {
     $('now').innerHTML = '<p class="h-note">House price data could not be loaded. Please try again later.</p>';
     return;
@@ -126,7 +187,8 @@ async function init() {
   $('region').innerHTML = Object.entries(DATA.countries).sort((a, b) => (b[1].agg ? 1 : 0) - (a[1].agg ? 1 : 0) || a[1].name.localeCompare(b[1].name))
     .map(([k, c]) => `<option value="${k}" ${k === code ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
   $('updated').textContent = `Updated ${DATA.updated.slice(0, 10)}`;
-  $('sources').innerHTML = DATA.sources.map(([n, u]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join('');
+  const levelSources = Object.values(LEVELS?.countries || {}).map(c => [`${c.source}: home prices in ${c.name}`, c.url]);
+  $('sources').innerHTML = DATA.sources.concat(levelSources).map(([n, u]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a></li>`).join('');
   $('region').addEventListener('change', e => { code = e.target.value; renderAll(); });
   $('years').addEventListener('click', e => {
     const b = e.target.closest('button');
@@ -158,6 +220,33 @@ async function init() {
     $('region').value = code;
     renderAll();
     $('top').scrollIntoView({ behavior: 'smooth' });
+  }));
+  $('metric').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    metric = b.dataset.metric;
+    $('metric').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    renderMap();
+    renderSide();
+  });
+  const tip = document.createElement('div');
+  tip.className = 'p-tip';
+  tip.hidden = true;
+  document.body.appendChild(tip);
+  $('map').addEventListener('mousemove', e => {
+    const k = e.target.closest('[data-code]')?.dataset.code;
+    const m = METRICS[metric];
+    if (!k) { tip.hidden = true; return; }
+    const v = m.get(k);
+    tip.innerHTML = `<b>${esc(DATA.countries[k]?.name || LEVELS?.countries[k]?.name || k)}</b> ${isNum(v) ? m.fmt(v) : 'no data yet'}`;
+    tip.style.left = `${e.clientX + 12}px`;
+    tip.style.top = `${e.clientY + 12}px`;
+    tip.hidden = false;
+  });
+  $('map').addEventListener('mouseleave', () => { tip.hidden = true; });
+  ['map', 'rank'].forEach(id => $(id).addEventListener('click', e => {
+    const k = e.target.closest('[data-code]')?.dataset.code;
+    if (k && DATA.countries[k]) select(k);
   }));
   window.addEventListener('resize', () => renderChart());
   renderValue();

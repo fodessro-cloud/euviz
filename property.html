@@ -37,7 +37,7 @@
   <section class="i-intro" id="top">
     <div class="h-eyebrow">PROPERTY PRICES</div>
     <h1>How did home prices change across Europe?</h1>
-    <p>Price changes for every European country over 1, 5 and 10 years, before and after inflation, and whether homes cost more or less than usual against incomes and rents.</p>
+    <p>What a home costs per m² and how prices changed in every European country over 1, 5 and 10 years, before and after inflation, and whether homes cost more or less than usual against incomes and rents.</p>
     <div class="i-controls">
       <label class="i-country">Country
         <select id="region" aria-label="Country"></select>
@@ -53,6 +53,33 @@
     </div>
     <div class="i-now" id="now"></div>
     <p class="h-note">"Price vs. incomes" and "vs. rents" compare today's ratio with its own average since 2000: above zero, homes cost more against incomes (or rents) than they usually did; below zero, less. It says nothing about where prices go next.</p>
+  </section>
+
+  <section class="h-section" id="map-section">
+    <div class="h-section-head">
+      <h2>Europe on a map</h2>
+      <div class="i-seg" role="group" aria-label="What the map shows" id="metric">
+        <button type="button" data-metric="m2" class="on">Price per m²</button>
+        <button type="button" data-metric="n5">5-year change</button>
+        <button type="button" data-metric="n10">10-year change</button>
+        <button type="button" data-metric="val">Cheap or expensive</button>
+      </div>
+    </div>
+    <div class="p-map">
+      <div class="h-card p-map-card">
+        <div class="p-map-svg" id="map" role="img" aria-label="Map of Europe coloured by country"></div>
+        <div class="p-scale" id="map-scale"></div>
+      </div>
+      <div class="h-card p-side">
+        <h3 id="side-title">Price per m²</h3>
+        <ol class="p-rank" id="rank"></ol>
+        <div id="regions-box" hidden>
+          <h3 id="regions-title"></h3>
+          <ol class="p-rank" id="regions"></ol>
+        </div>
+        <p class="h-note" id="map-note"></p>
+      </div>
+    </div>
   </section>
 
   <section class="h-section">
