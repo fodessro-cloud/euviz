@@ -66,17 +66,17 @@ PAGE = """<!DOCTYPE html>
     <a class="fh-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
       <a href="/companies">Stocks</a>
-      <a href="/insiders">Insider trades</a>
-      <a href="/shorts">Short positions</a>
-      <a href="/map">Market map</a>
-      <a href="/groups">Sectors &amp; countries</a>
-      <a href="/invest">Where to put money</a>
-      <a href="/property">Property prices</a>
+      <a href="/map">Maps</a>
+      <a href="/groups">Groups</a>
+      <a href="/insiders">Insiders</a>
+      <a href="/shorts">Shorts</a>
+      <a href="/invest">Invest</a>
+      <a href="/property">Property</a>
       <a href="/archiv/" aria-current="page">Archive</a>
     </nav>
   </div>
 </header>
-<script>(function(){{var a=document.querySelector('.fh-nav [aria-current]');if(a)a.parentNode.scrollLeft=a.offsetLeft-a.parentNode.offsetLeft-16;}})();</script>
+<script>(function(){{var n=document.querySelector('.fh-nav'),a=n&&n.querySelector('[aria-current]');if(a)n.scrollLeft=a.offsetLeft-n.offsetLeft-16;}})();</script>
 <div class="a-bar">
   <div class="h-wrap a-bar-row">
     <span class="a-badge">Archive 2014–2019</span>

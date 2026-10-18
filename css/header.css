@@ -6,7 +6,7 @@
 .fh-logo { display: flex; align-items: center; gap: 12px; height: 36px; flex-shrink: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 30px; font-weight: 700; line-height: 1; letter-spacing: 0.06em; color: #0F1B33; text-decoration: none; }
 .fh-logo:hover { color: #0F1B33; text-decoration: none; }
 .fh-logo svg { flex-shrink: 0; }
-.fh-nav { display: flex; align-items: center; gap: 22px; height: 40px; min-width: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; font-weight: 500; line-height: 1; }
+.fh-nav { display: flex; align-items: center; gap: 28px; height: 40px; min-width: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; font-weight: 600; line-height: 1; }
 .fh-nav::-webkit-scrollbar { display: none; }
 .fh-nav a { display: flex; align-items: center; height: 100%; color: #34445F; text-decoration: none; }
 .fh-nav a:hover { color: #0F1B33; text-decoration: none; }
@@ -16,5 +16,5 @@
   .fh-row { height: 86px; padding: 10px 16px 0; flex-direction: column; align-items: stretch; gap: 0; }
   .fh-logo { font-size: 24px; align-self: flex-start; }
   .fh-logo svg { width: 30px; height: 30px; }
-  .fh-nav { gap: 18px; font-size: 14px; }
+  .fh-nav { gap: 20px; font-size: 14px; }
 }
