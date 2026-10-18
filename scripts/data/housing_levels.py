@@ -59,19 +59,17 @@ def region(name, value, note=None):
 # ── Countries ─────────────────────────────────────────────
 
 def slovakia():
-    rows = list(csv.reader(io.StringIO(text("https://nbs.sk/export/sk/real-estate-price-by-region/csv")), delimiter=";"))
+    # Flats alone ("Byty spolu"); NBS splits by region only for flats and houses together, so no regions here.
+    rows = list(csv.reader(io.StringIO(text("https://nbs.sk/export/sk/real-estate-price-by-type/csv")), delimiter=";"))
     head = next(r for r in rows if r and r[0].startswith("Rok"))
     latest = next(r for r in rows if r and re.match(r"\dQ \d{4}", r[0]))
-    names = {"SR spolu": None, "BA": "Bratislava region", "TT": "Trnava region", "NR": "Nitra region",
-             "TN": "Trenčín region", "ZA": "Žilina region", "BB": "Banská Bystrica region",
-             "KE": "Košice region", "PO": "Prešov region"}
     vals = dict(zip(head, latest))
     q, y = latest[0].split()
     # NBS builds these from listings on property portals: asking prices, above what buyers finally pay.
-    return {"eur": round(num(vals["SR spolu"])), "unit": "m2", "basis": "asking", "period": f"{y}-Q{q[0]}",
-            "type": "mixed", "what": "flats and houses, asking prices in listings",
+    return {"eur": round(num(vals["Byty spolu"])), "unit": "m2", "basis": "asking", "period": f"{y}-Q{q[0]}",
+            "type": "flats", "what": "flats, asking prices in listings",
             "source": "Národná banka Slovenska", "url": "https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/",
-            "regions": sorted([region(names[k], num(vals[k])) for k in head[2:] if k in names], key=lambda r: -r["eur"])}
+            "regions": []}
 
 
 def france():
@@ -299,9 +297,30 @@ def poland():
             "regions": sorted([region(english.get(c, c), val(c)) for c in cities if val(c)], key=lambda r: -r["eur"])}
 
 
+def norway():
+    # SSB 06035: freehold flats ("Multi-dwelling"), sale price per m², yearly, in NOK.
+    q = {"query": [{"code": "Region", "selection": {"filter": "item", "values": list(NO_AREAS)}},
+                   {"code": "Boligtype", "selection": {"filter": "item", "values": ["03"]}},
+                   {"code": "ContentsCode", "selection": {"filter": "item", "values": ["KvPris"]}},
+                   {"code": "Tid", "selection": {"filter": "top", "values": ["1"]}}], "response": {"format": "json-stat2"}}
+    d = json.loads(fetch("https://data.ssb.no/api/v0/en/table/06035", data=json.dumps(q).encode()))
+    areas = d["dimension"]["Region"]["category"]["index"]
+    year = next(iter(d["dimension"]["Tid"]["category"]["index"]))
+    rate = eur_rate("NOK", year)
+    vals = {code: v / rate for code, v in zip(sorted(areas, key=areas.get), d["value"]) if v}
+    return {"eur": round(vals["0"]), "unit": "m2", "basis": "sale", "period": year,
+            "type": "flats", "what": "freehold flats, sale prices", "currency": "NOK", "rate": round(rate, 2),
+            "source": "Statistics Norway (SSB, CC BY 4.0)", "url": "https://www.ssb.no/en/statbank/table/06035",
+            "regions": sorted([region(NO_AREAS[k], v) for k, v in vals.items() if k != "0"], key=lambda r: -r["eur"])}
+
+
+NO_AREAS = {"0": "Norway", "0301": "Oslo", "4601": "Bergen", "5001": "Trondheim", "1103": "Stavanger",
+            "3107": "Fredrikstad", "3301": "Drammen"}
+
+
 COUNTRIES = {"SK": ("Slovakia", slovakia), "FR": ("France", france), "FI": ("Finland", finland),
              "PT": ("Portugal", portugal), "ES": ("Spain", spain), "HU": ("Hungary", hungary),
-             "LU": ("Luxembourg", luxembourg), "PL": ("Poland", poland)}
+             "LU": ("Luxembourg", luxembourg), "PL": ("Poland", poland), "NO": ("Norway", norway)}
 
 
 def main():
