@@ -18,6 +18,7 @@ const ISO = { // ISO 3166 numeric -> alpha-2, for the countries FINILA has data 
 // NUTS level drawn per country: the level its national statistics publish flat prices for.
 // Level 3 where regions are small enough to matter (French departments, Czech and Slovak regions).
 const LEVEL3 = new Set(['FR', 'CZ', 'SK', 'PT', 'PL', 'FI', 'NO', 'DK', 'SE', 'SI', 'HR', 'EE', 'LV', 'LT', 'IE', 'BE', 'NL', 'BG', 'RO', 'GR']);
+const DATA = new Set(Object.values(ISO));
 const NUTS = level => `https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_20M_2024_4326_LEVL_${level}.geojson`;
 // NUTS uses EL for Greece and UK for the United Kingdom.
 const NUTS_CC = { EL: 'GR', UK: 'GB' };
@@ -37,7 +38,7 @@ const pathGen = geoPath(projection).digits(1);
     for (const f of geo.features) {
       const p = f.properties;
       const c = NUTS_CC[p.CNTR_CODE] || p.CNTR_CODE;
-      if (LEVEL3.has(c) !== (level === 3)) continue;
+      if (!DATA.has(c) || LEVEL3.has(c) !== (level === 3)) continue;
       const d = pathGen({ type: 'Feature', geometry: rewind(f.geometry) });
       if (d && d.length > 8) regions.push({ id: p.NUTS_ID, c, name: p.NAME_LATN || p.NUTS_NAME, d });
     }
