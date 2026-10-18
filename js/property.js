@@ -152,7 +152,10 @@ function renderSide() {
     .filter((k, i, a) => a.indexOf(k) === i && !DATA.countries[k]?.agg && isNum(m.get(k)))
     .sort((a, b) => m.get(b) - m.get(a));
   const name = k => DATA.countries[k]?.name || LEVELS.countries[k].name;
-  $('rank').innerHTML = list.map(k => `<li class="${k === code ? 'sel' : ''}"><a data-code="${k}">${esc(name(k))}</a><span class="m">${m.fmt(m.get(k))}</span></li>`).join('');
+  // Asking prices and appraisals are not sale prices; say so next to the number.
+  const BASIS = { asking: 'asking price', appraisal: 'bank appraisal' };
+  const basis = k => metric === 'm2' && BASIS[LEVELS.countries[k].basis] ? ` <small>${BASIS[LEVELS.countries[k].basis]}</small>` : '';
+  $('rank').innerHTML = list.map(k => `<li class="${k === code ? 'sel' : ''}"><a data-code="${k}">${esc(name(k))}</a>${basis(k)}<span class="m">${m.fmt(m.get(k))}</span></li>`).join('');
   const l = LEVELS?.countries[code];
   $('regions-box').hidden = !l?.regions?.length;
   if (l?.regions?.length) {
@@ -160,7 +163,7 @@ function renderSide() {
     $('regions').innerHTML = l.regions.map(r => `<li>${esc(r.name)}<span class="m">${eur(r.eur)}</span></li>`).join('');
   }
   $('map-note').innerHTML = metric === 'm2'
-    ? `Official figures only, in euros. ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Bank appraisals are estimates, not sale prices. More countries are being added.`
+    ? `Official figures only, in euros. ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Asking prices and bank appraisals are usually higher than what buyers finally pay, so compare countries with care. More countries are being added.`
     : 'Eurostat house price index; OECD for the United Kingdom and for incomes and rents.';
 }
 
