@@ -150,4 +150,18 @@ def ssb_regions():
         print(h.get("id"), h.get("title"))
 
 
-show("SSB Norway regions for price per m2", ssb_regions)
+def fi_tables():
+    base = "https://pxdata.stat.fi/PxWeb/api/v1/en/StatFin/ashi/"
+    for t in json.loads(fetch(base)):
+        print(t.get("id"), "|", t.get("text"))
+        if not t.get("id", "").endswith(".px"):
+            continue
+        try:
+            m = json.loads(fetch(base + t["id"]))
+            for v in m["variables"]:
+                print("    ", v["code"], v["text"], len(v["values"]), v["valueTexts"][:25])
+        except Exception as e:  # noqa: BLE001
+            print("    FAIL", e)
+
+
+show("Statistics Finland flat price tables by region", fi_tables)
