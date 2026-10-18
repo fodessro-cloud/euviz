@@ -18,3 +18,12 @@
   .fh-logo svg { width: 30px; height: 30px; }
   .fh-nav { gap: 20px; font-size: 14px; }
 }
+
+/* Small FINILA mark in the corner of every chart and map, so shared screenshots carry the name */
+.i-chart, .p-map-svg, .p-inset, .sp-chart, .hm-canvas-wrap { position: relative; }
+.i-chart::after, .p-map-svg::after, .p-inset::after, .sp-chart::after, .hm-canvas-wrap::after {
+  content: "finila.com"; position: absolute; right: 10px; top: 8px; z-index: 2;
+  font: 700 12px/1 'IBM Plex Sans', system-ui, sans-serif; letter-spacing: .02em;
+  color: #0F1B33; opacity: .5; pointer-events: none;
+}
+.hm-canvas-wrap::after { color: #fff; opacity: .7; text-shadow: 0 0 3px rgba(0,0,0,.5); }
