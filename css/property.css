@@ -28,7 +28,7 @@
 .p-map-svg path.has:hover { stroke: var(--text); stroke-width: 1.2; }
 .p-map-svg path.sel { stroke: var(--text); stroke-width: 1.8; }
 .p-map-svg path.reg { stroke-width: .3; }
-.p-map-svg path.sel-line { fill: none; stroke: var(--text); stroke-width: 1.8; pointer-events: none; }
+.p-map-svg path.sel-line { fill: none; stroke: var(--text); stroke-width: 1.8; pointer-events: none; filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1px #fff); }
 .p-scale { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 12px; color: var(--muted); padding: 8px 4px 0; }
 .p-scale span { display: inline-flex; align-items: center; gap: 5px; }
 .p-scale i { width: 14px; height: 10px; border-radius: 2px; display: inline-block; }
