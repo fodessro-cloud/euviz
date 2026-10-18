@@ -1,7 +1,7 @@
 """Builds the property pages Google can read without running scripts:
 
   <out>/property-pages/<country>.html   one page per country (served as /property/<country>)
-  <out>/property-pages/overvalued.html  where homes are cheap or expensive against incomes and rents
+  <out>/property-pages/undervalued.html where homes are cheap or expensive against incomes and rents
 
 From js/housing.json (Eurostat, OECD) and js/housing-levels.json (national price per m²).
 The header and footer are copied from property.html, so menu changes there carry over.
@@ -196,7 +196,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
       <thead><tr><th>Measure</th><th class="r">{esc(name)}</th><th class="r">Rank, highest first</th></tr></thead>
       <tbody>{"".join(ranks)}</tbody></table></div>
       <p class="h-note">Price per m² compares countries' own official figures, which differ in method; see the note above each figure.
-      The valuation compares each country with its own past, not with other countries. <a href="/property/overvalued">How it works</a>.</p></div>
+      The valuation compares each country with its own past, not with other countries. <a href="/property/undervalued">How it works</a>.</p></div>
   </section>''' if ranks and code != EU else ''
 
     crumbs = json.dumps({'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
@@ -252,13 +252,13 @@ def spark(s, w=120, h=28):
             f'<line x1="0" x2="{w}" y1="{y(avg):.1f}" y2="{y(avg):.1f}"/><polyline points="{pts}"/></svg>')
 
 
-def overvalued_page(data, header, footer, links):
+def undervalued_page(data, header, footer, links):
     rows = sorted([(k, c) for k, c in data['countries'].items() if not c.get('agg') and is_num(c.get('valuation'))],
-                  key=lambda kc: -kc[1]['valuation'])
-    top, bottom = rows[:3], rows[-3:][::-1]
+                  key=lambda kc: kc[1]['valuation'])  # cheapest first: what an investor looks for
+    cheap, dear = rows[:3], rows[-3:][::-1]
     names = lambda xs: ', '.join(f'{c["name"]} ({pct(c["valuation"])})' for _, c in xs)
     description = (f'Where homes in Europe are expensive or cheap against incomes and rents, compared with each country\'s '
-                   f'average since 2000. Most expensive: {names(top)}. Cheapest: {names(bottom)}. OECD data, updated daily.')
+                   f'average since 2000. Cheapest: {names(cheap)}. Most expensive: {names(dear)}. OECD data, updated daily.')
     body = ''.join(
         f'<tr><td><a href="/property/{slug(c["name"])}">{esc(c["name"])}</a></td>'
         f'<td class="r m">{pct(c["valuation"])}</td><td>{esc(word(c["valuation"]))}</td>'
@@ -266,18 +266,18 @@ def overvalued_page(data, header, footer, links):
         f'<td class="r m">{pct(c.get("vsRent"))}</td><td>{spark(c["series"].get("rent") or {})}</td></tr>'
         for _, c in rows)
     latest = max(c.get('valuationLatest') or '' for _, c in rows)
-    canonical = f'{SITE}/property/overvalued'
-    title = 'Overvalued and undervalued housing markets in Europe | FINILA'
+    canonical = f'{SITE}/property/undervalued'
+    title = 'Undervalued and overvalued housing markets in Europe | FINILA'
     return head(title, description, canonical) + header + f'''
 <main class="h-wrap i-main">
   <section class="i-intro">
     <div class="h-eyebrow"><a href="/property">PROPERTY PRICES IN EUROPE</a></div>
-    <h1>Where homes in Europe are expensive or cheap</h1>
+    <h1>Where homes in Europe are cheap or expensive</h1>
     <p>{esc(description)}</p>
   </section>
 
   <section class="h-section">
-    <div class="h-section-head"><h2>All countries</h2><span class="i-sub">Latest data {esc(quarter(latest))}. Dashed line: the country's average since 2000.</span></div>
+    <div class="h-section-head"><h2>All countries, cheapest first</h2><span class="i-sub">Latest data {esc(quarter(latest))}. Dashed line: the country's average since 2000.</span></div>
     <div class="h-card i-eu p-over"><div class="h-table-wrap"><table>
       <thead><tr><th>Country</th><th class="r">Overall</th><th></th><th class="r">Price vs. incomes</th><th>Since 2000</th><th class="r">Price vs. rents</th><th>Since 2000</th></tr></thead>
       <tbody>{body}</tbody></table></div>
@@ -330,8 +330,8 @@ def main():
     for code, c in countries:
         (out / f'{slug(c["name"])}.html').write_text(
             country_page(code, c, levels.get(code), data, levels, header, footer, links), encoding='utf-8')
-    (out / 'overvalued.html').write_text(overvalued_page(data, header, footer, links), encoding='utf-8')
-    print(f'Built {len(countries)} country pages and the overvalued page in {out}')
+    (out / 'undervalued.html').write_text(undervalued_page(data, header, footer, links), encoding='utf-8')
+    print(f'Built {len(countries)} country pages and the undervalued page in {out}')
 
 
 if __name__ == '__main__':
