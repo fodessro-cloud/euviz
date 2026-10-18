@@ -1,355 +1,242 @@
 
-===== SK NBS OK text/csv; charset=UTF-8 11885 bytes
-"Ceny nehnuteľností na bývanie podľa krajov v €/m2"
-
-"Rok, Štvrťrok";"SR spolu";BA;TT;NR;TN;ZA;BB;KE;PO
-"2Q 2026";"3 041,4123";"3 882,1571";"2 063,8961";"1 674,0713";"1 908,3343";"2 303,4211";"1 841,3390";"2 796,0716";"2 309,7950"
-"1Q 2026";"3 005,2500";"3 844,9670";"2 014,5442";"1 627,1946";"1 878,1761";"2 282,4596";"1 864,6673";"2 682,3243";"2 411,7708"
-2025;"2 799,4312";"3 598,2875";"1 945,1431";"1 500,7442";"1 719,8805";"2 048,7250";"1 692,8017";"2 468,9386";"2 128,5496"
-"4Q 2025";"2 906,3616";"3 730,6776";"1 981,6148";"1 588,9613";"1 787,2900";"2 180,2886";"1 744,1618";"2 607,7836";"2 171,8765"
-"3Q 2025";"2 814,0845";"3 627,7310";"1 943,5946";"1 521,9069";"1 743,4202";"2 046,4768";"1 708,0632";"2 410,6321";"2 179,3889"
-"2Q 2025";"2 777,3259";"3 548,6608";"1 935,2708";"1 502,7665";"1 690,0577";"2 038,2021";"1 714,3255";"2 508,4764";"2 177,5390"
-"1Q 2025";"2 699,9528";"3 486,0807";"1 920,0923";"1 389,3421";"1 658,7542";"1 929,9326";"1 604,6563";"2 348,8622";"1 985,3942"
-2024;"2 500,2402";"3 189,8626";"1 842,6759";"1 388,7540";"1 581,0672";"1 871,5093";"1 538,2085";"2 101,9162";"1 859,8821"
-"4Q 2024";"2 596,0585";"3 316,4295";"1 879,2891";"1 403,5499";"1 626,3293";"1 948,7875";"1 604,2922";"2 222,0876";"1 955,6184"
-"3Q 2024";"2 520,3183";"3 228,6928";"1 859,3694";"1 354,1713";"1 579,4533";"1 891,1678";"1 511,3679";"2 087,1201";"1 898,8263"
-"2Q 2024";"2 461,5872";"3 126,9928";"1 836,8291";"1 392,7826";"1 569,0660";"1 819,2101";"1 562,3881";"2 087,0147";"1 817,9340"
-"1Q 2024";"2 422,9968";"3 087,3351";"1 795,2159";"1 404,5123";"1 549,4202";"1 826,8718";"1 474,7858";"2 011,4425";"1 767,1496"
-2023;"2 480,2110";"3 130,5896";"1 832,1117";"1 400,1744";"1 582,4151";"1 933,6217";"1 658,7553";"2 102,0006";"1 870,8310"
-"4Q 2023";"2 432,9751";"3 077,0585";"1 807,7810";"1 358,1230";"1 564,5067";"1 874,0211";"1 589,4098";"2 076,2923";"1 785,8203"
-"3Q 2023";"2 438,0453";"3 096,1031";"1 799,2664";"1 375,4205";"1 540,9291";"1 891,1780";"1 598,6755";"2 016,1288";"1 794,7154"
-"2Q 2023";"2 493,7686";"3 146,3474";"1 852,6457";"1 431,8756";"1 569,8304";"1 934,6386";"1 686,9253";"2 095,9547";"1 886,9135"
-"1Q 2023";"2 556,0551";"3 202,8497";"1 868,7537";"1 435,2784";"1 654,3944";"2 034,6491";"1 760,0106";"2 219,6265";"2 015,8750"
-2022;"2 638,9266";"3 356,6988";"1 842,0271";"1 401,3927";"1 628,5515";"2 021,2716";"1 757,3663";"2 335,3842";"2 062,3416"
-"4Q 2022";"2 660,8173";"3 342,0997";"1 937,8197";"1 445,9747";"1 683,7356";"2 060,3998";"1 816,3207";"2 364,2164";"2 141,5268"
-"3Q
-
-===== FR DVF stats (resource) OK text/csv 400000 bytes
-code_geo,libelle_geo,code_parent,echelle_geo,nb_ventes_whole_appartement,moy_prix_m2_whole_appartement,med_prix_m2_whole_appartement,nb_ventes_whole_maison,moy_prix_m2_whole_maison,med_prix_m2_whole_maison,nb_ventes_whole_apt_maison,moy_prix_m2_whole_apt_maison,med_prix_m2_whole_apt_maison,nb_ventes_whole_local,moy_prix_m2_whole_local,med_prix_m2_whole_local
-01,Ain,nation,departement,16522,3183,2771,26370,2757,2500,42892,2921,2578,2133,1459,979
-01001,L'Abergement-Clemenciat,200069193,commune,,,,44,2637,2553,44,2637,2553,,,
-010010000A,010010000A,01001,section,,,,7,2920,2640,7,2920,2640,,,
-010010000B,010010000B,01001,section,,,,,,,,,,,,
-01001000ZA,01001000ZA,01001,section,,,,,,,,,,,,
-01001000ZB,01001000ZB,01001,section,,,,,,,,,,,,
-01001000ZC,01001000ZC,01001,section,,,,2,1856,1856,2,1856,1856,,,
-01001000ZD,01001000ZD,01001,section,,,,,,,,,,,,
-01001000ZE,01001000ZE,01001,section,,,,1,3024,3024,1,3024,3024,,,
-01001000ZH,01001000ZH,01001,section,,,,22,2504,2413,22,2504,2413,,,
-01001000ZI,01001000ZI,01001,section,,,,,,,,,,,,
-01001000ZK,01001000ZK,01001,section,,,,2,2679,2679,2,2679,2679,,,
-01001000ZL,01001000ZL,01001,section,,,,8,2775,2912,8,2775,2912,,,
-01001000ZM,01001000ZM,01001,section,,,,2,3115,3115,2,3115,3115,,,
-01001000ZN,01001000ZN,01001,section,,,,,,,,,,,,
-01002,L'Abergement-de-Varey,240100883,commune,,,,15,1646,1769,15,1646,1769,,,
-010020000A,010020000A,01002,section,,,,1,1176,1176,1,1176,1176,,,
-010020000B,010020000B,01002,section,,,,,,,,,,,,
-010020000C,010020000C,01002,section,,,,,,,,,,,,
-01002000AB,01002000AB,01002,section,,,,3,1134,1452,3,1134,1452,,,
-01002000AC,01002000AC,01002,section,,,,2,2284,2284,2,2284,2284,,,
-01002000AD,01002000AD,01002,section,,,,5,1682,2000,5,1682,2000,,,
-01002000AE,01002000AE,01002,section,,,,4,1783,1541,4,1783,1541,,,
-01002000AH,01002000AH,01002,section,,,,,,,,,,,,
-01003,Amareins,01,commune,,,,,,,,,,,,
-01004,Amberieu-en-Bugey,240100883,commune,537,2457,2392,531,2660,2476,1068,2558,2441,55,1195,976
-010040000B,010040000B,01004,section,,,,,,,,,,,,
-010040000C,010040000C,01004,section,,,,4,2718,2801,4,2718,2801,1,1308,1308
-010040000D,010040000D,01004,section,,,,,,,,,,,,
-010040000E,010040000E,01004,section,,,,,,,,,,,,
-010040000F,010040000F,01004,section,,,,1,1045,1045,1,1045,1045,,,
-01004000AB,01004000AB,01004,section,,,,7,2549,2569,7,2549,2569,4,360,341
-01004000AC,01004000AC,01004,section,,,,,,,,,,,,
-01004000AD,01004000AD,01004,section,,,,,,,,,,1,1053,1053
-01004000AE,01004000AE,01004,section,,,,4,2688,2494,4,2688,2494,1,657,
-
-===== FR DVF dataset OK application/json 10609 bytes
-{"access_audiences": [], "access_type": "open", "access_type_reason": null, "access_type_reason_category": null, "acronym": null, "archived": null, "authorization_request_url": null, "badges": [], "contact_points": [], "created_at": "2023-06-26T13:08:53.807000+00:00", "deleted": null, "description": "Statistiques sur les donn\u00e9es [DVF](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres/), visualisables sur le site [explore.data.gouv.fr/immobilier](https://explore.data.gouv.fr/immobilier). Les fichiers contiennent le nombre de ventes, la moyenne et la m\u00e9diane des prix au m\u00b2.\n\n- Statistiques totales DVF : statistiques par \u00e9chelle g\u00e9ographique, sur les 10 semestres disponibles.\n- Statistiques mensuelles DVF : statistiques par \u00e9chelle g\u00e9ographique et par mois.\n\n\n## Description du traitement\nLe [code](https://github.com/etalab/datagouvfr_data_pipelines/tree/main/data_processing/dvf) permet de g\u00e9n\u00e9rer des statistiques \u00e0 partir des [donn\u00e9es des demandes de valeurs fonci\u00e8res](https://files.data.gouv.fr/geo-dvf/latest/csv/), agr\u00e9g\u00e9es \u00e0 diff\u00e9rentes \u00e9chelles, et leur \u00e9volution dans le temps (au mois). Le choix a \u00e9t\u00e9 fait de calculer les indicateurs suivants, mensuellement et sur la totalit\u00e9 de la p\u00e9riode disponible (10 semestres) :\n* nombre de mutations\n* moyenne des prix au m\u00b2\n* m\u00e9diane des prix au m\u00b2\n* r\u00e9partition des prix de ventes par tranches\n\npour chaque type de bien parmi :\n* maisons\n* appartements\n* maisons + appartements\n* locaux commerciaux\n\net pour chaque \u00e9chelle parmi :\n* nation\n* d\u00e9partement\n* EPCI\n* commune\n* section cadastrale\n\nLes donn\u00e9es source contiennent les types de mutations suivants : vente, vente en l\u2019\u00e9tat futur d\u2019ach\u00e8vement, vente de terrain \u00e0 b\u00e2tir, adjudication, expropriation et \u00e9change. Nous avons fait le choix de ne garder que les ventes, ventes en l'\u00e9tat futur d'ach\u00e8vement et adjudications pour les statistiques*.\n\nPar ailleurs, dans un souci de simplicit\u00e9, nous avons fait le choix de ne garder que les mutations qui concernent un seul bien (hors d\u00e9pendance)*. Notre cheminement est le suivant :\n1. pour une mutation qui inclurait des biens de plusieurs types (par exemple une maison + un local commercial), il n'est pas possible de reconstituer la part de la valeur fonci\u00e8re attribu\u00e9e \u00e0 cha
-
-===== UK HPI average 2026-08 FAIL HTTP Error 404: Not Found
-
-===== UK HPI average 2026-07 OK text/csv 400000 bytes
-Date,Region_Name,Area_Code,Average_Price,Monthly_Change,Annual_Change,Average_Price_SA
-1968-04-01,Northern Ireland,N92000002,3465,,,
-1968-04-01,England,E92000001,3218,,,
-1968-04-01,Wales,W92000004,2732,,,
-1968-04-01,Scotland,S92000003,2738,,,
-1968-04-01,London,E12000007,4730,,,
-1968-04-01,East Midlands,E12000004,2914,,,
-1968-04-01,Yorkshire and The Humber,E12000003,2553,,,
-1968-04-01,South West,E12000009,3347,,,
-1968-04-01,West Midlands Region,E12000005,3188,,,
-1968-04-01,United Kingdom,K02000001,3311,,,
-1968-05-01,England,E92000001,3218,,,
-1968-05-01,Northern Ireland,N92000002,3465,,,
-1968-05-01,Wales,W92000004,2732,,,
-1968-05-01,Scotland,S92000003,2738,,,
-1968-05-01,Yorkshire and The Humber,E12000003,2553,,,
-1968-05-01,West Midlands Region,E12000005,3188,,,
-1968-05-01,London,E12000007,4730,,,
-1968-05-01,East Midlands,E12000004,2914,,,
-1968-05-01,South West,E12000009,3347,,,
-1968-05-01,United Kingdom,K02000001,3311,,,
-1968-06-01,Scotland,S92000003,2738,,,
-1968-06-01,Wales,W92000004,2732,,,
-1968-06-01,England,E92000001,3218,,,
-1968-06-01,Northern Ireland,N92000002,3465,,,
-1968-06-01,London,E12000007,4730,,,
-1968-06-01,South West,E12000009,3347,,,
-1968-06-01,Yorkshire and The Humber,E12000003,2553,,,
-1968-06-01,East Midlands,E12000004,2914,,,
-1968-06-01,West Midlands Region,E12000005,3188,,,
-1968-06-01,United Kingdom,K02000001,3311,,,
-1968-07-01,England,E92000001,3327,3.4,,
-1968-07-01,Northern Ireland,N92000002,3326,-4,,
-1968-07-01,Wales,W92000004,2864,4.8,,
-1968-07-01,Scotland,S92000003,3001,9.6,,
-1968-07-01,London,E12000007,4865,2.9,,
-1968-07-01,West Midlands Region,E12000005,3255,2.1,,
-1968-07-01,Yorkshire and The Humber,E12000003,2581,1.1,,
-1968-07-01,East Midlands,E12000004,3057,4.9,,
-1968-07-01,South West,E12000009,3429,2.5,,
-1968-07-01,United Kingdom,K02000001,3424,3.4,,
-1968-08-01,Scotland,S92000003,3001,9.6,,
-1968-08-01,Wales,W92000004,2864,4.8,,
-1968-08-01,Northern Ireland,N92000002,3326,-4,,
-1968-08-01,England,E92000001,3327,3.4,,
-1968-08-01,Yorkshire and The Humber,E12000003,2581,1.1,,
-1968-08-01,London,E12000007,4865,2.9,,
-1968-08-01,East Midlands,E12000004,3057,4.9,,
-1968-08-01,West Midlands Region,E12000005,3255,2.1,,
-1968-08-01,South West,E12000009,3429,2.5,,
-1968-08-01,United Kingdom,K02000001,3424,3.4,,
-1968-09-01,Scotland,S92000003,3001,9.6,,
-1968-09-01,Wales,W92000004,2864,4.8,,
-1968-09-01,Northern Ireland,N92000002,3326,-4,,
-1968-09-01,England,E92000001,3327,3.4,,
-1968-09-01,West Midlands Region,E12000005,3255,2.1,,
-1968-09-01,East Midl
-
-===== NL CBS 83625ENG OK application/json 608 bytes
-{
-  "odata.metadata":"https://opendata.cbs.nl/ODataApi/OData/83625ENG/$metadata#Cbs.OData.WebAPI.TypedDataSet","value":[
-    {
-      "ID":0,"Regions":"NL01  ","Periods":"1995JJ00","AveragePurchasePrice_1":93750
-    },{
-      "ID":1,"Regions":"NL01  ","Periods":"1996JJ00","AveragePurchasePrice_1":102607
-    },{
-      "ID":2,"Regions":"NL01  ","Periods":"1997JJ00","AveragePurchasePrice_1":113163
-    },{
-      "ID":3,"Regions":"NL01  ","Periods":"1998JJ00","AveragePurchasePrice_1":124540
-    },{
-      "ID":4,"Regions":"NL01  ","Periods":"1999JJ00","AveragePurchasePrice_1":144778
-    }
-  ]
-}
-
-===== NL CBS 83625ENG regions FAIL HTTP Error 404: Not Found
-
 ===== FI ashi tables OK application/json; charset=utf-8 3592 bytes
-[{"id":"12dd.px","type":"t","text":"12dd -- Prices per square metre of new dwellings in housing companies by the form of ownership of plot, quarterly, 2015Q1-2026Q1","updated":"2026-07-01T17:44:08"},{"id":"12de.px","type":"t","text":"12de -- Prices per square metre of new dwellings in housing companies by the form of ownership of plot, yearly, 2015-2025","updated":"2026-07-01T17:44:09"},{"id":"12dg.px","type":"t","text":"12dg -- Prices per square metre of new dwellings in housing companies by sub-areas, yearly, 2015-2025","updated":"2026-07-01T17:44:09"},{"id":"12fw.px","type":"t","text":"12fw -- Price index of new dwellings in housing companies (2015=100) and numbers of transactions, yearly, 2015-2025","updated":"2026-09-21T15:14:06"},{"id":"13mq.px","type":"t","text":"13mq -- Price index of old dwellings in housing companies (2020=100) and numbers of transactions, yearly, 2020-2025","updated":"2026-07-01T17:44:09"},{"id":"13mt.px","type":"t","text":"13mt -- Prices per square meter of old dwellings in housing companies and numbers of transactions by postal code area, quarterly, 2009Q1-2026Q1*","updated":"2026-07-01T17:44:10"},{"id":"13mu.px","type":"t","text":"13mu -- Prices per square meter of old dwellings in housing companies and numbers of transactions by postal code area, yearly, 2009-2025","updated":"2026-07-01T17:44:10"},{"id":"13mw.px","type":"t","text":"13mw -- Prices per square meter of old dwellings in housing companies and numbers of transactions by the form of ownership of plot, yearly, 2009-2025","updated":"2026-07-01T17:44:10"},{"id":"13mv.px","type":"t","text":"13mv -- Prices per square meter of old dwellings in housing companies and numbers of transactions, quarterly, 2006Q1-2026Q1*","updated":"2026-07-01T17:44:10"},{"id":"13mx.px","type":"t","text":"13mx -- Prices per square meter of old dwellings in housing companies and numbers of transactions by municipality, yearly, 2006-2025","updated":"2026-07-01T17:44:10"},{"id":"13mz.px","type":"t","text":"13mz -- Price indices of old dwellings in housing companies (1970=100, 1983=100, 2000=100, 2005=100, 2010=100, 2015=100), yearly, 1988-2025","updated":"2026-07-01T17:44:11"},{"id":"15iq.px","type":"t","text":"15iq -- Price index, prices per square metre and transactions of old dwellings in housing companies (2025=100), monthly, 2025M01-2026M08*","updated":"2026-09-28T09:11:28"},{"id":"15ir.px","type":"t","text":"15ir -- Revisions in price index and number of transactions of old dwellings in hou
+12dd.px 12dd -- Prices per square metre of new dwellings in housing companies by the form of ownership of plot, quarterly, 2015Q1-2026Q1
+12de.px 12de -- Prices per square metre of new dwellings in housing companies by the form of ownership of plot, yearly, 2015-2025
+12dg.px 12dg -- Prices per square metre of new dwellings in housing companies by sub-areas, yearly, 2015-2025
+12fw.px 12fw -- Price index of new dwellings in housing companies (2015=100) and numbers of transactions, yearly, 2015-2025
+13mq.px 13mq -- Price index of old dwellings in housing companies (2020=100) and numbers of transactions, yearly, 2020-2025
+13mt.px 13mt -- Prices per square meter of old dwellings in housing companies and numbers of transactions by postal code area, quarterly, 2009Q1-2026Q1*
+13mu.px 13mu -- Prices per square meter of old dwellings in housing companies and numbers of transactions by postal code area, yearly, 2009-2025
+13mw.px 13mw -- Prices per square meter of old dwellings in housing companies and numbers of transactions by the form of ownership of plot, yearly, 2009-2025
+13mv.px 13mv -- Prices per square meter of old dwellings in housing companies and numbers of transactions, quarterly, 2006Q1-2026Q1*
+13mx.px 13mx -- Prices per square meter of old dwellings in housing companies and numbers of transactions by municipality, yearly, 2006-2025
+13mz.px 13mz -- Price indices of old dwellings in housing companies (1970=100, 1983=100, 2000=100, 2005=100, 2010=100, 2015=100), yearly, 1988-2025
+15iq.px 15iq -- Price index, prices per square metre and transactions of old dwellings in housing companies (2025=100), monthly, 2025M01-2026M08*
+15ir.px 15ir -- Revisions in price index and number of transactions of old dwellings in housing companies (2025=100), monthly, 2026M01*-2026M07*
+15is.px 15is -- Price index, prices per square metre and transactions of old dwellings in housing companies (2025=100), quarterly, 2025Q1-2026Q2*
+15it.px 15it -- Chained price indices of old dwellings in housing companies (1970=100, 1983=100, 2000=100, 2005=100, 2010=100, 2015=100, 2020=100), quarterly, 1988Q1-2026Q2*
+15iu.px 15iu -- Revisions in price index and number of transactions of old dwellings in housing companies (2025=100), quarterly, 2026Q1*
+15iv.px 15iv -- Distributions of prices per square metre of old dwellings in housing companies, quarterly, 2025Q1-2026Q2*
+15iw.px 15iw -- Price index and transactions of new dwellings in housing companies (2025=100), quarterly, 2025Q1-2026Q2
 
-===== FI 13mu meta FAIL HTTP Error 400: Bad Request
-
-===== PT INE 0012248 OK application/json;charset=UTF-8 205073 bytes
-[ {
-  "IndicadorCod" : "0012248",
-  "IndicadorDsg" : "Median value of bank evaluation (€/ m²) by Geographic localization (Municipality - 2024) and Type of construction; Monthly - Statistics Portugal, Survey on bank evaluation on housing",
-  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012248&lingua=EN",
-  "DataExtracao" : "2026-10-18T10:42:04.018+01:00",
-  "DataUltimoAtualizacao" : "2026-09-24",
-  "UltimoPref" : "August 2026",
-  "Dados" : {
-    "August 2026" : [ {
-      "geocod" : "3003104",
-      "geodsg" : "Machico",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "sinal_conv" : "…",
-      "sinal_conv_desc" : "Confidential data",
-      "ind_string" : "…"
-    }, {
-      "geocod" : "3003105",
-      "geodsg" : "Ponta do Sol",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "sinal_conv" : "…",
-      "sinal_conv_desc" : "Confidential data",
-      "ind_string" : "…"
-    }, {
-      "geocod" : "3003106",
-      "geodsg" : "Porto Moniz",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "sinal_conv" : "…",
-      "sinal_conv_desc" : "Confidential data",
-      "ind_string" : "…"
-    }, {
-      "geocod" : "3003107",
-      "geodsg" : "Ribeira Brava",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "sinal_conv" : "…",
-      "sinal_conv_desc" : "Confidential data",
-      "ind_string" : "…"
-    }, {
-      "geocod" : "3003108",
-      "geodsg" : "Santa Cruz",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "ind_string" : "2 736",
-      "valor" : "2736"
-    }, {
-      "geocod" : "3003109",
-      "geodsg" : "Santana",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "sinal_conv" : "…",
-      "sinal_conv_desc" : "Confidential data",
-      "ind_string" : "…"
-    }, {
-      "geocod" : "2004501",
-      "geodsg" : "Calheta (R.A.A.)",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "sinal_conv" : "…",
-      "sinal_conv_desc" : "Confidential data",
-      "ind_string" : "…"
-    }, {
-      "geocod" : "1B",
-      "geodsg" : "Península de Setúbal",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "ind_string" : "2 864",
-      "valor" : "2864"
-    }, {
-      "geocod" : "1B0",
-      "geodsg" : "Península de Setúbal",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "ind_string" : "2 864",
-      "valor" : "2864"
-    }, {
-      "geocod" : "1B01502",
-      "geodsg" : "Alcochete",
-      "dim_3" : "1",
-      "dim_3_t" : "Flats",
-      "ind_string" : "2 805",
-      "valor" : "2805"
-    }, {
-      "geocod" : "1B01503",
- 
-
-===== PT INE 0009490 OK application/json;charset=UTF-8 41819 bytes
-[ {
-  "IndicadorCod" : "0009490",
-  "IndicadorDsg" : "Median value of dwellings sales in the last 12 months (Methodology 2018 - €/ m²) by Geographic location (NUTS - 2013); Quarterly - Statistics on house prices at local level",
-  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0009490&lingua=EN",
-  "DataExtracao" : "2026-10-18T10:42:06.338+01:00",
-  "DataUltimoAtualizacao" : "2022-02-01",
-  "UltimoPref" : "3rd Quarter 2021",
-  "Dados" : {
-    "3rd Quarter 2021" : [ {
-      "geocod" : "16J0905",
-      "geodsg" : "Fornos de Algodres",
-      "ind_string" : "169",
-      "valor" : "169"
-    }, {
-      "geocod" : "11D1818",
-      "geodsg" : "Sernancelhe",
-      "ind_string" : "190",
-      "valor" : "190"
-    }, {
-      "geocod" : "11E0410",
-      "geodsg" : "Vila Flor",
-      "ind_string" : "201",
-      "valor" : "201"
-    }, {
-      "geocod" : "16J0904",
-      "geodsg" : "Figueira de Castelo Rodrigo",
-      "ind_string" : "204",
-      "valor" : "204"
-    }, {
-      "geocod" : "16J0902",
-      "geodsg" : "Almeida",
-      "ind_string" : "210",
-      "valor" : "210"
-    }, {
-      "geocod" : "11E0411",
-      "geodsg" : "Vimioso",
-      "ind_string" : "218",
-      "valor" : "218"
-    }, {
-      "geocod" : "11E0408",
-      "geodsg" : "Mogadouro",
-      "ind_string" : "222",
-      "valor" : "222"
-    }, {
-      "geocod" : "16J0913",
-      "geodsg" : "Trancoso",
-      "ind_string" : "223",
-      "valor" : "223"
-    }, {
-      "geocod" : "11B1702",
-      "geodsg" : "Boticas",
-      "ind_string" : "227",
-      "valor" : "227"
-    }, {
-      "geocod" : "16H0507",
-      "geodsg" : "Penamacor",
-      "ind_string" : "229",
-      "valor" : "229"
-    }, {
-      "geocod" : "11D1812",
-      "geodsg" : "Penedono",
-      "ind_string" : "233",
-      "valor" : "233"
-    }, {
-      "geocod" : "16E0612",
-      "geodsg" : "Pampilhosa da Serra",
-      "ind_string" : "240",
-      "valor" : "240"
-    }, {
-      "geocod" : "16H0511",
-      "geodsg" : "Vila Velha de Ródão",
-      "ind_string" : "241",
-      "valor" : "241"
-    }, {
-      "geocod" : "16J0903",
-      "geodsg" : "Celorico da Beira",
-      "ind_string" : "241",
-      "valor" : "241"
-    }, {
-      "geocod" : "16J0911",
-      "geodsg" : "Sabugal",
-      "ind_string" : "243",
-      "valor" : "243"
-    }, {
-      "geocod" : "1861201",
-      "geodsg" : "Alter do Chão",
-      "ind_string" : "260",
-      "valor" : "260"
-    }, {
-      "geocod" : "16H0505",
-      "geodsg" : "Idanha-a-Nova",
-      "ind_string" :
+===== FI 13mt meta FAIL HTTP Error 400: Bad Request
 
 ===== LU dataset OK application/json 37089 bytes
-{"acronym": null, "archived": null, "badges": [], "contact_point": null, "created_at": "2016-10-03T16:12:56.304000+00:00", "deleted": null, "description": "**Mis \u00e0 jour le 24 Septembre 2026 - Statistiques jusqu'au 2e trimestre 2026.**\n\nDepuis septembre 2013, l\u2019Observatoire de l\u2019Habitat et le STATEC diffusent conjointement des statistiques trimestrielles sur les **prix de vente des appartements**, permettant de faire une distinction entre **appartements existants** (assimil\u00e9s au march\u00e9 de l\u2019ancien) et **appartements en construction** (assimil\u00e9s au march\u00e9 du neuf, pour les biens vendus dans le cadre d'un contrat de Vente en Etat Futur d'Ach\u00e8vement, ou VEFA).\n\nCes statistiques sont bas\u00e9es sur les **actes notari\u00e9s**, tels qu\u2019ils sont repris dans les donn\u00e9es de la Publicit\u00e9 Fonci\u00e8re transmises par l\u2019Administration de l\u2019Enregistrement et des Domaines. Les diff\u00e9rentes \u00e9tapes de traitement des donn\u00e9es brutes permettant d'arriver \u00e0 la statistique des prix de vente des appartements sont d\u00e9crites dans le [document m\u00e9thodologique](https://download.data.public.lu/resources/prix-de-vente-des-appartements-le-logement-en-chiffres/20191007-141758/methodologie-prixvente-appartements-2013-12.pdf) conjoint du STATEC et de l'Observatoire de l'Habitat.\n\nLes statistiques fournies par l'Observatoire de l'Habitat permettent de suivre les prix de vente moyens par m\u00b2 des appartements existants et des appartements en construction, par commune. Les statistiques sont limit\u00e9es aux communes pour lesquelles au moins 10 transactions sont recens\u00e9es (apr\u00e8s s\u00e9lection et traitements).  Les prix report\u00e9s pour les appartements en construction (VEFA) correspondent \u00e0 un taux de TVA de 3%, dans la limite de la faveur fiscale totale de 50.000 \u20ac.\n\nL'Observatoire de l'Habitat fournit \u00e9galement une fourchette de prix permettant de rendre compte de la plus ou moins grande dispersion des prix autour de la moyenne. Le prix indiqu\u00e9 dans la fourchette basse correspond au prix minimal apr\u00e8s exclusion des 5% des prix au m\u00b2 les plus bas. Celui indiqu\u00e9 dans la fourchette haute est le prix maximal apr\u00e8s exclusion des 5% les plus \u00e9lev\u00e9s. Ces fourchettes de prix par commune n'ont cependant qu'une valeur indicative et ne correspondent pas \u00e0 une expertise r\u00e9alis\u00e9e par un professionnel. ", "extras": {},
+Prix de vente des appartements - Par commune | license cc-zero
+Prix de vente des appartements par commune sur les 12 derniers mois | xls | 83456 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20260924-084407/prix-moyen-au-metre-carre-enregistre-par-commune-2026t2.xls
+Prix de vente des appartements par commune en 2025 | xls | 83968 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20260326-094248/prix-moyen-au-metre-carre-enregistre-par-commune-2025.xls
+Prix de vente des appartements par commune en 2024 | xls | 110080 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20250326-094943/prix-moyen-au-metre-carre-enregistre-par-commune-2024.xls
+Prix de vente des appartements par commune en 2023 | xls | 109568 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20240327-093002/prix-moyen-au-metre-carre-enregistre-par-commune-2023.xls
+Prix de vente des appartements par commune en 2022 | xls | 110080 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20230328-093257/prix-moyen-au-metre-carre-enregistre-par-commune-2022.xls
+Prix de vente des appartements par commune en 2021 | xls | 109056 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20220324-131917/prix-moyen-au-metre-carre-enregistre-par-commune-2021.xls
+Prix de vente des appartements par commune en 2020 | xls | 131072 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20210420-081915/prix-moyen-au-metre-carre-enregistre-par-commune-2020.xls
+Prix de vente des appartements par commune en 2019 | xls | 130560 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20200409-115647/prix-moyen-au-metre-carre-enregistre-par-commune-2019.xls
+Prix de vente des appartements par commune en 2018 | xls | 130560 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-104031/prix-moyen-au-metre-carre-enregistre-par-commune-2018.xls
+Prix de vente des appartements par commune en 2017 | xls | 130560 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-104019/prix-moyen-au-metre-carre-enregistre-par-commune-2017.xls
+Prix de vente des appartements par commune en 2016 | xls | 130560 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-104008/prix-moyen-au-metre-carre-enregistre-par-commune-2016.xls
+Prix de vente des appartements par commune en 2015 | xls | 130560 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103954/prix-moyen-au-metre-carre-enregistre-par-commune-2015.xls
+Prix de vente des appartements par commune en 2014 | xls | 106496 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103941/prix-moyen-au-metre-carre-enregistre-par-commune-2014.xls
+Prix de vente des appartements par commune en 2013 | xls | 105984 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103930/prix-moyen-au-metre-carre-enregistre-par-commune-2013.xls
+Prix de vente des appartements par commune en 2012 | xls | 107008 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103919/prix-moyen-au-metre-carre-enregistre-par-commune-2012.xls
+Prix de vente des appartements par commune en 2011 | xls | 110080 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103908/prix-moyen-au-metre-carre-enregistre-par-commune-2011.xls
+Prix de vente des appartements par commune en 2010 | xls | 110080 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103855/prix-moyen-au-metre-carre-enregistre-par-commune-2010.xls
+Prix de vente des appartements par commune en 2009 | xls | 109568 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103842/prix-moyen-au-metre-carre-enregistre-par-commune-2009.xls
+Prix de vente des appartements par commune en 2008 | xls | 109568 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103830/prix-moyen-au-metre-carre-enregistre-par-commune-2008.xls
+Prix de vente des appartements par commune en 2007 | xls | 109568 | https://download.data.public.lu/resources/prix-de-vente-des-appartements-par-commune/20190628-103739/prix-moyen-au-metre-carre-enregistre-par-commune-2007.xls
 
-===== ES datos.gob.es OK application/json 3045 bytes
-{ "format" : "linked-data-api", "version" : "0.2", "result" : {"_about" : "http://datos.gob.es/apidata/catalog/dataset/e05233601-valor-tasado-de-la-vivienda.json", "definition" : "http://datos.gob.es/apidata/catalog/meta/dataset/_id.json", "extendedMetadataVersion" : "http://datos.gob.es/apidata/catalog/dataset/e05233601-valor-tasado-de-la-vivienda.json?_metadata=all", "first" : "http://datos.gob.es/apidata/catalog/dataset/e05233601-valor-tasado-de-la-vivienda.json?_page=0", "hasPart" : "http://datos.gob.es/apidata/catalog/dataset/e05233601-valor-tasado-de-la-vivienda.json", "isPartOf" : "http://datos.gob.es/apidata/catalog/dataset/e05233601-valor-tasado-de-la-vivienda.json", "items" : [{"_about" : "https://datos.gob.es/catalogo/e05233601-valor-tasado-de-la-vivienda", "accrualPeriodicity" : "http://publications.europa.eu/resource/authority/frequency/QUARTERLY", "description" : [{"_value" : "Conjunto de datos estadísticos que recoge el valor medio tasado de la vivienda en euros por metro cuadrado (\u20ac/m²), desagregado por régimen de vivienda, provincia, comunidad autónoma y periodo temporal trimestral.", "_lang" : "es"}
-      ], "distribution" : {"_about" : "https://datos.gob.es/catalogo/e05233601-valor-tasado-de-la-vivienda/resource/919ca800-b05d-4fa9-89d6-1d6f0ec30816", "accessURL" : "https://cdn.mivau.gob.es/portal-web-mivau/Datos_MIVAU/CSV/VDP006_01.csv", "downloadURL" : "https://cdn.mivau.gob.es/portal-web-mivau/Datos_MIVAU/CSV/VDP006_01.csv", "format" : "http://publications.europa.eu/resource/authority/file-type/CSV", "title" : [{"_value" : "Valor tasado de la Vivienda", "_lang" : "es"}
-        ], "type" : "http://www.w3.org/ns/dcat#Distribution"}
-      , "identifier" : "78ef01f8-89e2-4284-816c-ac902fc7190b", "issued" : "mié, 27 may 2026", "keyword" : [{"_value" : "Comercio", "_lang" : "es"}
-      , {"_value" : "Economía", "_lang" : "es"}
-      , {"_value" : "Infraestructuras", "_lang" : "es"}
-      , {"_value" : "Urbanismo", "_lang" : "es"}
-      , {"_value" : "Valor medio tasado de la vivienda", "_lang" : "es"}
-      , {"_value" : "Vivienda Libre", "_lang" : "es"}
-      , {"_value" : "Vivienda Protegida", "_lang" : "es"}
-      ], "language" : "http://publications.europa.eu/resource/authority/language/SPA", "modified" : "jue, 17 sep 2026", "publisher" : "http://datos.gob.es/recurso/sector-publico/org/Organismo/E05233601", "spatial" : "http://publications.europa.eu/resource/authority/country/ESP", "temporal" : "https://www.mivau.gob.es/catalogo/bno
+===== FR DVF dataset OK application/json 10609 bytes
+Statistiques DVF | license lov2
+Statistiques totales DVF | csv | 30738960 | https://data-pipeline-open.s3.sbg.io.cloud.ovh.net/dvf/stats_whole_period.csv
+Statistiques mensuelles DVF | csv | 276619703 | https://data-pipeline-open.s3.sbg.io.cloud.ovh.net/dvf/stats_dvf.csv
+
+===== DK EJEN77 OK text/json; charset=utf-8 8045 bytes
+{"id": "EJEN77", "text": "Ejendomssalg", "description": "Ejendomssalg efter omr\u00e5de, ejendomskategori, n\u00f8gletal, overdragelsesformer og tid", "unit": "-", "suppressedDataValue": "0", "updated": "2026-09-29T08:00:00", "active": true, "contacts": [{"name": "Annette Walther Nielsen", "phone": "+4520377911", "mail": "att@dst.dk"}], "documentation": {"id": "c49f560a-a8b7-40c2-9295-e5650c44d663", "url": "https://www.dst.dk/statistikdokumentation/c49f560a-a8b7-40c2-9295-e5650c44d663"}, "footnote": {"text": "P\u00e5 grund af skift i datakilde er der et databrud mellem 1. kvartal 2022 og 2. kv
+OMRÅDE område: ['Hele landet', 'Region Hovedstaden', 'Landsdel Byen København', 'Landsdel Københavns omegn', 'Landsdel Nordsjælland', 'Landsdel Bornholm', 'Region Sjælland', 'Landsdel Østsjælland', 'Landsdel Vest- og Sydsjælland', 'Region Syddanmark', 'Landsdel Fyn', 'Landsdel Sydjylland', 'Region Midtjylland', 'Landsdel Østjylland', 'Landsdel Vestjylland', 'Region Nordjylland', 'Landsdel Nordjylland'] (17)
+EJENDOMSKATE ejendomskategori: ['Enfamiliehuse', 'Ejendomme med 2 eller 3 lejligheder', 'Ejendomme med 4 lejligheder eller derover', 'Blandet beboelse-forretning', 'Rene forretningsejendomme', 'Fabriks- og lagerejendomme', 'Landbrug i alt', 'Sommerhuse', 'Grunde i alt', 'Ejerlejligh. ikke frie. Antal', 'Ejerlejligheder fri', 'Ejerlejligheder, i alt', 'Andet bebygget. Antal', 'Samlet salg', 'Ejendomme med 2 lejligheder', 'Ejendomme med 3 lejligheder', 'Ejendomme med 4-8 lejligheder', 'Ejendomme m 9 el. flere lejl.', 'Landbrug 10-100 ha', 'Landbrug 2-5 ha', 'Landbrug 5-10 ha', 'Landbrug 10-15 ha', 'Landbrug 15-30 ha', 'Landbrug 30-60 ha', 'Landbrug, mere end 60 ha'] (29)
+BNØGLE nøgletal: ['Salg ved prisberegning (antal)', 'Gennemsnitlig pris pr. ejendom (1000 kr)', 'Købesum pr. ha/m2 (landbrug/grunde)', 'Købesum i 0/00 af ejendomsværdi', 'Beregnet antal salg'] (5)
+OVERDRAG overdragelsesformer: ['Almindelig fri handel', 'Familieoverdragelse', 'Andre salg'] (3)
+Tid tid: ['1992K1', '1992K2', '1992K3', '1992K4', '1993K1', '1993K2', '1993K3', '1993K4', '1994K1', '1994K2', '1994K3', '1994K4', '1995K1', '1995K2', '1995K3', '1995K4', '1996K1', '1996K2', '1996K3', '1996K4', '1997K1', '1997K2', '1997K3', '1997K4', '1998K1'] (138)
+
+===== ES MIVAU VDP006_01 OK text/csv 400000 bytes
+Año;Trimestre;Valor;Régimen;CPRO;Provincia;Comunidad_Autónoma;CODAUTO
+1995;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1995;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1995;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1995;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1996;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1996;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1996;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1996;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1997;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1997;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1997;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1997;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1998;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1998;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1998;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1998;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1999;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1999;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1999;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+1999;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2000;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2000;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2000;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2000;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2001;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2001;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2001;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2001;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2002;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2002;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2002;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2002;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2003;1;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2003;2;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2003;3;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2003;4;;Libre;null;Ceuta y Melilla;Ceuta y Melilla;0
+2012;1;;Protegida;47;Valladolid;Castilla y León;7
+2012;2;;Protegida;24;León;Castilla y León;7
+2012;3;;Protegida;47;Valladolid;Castilla y León;7
+2012;3;;Protegida;24;León;Castilla y León;7
+2012;4;;Protegida;24;León;Castilla y León;7
+2012;1;;Protegida;9;Burgos;Castilla y León;7
+2012;2;;Protegida;9;Burgos;Castilla y León;7
+2012;3;;Protegida;9;Burgos;Castilla y León;7
+2012;4;;Protegida;9;Burgos;Castilla y León;7
+2012;1;;Protegida;37;Salamanca;Castilla y León;7
+2012;2;;Protegida;37;Salamanca;Castilla y León;7
+2012;3;;Protegida;37;Salamanca;Castilla y León;7
+2012;4;;Protegida;37;Salamanca;Castilla y León;7
+2012;1;;Protegida;49;Zamora;Castilla y León;7
+2012;2;;Protegida;49;Zamora;Castilla y León;7
+2012;3;;Protegida;49;Zamora;Castilla y León;7
+2012;4;;Protegida;49;Zamora;Castilla y León;7
+2012;1;;Protegida;34;Palencia;Castilla y León;7
+2012;2;;Protegida;34;Palencia;Castilla y León;7
+2012;3;;Protegida;34;Palencia;Castilla y León;7
+2012;4;;Protegida;34;Palencia;Castilla y León;7
+2012;1;;Protegida;5;Ávila;Castilla y León;7
+2012;2;;Protegida;5;Ávila;Castilla y León;7
+2012;3;;Protegida;5;Ávila;Castilla y León;7
+2012;4;;Protegida;5;Ávila;Castilla y León;7
+2012;1;;Protegida;40;Segovia;Castilla y León;7
+2012;2;;Protegida;40;Segovia;Castilla y León;7
+2012;3;;Protegida;40;Segovia;Castilla y León;7
+2012;4;;Protegida;40;Segovia;Castilla y León;7
+2012;1;;Protegida;42;Soria;Castilla y León;7
+2012;2;;Protegida;42;Soria;Castilla y León;7
+2012;3;;Protegida;42;Soria;Castilla y León;7
+2012;4;;Protegida;42;Soria;Castilla y León;7
+2012;3;;Protegida;23;Jaén;Andalucía;1
+2012;4;;Protegida;23;Jaén;Andalucía;1
+2012;4;;Protegida;14;Córdoba;Andalucía;1
+2012;3;;Protegida;29;Málaga;Andalucía;1
+2012;2;;Protegida;11;Cádiz;Andalucía;1
+2012;4;;Protegida;18;Granada;Andalucía;1
+2012;3;;Protegida;21;Huelva;Andalucía;1
+2012;4;;Protegida;21;Huelva;Andalucía;1
+2012;4;;Protegida;4;Almería;Andalucía;1
+2012;4;;Protegida;null;Ceuta y Melilla;Ceuta y Melilla;0
+
+
+===== SE SCB BO0501C OK application/json; charset=utf-8 134 bytes
+FastprisBRFRegionAr Sold tenant-owned flats by region. Year 2000 - 2025
+
+===== SE SCB BO0501B OK application/json; charset=utf-8 2602 bytes
+FastprisManadAr Sold real estate by month of acquisition and type of real estate. Year 1992 - 2025
+FastprisFHRegKv Sold buildings for seasonal and secondary use by region. Quarter 1998K1 - 2026K2
+FastprisFHRegAr Sold buildings for seasonal and secondary use by region. Year 2000 - 2025
+FastprisHHRegionAr Sold multi-dwelling and commercial buildings by region and type of real estate. Year 1989 - 2025
+FastprisHHKv Sold multi-dwelling and commercial buildings. Quarter 1994K1 - 2026K2
+FastprisIFKv Sold manufacturers industries. Quarter 1994K1 - 2026K2
+FastprisIFRegionAr Sold industrial real estate by region and type of real estate. Year 1994 - 2025
+SmahusT1M Real estate prices for one- or two-dwelling buildings. Month 1997M01 - 2026M09
+FastprisLBRegJordAr Sold agricultural real estate by region and share of value of farms. Year 1999 - 2025
+SmahusT2M Real estate prices for one- or two-dwelling buildings, where month refers to a three-month period, see footnote, by region. Month 1997M04 - 2026M09
+FastprisLBRegSkogAr Sold agricultural real estate by region and share of value of standing forest and forest land. Year 1999 - 2025
+FastprisLBBebyggAr Sold agricultural real estate by region and buildings condition. Year 1999 - 2025
+FastprisLBKv Sold agricultural real estate. Quarter 1999K1 - 2026K2
+FastprisPSRegKv Sold one- and two-dwelling buildings for permanent living by region. Quarter 1998K1 - 2026K2
+FastprisPSRegAr Sold one- and two-dwelling buildings for permanent living by region. Year 2000 - 2025
+FastprisSHRegionAr Sold one- and two-dwelling buildings by region and type of real estate. Year 1981 - 2025
+
+===== PL GUS BDL search m2 OK application/json; charset=utf-8 12930 bytes
+{"id": 633621, "subjectId": "P3783", "n1": "total", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633626, "subjectId": "P3783", "n1": "primary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633631, "subjectId": "P3783", "n1": "secondary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633636, "subjectId": "P3784", "n1": "total", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633641, "subjectId": "P3784", "n1": "primary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633646, "subjectId": "P3784", "n1": "secondary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633651, "subjectId": "P3785", "n1": "total", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633656, "subjectId": "P3785", "n1": "primary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633661, "subjectId": "P3785", "n1": "secondary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633666, "subjectId": "P3786", "n1": "total", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633671, "subjectId": "P3786", "n1": "primary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633676, "subjectId": "P3786", "n1": "secondary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633681, "subjectId": "P3787", "n1": "total", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633686, "subjectId": "P3787", "n1": "primary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633691, "subjectId": "P3787", "n1": "secondary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633696, "subjectId": "P3788", "n1": "total", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633701, "subjectId": "P3788", "n1": "primary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633706, "subjectId": "P3788", "n1": "secondary market", "n2": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633711, "subjectId": "P3789", "n1": "quarter 1", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633716, "subjectId": "P3789", "n1": "quarter 1", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633721, "subjectId": "P3789", "n1": "quarter 1", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633726, "subjectId": "P3789", "n1": "quarter 2", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633731, "subjectId": "P3789", "n1": "quarter 2", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633736, "subjectId": "P3789", "n1": "quarter 2", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633741, "subjectId": "P3789", "n1": "quarter 3", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633746, "subjectId": "P3789", "n1": "quarter 3", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633751, "subjectId": "P3789", "n1": "quarter 3", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633756, "subjectId": "P3789", "n1": "quarter 4", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633761, "subjectId": "P3789", "n1": "quarter 4", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633766, "subjectId": "P3789", "n1": "quarter 4", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 8, "measureUnitName": "pcs"}
+{"id": 633771, "subjectId": "P3790", "n1": "quarter 1", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633776, "subjectId": "P3790", "n1": "quarter 1", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633781, "subjectId": "P3790", "n1": "quarter 1", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633786, "subjectId": "P3790", "n1": "quarter 2", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633791, "subjectId": "P3790", "n1": "quarter 2", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633796, "subjectId": "P3790", "n1": "quarter 2", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633801, "subjectId": "P3790", "n1": "quarter 3", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633806, "subjectId": "P3790", "n1": "quarter 3", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633811, "subjectId": "P3790", "n1": "quarter 3", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633816, "subjectId": "P3790", "n1": "quarter 4", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633821, "subjectId": "P3790", "n1": "quarter 4", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633826, "subjectId": "P3790", "n1": "quarter 4", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633831, "subjectId": "P3791", "n1": "quarter 1", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633836, "subjectId": "P3791", "n1": "quarter 1", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633841, "subjectId": "P3791", "n1": "quarter 1", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633846, "subjectId": "P3791", "n1": "quarter 2", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633851, "subjectId": "P3791", "n1": "quarter 2", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633856, "subjectId": "P3791", "n1": "quarter 2", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633861, "subjectId": "P3791", "n1": "quarter 3", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633866, "subjectId": "P3791", "n1": "quarter 3", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633871, "subjectId": "P3791", "n1": "quarter 3", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633876, "subjectId": "P3791", "n1": "quarter 4", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633881, "subjectId": "P3791", "n1": "quarter 4", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633886, "subjectId": "P3791", "n1": "quarter 4", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 16, "measureUnitName": "m2"}
+{"id": 633891, "subjectId": "P3792", "n1": "quarter 1", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633896, "subjectId": "P3792", "n1": "quarter 1", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633901, "subjectId": "P3792", "n1": "quarter 1", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633906, "subjectId": "P3792", "n1": "quarter 2", "n2": "total", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633911, "subjectId": "P3792", "n1": "quarter 2", "n2": "primary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+{"id": 633916, "subjectId": "P3792", "n1": "quarter 2", "n2": "secondary market", "n3": "from 80.1 m2", "level": 5, "measureUnitId": 4, "measureUnitName": "PLN"}
+
+===== PL GUS BDL subjects OK application/json; charset=utf-8 2237 bytes
+{"id": "P3415", "parentId": "G186", "name": "The price purchase/sale of agricultural land per ha in private turnover", "hasVariables": true, "children": [], "levels": [3]}
+{"id": "P3183", "parentId": "G186", "name": "The price purchase/sale of agricultural land per ha in private turnover (quarterly / half year data)", "hasVariables": true, "children": [], "levels": [3]}
+{"id": "K15", "name": "PRICES", "hasVariables": false, "children": ["G186", "G187", "G188", "G189", "G405"], "levels": [3]}
+{"id": "P2917", "parentId": "G188", "name": "Retail prices of selected consumer goods and services (monthly data)", "hasVariables": true, "children": [], "levels": [3]}
+{"id": "G186", "parentId": "K15", "name": "PRICES IN AGRICULTURE", "hasVariables": false, "children": ["P1458", "P1459", "P1460", "P2967", "P2968", "P3155", "P3156", "P3183", "P3415"], "levels": [3]}
+{"id": "P2752", "parentId": "G573", "name": "Indices of sold production of industry by NACE 2007 sections and divisions - in constant prices 2005", "hasVariables": true, "children": [], "levels": [3]}
+{"id": "P3371", "parentId": "G573", "name": "Indices of sold production of industry by NACE Revision 2 sections and divisions - in constant prices 2010", "hasVariables": true, "children": [], "levels": [3]}
+{"id": "P3757", "parentId": "G379", "name": "Indices of sold production of industry by NACE Revision 2 sections and divisions - in constant prices 2015", "hasVariables": true, "children": [], "levels": [3]}
+{"id": "P4503", "parentId": "G379", "name": "Indices of sold production of industry by NACE Revision 2 sections and divisions - in constant prices 2021", "hasVariables": true, "children": [], "levels": [3]}
+{"id": "P2544", "parentId": "G563", "name": "Compensation of employees (current prices - PKD 2004 - NACE rev. 1.1) total", "hasVariables": true, "children": [], "levels": [3]}
 
 ===== IE CSO catalogue HPM OK application/json 400000 bytes
+(summary failed: Expecting ',' delimiter: line 12980 column 32 (char 399998))
 {
   "class": "collection",
   "link": {
@@ -436,312 +323,24 @@ Date,Region_Name,Area_Code,Average_Price,Monthly_Change,Annual_Change,Average_Pr
           },
         
 
-===== PL GUS BDL search OK application/json; charset=utf-8 54 bytes
-{"totalRecords":0,"page":0,"pageSize":50,"results":[]}
-
-===== HU KSH lak0025 OK application/octet-stream 6846 bytes
-18.1.2.9. Mean price per sqm by region and settlement type [thousand HUF];;;;;;;;;;;;;;;;;;;;
-Region;Settlement type;2007;2008;2009;2010;2011;2012;2013;2014;2015;2016;2017;2018;2019;2020;2021;2022;2023;2024;2025
-Second-hand dwellings;;;;;;;;;;;;;;;;;;;;
-Budapest;capital;266;265;259;252;245;236;226;240;290;361;419;508;623;640;692;844;887;977;1 194
-Pest;towns;200;200;195;194;188;182;171;174;189;210;238;278;340;375;453;553;560;642;744
-Pest;villages;152;152;147;152;145;136;127;121;131;141;149;170;205;226;298;352;338;412;496
-Pest;together;189;184;178;180;174;169;158;161;174;192;214;245;299;331;407;488;495;576;673
-Central Transdanubia;county seats;171;177;164;159;155;149;145;150;170;197;228;278;347;374;435;548;567;624;771
-Central Transdanubia;towns;145;149;141;139;131;126;121;120;130;141;157;186;231;265;308;386;416;471;557
-Central Transdanubia;villages;100;97;88;92;85;82;79;81;88;93;101;113;134;147;184;222;235;287;363
-Central Transdanubia;together;147;141;129;130;126;121;118;120;131;142;158;184;223;251;300;368;394;460;560
-Western Transdanubia;county seats;184;176;170;166;168;167;168;180;201;221;250;284;334;356;400;521;566;635;743
-Western Transdanubia;towns;152;151;148;148;149;142;144;148;155;164;185;213;247;271;318;392;423;482;587
-Western Transdanubia;villages;87;88;84;89;87;81;79;82;88;93;103;116;127;141;167;202;215;272;333
-Western Transdanubia;together;151;138;132;134;136;132;133;139;148;156;176;198;222;239;281;347;379;457;552
-Southern Transdanubia;county seats;165;168;157;153;148;139;131;130;146;161;184;223;264;285;327;428;469;522;658
-Southern Transdanubia;towns;130;133;132;140;140;131;127;121;124;130;148;157;181;213;255;310;321;390;486
-Southern Transdanubia;villages;65;61;57;58;54;49;48;51;55;54;61;66;76;81;98;115;113;147;188
-Southern Transdanubia;together;129;117;112;118;115;106;104;104;112;116;132;146;164;178;211;253;270;339;434
-Northern Hungary;county seats;150;152;142;135;129;123;111;110;122;131;146;172;219;236;283;353;369;416;498
-Northern Hungary;towns;106;111;102;100;96;88;85;86;90;93;100;112;131;145;172;208;226;257;308
-Northern Hungary;villages;60;59;53;54;50;45;44;45;48;48;53;57;67;71;83;99;103;126;162
-Northern Hungary;together;111;104;94;96;89;83;78;80;86;87;96;106;125;133;160;191;209;246;304
-Northern Great Plain;county seats;169;177;170;164;161;159;153;158;176;195;218;260;317;335;394;488;541;613;738
-Northern Great Plain;towns;92;98;89;90;87;81;78;77;82;85;91;101;117;125;153;184;194;236;297
-Northern Great Plain;villages;46;4
-
-===== HU KSH stadat list OK text/html; charset=iso-8859-2 35374 bytes
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <base href="//www.ksh.hu/">
-    <meta name="google-site-verification" content="SBza5dAyFkT_muTyGMs2UEaaPj3pZ6TtxqUuwNJfi28">
-    <meta charset="iso-8859-2">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/base.css">
-    <script src="js/base.js"></script>
-    <link rel="stylesheet" href="css/migrated.css">
-    <link rel="stylesheet" type="text/css" href="/stadat_files/assets/content.css" />
-<link rel="stylesheet" type="text/css" href="/stadat_files/assets/stadat.css" />
-<title>Hungarian Central Statistical Office</title>        <link rel="stylesheet" href="/css/a11y.css">
-    <script src="/js/a11y.js" charset="utf-8"></script>
-</head>
-
-<body>
-    <a href="stadat_eng#main" class="jump-to-content">Jump to content</a>
-    <div id="page">
-        <header class="container">
-            <a id="logo" href="//www.ksh.hu/?lang=en"><img src="images/logos/hcsologo.svg" height="60" alt="Logo of HCSO"></a>
-            <nav class="quick-nav" aria-label="Supplementary">
-                <ul>
-                    <li><a href="pressroom">Pressroom</a></li>
-                    <li><a href="contact">Contact</a></li>
-                    <li><a href="//www.ksh.hu/?lang=hu">Hungarian</a></li>
-                </ul>
-            </nav>
-            <div id="page-header-search">
-                <form method="get" action="/search" accept-charset="UTF-8">
-                    <input type="text" name="q" placeholder="search on the site..." aria-label="search on the site..." onfocus="this.parentNode.className='focused'" onblur="this.parentNode.className=''" ><button type="submit" title="Search" aria-label="Search"><svg class="icon icon-search" aria-hidden="true"><use xlink:href="images/icons.svg#search"></use></svg></button>
-                </form>
-            </div>
-            <button class="mobile open-page-menu" aria-label="Open menu"><svg class="icon icon-menu" aria-hidden="true"><use xlink:href="images/icons.svg#menu"></use></svg></button>
-        </header>
-
-        <nav aria-label="Elsődleges">
-            <div class="container">
-                <div class="mobile">
-    <button class="close-page-menu" aria-label="Menü bezárása"><svg class="icon icon-close" aria-hidden="true"><use xlink:href="images/icons.svg#close"></use></svg></button>
-    <nav class="quick-nav" aria-label="Kiegészítő">
-        <ul>
-            <li><a href="pressroom">Pr
-
-===== SE SCB BO0501 OK application/json; charset=utf-8 357 bytes
-[{"id":"BO0501A","type":"l","text":"Real estate price index"},{"id":"BO0501B","type":"l","text":"Prices of real estate"},{"id":"BO0501C","type":"l","text":"Tenant-owned flats"},{"id":"BO0501D","type":"l","text":"Registrations of title"},{"id":"BO0501E","type":"l","text":"Changes of assessed value"},{"id":"BO0501S","type":"l","text":"Economic indicators"}]
-
-===== HR DZS OK text/html; charset=utf-8 400000 bytes
-<!DOCTYPE html>
-<html lang=hr>
-
-<head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56466390-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-56466390-1');
-    </script>
-    <meta charset=utf-8>
-    <meta http-equiv=x-ua-compatible content="ie=edge">
-    <meta name=viewport content="width=device-width,initial-scale=1">
-    <meta property="og:title" content="Prices" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Državni zavod za statistiku" />
-    <meta property="og:image" content="/images/logo_hr.png" />
-    <title>Prices | Državni zavod za statistiku</title>
-    <link rel="icon" href="/favicon.ico">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open&#x2B;Sans:400,600,700&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:500|Roboto:400,700&amp;amp;subset=latin-ext">
-    <link rel="stylesheet" href="/assets/css/compiled.css?v=3">
-    <script src="/js/jquery-2.2.4.min.js"></script>
-    <script src="/js/jquery.validate.min.js"></script>
-    <script src="/js/additional-methods.min.js"></script>
-    <script src="/scripts/apexcharts.min.js"></script>
-    <script src="/scripts/magnific.custom.min.js"></script>
-    <link rel="preload" as="script" href="/assets/js/app.js">
-    <link rel="preload" as="script" href="/assets/js/chunk-vendors.js">
-    <link rel="stylesheet" href="/assets/css/app.css">
-    <link rel="stylesheet" href="/css/print.css">
-    <link rel="stylesheet" href="/css/apexcharts.css">
-    <link rel="stylesheet" hrewwf="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-
-
-        <script src="/js/d3.v5.min.js"></script>
-</head>
-
-<body>
-    <div class="static-frame">
-        <div class="header">
-    <div class="container">
-        <div class="row">
-            <nav class="nav-mobile hide-desktop">
-    <div class="container">
-        <div class="header-flex">
-            <a href="/en/" class="header-logo">
-                <img src="/svg/dzs-logo.svg" alt="">
-            </a>
-            <button class="deactivate-hamburger button-icon">
-                <svg class="icon icon-close"><use xlink:href
-
-===== BG NSI OK text/html; charset=utf-8 253850 bytes
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<base href="https://www.nsi.bg/" />
-<meta name="theme-color" content="#bf0300">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="NSI">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="templates/default/img/favico/apple-icon-180x180.png">
-
-<title> Damaged residential buildings from crisis events for the period 2004-2008</title>
-<meta name="description" content="">
-
-<meta property="og:site_name" content="NSI - National statistical institute">
-<meta property="og:title" content=" Damaged residential buildings from crisis events for the period 2004-2008">
-<meta property="og:description" content="">
-<meta property="og:image" content="https://www.nsi.bg/templates/default/img/default.jpg">
-
-<!-- Bootstrap Min CSS -->
-<link rel="stylesheet" href="templates/default/css/bootstrap.min.css">
-<!-- Animate Min CSS -->
-<link rel="stylesheet" href="templates/default/css/animate.min.css">
-<!-- FlatIcon CSS -->
-<link rel="stylesheet" href="templates/default/css/flaticon.css">
-<!-- Odometer Min CSS -->
-<link rel="stylesheet" href="templates/default/css/odometer.min.css">
-<!-- Nice Select CSS -->
-<link rel="stylesheet" href="templates/default/css/nice-select.min.css">
-<!-- MeanMenu CSS -->
-<link rel="stylesheet" href="templates/default/css/meanmenu.css">
-<!-- Magnific Popup Min CSS -->
-<link rel="stylesheet" href="templates/default/css/magnific-popup.min.css">
-<!-- Owl Carousel Min CSS -->
-<link rel="stylesheet" href="templates/default/css/owl.carousel.min.css">
-<!-- Font Awesome Min CSS -->
-<link rel="stylesheet" href="templates/default/css/fontawesome.min.css">
-<!-- FoIcon CSS -->
-<link rel="stylesheet" href="templates/default/css/foicons.css">
-<!-- Style CSS -->
-<link rel="stylesheet" href="templates/default/css/style.css?t=1792316544">
-<!-- Responsive CSS -->
-<link rel="stylesheet" href="templates/default/css/responsive.css?t=1792316544">
-<!-- JS UI CSS -->
-<link rel="stylesheet" href="templates/default/css/jquery-ui.css">
-<!-- datatable -->
-<link href="templates/default/js/external/dataTables.min.css" rel="stylesheet">
-<!-- custom -->
-<link rel="stylesheet" href="templates/de
-
-===== DK EJEN77 OK text/json; charset=utf-8 8045 bytes
-{"id":"EJEN77","text":"Ejendomssalg","description":"Ejendomssalg efter område, ejendomskategori, nøgletal, overdragelsesformer og tid","unit":"-","suppressedDataValue":"0","updated":"2026-09-29T08:00:00","active":true,"contacts":[{"name":"Annette Walther Nielsen","phone":"+4520377911","mail":"att@dst.dk"}],"documentation":{"id":"c49f560a-a8b7-40c2-9295-e5650c44d663","url":"https://www.dst.dk/statistikdokumentation/c49f560a-a8b7-40c2-9295-e5650c44d663"},"footnote":{"text":"På grund af skift i datakilde er der et databrud mellem 1. kvartal 2022 og 2. kvartal 2022, hvilket påvirker variablen Beregnet antal salg, særligt for landbrugsejendomme. Derudover kan to punkter medføre, at nogle af tallene i stedet fremgår af Betalingsdatabanken.","mandatory":false},"variables":[{"id":"OMRÅDE","text":"område","elimination":true,"time":false,"map":"Denmark_rural_07","values":[{"id":"000","text":"Hele landet"},{"id":"084","text":"Region Hovedstaden"},{"id":"01","text":"Landsdel Byen København"},{"id":"02","text":"Landsdel Københavns omegn"},{"id":"03","text":"Landsdel Nordsjælland"},{"id":"04","text":"Landsdel Bornholm"},{"id":"085","text":"Region Sjælland"},{"id":"05","text":"Landsdel Østsjælland"},{"id":"06","text":"Landsdel Vest- og Sydsjælland"},{"id":"083","text":"Region Syddanmark"},{"id":"07","text":"Landsdel Fyn"},{"id":"08","text":"Landsdel Sydjylland"},{"id":"082","text":"Region Midtjylland"},{"id":"09","text":"Landsdel Østjylland"},{"id":"10","text":"Landsdel Vestjylland"},{"id":"081","text":"Region Nordjylland"},{"id":"11","text":"Landsdel Nordjylland"}]},{"id":"EJENDOMSKATE","text":"ejendomskategori","elimination":true,"time":false,"values":[{"id":"0111","text":"Enfamiliehuse"},{"id":"0129","text":"Ejendomme med 2 eller 3 lejligheder"},{"id":"0149","text":"Ejendomme med 4 lejligheder eller derover"},{"id":"0201","text":"Blandet beboelse-forretning"},{"id":"0301","text":"Rene forretningsejendomme"},{"id":"0401","text":"Fabriks- og lagerejendomme"},{"id":"0509","text":"Landbrug i alt"},{"id":"0801","text":"Sommerhuse"},{"id":"0903","text":"Grunde i alt"},{"id":"2101","text":"Ejerlejligh. ikke frie. Antal"},{"id":"2102","text":"Ejerlejligheder fri"},{"id":"2103","text":"Ejerlejligheder, i alt"},{"id":"9901","text":"Andet bebygget. Antal"},{"id":"9999","text":"Samlet salg"},{"id":"0121","text":"Ejendomme med 2 lejligheder"},{"id":"0131","text":"Ejendomme med 3 lejligheder"},{"id":"0141","text":"Ejendomme med 4-8 lejligheder"},{"id":"0191","text":"Ejendomme m 9 e
-
-===== AT OGD OK text/html;charset=UTF-8 400000 bytes
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="de">
-	<!-- HEAD fragment -->
-	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=9">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="publisher" content="Statistik Austria"/>
-		<meta name="copyright" content="Statistik Austria"/>
-		<meta name="keywords" content="Österreich, Statistik, Open, Data, open.data"/>
-		<meta name="description" content="Open.data">
-		<meta name="author" content="HE,PW">
-		<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="assets/favicon.png">
-
-		<title>Statistik Austria Open.data</title>
-
-		<!-- Bootstrap core CSS  -->
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"> 
-		
-		<!-- Custom styles for this template -->
-		<link rel="stylesheet" type="text/css" href="css/custom.css">
-
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-		<script src="js/html5shiv.js"></script>
-		<script src="js/respond.min.js"></script>
-		<![endif]-->
-
-	</head>
-
-	<body>
-		
-<!-- TOPNAVI fragmet -->
-		<div class="navbar navbar-inverse navbar-fixed-top" id="topNavi" aria-labelledby="topNavi" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarTop">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="./" aria-label="Startseite / welcome page"><img src="assets/logo_openData.png" alt="Logo von Statistik Austria open.data" /></a>
-
-				</div>
-				<div class="collapse navbar-collapse" id="navbarTop">
-					<ul class="nav navbar-nav">
-						<li class="active">
-							<a href="catalog.jsp">Daten</a>
-						</li>
-						<li>
-							<a href="./?page=formats">Formate</a>
-						</li>
-						<li>
-							<a href="./?page=terms">Nutzungsbedingungen</a>
-						</li>
-						<li>
-							<a href="./?page=apps">Anwendungen</a>
-						</li>
-						<li>
-							<a href="./?page=contact">Kontakt</a>
-						</li>
-					</ul>
-				</div><!--/.nav-collapse -->
-			</div><!-- /.container -->
-		</div><!-- /#topNavi -->
-
-		
-		
-		<!-- content -->
-
-		<section class="container start-template" id="mitte">
-			<div class="row" id="content">
-				<!-- LOGO TOP fragment -->
-				<div id="logoTop">
-					<img src="assets/logo_stat
-
 ===== CZ CSU FAIL <urlopen error [Errno 104] Connection reset by peer>
 
-===== BE Statbel OK text/html; charset=UTF-8 120001 bytes
-<!DOCTYPE html>
-<html  lang="en" dir="ltr" class="no-js" xml:lang="en">
-  <head>
-    <meta charset="utf-8" />
-<meta name="Generator" content="Drupal 10 (https://www.drupal.org)" />
-<meta name="MobileOptimized" content="width" />
-<meta name="HandheldFriendly" content="true" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="outdatedbrowser-ieTarget" content="11" />
-<link rel="icon" href="/themes/custom/statbel_theme/favicon.ico" type="image/vnd.microsoft.icon" />
-
-    <title>Open Data | Statbel</title>
-    <link rel="stylesheet" media="all" href="/core/misc/components/progress.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/align.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/fieldgroup.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/container-inline.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/clearfix.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/details.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/hidden.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/item-list.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/js.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/nowrap.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/position-container.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/reset-appearance.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/resize.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/system-status-counter.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/system-status-report-counters.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/system-status-report-general-info.css?tn3003" />
-<link rel="stylesheet" media="all" href="/core/modules/system/css/components/tablesort.module.css?tn3003" />
-<link rel="stylesheet" media="all" href="/modules/contrib/leaflet/js/leaflet/d
+===== ECB HUF OK text/csv 25698 bytes
+KEY,FREQ,CURRENCY,CURRENCY_DENOM,EXR_TYPE,EXR_SUFFIX,TIME_PERIOD,OBS_VALUE,OBS_STATUS,OBS_CONF,OBS_PRE_BREAK,OBS_COM,TIME_FORMAT,BREAKS,COLLECTION,COMPILING_ORG,DISS_ORG,DOM_SER_IDS,PUBL_ECB,PUBL_MU,PUBL_PUBLIC,UNIT_INDEX_BASE,COMPILATION,COVERAGE,DECIMALS,NAT_TITLE,SOURCE_AGENCY,SOURCE_PUB,TITLE,TITLE_COMPL,UNIT,UNIT_MULT
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2024-Q1,0.9490793650794,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2024-Q2,0.973880952381,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2024-Q3,0.9517196969697,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2024-Q4,0.936128125,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2025-Q1,0.9458349206349,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2025-Q2,0.9368758064516128,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2025-Q3,0.9352712121212119,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2025-Q4,0.9303296875000004,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2026-Q1,0.9168126984126983,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2026-Q2,0.9189967741935483,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CHF.EUR.SP00.A,Q,CHF,EUR,SP00,A,2026-Q3,0.9347545454545453,A,F,,,P3M,,A,,,,,,,99Q1=100,,,4,,4F0,,Swiss franc/Euro ECB reference exchange rate,"ECB reference exchange rate, Swiss franc/Euro, 2.15 pm (C.E.T.)",CHF,0
+EXR.Q.CZK.EUR.SP00.A,Q,CZK,EUR,SP00,A,2024-Q1,25.0707619047619,A,F,,,P3M,,A,,,,,,,99Q1=100,,,3,,4F0,,Czech koruna/Euro ECB reference exchange rate,"ECB reference exchange rate, Czech koruna/Euro, 2.15 pm (C.E.T.)",CZK,0
+EXR.Q.CZK.EUR.SP00.A,Q,CZK,EUR,SP00,A,2024-Q2,24.9590634920635,A,F,,,P3M,,A,,,,,,,99Q1=100,,,3,,4F0,,Czech koruna/Euro ECB reference exchange rate,"ECB reference exchange rate, Czech koruna/Euro, 2.15 pm (C.E.T.)",CZK,0
+EXR.Q.CZK.EUR.SP00.A,Q,CZK,EUR,SP00,A,2024-Q3,25.195303030303,A,F,,,P3M,,A,,,,,,,99Q1=100,,,3,,4F0,,Czech koruna/Euro ECB reference exchange rate,"ECB reference exchange rate, Czech koruna/Euro, 2.15 pm (C.E.T.)",CZK,0
+EXR.Q.CZK.EUR.SP00.A,Q,CZK,EUR,SP00,A,2024-Q4,25.248421875,A,F,,,P3M,,A,,,,,,,99Q1=100,,,3,,4F0,,Czech koruna/Euro ECB reference exchange rate,"ECB reference exchange rate, Czech koruna/Euro, 2.15 pm (C.E.T.)",CZK,0
+EXR.Q.CZK.EUR.SP00.A,Q,CZK,EUR,SP00,A,2025-Q1,25.0817777777778,A,F,,,P3M,,A,,,,,,,99Q1=100,,,3,,4F0,,Czech koruna/Euro ECB reference exchange rate,"ECB reference exchange rate, Czech koruna/Euro, 2.15 pm (C.E.T.)",CZK,0
+EXR.Q.CZK.EUR.SP00.A,Q,CZK,EUR,SP00,A,2025-Q2,24.92014516129032,A,F,,,P3M,,A,,,,,,,99Q1=100,,,3,,4F0,,Czech koruna/Euro ECB reference exchange rate,"ECB reference 
