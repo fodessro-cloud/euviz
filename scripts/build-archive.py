@@ -70,8 +70,8 @@ PAGE = """<!DOCTYPE html>
       <a href="/groups">Groups</a>
       <a href="/insiders">Insiders</a>
       <a href="/shorts">Shorts</a>
-      <a href="/invest">Assets</a>
       <a href="/property">Property</a>
+      <a href="/invest">Assets</a>
       <a href="/archiv/" aria-current="page">Archive</a>
     </nav>
   </div>
