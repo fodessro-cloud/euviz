@@ -295,7 +295,9 @@ async function init() {
     const country = esc(DATA.countries[k]?.name || LEVELS?.countries[k]?.name || k);
     const est = el.dataset.area && metric === 'm2' && LEVELS?.countries[k]?.areasEstimate;
     const nat = LEVELS?.countries[k]?.eur;
-    const text = isNum(v) ? (est ? `≈ ${m.fmt(v)}, estimate` : m.fmt(v))
+    const text = m.regionsOnly && !el.dataset.area
+      ? (isNum(nat) ? `${eur(nat)} for the whole country; no official prices by region yet` : 'no official flat price yet')
+      : isNum(v) ? (est ? `≈ ${m.fmt(v)}, estimate` : m.fmt(v))
       : metric !== 'm2' ? 'no data yet'
       : isNum(nat) ? `${eur(nat)} for the whole country; no official prices by region yet`
       : 'no official flat price yet';
