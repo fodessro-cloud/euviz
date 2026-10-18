@@ -133,18 +133,20 @@ def finland():
     meta = json.loads(text(f"{base}13mx.px"))
     print("  FI 13mx variables: " + "; ".join(f"{v['code']} {v['text']} {v['valueTexts'][:6]} ({len(v['values'])})" for v in meta["variables"]))
     var = {v["code"]: v for v in meta["variables"]}
-    year = [v for v in meta["variables"] if v.get("time") or v["code"].lower() in ("vuosi", "year")][0]
-    price = [v for v in meta["variables"] if v["code"].lower() in ("tiedot", "information")][0]
+    year = next(v for v in meta["variables"] if v.get("time") or "time" in v["code"].lower() or v["text"] == "Year")
+    price = next(v for v in meta["variables"] if v["code"].lower() in ("tiedot", "information", "contentscode"))
+    area_var = next(v for v in meta["variables"] if v["code"].lower().startswith(("kunta", "alue")))
+    print(f"  FI areas start: {area_var['valueTexts'][:3]}, has whole country: {any('whole country' in t.lower() for t in area_var['valueTexts'])}")
     pcode = next(c for c, t in zip(price["values"], price["valueTexts"]) if "per square" in t.lower() or "€/m" in t)
     q = [{"code": year["code"], "selection": {"filter": "item", "values": [year["values"][-1]]}},
          {"code": price["code"], "selection": {"filter": "item", "values": [pcode]}}]
     for code, v in var.items():  # every other dimension: its total ("all", "total")
-        if code in (year["code"], price["code"]) or code.lower() in ("alue", "region", "kunta", "municipality"):
+        if code in (year["code"], price["code"], area_var["code"]):
             continue
         tot = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"total|all|yhteensä", t, re.I)), v["values"][0])
         q.append({"code": code, "selection": {"filter": "item", "values": [tot]}})
     rows = [(lab, val) for lab, _, val in pxweb(base, "13mx.px", q) if val]
-    area = next(k for k in rows[0][0] if k.lower() in ("alue", "region", "kunta", "municipality", "area"))
+    area = area_var["code"]
     whole = next((v for lab, v in rows if re.search(r"whole country|koko maa", lab[area], re.I)), None)
     big = ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyväskylä", "Kuopio", "Lahti", "Pori"]
     regions = [region(lab[area], v) for lab, v in rows if lab[area] in big]
@@ -187,8 +189,9 @@ def spain():
     last = max(key(r) for r in rows)
     now = [r for r in rows if key(r) == last]
     prov = [r for r in now if r.get("CPRO") not in (None, "", "null")]
-    nat = [r for r in now if re.search(r"nacional|total", r.get("Provincia", "") + r.get("Comunidad_Autónoma", ""), re.I)]
-    print(f"  ES {last}: {len(now)} rows, {len(prov)} provinces, national rows: {[r.get('Provincia') for r in nat]}")
+    other = [r for r in now if r.get("CPRO") in (None, "", "null")]
+    print(f"  ES {last}: {len(now)} rows, {len(prov)} provinces, others: {[(r.get('Provincia'), r.get('Comunidad_Autónoma'), r['Valor']) for r in other]}")
+    nat = [r for r in other if re.search(r"nacional|españa|total nacional", r.get("Provincia", "") + " " + r.get("Comunidad_Autónoma", ""), re.I)]
     big = ["Madrid", "Barcelona", "Valencia/València", "Valencia", "Sevilla", "Málaga", "Alicante/Alacant", "Balears (Illes)",
            "Illes Balears", "Bizkaia", "Las Palmas", "Murcia", "Zaragoza", "Gipuzkoa", "Girona", "Santa Cruz de Tenerife"]
     regions = [region(r["Provincia"], num(r["Valor"])) for r in prov if r["Provincia"] in big]
