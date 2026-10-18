@@ -2,7 +2,7 @@
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const isNum = v => typeof v === 'number' && isFinite(v);
-const pct = (v, d = 1) => isNum(v) ? `${v > 0 ? '+' : ''}${v.toFixed(d)} %` : '—';
+const pct = (v, d = 1) => { if (!isNum(v)) return '—'; const s = v.toFixed(d); return `${v > 0 && Number(s) !== 0 ? '+' : ''}${Number(s) === 0 ? (0).toFixed(d) : s} %`; };
 const cls = v => isNum(v) ? (v > 0 ? 'pos' : v < 0 ? 'neg' : '') : '';
 const COLORS = { nominal: '#1F6FEB', real: '#B97A0A' };
 
