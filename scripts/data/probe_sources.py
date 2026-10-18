@@ -105,12 +105,26 @@ def xlsx_sheet(url, names, n=45):
                 print(" | ".join(str(c)[:30] for c in r if c not in (None, "")))
 
 
-def ee_list(path):
-    for t in json.loads(fetch("https://andmed.stat.ee/api/v1/en/stat/" + path)):
-        print("  ", t["id"], t.get("type"), t.get("text"))
+def ecb_resr():
+    """ECB residential property statistics: list every series whose unit is a price level (EUR per m2), not an index."""
+    import csv as _csv
+    t = fetch("https://data-api.ecb.europa.eu/service/data/RESR?lastNObservations=1&format=csvdata&detail=dataonly").decode("utf-8", "replace")
+    rows = list(_csv.DictReader(io.StringIO(t)))
+    print(len(rows), "series; columns:", list(rows[0].keys()) if rows else None)
+    keys = sorted({r["KEY"] for r in rows})
+    for k in keys[:400]:
+        r = next(x for x in rows if x["KEY"] == k)
+        print(k, r.get("TIME_PERIOD"), r.get("OBS_VALUE"))
 
 
-show("EE prices", lambda: ee_list("majandus/hinnad"))
-show("EE construction", lambda: ee_list("majandus/ehitus"))
-show("CZ Tab1", lambda: sniff("https://csu.gov.cz/docs/107823/0dc51dfa-22cd-d7b7-1dbb-29198fc9cf6a/Tab1_ceny_nemovitosti_kraje_okresy_2023_2025.xlsx?version=1.0"))
-show("DK rkr", lambda: print(fetch("https://api.statbank.dk/v1/tableinfo/BM010?lang=en&format=JSON")[:1500].decode()))
+def ecb_titles():
+    t = fetch("https://data-api.ecb.europa.eu/service/data/RESR?lastNObservations=1&format=csvdata").decode("utf-8", "replace")
+    import csv as _csv
+    for r in _csv.DictReader(io.StringIO(t)):
+        title = r.get("TITLE") or r.get("TITLE_COMPL") or ""
+        if re.search(r"m2|square|sq\.? ?m|per m|EUR", title + r.get("UNIT", "") + r.get("UNIT_MEASURE", ""), re.I) and not re.search(r"index", title, re.I):
+            print(r["KEY"], r.get("TIME_PERIOD"), r.get("OBS_VALUE"), "|", title[:160], "|", r.get("UNIT", ""), r.get("UNIT_MEASURE", ""))
+
+
+show("ECB RESR price-level series", ecb_titles)
+show("ECB RESR all keys", ecb_resr)
