@@ -15,3 +15,35 @@
 .p-value li span { float: right; }
 .p-value .pos { color: var(--down); }
 .p-value .neg { color: var(--up); }
+
+/* Map of Europe and price per m² */
+#metric button { height: 36px; font-size: 14px; }
+.p-map { display: flex; flex-wrap: wrap; gap: 16px; }
+.p-map-card { flex: 3 1 520px; min-width: 0; padding: 12px; }
+.p-map-svg svg { display: block; width: 100%; height: auto; }
+.p-map-svg path { stroke: var(--card); stroke-width: .6; }
+.p-map-svg path.ctx { fill: var(--line); }
+.p-map-svg path.nd { fill: var(--card2); stroke: var(--line2); }
+.p-map-svg path.has { cursor: pointer; }
+.p-map-svg path.has:hover { stroke: var(--text); stroke-width: 1.2; }
+.p-map-svg path.sel { stroke: var(--text); stroke-width: 1.8; }
+.p-scale { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 12px; color: var(--muted); padding: 8px 4px 0; }
+.p-scale span { display: inline-flex; align-items: center; gap: 5px; }
+.p-scale i { width: 14px; height: 10px; border-radius: 2px; display: inline-block; }
+.p-side { flex: 2 1 300px; min-width: 0; padding: 18px 20px; }
+.p-side h3 { font-size: 15px; font-weight: 600; margin: 0 0 10px; color: var(--text2); }
+.p-side h3 + .p-rank { margin-bottom: 18px; }
+.p-rank { margin: 0 0 4px; padding-left: 24px; font-size: 14px; }
+.p-rank li { padding: 5px 0; border-top: 1px solid var(--line); }
+.p-rank li:first-child { border-top: 0; }
+.p-rank li.sel { font-weight: 600; }
+.p-rank a { color: var(--text); text-decoration: none; cursor: pointer; }
+.p-rank a:hover { text-decoration: underline; }
+.p-rank .m { float: right; }
+.p-rank small { color: var(--muted); }
+.p-tip { position: fixed; pointer-events: none; z-index: 20; background: var(--card); border: 1px solid var(--line2); border-radius: 8px; padding: 6px 10px; font-size: 13px; box-shadow: 0 6px 18px rgba(0,0,0,.15); }
+@media (max-width: 640px) {
+  #map-section .h-section-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+  #metric button { padding: 0 10px; font-size: 13px; }
+}
+#rank { max-height: 340px; overflow-y: auto; padding-right: 6px; }

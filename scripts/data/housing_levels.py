@@ -163,7 +163,7 @@ def finland():
     whole = next(val for *_, val in pxweb(base, "13mv.px", nq) if val)
     big = ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyväskylä", "Kuopio", "Lahti", "Pori"]
     regions = [region(lab[area], v) for lab, v in rows if lab[area] in big]
-    return {"eur": round(whole), "unit": "m2", "basis": "sale", "period": quarter.replace("Q", "-Q"),
+    return {"eur": round(whole), "unit": "m2", "basis": "sale", "period": quarter.rstrip("*").replace("Q", "-Q"),
             "what": "old flats in housing companies, sale prices (cities: last full year)",
             "source": "Statistics Finland (CC BY 4.0)", "url": "https://stat.fi/en/statistics/ashi",
             "regions": sorted(regions, key=lambda r: -r["eur"])}
