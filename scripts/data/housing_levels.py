@@ -144,7 +144,8 @@ def finland():
     for code, v in var.items():  # every other dimension: its total ("all", "total")
         if code in (year["code"], price["code"], area_var["code"]):
             continue
-        tot = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"blocks of flats|total|all|yhteensä", t, re.I)), v["values"][0])
+        tot = next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"blocks of flats", t, re.I)), None) \
+            or next((c for c, t in zip(v["values"], v["valueTexts"]) if re.search(r"total|all|yhteensä", t, re.I)), v["values"][0])
         q.append({"code": code, "selection": {"filter": "item", "values": [tot]}})
     rows = [(lab, val) for lab, _, val in pxweb(base, "13mx.px", q) if val]
     area = area_var["code"]
