@@ -126,5 +126,15 @@ def ecb_titles():
             print(r["KEY"], r.get("TIME_PERIOD"), r.get("OBS_VALUE"), "|", title[:160], "|", r.get("UNIT", ""), r.get("UNIT_MEASURE", ""))
 
 
-show("ECB RESR price-level series", ecb_titles)
-show("ECB RESR all keys", ecb_resr)
+def ecb_units():
+    import csv as _csv, collections
+    t = fetch("https://data-api.ecb.europa.eu/service/data/RESR?lastNObservations=1&format=csvdata&detail=dataonly").decode("utf-8", "replace")
+    rows = list(_csv.DictReader(io.StringIO(t)))
+    print(collections.Counter(r["UNIT_MEASURE"] for r in rows))
+    print(collections.Counter(r["INDICATOR"] for r in rows))
+    for r in rows:
+        if r["UNIT_MEASURE"] not in ("IX",) and r["KEY"].split(".")[-1] != "IX":
+            print(r["KEY"], r["TIME_PERIOD"], r["OBS_VALUE"])
+
+
+show("ECB RESR units", ecb_units)
