@@ -173,9 +173,29 @@ def finland():
     big = ["Helsinki", "Espoo", "Tampere", "Vantaa", "Oulu", "Turku", "Jyväskylä", "Kuopio", "Lahti", "Pori"]
     regions = [region(lab[area], v) for lab, v in rows if lab[area] in big]
     return {"eur": round(whole), "unit": "m2", "basis": "sale", "period": quarter.rstrip("*").replace("Q", "-Q"),
-            "type": "flats", "what": "flats in blocks, resale prices (cities: last full year)",
+            "type": "flats", "what": "flats in blocks, resale prices (cities and regions: last full year)",
             "source": "Statistics Finland (CC BY 4.0)", "url": "https://stat.fi/en/statistics/ashi",
-            "regions": sorted(regions, key=lambda r: -r["eur"])}
+            "regions": sorted(regions, key=lambda r: -r["eur"]), "areas": finland_regions(base)}
+
+
+# Regions (maakunnat) -> NUTS 2024 codes for the map; Åland is not in the table.
+FI_REGIONS = {"MK01": "FI1B1", "MK02": "FI1C1", "MK04": "FI196", "MK05": "FI1C2", "MK06": "FI19B", "MK07": "FI1C6",
+              "MK08": "FI1C7", "MK09": "FI1C5", "MK10": "FI1DA", "MK11": "FI1DB", "MK12": "FI1DC", "MK13": "FI198",
+              "MK14": "FI199", "MK15": "FI19A", "MK16": "FI1D5", "MK17": "FI1D9", "MK18": "FI1D8", "MK19": "FI1D7"}
+
+
+def finland_regions(base):
+    """13mw: flats in blocks, all plot forms, price per m², latest year, by region."""
+    meta = {v["code"]: v for v in json.loads(text(f"{base}13mw.px"))["variables"]}
+    pick = lambda code, pat: next(c for c, t in zip(meta[code]["values"], meta[code]["valueTexts"]) if re.search(pat, t, re.I))
+    year = next(k for k in meta if k.startswith("timeperiod"))
+    area = next(k for k in meta if k.startswith("alue"))
+    q = [{"code": year, "selection": {"filter": "item", "values": [meta[year]["values"][-1]]}},
+         {"code": area, "selection": {"filter": "item", "values": list(FI_REGIONS)}},
+         {"code": next(k for k in meta if k.startswith("talotyyppi")), "selection": {"filter": "item", "values": [pick(next(k for k in meta if k.startswith("talotyyppi")), r"^blocks of flats total")]}},
+         {"code": next(k for k in meta if k.startswith("vuokratontti")), "selection": {"filter": "item", "values": [pick(next(k for k in meta if k.startswith("vuokratontti")), r"in total")]}},
+         {"code": "contentscode", "selection": {"filter": "item", "values": [pick("contentscode", r"per square")]}}]
+    return {FI_REGIONS[codes[area]]: round(v) for _, codes, v in pxweb(base, "13mw.px", q) if v}
 
 
 def portugal():
