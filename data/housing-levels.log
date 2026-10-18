@@ -1,0 +1,9 @@
+FAIL  FI: HTTPError: HTTP Error 400: Bad Request
+FAIL  ES: RuntimeError: generator raised StopIteration
+ok    SK 3041 €/m2 2026-Q2 (8 regions: Bratislava region 3882, Košice region 2796, Prešov region 2310, Žilina region 2303, Trnava region 2064, Trenčín region 1908)
+  FR levels: {'departement': 101, 'commune': 39162, 'section': 464250, 'epci': 1353, 'nation': 1}
+ok    FR 2576 €/m2 last 5 years (20 regions: Paris 16e Arrondissement 11296, Paris 17e Arrondissement 10690, Paris 11e Arrondissement 10393, Paris 15e Arrondissement 10037, Paris 18e Arrondissement 9388, Cannes 5378)
+ok    PT 2254 €/m2 2026-08 (20 regions: Lisboa 4771, Oeiras 4062, Cascais 4029, Loulé 3518, Amadora 3358, Porto 3333)
+  HU rows: Budapest/capital; Pest/together; Central Transdanubia/together; Western Transdanubia/together; Southern Transdanubia/together; Northern Hungary/together; Northern Great Plain/together; Southern Great Plain/together; Country/capital; Country/total
+ok    HU 1252 €/m2 2025 (8 regions: Budapest 3002, Central Transdanubia, county seats 1938, Western Transdanubia, county seats 1868, Northern Great Plain, county seats 1855, Southern Great Plain, county seats 1777, Country, county seats 1732)
+wrote js/housing-levels.json: 4 countries, failed: ['FI', 'ES']
