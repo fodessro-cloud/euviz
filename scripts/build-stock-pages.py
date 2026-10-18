@@ -250,7 +250,7 @@ HEADER = '''<header class="fh">
       <a href="/groups">Groups</a>
       <a href="/insiders">Insiders</a>
       <a href="/shorts">Shorts</a>
-      <a href="/invest">Invest</a>
+      <a href="/invest">Assets</a>
       <a href="/property">Property</a>
       <a href="/archiv/">Archive</a>
     </nav>
