@@ -1,4 +1,14 @@
 
-===== Portugal fetcher
-  PT types: ['Flats', 'Total', 'Villas'], flats rows: 347
-{'PT1B0': 2864, 'PT1C1': 2508, 'PT300': 2911, 'PT11E': 1281, 'PT1C4': 2067, 'PT1D1': 2279, 'PT192': 1984, 'PT193': 1694, 'PT1A0': 3487, 'PT1D2': 1657, 'PT194': 1496, 'PT11B': 1303, 'PT195': 1276, 'PT1D3': 1932, 'PT200': 2494, 'PT196': 1335, 'PT11C': 1640, 'PT111': 1914, 'PT112': 2107, 'PT119': 1801, 'PT11A': 2443, 'PT150': 3010, 'PT191': 2005, 'PT11D': 1524, 'PT1C3': 1210, 'PT1C2': 1501}
+===== Spain notaries and datos.gob.es
+https://www.penotariado.com/inmobiliario/: 52869 bytes, 4 matches
+   ('/inmobiliario/buscador-precio-vivienda', '')
+   ('/inmobiliario/herramientas-compraventa-vivienda', '')
+   ('/inmobiliario/manifest.json', '')
+   ('/inmobiliario/noticias-vivienda', '')
+https://www.notariado.org/portal/estadisticas FAIL HTTP Error 404: 
+https://www.penotariado.com/: 52869 bytes, 4 matches
+   ('/inmobiliario/buscador-precio-vivienda', '')
+   ('/inmobiliario/herramientas-compraventa-vivienda', '')
+   ('/inmobiliario/manifest.json', '')
+   ('/inmobiliario/noticias-vivienda', '')
+https://datos.gob.es/apidata/catalog/dataset/title/vivienda.json?_pageSize=50: 234756 bytes, 0 matches
