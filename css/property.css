@@ -56,3 +56,11 @@
 .p-spark { display: block; }
 .p-spark line { stroke: var(--line2); stroke-dasharray: 3 3; }
 .p-spark polyline { fill: none; stroke: var(--blue); stroke-width: 1.5; }
+
+/* Links to every country's page, under the intro, and the selected country's page next to the map */
+.p-countries { margin-top: 14px; font-size: 14px; line-height: 2; color: var(--muted); }
+.p-countries > span:first-child { margin-right: 8px; font-weight: 600; color: var(--text2); }
+.p-countries a { display: inline-block; margin-right: 12px; white-space: nowrap; }
+.p-open { display: inline-block; margin-bottom: 14px; padding: 7px 12px; border: 1px solid var(--line2); border-radius: 8px; font-weight: 600; text-decoration: none; }
+.p-open:hover { background: var(--card2); }
+td sup { color: var(--muted); }

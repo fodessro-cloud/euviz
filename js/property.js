@@ -40,7 +40,7 @@ function renderNow() {
       isNum(c.vsRent) ? `against the average since 2000: ${valuationWord(c.vsRent)}` : 'not published for this country', cls(c.vsRent)),
   ].join('') + (LEVELS?.countries[code] ? (() => {
     const l = LEVELS.countries[code];
-    return tile('Price per m²', eur(l.eur), `${esc(l.what)}, ${esc(l.period)}`);
+    return tile('Flat price per m²', eur(l.eur), `${esc(l.what)}, ${esc(l.period)}`);
   })() : '');
   $('now-sub').innerHTML = `${esc(c.name)} · prices to <b>${esc(quarterLabel(c.latest))}</b>`
     + (c.agg ? '' : ` · <a href="/property/${slug(c.name)}">Full page for ${esc(c.name)}</a>`);
@@ -79,13 +79,13 @@ function renderChart() {
   $('chart').innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${grid}${paths}</svg>`;
   const LABEL = { nominal: 'Price change', real: 'After inflation', eu: 'European Union, price change' };
   $('legend').innerHTML = lines.map(l => `<span><i class="${l.k === 'eu' ? 'dash' : ''}" style="background:${COLORS[l.k]}"></i>${LABEL[l.k]}</span>`).join('');
-  $('chart-title').textContent = code === EU ? 'House prices in the European Union' : `House prices in ${c.name}`;
-  $('chart-sub').textContent = `Change since ${quarterLabel(start)}, all dwellings`;
+  $('chart-title').textContent = code === EU ? 'Home prices in the European Union' : `Home prices in ${c.name}`;
+  $('chart-sub').textContent = `Change since ${quarterLabel(start)}, all homes: flats and houses together`;
 }
 
 const COLS = [
   { key: 'name', label: 'Country', get: c => c.name, fmt: c => esc(c.name) },
-  { key: 'm2', label: '€ per m²', get: c => c.m2, title: 'Flats where published separately; see the map section for what each figure covers' },
+  { key: 'm2', label: '€ per m²', get: c => c.m2, title: 'Flats only, from official national sources' },
   { key: 'n1', label: '1 year', get: c => c.nominal['1y'] },
   { key: 'n5', label: '5 years', get: c => c.nominal['5y'] },
   { key: 'n10', label: '10 years', get: c => c.nominal['10y'] },
@@ -122,7 +122,7 @@ function renderValue() {
 // Bins and colours per metric; prices and changes read light to dark, "cheap or expensive" blue to orange.
 const BLUES = ['#DCE8F8', '#B4CDF0', '#86AEE6', '#5B8FD9', '#2F6FC4', '#1A4F96'];
 const METRICS = {
-  m2: { title: 'Price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2000, 2500, 3000, 3500], colors: BLUES },
+  m2: { title: 'Flat price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2000, 2500, 3000, 3500], colors: BLUES },
   n1: { title: 'Price change in 1 year', get: k => DATA.countries[k]?.nominal['1y'], fmt: v => pct(v, 1), sfmt: v => pct(v, 0), bins: [0, 3, 6, 9, 12], colors: ['#F2C9C4', ...BLUES.slice(1)] },
   n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: ['#F2C9C4', ...BLUES.slice(1)] },
   n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: ['#F2C9C4', ...BLUES.slice(1)] },
@@ -158,22 +158,25 @@ function renderSide() {
     .sort((a, b) => m.get(b) - m.get(a));
   const name = k => DATA.countries[k]?.name || LEVELS.countries[k].name;
   // Asking prices and appraisals are not sale prices; say so next to the number.
-  const BASIS = { asking: 'asking price', appraisal: 'bank appraisal' };
+  const BASIS = { asking: 'asking price', appraisal: 'bank appraisal', new: 'new build' };
   const basis = k => {
     if (metric !== 'm2') return '';
     const l = LEVELS.countries[k];
-    const tags = [l.type === 'mixed' ? 'flats and houses' : '', BASIS[l.basis] || ''].filter(Boolean);
+    const tags = [BASIS[l.basis] || ''].filter(Boolean);
     return tags.length ? ` <small>${tags.join(', ')}</small>` : '';
   };
   $('rank').innerHTML = list.map(k => `<li class="${k === code ? 'sel' : ''}"><a data-code="${k}">${esc(name(k))}</a>${basis(k)}<span class="m">${m.fmt(m.get(k))}</span></li>`).join('');
   const l = LEVELS?.countries[code];
+  // The selected country's own page, right where the map and list lead.
+  const own = DATA.countries[code];
+  $('country-link').innerHTML = own && !own.agg ? `<a class="p-open" href="/property/${slug(own.name)}">Open the ${esc(own.name)} page →</a>` : '';
   $('regions-box').hidden = !l?.regions?.length;
   if (l?.regions?.length) {
-    $('regions-title').textContent = `Price per m² in ${l.name}: regions and cities`;
+    $('regions-title').textContent = `Flat price per m² in ${l.name}: regions and cities`;
     $('regions').innerHTML = l.regions.map(r => `<li>${esc(r.name)}<span class="m">${eur(r.eur)}</span></li>`).join('');
   }
   $('map-note').innerHTML = metric === 'm2'
-    ? `Official figures only, in euros, for flats where the country publishes them separately. ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Asking prices and bank appraisals are usually higher than what buyers finally pay, so compare countries with care. More countries are being added.`
+    ? `Flats only, official figures in euros. Countries without an official price for flats alone are left out until one is found. ${Object.values(LEVELS?.countries || {}).map(c => `${esc(c.name)}: ${esc(c.what)}, ${esc(c.period)}, ${esc(c.source)}`).join('. ')}. Asking prices and bank appraisals are usually higher than what buyers finally pay, so compare countries with care. More countries are being added.`
     : 'Eurostat house price index; OECD for the United Kingdom and for incomes and rents.';
 }
 
@@ -194,6 +197,8 @@ async function init() {
     $('now').innerHTML = '<p class="h-note">House price data could not be loaded. Please try again later.</p>';
     return;
   }
+  // Price per m² is for flats everywhere; a country that only publishes flats and houses together stays out, so like is compared with like.
+  if (LEVELS) LEVELS.countries = Object.fromEntries(Object.entries(LEVELS.countries).filter(([, l]) => l.type === 'flats'));
   Object.entries(LEVELS?.countries || {}).forEach(([k, l]) => { if (DATA.countries[k]) DATA.countries[k].m2 = l.eur; });
   const params = new URLSearchParams(location.search);
   if (DATA.countries[params.get('c')]) code = params.get('c');
@@ -253,7 +258,7 @@ async function init() {
     const m = METRICS[metric];
     if (!k) { tip.hidden = true; return; }
     const v = m.get(k);
-    tip.innerHTML = `<b>${esc(DATA.countries[k]?.name || LEVELS?.countries[k]?.name || k)}</b> ${isNum(v) ? m.fmt(v) : 'no data yet'}`;
+    tip.innerHTML = `<b>${esc(DATA.countries[k]?.name || LEVELS?.countries[k]?.name || k)}</b> ${isNum(v) ? m.fmt(v) : metric === 'm2' ? 'no flat price yet' : 'no data yet'}`;
     tip.style.left = `${e.clientX + 12}px`;
     tip.style.top = `${e.clientY + 12}px`;
     tip.hidden = false;
@@ -264,6 +269,9 @@ async function init() {
     if (k && DATA.countries[k]) select(k);
   }));
   window.addEventListener('resize', () => renderChart());
+  // Every country's own page, as plain links: easy to find and easy for search engines to follow.
+  $('countries').innerHTML = Object.values(DATA.countries).filter(c => !c.agg).sort((a, b) => a.name.localeCompare(b.name))
+    .map(c => `<a href="/property/${slug(c.name)}">${esc(c.name)}</a>`).join('');
   renderValue();
   renderAll();
 }

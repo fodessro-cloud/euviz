@@ -5,9 +5,10 @@ Only official figures. Countries publish sale prices, bank appraisals or (Slovak
 in listings; the page says which. Writes js/housing-levels.json:
 {updated, failed, countries: {code: {name, eur, unit, basis, period, source, url, regions: [...]}}}
 """
-import csv, io, json, re, sys, urllib.request
+import csv, io, json, os, re, sys, urllib.request, zipfile
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urljoin
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "js" / "housing-levels.json"
@@ -59,19 +60,17 @@ def region(name, value, note=None):
 # ── Countries ─────────────────────────────────────────────
 
 def slovakia():
-    rows = list(csv.reader(io.StringIO(text("https://nbs.sk/export/sk/real-estate-price-by-region/csv")), delimiter=";"))
+    # Flats alone ("Byty spolu"); NBS splits by region only for flats and houses together, so no regions here.
+    rows = list(csv.reader(io.StringIO(text("https://nbs.sk/export/sk/real-estate-price-by-type/csv")), delimiter=";"))
     head = next(r for r in rows if r and r[0].startswith("Rok"))
     latest = next(r for r in rows if r and re.match(r"\dQ \d{4}", r[0]))
-    names = {"SR spolu": None, "BA": "Bratislava region", "TT": "Trnava region", "NR": "Nitra region",
-             "TN": "Trenčín region", "ZA": "Žilina region", "BB": "Banská Bystrica region",
-             "KE": "Košice region", "PO": "Prešov region"}
     vals = dict(zip(head, latest))
     q, y = latest[0].split()
     # NBS builds these from listings on property portals: asking prices, above what buyers finally pay.
-    return {"eur": round(num(vals["SR spolu"])), "unit": "m2", "basis": "asking", "period": f"{y}-Q{q[0]}",
-            "type": "mixed", "what": "flats and houses, asking prices in listings",
+    return {"eur": round(num(vals["Byty spolu"])), "unit": "m2", "basis": "asking", "period": f"{y}-Q{q[0]}",
+            "type": "flats", "what": "flats, asking prices in listings",
             "source": "Národná banka Slovenska", "url": "https://nbs.sk/statisticke-udaje/vybrane-makroekonomicke-ukazovatele/ceny-nehnutelnosti-na-byvanie/",
-            "regions": sorted([region(names[k], num(vals[k])) for k in head[2:] if k in names], key=lambda r: -r["eur"])}
+            "regions": []}
 
 
 def france():
@@ -225,25 +224,103 @@ def spain():
 
 
 def hungary():
-    raw = fetch("https://www.ksh.hu/stadat_files/lak/en/lak0025.csv")
+    # KSH lak0028: resale price per m² by building type; flats are condominiums (brick) and housing estates (panel).
+    raw = fetch("https://www.ksh.hu/stadat_files/lak/en/lak0028.csv")
     rows = list(csv.reader(io.StringIO(raw.decode("utf-8-sig", "replace")), delimiter=";"))
     head = next(r for r in rows if r and r[0] == "Region")
-    year = head[-1] if head[-1] else head[-2]
-    col = head.index(year)
+    used = rows[rows.index(head) + 1:]
+    starts = [i for i, r in enumerate(used) if len(r) > 1 and r[0] == "Budapest" and r[1] == "detached"]
+    used = used[:starts[1]] if len(starts) > 1 else used  # the second block is new dwellings
+    col = max(i for i in range(2, len(head)) if any(r[0] == "Country" and len(r) > i and num(r[i]) for r in used))
+    year = head[col]
     rate = eur_rate("HUF", year)
-    second = []
-    for r in rows[rows.index(head) + 1:]:
-        if r and r[0] and not r[1] and second:
-            break  # next block (new dwellings) starts
-        if len(r) > col and num(r[col]):
-            second.append((r[0], r[1], num(r[col]) * 1000 / rate))
-    nat = next((v for a, b, v in second if a == "Country" and b == "total"), None)
-    regions = [region("Budapest" if a == "Budapest" else f"{a}, county seats", v) for a, b, v in second
-               if a == "Budapest" or (b == "county seats" and a != "Country")]
-    return {"eur": round(nat) if nat else None, "unit": "m2", "basis": "sale", "period": year,
-            "type": "mixed", "what": "flats and houses, resale prices", "currency": "HUF", "rate": round(rate, 2),
-            "source": "Hungarian Central Statistical Office (KSH)", "url": "https://www.ksh.hu/stadat_files/lak/en/lak0025.html",
+    def flats(area):
+        v = [num(r[col]) for r in used if r[0] == area and r[1] in ("condominium", "housing estate") and num(r[col])]
+        return sum(v) / len(v) * 1000 / rate if v else None
+    areas = sorted({r[0] for r in used if r and r[0] not in ("Country", "Budapest")})
+    regions = [region("Budapest", flats("Budapest"))] + [region(a, flats(a)) for a in areas if flats(a)]
+    return {"eur": round(flats("Country")), "unit": "m2", "basis": "sale", "period": year,
+            "type": "flats", "what": "flats (brick and panel blocks), resale prices", "currency": "HUF", "rate": round(rate, 2),
+            "source": "Hungarian Central Statistical Office (KSH)", "url": "https://www.ksh.hu/stadat_files/lak/en/lak0028.html",
             "regions": sorted(regions, key=lambda r: -r["eur"])}
+
+
+def austria():
+    # Statistik Austria: median sale price per m² of owner-occupied flats, by federal state, yearly.
+    url = "https://www.statistik.at/fileadmin/pages/222/SonderauswertungImmobilienDurchschnittspreise.ods"
+    x = zipfile.ZipFile(io.BytesIO(fetch(url))).read("content.xml").decode("utf-8")
+    sheet = re.search(r'<table:table [^>]*table:name="Bundesländer".*?</table:table>', x, re.S).group(0)
+    rows = []
+    for row in re.findall(r"<table:table-row[^>]*>(.*?)</table:table-row>", sheet, re.S):
+        cells = []
+        for attrs, body in re.findall(r"<table:table-cell([^>]*)>(.*?)</table:table-cell>", row, re.S):
+            rep = int((re.search(r'number-columns-repeated="(\d+)"', attrs) or [0, 1])[1])
+            cells += [re.sub(r"<[^>]+>", " ", body).strip()] * min(rep, 50)
+        rows.append(cells)
+    start = next(i for i, r in enumerate(rows) if r and r[0].startswith("Durchschnittliche Wohnungspreise"))
+    block = rows[start:start + 20]
+    block = block[:next((i for i, r in enumerate(block) if r and r[0].startswith("Q:")), len(block))]
+    years = next(r for r in block if r and re.fullmatch(r"20\d\d", r[0]))
+    data = {r[0]: [num(c.replace(" ", "")) for c in r[1:len(years) + 1]] for r in block if r and r[0] and not re.fullmatch(r"20\d\d", r[0]) and len(r) > len(years) - 1 and num(r[-1].replace(" ", "") if r[-1] else "")}
+    col = max(i for i, v in enumerate(data["Österreich"]) if v)
+    return {"eur": round(data["Österreich"][col]), "unit": "m2", "basis": "sale", "period": years[col],
+            "type": "flats", "what": "owner-occupied flats, median sale price", "source": "Statistik Austria",
+            "url": "https://www.statistik.at/statistiken/volkswirtschaft-und-oeffentliche-finanzen/preise-und-preisindizes/immobilien-durchschnittspreise",
+            "regions": sorted([region(AT_STATES.get(k, k), v[col]) for k, v in data.items() if k != "Österreich" and v[col]], key=lambda r: -r["eur"])}
+
+
+def croatia():
+    # DZS: average price per m² of new flats sold, by half-year and year (sheet 3.1.8, euro block first).
+    page = fetch("https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/").decode("utf-8", "replace")
+    links = list(dict.fromkeys(re.findall(r"/media/[^\"'\s<>]+msi-gradevinarstvo\.xlsx", page))) or [HR_URL]
+    # The page links more than one edition; the one with the most columns is the newest.
+    books = [sheets(fetch(urljoin("https://podaci.dzs.hr/", u))).get("3.1.8.") or [] for u in links]
+    rows = max(books, key=lambda b: max((len(r) for r in b), default=0))
+    years = next(r for r in rows if sum(1 for c in r if re.fullmatch(r"20\d\d\.", str(c or "").strip())) > 2)
+    halves = next(r for r in rows if any("XII" in str(c or "") for c in r))
+    full = [j for j, c in enumerate(halves) if re.match(r"I\.\s*[–-]\s*XII", str(c or ""))]
+    first = lambda name: next(r for r in rows if len(r) > 1 and str(r[1] or "").strip() == name)
+    nat = first("Republic of Croatia")
+    j = max(j for j in full if num(nat[j]))
+    year = next(str(years[k]).strip(". ") for k in range(j, -1, -1) if years[k] not in (None, ""))
+    return {"eur": round(num(nat[j])), "unit": "m2", "basis": "new", "period": year,
+            "type": "flats", "what": "new flats, sale prices", "source": "Croatian Bureau of Statistics (DZS)",
+            "url": "https://podaci.dzs.hr/en/statistics/construction/prices-of-sold-new-dwellings/",
+            "regions": [region("Zagreb", num(first("Zagreb")[j])), region("Rest of Croatia", num(first("Other settlements")[j]))]}
+
+
+HR_URL = "/media/4neprvvo/msi-gradevinarstvo.xlsx"
+
+
+def czechia():
+    # ČSÚ: average purchase price per m² of flats from property-transfer records, by region; a new
+    # edition comes every three years (the next one covers 2026-2028).
+    book = sheets(fetch(CZ_URL))
+    rows = next(iter(book.values()))
+    head = next(r for r in rows if r and any(str(c).strip() == "Byty" for c in r if c))
+    years = rows[rows.index(head) + 1]
+    first = next(i for i, c in enumerate(head) if str(c or "").strip() == "Byty")
+    col = max(i for i in range(first, len(years)) if re.fullmatch(r"20\d\d", str(years[i] or "").strip()))
+    year = str(years[col]).strip()
+    rate = eur_rate("CZK", year)
+    vals = {str(r[0]).strip(): num(r[col]) / rate for r in rows if r and r[0] and len(r) > col and num(r[col])}
+    return {"eur": round(vals["Česko"]), "unit": "m2", "basis": "sale", "period": year,
+            "type": "flats", "what": "flats, sale prices from tax records", "currency": "CZK", "rate": round(rate, 2),
+            "source": "Czech Statistical Office (ČSÚ)", "url": "https://csu.gov.cz/pak/ceny-nemovitosti-v-pardubickem-kraji-v-letech-2023-az-2025",
+            "regions": sorted([region(en, vals[cz]) for cz, en in CZ_REGIONS.items() if cz in vals], key=lambda r: -r["eur"])}
+
+
+CZ_URL = "https://csu.gov.cz/docs/107823/0dc51dfa-22cd-d7b7-1dbb-29198fc9cf6a/Tab1_ceny_nemovitosti_kraje_okresy_2023_2025.xlsx?version=1.0"
+CZ_REGIONS = {"Hlavní město Praha": "Prague", "Brno-město": "Brno", "Ostrava-město": "Ostrava", "Plzeň-město": "Plzeň",
+              "Středočeský": "Central Bohemia", "Jihočeský": "South Bohemia", "Plzeňský": "Plzeň region",
+              "Karlovarský": "Karlovy Vary region", "Ústecký": "Ústí nad Labem region", "Liberecký": "Liberec region",
+              "Královéhradecký": "Hradec Králové region", "Pardubický": "Pardubice region", "Kraj Vysočina": "Vysočina",
+              "Vysočina": "Vysočina", "Jihomoravský": "South Moravia", "Olomoucký": "Olomouc region",
+              "Zlínský": "Zlín region", "Moravskoslezský": "Moravia-Silesia"}
+
+
+AT_STATES = {"Wien": "Vienna", "Niederösterreich": "Lower Austria", "Oberösterreich": "Upper Austria", "Kärnten": "Carinthia",
+             "Steiermark": "Styria", "Tirol": "Tyrol", "Salzburg": "Salzburg", "Vorarlberg": "Vorarlberg", "Burgenland": "Burgenland"}
 
 
 def luxembourg():
@@ -299,9 +376,32 @@ def poland():
             "regions": sorted([region(english.get(c, c), val(c)) for c in cities if val(c)], key=lambda r: -r["eur"])}
 
 
+def norway():
+    # SSB 06035: freehold flats ("Multi-dwelling"), sale price per m², yearly, in NOK.
+    q = {"query": [{"code": "Region", "selection": {"filter": "item", "values": list(NO_AREAS)}},
+                   {"code": "Boligtype", "selection": {"filter": "item", "values": ["03"]}},
+                   {"code": "ContentsCode", "selection": {"filter": "item", "values": ["KvPris"]}},
+                   {"code": "Tid", "selection": {"filter": "top", "values": ["1"]}}], "response": {"format": "json-stat2"}}
+    d = json.loads(fetch("https://data.ssb.no/api/v0/en/table/06035", data=json.dumps(q).encode()))
+    areas = d["dimension"]["Region"]["category"]["index"]
+    year = next(iter(d["dimension"]["Tid"]["category"]["index"]))
+    rate = eur_rate("NOK", year)
+    vals = {code: v / rate for code, v in zip(sorted(areas, key=areas.get), d["value"]) if v}
+    return {"eur": round(vals["0"]), "unit": "m2", "basis": "sale", "period": year,
+            "type": "flats", "what": "freehold flats, sale prices", "currency": "NOK", "rate": round(rate, 2),
+            "source": "Statistics Norway (SSB, CC BY 4.0)", "url": "https://www.ssb.no/en/statbank/table/06035",
+            "regions": sorted([region(NO_AREAS[k], v) for k, v in vals.items() if k != "0"], key=lambda r: -r["eur"])}
+
+
+NO_AREAS = {"0": "Norway", "0301": "Oslo", "4601": "Bergen", "5001": "Trondheim", "1103": "Stavanger",
+            "3107": "Fredrikstad", "3301": "Drammen"}
+
+
 COUNTRIES = {"SK": ("Slovakia", slovakia), "FR": ("France", france), "FI": ("Finland", finland),
              "PT": ("Portugal", portugal), "ES": ("Spain", spain), "HU": ("Hungary", hungary),
-             "LU": ("Luxembourg", luxembourg), "PL": ("Poland", poland)}
+             "LU": ("Luxembourg", luxembourg), "PL": ("Poland", poland), "NO": ("Norway", norway),
+             "AT": ("Austria", austria), "HR": ("Croatia", croatia),
+             "CZ": ("Czechia", czechia)}
 
 
 def main():
@@ -358,7 +458,7 @@ def probe(urls):
             except UnicodeDecodeError:
                 t = body.decode("cp1250", "replace")
             links = sorted(set(re.findall(r'href="([^"]+\.(?:xlsx?|csv|json|px)[^"]*)"', t)))[:60]
-            print(f"\n===== {url} OK {len(body)} bytes\n{t[:3000]}\n--- data links: {links}")
+            print(f"\n===== {url} OK {len(body)} bytes\n{t[:int(os.environ.get("PROBE_CHARS", "6000"))]}\n--- data links: {links}")
         except Exception as e:  # noqa: BLE001
             print(f"\n===== {url} FAIL {e}")
 
