@@ -288,7 +288,7 @@ def head(title, description, canonical, extra=''):
 
 FOOTER = '''<footer class="sp-foot">
   <p>FINILA shows figures read automatically from official sources. They can contain errors and are not investment advice.</p>
-  <p><a href="/stock/">All companies A-Z</a> · <a href="/companies">Stock screener</a> · <a href="/insiders">Insider trades</a> · <a href="/shorts">Short positions</a> · <a href="/invest">Where to put money</a></p>
+  <p><a href="/stock/">All companies A-Z</a> · <a href="/companies">Stock screener</a> · <a href="/insiders">Insider trades</a> · <a href="/shorts">Short positions</a> · <a href="/invest">Where to put money</a> · <a href="/property">Property prices</a></p>
 </footer>
 '''
 
