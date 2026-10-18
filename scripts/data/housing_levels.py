@@ -246,8 +246,62 @@ def hungary():
             "regions": sorted(regions, key=lambda r: -r["eur"])}
 
 
+def luxembourg():
+    d = json.loads(text("https://data.public.lu/api/1/datasets/57f26768cc765e23279433b0/"))
+    # Newest file first; its name carries the quarter (…-2026t2.xls) or the year.
+    res = max(d["resources"], key=lambda r: re.search(r"(\d{4})(t\d)?\.xls", r["url"]).group(0) if re.search(r"(\d{4})(t\d)?\.xls", r["url"]) else "")
+    rows = next(iter(sheets(fetch(res["url"])).values()))
+    head, c0 = next((i, j) for i, r in enumerate(rows) for j, c in enumerate(r) if str(c or "").strip().lower() == "commune")
+    communes, total = [], None
+    for r in rows[head + 1:]:
+        if len(r) < c0 + 3:
+            continue
+        name, n, v = str(r[c0] or "").strip(), num(r[c0 + 1]), r[c0 + 2]
+        if not name:
+            continue
+        v = v if isinstance(v, (int, float)) else num(v)
+        if re.search(r"pays|total|luxembourg \(pays\)", name, re.I):
+            total = v
+        elif v and n:
+            communes.append((name, v, n))
+    print(f"  LU {res['title']}: {len(communes)} communes with prices, total row: {total}")
+    if not total:  # sales-weighted average of communes
+        total = sum(v * n for _, v, n in communes) / sum(n for *_, n in communes)
+    period = re.search(r"(\d{4})t(\d)", res["url"])
+    communes.sort(key=lambda c: -c[2])
+    return {"eur": round(total), "unit": "m2", "basis": "sale", "type": "flats",
+            "period": f"{period.group(1)}-Q{period.group(2)}, last 12 months" if period else res["title"],
+            "what": "existing flats, sale prices from notarial deeds",
+            "source": "Observatoire de l'Habitat (CC0)", "url": "https://data.public.lu/en/datasets/prix-de-vente-des-appartements-par-commune/",
+            "regions": sorted([region(n, v) for n, v, _ in communes[:12]], key=lambda r: -r["eur"])}
+
+
+def poland():
+    book = sheets(fetch("https://static.nbp.pl/dane/rynek-nieruchomosci/ceny_mieszkan.xlsx"))
+    rows = next(v for k, v in book.items() if "wtórny" in k and "histor" not in k.lower())
+    head = next(r for r in rows if r and str(r[0]).strip() == "Kwartał")
+    starts = [i for i, c in enumerate(head) if str(c).strip() == "Kwartał"]
+    t0 = starts[1]  # second block: transaction prices (the first one is asking prices)
+    t1 = starts[2] if len(starts) > 2 else len(head)
+    cols = {str(head[i]).strip(): i for i in range(t0 + 1, t1) if head[i]}
+    data = [r for r in rows[rows.index(head) + 1:] if len(r) > t0 and re.match(r"^[IV]+ \d{4}$", str(r[t0] or "").strip())]
+    last = next(r for r in reversed(data) if num(r[cols["Warszawa"]]))
+    roman, year = str(last[t0]).split()
+    rate = eur_rate("PLN", year)
+    val = lambda k: num(last[cols[k]]) / rate if k in cols and num(last[cols[k]]) else None
+    cities = ["Warszawa", "Kraków", "Gdańsk", "Gdynia", "Wrocław", "Poznań", "Łódź", "Katowice", "Lublin", "Szczecin",
+              "Białystok", "Bydgoszcz", "Rzeszów", "Kielce", "Olsztyn", "Opole", "Zielona Góra"]
+    english = {"Warszawa": "Warsaw", "Kraków": "Kraków", "Łódź": "Łódź"}
+    return {"eur": round(val("10 miast")), "unit": "m2", "basis": "sale", "type": "flats",
+            "period": f"{year}-Q{['I', 'II', 'III', 'IV'].index(roman) + 1}",
+            "what": "resale flats, sale prices, average of 10 large cities", "currency": "PLN", "rate": round(rate, 3),
+            "source": "Narodowy Bank Polski", "url": "https://nbp.pl/statystyka-i-sprawozdawczosc/rynek-nieruchomosci/",
+            "regions": sorted([region(english.get(c, c), val(c)) for c in cities if val(c)], key=lambda r: -r["eur"])}
+
+
 COUNTRIES = {"SK": ("Slovakia", slovakia), "FR": ("France", france), "FI": ("Finland", finland),
-             "PT": ("Portugal", portugal), "ES": ("Spain", spain), "HU": ("Hungary", hungary)}
+             "PT": ("Portugal", portugal), "ES": ("Spain", spain), "HU": ("Hungary", hungary),
+             "LU": ("Luxembourg", luxembourg), "PL": ("Poland", poland)}
 
 
 def main():
@@ -276,5 +330,41 @@ def main():
     print(f"wrote {OUT.relative_to(ROOT)}: {len(countries)} countries, failed: {failed or 'none'}")
 
 
+def sheets(body):
+    """{sheet name: rows} from an .xlsx or .xls file."""
+    if body[:2] == b"PK":
+        import openpyxl
+        wb = openpyxl.load_workbook(io.BytesIO(body), read_only=True, data_only=True)
+        return {ws.title: [list(r) for r in ws.iter_rows(values_only=True)] for ws in wb.worksheets}
+    import xlrd
+    wb = xlrd.open_workbook(file_contents=body)
+    return {sh.name: [sh.row_values(i) for i in range(sh.nrows)] for sh in wb.sheets()}
+
+
+def probe(urls):
+    """Log the start of each response, to write parsers for new sources (hosts are unreachable from the editor)."""
+    for url in urls:
+        try:
+            body = fetch(url, limit=None if url.endswith((".xls", ".xlsx")) else 300_000)
+            if body[:2] == b"PK" or body[:4] == b"\xd0\xcf\x11\xe0":
+                print(f"\n===== {url} OK spreadsheet {len(body)} bytes")
+                for name, rows in sheets(body).items():
+                    print(f"--- sheet {name}: {len(rows)} rows")
+                    for r in rows[:45]:
+                        print(" | ".join(str(c)[:22] for c in r if c not in (None, "")))
+                continue
+            try:
+                t = body.decode("utf-8-sig")
+            except UnicodeDecodeError:
+                t = body.decode("cp1250", "replace")
+            links = sorted(set(re.findall(r'href="([^"]+\.(?:xlsx?|csv|json|px)[^"]*)"', t)))[:60]
+            print(f"\n===== {url} OK {len(body)} bytes\n{t[:3000]}\n--- data links: {links}")
+        except Exception as e:  # noqa: BLE001
+            print(f"\n===== {url} FAIL {e}")
+
+
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:2] == ["--probe"]:
+        probe(sys.argv[2:])
+    else:
+        main()
