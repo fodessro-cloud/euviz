@@ -54,3 +54,12 @@ html, body { height: auto; }
 .sp-chart svg { touch-action: pan-y; cursor: crosshair; }
 .sp-chart-cursor { stroke: var(--text2); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 3 3; }
 .sp-chart-tip { display: none; position: absolute; top: 58px; background: var(--strong); color: #fff; font-size: 11px; padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; }
+.sp-events { margin-top: 20px; }
+.sp-events h2 { font-size: 15px; color: var(--strong); margin: 0 0 8px; }
+.sp-events ul { list-style: none; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; }
+.sp-events li { display: grid; grid-template-columns: 92px 1fr auto; gap: 12px; align-items: baseline; padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+.sp-events li:last-child { border-bottom: 0; }
+.sp-events time { color: var(--text2); font-size: 12px; }
+.sp-events li a { font-size: 12px; white-space: nowrap; }
+.sp-events .ins-note { margin-top: 6px; }
+@media (max-width: 600px) { .sp-events li { grid-template-columns: 1fr auto; } .sp-events time { grid-column: 1 / -1; } }

@@ -192,6 +192,13 @@ def add_signals(rows):
                 continue
             s = by_lei[t['lei']]
             s['name'] = t['issuer']
+            if t['nature'] in ('Acquisition', 'Disposal') and t.get('valueEur'):
+                pos = (t.get('position') or '').replace(chr(160), ' ').split(',')[0]
+                pos = 'board member' if pos.startswith('Other member') else pos
+                who = t['person'] + (f', {pos}' if pos else '')
+                s.setdefault('events', []).append((t.get('date') or t['published'][:10],
+                    f'{esc(who)} {"bought" if t["nature"] == "Acquisition" else "sold"} shares worth {eur(t["valueEur"])}',
+                    f'/insiders?q={esc(t["issuer"])}'))
             if t['nature'] == 'Acquisition':
                 s['net'] += t.get('valueEur') or 0
                 s['buyers'].add(t['person'])
@@ -201,14 +208,20 @@ def add_signals(rows):
         s = by_isin[p['isin']]
         s['pct'] += p['pct']
         s['funds'] += p.get('c') != 'UK'
+        was = f' (was {num(p["prev"], 2)}%)' if is_num(p.get('prev')) and p['prev'] != p['pct'] else ''
+        holder = 'Funds together' if p.get('c') == 'UK' else p['holder'].title() if p['holder'].isupper() else p['holder']
+        s.setdefault('events', []).append((p['date'], f'{esc(holder)} holds a short position of {num(p["pct"], 2)}%{was}',
+                                           f'/shorts?q={esc(p["isin"])}'))
     for c in rows:
         if c['lei'] in by_lei:
             i = by_lei[c['lei']]
             c.update(insNet=i['net'], insBuyers=len(i['buyers']), insName=i['name'])
+            c.setdefault('events', []).extend(i.get('events', []))
         elif ins and c['country'] == 'SE':
             c.update(insNet=0, insBuyers=0, insName=c['name'])
         if c.get('isin') in by_isin:
             c.update(shortPct=round(by_isin[c['isin']]['pct'], 2), shortFunds=by_isin[c['isin']]['funds'])
+            c.setdefault('events', []).extend(by_isin[c['isin']].get('events', []))
 
 
 def assign_slugs(rows):
@@ -277,6 +290,21 @@ FOOTER = '''<footer class="sp-foot">
   <p><a href="/stock/">All companies A-Z</a> · <a href="/companies">Stock screener</a> · <a href="/insiders">Insider trades</a> · <a href="/shorts">Short positions</a> · <a href="/invest">Where to put money</a></p>
 </footer>
 '''
+
+
+def events_html(c):
+    """Company events FINILA records itself: managers' trades, short positions, the latest annual report."""
+    ev = sorted(c.get('events', []), key=lambda e: e[0], reverse=True)[:12]
+    nice = lambda d: date.fromisoformat(d).strftime('%-d %b %Y') if re.fullmatch(r'\d{4}-\d\d-\d\d', d or '') else d
+    items = ''.join(f'<li><time datetime="{esc(d)}">{esc(nice(d))}</time><span>{text}</span><a href="{link}">Details</a></li>' for d, text, link in ev)
+    if c.get('source') and c.get('origin') not in ('listing', 'wikidata'):
+        items += (f'<li><time>FY {esc((c.get("periodEnd") or "")[:4])}</time><span>Annual report for the year ending {esc(c["periodEnd"])}</span>'
+                  f'<a href="{esc(c["source"])}" target="_blank" rel="noopener">Read</a></li>')
+    if not items:
+        return ''
+    return f'''<section class="sp-events"><h2>Latest about {esc(c["name"])}</h2>
+    <ul>{items}</ul>
+    <p class="ins-note">From the official registers: managers’ trades (so far Sweden), net short positions of funds (NL, IT, SE, NO, UK) and annual reports.</p></section>'''
 
 
 def page(c, peers, updated):
@@ -421,6 +449,7 @@ def page(c, peers, updated):
     </div>
     <p class="sp-cta"><a class="btn btn-primary" href="/companies?lei={esc(c["lei"])}">Compare in the stock screener</a></p>
   </article>
+  {events_html(c)}
   {f'<section class="sp-peers"><h2>{peer_title}</h2><ul>{peer_html}</ul></section>' if peer_html else ''}
 </main>
 {FOOTER}<script src="/js/stock-page.js" defer></script>
