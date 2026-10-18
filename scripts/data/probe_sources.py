@@ -171,12 +171,18 @@ def sk_exports():
 
 
 def es_notaries():
-    for url in ("https://www.penotariado.com/inmobiliario/", "https://www.notariado.org/portal/estadisticas",
-                "https://www.penotariado.com/", "https://datos.gob.es/apidata/catalog/dataset/title/vivienda.json?_pageSize=50"):
+    base = "https://www.penotariado.com"
+    page = fetch(base + "/inmobiliario/buscador-precio-vivienda").decode("utf-8", "replace")
+    scripts = re.findall(r'src="([^"]+\.js[^"]*)"', page)
+    print("scripts", scripts[:20])
+    for sc in scripts[:12]:
         try:
-            grep(url, r'(?:href|src)="([^"]*(?:api|csv|xls|json|piso|vivienda|estadist)[^"]*)"|"title":\s*"([^"]{0,120})"', 60)
+            js = fetch(sc if sc.startswith("http") else base + sc).decode("utf-8", "replace")
+            hits = sorted(set(re.findall(r'["\'`](/?(?:api|inmobiliario/api|ws|rest)[^"\'`\s]{2,120})["\'`]', js)))
+            hits += sorted(set(re.findall(r'https?://[a-z0-9.-]*(?:notari|penotari)[a-z0-9./_-]*', js)))
+            print(sc, len(js), hits[:40])
         except Exception as e:  # noqa: BLE001
-            print(url, "FAIL", e)
+            print(sc, "FAIL", e)
 
 
 show("Spain notaries and datos.gob.es", es_notaries)
