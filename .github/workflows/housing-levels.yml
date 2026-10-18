@@ -1,0 +1,39 @@
+name: Ceny bytov za m² (skúška zdrojov)
+
+# Probes national sources of actual home prices and commits what they return, so the parsers
+# can be written against real responses. Runs only on the work branch for now.
+on:
+  push:
+    branches: [claude/project-thread-ms2i2k]
+    paths: ['scripts/data/housing_levels.py', '.github/workflows/housing-levels.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: housing-levels
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe sources
+        run: |
+          mkdir -p data
+          python scripts/data/housing_levels.py > data/housing-levels-probe.log 2>&1 || true
+          grep "=====" data/housing-levels-probe.log | while read -r l; do echo "::notice::$l"; done
+      - name: Commit results
+        run: |
+          git config user.name "finila-data-bot"
+          git config user.email "finila-data-bot@users.noreply.github.com"
+          git add data/housing-levels-probe.log
+          git diff --cached --quiet && exit 0
+          git commit -m "Probe home price sources [data refresh]"
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
