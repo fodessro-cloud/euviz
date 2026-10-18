@@ -65,7 +65,7 @@ PAGE = """<!DOCTYPE html>
   <div class="fh-row">
     <a class="fh-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
-      <a href="/companies">Stocks</a>
+      <a href="/companies">Screener</a>
       <a href="/map">Maps</a>
       <a href="/groups">Groups</a>
       <a href="/insiders">Insiders</a>
@@ -101,7 +101,7 @@ PAGE = """<!DOCTYPE html>
       <p>Archived content from the original FINILA.com (2014–2019), kept for reference. Prices and opinions reflect the date of publication. Not investment advice.</p>
     </div>
     <nav class="h-footer-nav" aria-label="Footer">
-      <a href="/companies">Stocks</a>
+      <a href="/companies">Screener</a>
       <a href="/map">Market map</a>
       <a href="/groups">Sectors &amp; countries</a>
       <a href="/archiv/">Archive</a>

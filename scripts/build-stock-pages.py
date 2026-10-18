@@ -245,7 +245,7 @@ HEADER = '''<header class="fh">
   <div class="fh-row">
     <a class="fh-logo" href="/" aria-label="FINILA home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
-      <a href="/companies" aria-current="page">Stocks</a>
+      <a href="/companies" aria-current="page">Screener</a>
       <a href="/map">Maps</a>
       <a href="/groups">Groups</a>
       <a href="/insiders">Insiders</a>
