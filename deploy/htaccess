@@ -26,6 +26,13 @@ RewriteRule ^stock/([a-z0-9-]+)\.html$ /stock/$1 [R=301,L]
 RewriteRule ^stock/([a-z0-9-]+)$ stock/$1.html [L]
 RewriteRule ^stock$ /stock/ [R=301,L]
 
+# Property pages by country: /property/slovakia shows property-pages/slovakia.html. They live in
+# their own folder so that /property (property.html) never meets a /property/ directory.
+RewriteRule ^property/$ /property [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+property-pages/[a-z0-9-]+\.html[\s?]
+RewriteRule ^property-pages/([a-z0-9-]+)\.html$ /property/$1 [R=301,L]
+RewriteRule ^property/([a-z0-9-]+)$ property-pages/$1.html [L]
+
 # Links inside the archive point to /archiv/...: send visitors to the original
 # address instead (/archiv/blog/index.html -> /blog/). Images, scripts and the
 # archive's own home page (/archiv/) stay where they are.

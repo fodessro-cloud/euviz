@@ -47,3 +47,12 @@
   #metric button { padding: 0 10px; font-size: 13px; }
 }
 #rank { max-height: 340px; overflow-y: auto; padding-right: 6px; }
+
+/* Country pages and the overvalued page (built by scripts/build-property-pages.py) */
+.h-eyebrow a { color: inherit; text-decoration: none; }
+.p-links { line-height: 2; font-size: 15px; }
+.p-links a { white-space: nowrap; }
+.p-over td { vertical-align: middle; }
+.p-spark { display: block; }
+.p-spark line { stroke: var(--line2); stroke-dasharray: 3 3; }
+.p-spark polyline { fill: none; stroke: var(--blue); stroke-width: 1.5; }
