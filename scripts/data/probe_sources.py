@@ -170,12 +170,13 @@ def sk_exports():
             print(name, "FAIL", e)
 
 
-def pt_run():
-    import traceback, housing_levels
-    try:
-        print(housing_levels.portugal().get("areas"))
-    except Exception:  # noqa: BLE001
-        traceback.print_exc(file=sys.stdout)
+def es_notaries():
+    for url in ("https://www.penotariado.com/inmobiliario/", "https://www.notariado.org/portal/estadisticas",
+                "https://www.penotariado.com/", "https://datos.gob.es/apidata/catalog/dataset/title/vivienda.json?_pageSize=50"):
+        try:
+            grep(url, r'(?:href|src)="([^"]*(?:api|csv|xls|json|piso|vivienda|estadist)[^"]*)"|"title":\s*"([^"]{0,120})"', 60)
+        except Exception as e:  # noqa: BLE001
+            print(url, "FAIL", e)
 
 
-show("Portugal fetcher", pt_run)
+show("Spain notaries and datos.gob.es", es_notaries)
