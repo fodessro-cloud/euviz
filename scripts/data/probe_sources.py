@@ -105,18 +105,12 @@ def xlsx_sheet(url, names, n=45):
                 print(" | ".join(str(c)[:30] for c in r if c not in (None, "")))
 
 
-def ee_root():
-    d = json.loads(fetch("https://andmed.stat.ee/api/v1/en/stat"))
-    for t in d:
-        print(t["id"], t.get("text"))
-        if re.search(r"econom|majandus", t["id"] + t.get("text", ""), re.I):
-            for u in json.loads(fetch("https://andmed.stat.ee/api/v1/en/stat/" + t["id"])):
-                print("   ", u["id"], u.get("text"))
-                if re.search(r"real|kinnis", u["id"] + u.get("text", ""), re.I):
-                    for w in json.loads(fetch(f"https://andmed.stat.ee/api/v1/en/stat/{t['id']}/{u['id']}")):
-                        print("      ", w["id"], w.get("text"))
+def ee_list(path):
+    for t in json.loads(fetch("https://andmed.stat.ee/api/v1/en/stat/" + path)):
+        print("  ", t["id"], t.get("type"), t.get("text"))
 
 
-show("EE tree", ee_root)
-show("DK Finance Denmark", lambda: grep("https://financedenmark.dk/hard-figures/housing-statistics/house-price-statistics/", r'href="([^"]+)"', 80))
-show("CZ CZSO ceny nemovitosti", lambda: grep("https://csu.gov.cz/pak/ceny-nemovitosti-v-pardubickem-kraji-v-letech-2023-az-2025", r'href="([^"]+)"', 80))
+show("EE prices", lambda: ee_list("majandus/hinnad"))
+show("EE construction", lambda: ee_list("majandus/ehitus"))
+show("CZ Tab1", lambda: sniff("https://csu.gov.cz/docs/107823/0dc51dfa-22cd-d7b7-1dbb-29198fc9cf6a/Tab1_ceny_nemovitosti_kraje_okresy_2023_2025.xlsx?version=1.0"))
+show("DK rkr", lambda: print(fetch("https://api.statbank.dk/v1/tableinfo/BM010?lang=en&format=JSON")[:1500].decode()))
