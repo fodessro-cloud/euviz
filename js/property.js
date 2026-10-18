@@ -8,7 +8,7 @@ const COLORS = { nominal: '#1F6FEB', real: '#B97A0A', eu: '#8A94A6' };
 const EU = 'EU';
 const slug = name => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-let DATA = null, LEVELS = null, MAP = null, code = EU, years = 10, sortKey = 'n10', sortDir = -1, metric = 'm2';
+let DATA = null, LEVELS = null, MAP = null, code = EU, years = 10, sortKey = 'n10', sortDir = -1, metric = 'val';
 const eur = v => `€${Math.round(v).toLocaleString('en-GB')}`;
 
 // "+23 %" against incomes reads as "expensive"; the words help readers who skip the numbers.
