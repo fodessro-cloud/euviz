@@ -1,164 +1,69 @@
 
-===== EE tree
-keskkond Environment
-majandus Economy
-    pellumajandus Agriculture
-    ehitus Construction
-    majandusuksused Economic units
-    energeetika Energy
-    rahandus Finance
-    ettevetete-majandusnaitajad Financial statistics of enterprises
-    kalandus Fishing
-    valiskaubandus Foreign trade
-    metsamajandus Forestry
-    toostus Industry
-    infotehnoloogia Information technology and communications
-    sisekaubandus Internal trade
-    rahvamajanduse-arvepidamine National accounts
-    hinnad Prices
-    teadus-tehnoloogia-innovatsioon Science. Technology. Innovation
-    teenindus Service activities
-    turism-ja-majutus Tourism, accommodation and catering
-    transport Transport
-    palk-ja-toojeukulu Wages and salaries and labour costs
-rahvastik Population
-sotsiaalelu Social life
-eri-valdkondade-statistika Multidomain statistics
-rahvaloendus Population and Housing Census
-Lepetatud_tabelid Discontinued datasets
+===== EE prices
+   IA001.PX t IA001: CONSUMER PRICE INDEX, CHANGE OVER PREVIOUS YEAR
+   IA002.px t IA002: CONSUMER PRICE INDEX, 1997 = 100 (MONTHS)
+   IA021.PX t IA021: CONSUMER PRICE INDEX, CHANGE (MONTHS)
+   IA022.PX t IA022: HARMONIZED INDEX OF CONSUMER PRICES, CHANGE OVER PREVIOUS YEAR
+   IA0230.px t IA0230: HARMONIZED INDEX OF CONSUMER PRICES, 2025 = 100 (MONTHS)
+   IA024.PX t IA024: HARMONIZED INDEX OF CONSUMER PRICES AT CONSTANT TAX RATES (HICP-CT), CHANGE OVER PREVIOUS YEAR
+   IA0250.px t IA0250: HARMONIZED INDEX OF CONSUMER PRICES AT CONSTANT TAX RATES (HICP-CT), 2025 = 100 (MONTHS)
+   IA027.PX t IA027: DWELLING PRICE INDEX, CHANGE OVER PREVIOUS YEAR
+   IA028.PX t IA028: DWELLING PRICE INDEX, 2010 = 100 (QUARTERS)
+   IA0285.PX t IA0285: OWNER-OCCUPIED HOUSING PRICE INDEX, CHANGE OVER PREVIOUS YEAR
+   IA0286.PX t IA0286: OWNER-OCCUPIED HOUSING PRICE INDEX, 2010 = 100 (QUARTERS)
+   IA029.PX t IA029: PRODUCER PRICE INDEX OF INDUSTRIAL OUTPUT, CHANGE OVER PREVIOUS YEAR
+   IA039.PX t IA039: PRODUCER PRICE INDEX OF INDUSTRIAL OUTPUT, 2010 = 100 (MONTHS)
+   IA045.PX t IA045: EXPORT AND IMPORT PRICE INDEX BY ECONOMIC ACTIVITY (EMTAK 2008), 2010 = 100 (MONTHS)
+   IA05.PX t IA05: EXPORT PRICE INDEX, CHANGE OVER PREVIOUS YEAR
+   IA06.PX t IA06: EXPORT PRICE INDEX, DECEMBER 1993 = 100 (MONTHS)
+   IA07.PX t IA07: IMPORT PRICE INDEX, CHANGE OVER PREVIOUS YEAR
+   IA08.PX t IA08: IMPORT PRICE INDEX, DECEMBER 1997 = 100 (MONTHS)
+   IA09.PX t IA09: CONSTRUCTION PRICE INDEX, CHANGE OVER PREVIOUS YEAR
+   IA10.PX t IA10: CONSTRUCTION PRICE INDEX, 1997 = 100 (QUARTERS)
+   IA11.PX t IA11: CONSTRUCTION PRICE INDEX, 1994 = 100 (MONTHS)
+   IA12.PX t IA12: REPAIR AND RECONSTRUCTION WORK PRICE INDEX, CHANGE OVER PREVIOUS YEAR
+   IA13.PX t IA13: REPAIR AND RECONSTRUCTION WORK PRICE INDEX, 1997 = 100 (QUARTERS)
+   IA14.PX t IA14: REPAIR AND RECONSTRUCTION WORK PRICE INDEX, 1997 = 100 (MONTHS)
+   IA1462.px t IA1462: AGRICULTURAL OUTPUT PRICE INDEX, CHANGE OVER PREVIOUS YEAR, 2020=100
+   IA1472.px t IA1472: AGRICULTURAL OUTPUT PRICE INDEX, 2020 = 100 (QUARTERS)
+   IA1482.px t IA1482: AGRICULTURAL INPUT PRICE INDEX, CHANGE OVER PREVIOUS YEAR, 2020=100
+   IA1492.px t IA1492: AGRICULTURAL INPUT PRICE INDEX, 2020 = 100 (QUARTERS)
+   IA40.px t IA40: SERVICE PRODUCER PRICE INDEX BY ECONOMIC ACTIVITY (EMTAK 2008), 2021 = 100 (QUARTERS)
+   IA43.px t IA43: SERVICE PRODUCER PRICE INDEX, CHANGE OVER PREVIOUS YEAR BY ECONOMIC ACTIVITY (EMTAK 2008)
 
-===== DK Finance Denmark
-https://financedenmark.dk/hard-figures/housing-statistics/house-price-statistics/: 38084 bytes, 50 matches
-   /
-   /en/
-   /en/about-us/
-   /en/about-us/contact-us/european-policy/
-   /en/capital-markets/
-   /en/cookies/
-   /en/current-topics/digital-society/payments/
-   /en/danish-mortgage-banks/
-   /en/disclaimer/
-   /en/good-advice/
-   /en/good-advice/borrowing-from-the-bank/
-   /en/good-advice/compare-bank-prices/
-   /en/good-advice/complaints-about-payment-card-usage/
-   /en/good-advice/debt-counselling/
-   /en/good-advice/how-to-complain-about-your-bank/
-   /en/good-advice/how-to-switch-banks/
-   /en/good-advice/investment-funds/
-   /en/good-advice/my-bank-account/
-   /en/good-advice/my-investments/
-   /en/good-advice/new-at-the-bank/
-   /en/good-advice/online-safety/
-   /en/good-advice/purchasing-property/
-   /en/hard-figures/
-   /en/hard-figures/accounting-figures-and-key-figures/
-   /en/hard-figures/financial-institutions-branches-employees/
-   /en/hard-figures/financial-institutions-branches-employees/crime/
-   /en/hard-figures/housing-statistics/
-   /en/hard-figures/housing-statistics/house-price-statistics/
-   /en/hard-figures/housing-statistics/housing-supply-statistics/
-   /en/hard-figures/housing-statistics/methodology-notes/housing-supply-statistics-methodology-note/
-   /en/hard-figures/housing-statistics/mortgage-lending-statistics/
-   /en/hard-figures/interest-rates/current-interest-rate-for-annuity-pension-scheme-payments/
-   /en/hard-figures/interest-rates/the-danish-reference-rates/
-   /en/media/
-   /en/news/
-   /en/nyhedsbrevstilmelding-english/
-   /frontend/styles/main.css
-   /static/favicon/apple-touch-icon.png
-   /static/favicon/favicon-16x16.png
-   /static/favicon/favicon-32x32.png
-   /static/favicon/favicon.ico
-   /static/favicon/safari-pinned-tab.svg
-   /static/favicon/site.webmanifest
-   http://rkr.statbank.dk/statbank5a/default.asp
-   https://finansdanmark.dk/
-   https://twitter.com/finansdanmark
-   https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css
-   https://www.instagram.com/finansdanmark/
-   https://www.linkedin.com/company/finansdanmark
-   mailto:mail@finansdanmark.dk
+===== EE construction
+   ehitustood l Construction activities
+   ehitusmahuindeksid l Construction volume indices
+   ehitus-ja-kasutusload l Granted building permits and completed buildings
 
-===== CZ CZSO ceny nemovitosti
-https://csu.gov.cz/pak/ceny-nemovitosti-v-pardubickem-kraji-v-letech-2023-az-2025: 262501 bytes, 147 matches
-   #
-   #footer
-   #main-content
-   #top
-   /docs/107516/393e4b22-4193-e6fc-107e-e497971ee1df/menu-society.svg#icon
-   /docs/107516/5f5c1a53-f62a-9084-7701-25e993330550/menu-people.svg#icon
-   /docs/107516/6b964ed1-91b7-27be-5bcf-7639a06acd6f/menu-labor-market.svg#icon
-   /docs/107516/90108cdf-6005-638b-5748-6ce4a800ed8d/menu-economy.svg#icon
-   /docs/107516/901dce02-8c13-8432-7c8e-c0f5d11f7659/menu-economic-sectors.svg#icon
-   /docs/107516/d533e667-e1bc-40fa-85e5-b3324d3e6e6d/menu-information-society.svg#icon
-   /docs/107516/f189b9b9-2615-e12d-f42a-99a3901c123f/menu-regions-and-countries.svg#icon
-   /docs/107823/0dc51dfa-22cd-d7b7-1dbb-29198fc9cf6a/Tab1_ceny_nemovitosti_kraje_okresy_2023_2025.xlsx?version&#x3D;1.0
-   /docs/107823/ca63327a-f92d-cda1-238e-611c71095111/Tab2_ceny_nemovitosti_kraje_okresy_vel_obce_2023_2025.xlsx?version&#x3D;1.0
-   /docs/107823/d37bc2fa-9140-b20a-87f1-6c95163cb8d7/Ceny_nemovit_2023–2025.pdf?version&#x3D;1.0
-   /resources/statistika/css/@gov/critical.css?1.8.10.0
-   /resources/statistika/css/@gov/styles.css?1.8.10.0
-   /resources/statistika/csu/css/style.css?1.8.10.0
-   /resources/statistika/csu/js/scripts.js?1.8.10.0
-   /resources/statistika/fonts/roboto.css?1.8.10.0
-   /resources/statistika/images/favicon/apple-touch-icon.png?v=1686820406702
-   /resources/statistika/images/favicon/favicon-96x96.png?v=1686820406702
-   /resources/statistika/images/favicon/favicon.ico?v=1686820406702
-   /resources/statistika/images/favicon/safari-pinned-tab.svg?v=1686820406702
-   https://apl.czso.cz/pll/rocenka/rocenka.indexnu
-   https://apl.czso.cz/pll/stazo/STAZO.STAZO
-   https://apl.czso.cz/pll/stazo/STAZO_ZO.STAZO
-   https://apl2.czso.cz/iSMS/home.jsp
-   https://csu.gov.cz/aktivity_csu
-   https://csu.gov.cz/casopisy_csu
-   https://csu.gov.cz/casove_rady
-   https://csu.gov.cz/caste-dotazy
-   https://csu.gov.cz/ceny-inflace
-   https://csu.gov.cz/cestovni-ruch
-   https://csu.gov.cz/cinnost-csu
-   https://csu.gov.cz/ciselniky
-   https://csu.gov.cz/cizinci
-   https://csu.gov.cz/databaze-a-aplikace
-   https://csu.gov.cz/databaze-demografickych-udaju-za-obce-cr
-   https://csu.gov.cz/databaze-demografickych-udaju-za-vybrana-mesta-cr
-   https://csu.gov.cz/digitalni-ekonomika
-   https://csu.gov.cz/digitalni-publikace-csu
-   https://csu.gov.cz/digitalni-spolecnost-pouzivani-ict
-   https://csu.gov.cz/domov
-   https://csu.gov.cz/doprava
-   https://csu.gov.cz/ekonomicke-subjekty
-   https://csu.gov.cz/energetika
-   https://csu.gov.cz/evropsky_statisticky_system_a_eu
-   https://csu.gov.cz/evropsky_statisticky_system_a_eu#peer-review
-   https://csu.gov.cz/experimentalni-statistiky
-   https://csu.gov.cz/financni-hospodareni
-   https://csu.gov.cz/hdp-narodni-ucty
-   https://csu.gov.cz/informace_k_zakonu_c_159_2006_sb__o_stretu_zajmu
-   https://csu.gov.cz/informace_pro_media
-   https://csu.gov.cz/informace_zverejnovane_podle_zakona_106_99
-   https://csu.gov.cz/inovace-patenty-vyspele-technologie
-   https://csu.gov.cz/kalendar-udalosti
-   https://csu.gov.cz/katalog-produktu
-   https://csu.gov.cz/klasifikace
-   https://csu.gov.cz/klasifikace-ciselniky
-   https://csu.gov.cz/klicove_dokumenty
-   https://csu.gov.cz/konjunkturalni-pruzkumy
-   https://csu.gov.cz/kontakty_statistika
-   https://csu.gov.cz/kosik
-   https://csu.gov.cz/krajske-spravy
-   https://csu.gov.cz/kriminalita-soudnictvi
-   https://csu.gov.cz/kultura-media-sport
-   https://csu.gov.cz/lesnictvi-a-myslivost
-   https://csu.gov.cz/mapa
-   https://csu.gov.cz/metodiky-statistik
-   https://csu.gov.cz/mezinarodni-data
-   https://csu.gov.cz/mezinarodni-spoluprace
-   https://csu.gov.cz/mobilni-aplikace
-   https://csu.gov.cz/nabidka_nepotrebneho_majetku
-   https://csu.gov.cz/o-csu
-   https://csu.gov.cz/obchod
-   https://csu.gov.cz/obyvatelstvo
-   https://csu.gov.cz/oceneni_csu
-   https://csu.gov.cz/ochrana-osobnich-udaju-gdpr
-   https://csu.gov.cz/otevrena_data
-   https://csu.gov.cz/pak/aktuality
+===== CZ Tab1
+https://csu.gov.cz/docs/107823/0dc51dfa-22cd-d7b7-1dbb-29198fc9cf6a/Tab1_ceny_nemovitosti_kraje_okresy_2023_2025.xlsx?version=1.0 xlsx/zip 18562
+--- sheet 01_celkem 95
+Tab. 1 Průměrné kupní 
+v Kč/m2
+Česko, kraje, okresy | Rodinné domy | Byty
+2023 | 2024 | 2025 | 2023–2025 | 2023 | 2024 | 2025 | 2023–2025
+Česko | 48320 | 51867 | 56066 | 52556 | 58641 | 63521 | 72410 | 65553
+Hlavní město Praha | 111087 | 106753 | 119239 | 112593 | 103693 | 115889 | 131520 | 118245
+Středočeský | 63843 | 68704 | 73814 | 69482 | 52768 | 57450 | 64911 | 59112
+Benešov | 43268 | 52144 | 56708 | 52393 | 49499 | 55392 | 61395 | 56352
+Beroun | 52179 | 51324 | 60634 | 55674 | 53412 | 59939 | 66033 | 60572
+Kladno | 52323 | 59795 | 62209 | 58647 | 59469 | 64707 | 71999 | 66156
+Kolín | 44894 | 47750 | 50361 | 48093 | 52811 | 54926 | 62102 | 57033
+Kutná Hora | 51510 | 51760 | 54270 | 52816 | 45050 | 49168 | 55420 | 50295
+Mělník | 48921 | 55146 | 60198 | 55588 | 53867 | 60562 | 67568 | 61151
+Mladá Boleslav | 47913 | 51840 | 61786 | 53676 | 51949 | 55528 | 63967 | 58202
+Nymburk | 44583 | 48765 | 52299 | 48946 | 48794 | 58552 | 63560 | 57714
+Praha-východ | 88141 | 91903 | 99613 | 94065 | 55416 | 59386 | 69757 | 62073
+Praha-západ | 88980 | 90540 | 97500 | 92911 | 51949 | 58160 | 70621 | 63125
+Příbram | 43805 | 46002 | 50119 | 47450 | 47766 | 51719 | 58945 | 53404
+Rakovník | 41213 | 47385 | 43358 | 44136 | 47241 | 46063 | 50246 | 47914
+Jihočeský | 45168 | 48006 | 51771 | 48745 | 46010 | 49904 | 57739 | 51826
+České Budějovice | 53362 | 55336 | 57903 | 55882 | 53879 | 59499 | 69348 | 61756
+Český Krumlov | 47101 | 48000 | 52267 | 49686 | 41396 | 42566 | 51133 | 45877
+Jindřichův Hradec | 38302 | 42813 | 43921 | 41889 | 39401 | 43076 | 45876 | 43206
+Písek | 40988 | 49126 | 43222 | 44765 | 42975 | 48047 | 52887 | 48451
+Prachatice | 34261 | 46696 | 50374 | 45609 | 37115 | 37746 | 44053 | 40034
+
+===== DK rkr
+FAIL HTTPError: HTTP Error 400: Bad Request
