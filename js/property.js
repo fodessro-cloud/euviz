@@ -120,16 +120,22 @@ function renderValue() {
 
 // ── Map of Europe ─────────────────────────────────────
 // Bins and colours per metric; prices and changes read light to dark, "cheap or expensive" blue to orange.
-const BLUES = ['#DCE8F8', '#B4CDF0', '#86AEE6', '#5B8FD9', '#2F6FC4', '#1A4F96'];
+// Cheap to dear reads green to red, like a heat map; price falls (below zero) in blue.
+const HEAT = ['#1A9850', '#91CF60', '#D9EF8B', '#FEE08B', '#FC8D59', '#D73027'];
+const FALL = '#6A9FD8';
 const METRICS = {
-  m2: { title: 'Flat price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2000, 2500, 3000, 3500], colors: BLUES },
-  n1: { title: 'Price change in 1 year', get: k => DATA.countries[k]?.nominal['1y'], fmt: v => pct(v, 1), sfmt: v => pct(v, 0), bins: [0, 3, 6, 9, 12], colors: ['#F2C9C4', ...BLUES.slice(1)] },
-  n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: ['#F2C9C4', ...BLUES.slice(1)] },
-  n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: ['#F2C9C4', ...BLUES.slice(1)] },
+  m2: { title: 'Flat price per m²', get: k => LEVELS?.countries[k]?.eur, fmt: eur, bins: [1500, 2500, 3500, 5000, 7000], colors: HEAT, areas: true },
+  n1: { title: 'Price change in 1 year', get: k => DATA.countries[k]?.nominal['1y'], fmt: v => pct(v, 1), sfmt: v => pct(v, 0), bins: [0, 3, 6, 9, 12], colors: [FALL, ...HEAT.slice(1)] },
+  n5: { title: 'Price change in 5 years', get: k => DATA.countries[k]?.nominal['5y'], fmt: v => pct(v, 0), bins: [0, 20, 40, 60, 80], colors: [FALL, ...HEAT.slice(1)] },
+  n10: { title: 'Price change in 10 years', get: k => DATA.countries[k]?.nominal['10y'], fmt: v => pct(v, 0), bins: [0, 30, 60, 100, 150], colors: [FALL, ...HEAT.slice(1)] },
   val: { title: 'Cheap or expensive against incomes and rents', get: k => DATA.countries[k]?.valuation, fmt: v => pct(v, 0),
-    bins: [-15, -5, 5, 15], colors: ['#2F6FC4', '#9DBDEB', '#E6E8EC', '#F2B98A', '#D9772B'], words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive'] },
+    bins: [-15, -5, 5, 15], colors: ['#1A9850', '#A6D96A', '#F2F0E6', '#FDAE61', '#D73027'], words: ['cheap', 'somewhat cheap', 'about average', 'somewhat expensive', 'expensive'] },
 };
 const colorOf = (m, v) => m.colors[m.bins.filter(b => v >= b).length];
+
+// A region's flat price: by its NUTS code, or by name where the source has no codes (French departments).
+const areaKey = name => 'name:' + name.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const areaValue = r => { const a = LEVELS?.countries[r.c]?.areas; return a ? (a[r.id] ?? a[areaKey(r.name)]) : undefined; };
 
 function renderMap() {
   if (!MAP) { $('map-section').hidden = true; return; }
@@ -140,14 +146,33 @@ function renderMap() {
     if (!isNum(v)) return `<path class="nd ${c.id === code ? 'sel' : ''}" data-code="${c.id}" d="${c.d}"/>`;
     return `<path class="has ${c.id === code ? 'sel' : ''}" data-code="${c.id}" fill="${colorOf(m, v)}" d="${c.d}"/>`;
   });
-  // Selected country drawn last so its outline sits on top.
-  paths.sort((a, b) => a.includes(' sel') - b.includes(' sel'));
+  // Regions on top of their country where the country publishes flat prices by region.
+  if (m.areas) for (const r of MAP.regions || []) {
+    const v = areaValue(r);
+    if (isNum(v)) paths.push(`<path class="has reg" data-code="${r.c}" data-area="${esc(r.name)}" data-v="${v}" fill="${colorOf(m, v)}" d="${r.d}"/>`);
+  }
+  // The selected country's outline goes on top of everything, regions included.
+  const selected = MAP.countries.find(c => c.id === code);
+  if (selected) paths.push(`<path class="sel-line" d="${selected.d}"/>`);
   $('map').innerHTML = `<svg viewBox="0 0 ${MAP.w} ${MAP.h}">${paths.join('')}</svg>`;
   const edges = [null, ...m.bins];
   const f = m.sfmt || m.fmt;
   $('map-scale').innerHTML = m.colors.map((col, i) => `<span><i style="background:${col}"></i>${m.words ? m.words[i]
     : i === 0 ? `under ${f(m.bins[0])}` : i === m.bins.length ? `${f(m.bins[i - 1])}+` : `${f(edges[i])} to ${f(m.bins[i])}`}</span>`).join('')
     + `<span><i style="background:var(--card2);border:1px solid var(--line2)"></i>no data</span>`;
+}
+
+// The selected country close up, region by region, so small regions such as Prague can be seen.
+function renderInset() {
+  const box = $('inset');
+  const m = METRICS.m2;
+  const regs = metric === 'm2' && MAP ? (MAP.regions || []).filter(r => r.c === code && isNum(areaValue(r))) : [];
+  box.hidden = !regs.length;
+  if (!regs.length) { box.innerHTML = ''; return; }
+  box.innerHTML = `<svg><g>${regs.map(r => `<path class="has reg" data-code="${r.c}" data-area="${esc(r.name)}" data-v="${areaValue(r)}" fill="${colorOf(m, areaValue(r))}" d="${r.d}"/>`).join('')}</g></svg>`;
+  const g = box.querySelector('g').getBBox();
+  const pad = Math.max(g.width, g.height) * 0.04;
+  box.querySelector('svg').setAttribute('viewBox', `${g.x - pad} ${g.y - pad} ${g.width + 2 * pad} ${g.height + 2 * pad}`);
 }
 
 function renderSide() {
@@ -170,6 +195,7 @@ function renderSide() {
   // The selected country's own page, right where the map and list lead.
   const own = DATA.countries[code];
   $('country-link').innerHTML = own && !own.agg ? `<a class="p-open" href="/property/${slug(own.name)}">Open the ${esc(own.name)} page →</a>` : '';
+  renderInset();
   $('regions-box').hidden = !l?.regions?.length;
   if (l?.regions?.length) {
     $('regions-title').textContent = `Flat price per m² in ${l.name}: regions and cities`;
@@ -253,17 +279,22 @@ async function init() {
   tip.className = 'p-tip';
   tip.hidden = true;
   document.body.appendChild(tip);
-  $('map').addEventListener('mousemove', e => {
+  const showTip = e => {
     const k = e.target.closest('[data-code]')?.dataset.code;
     const m = METRICS[metric];
     if (!k) { tip.hidden = true; return; }
-    const v = m.get(k);
-    tip.innerHTML = `<b>${esc(DATA.countries[k]?.name || LEVELS?.countries[k]?.name || k)}</b> ${isNum(v) ? m.fmt(v) : metric === 'm2' ? 'no flat price yet' : 'no data yet'}`;
+    const el = e.target.closest('[data-code]');
+    const v = el.dataset.area ? Number(el.dataset.v) : m.get(k);
+    const country = esc(DATA.countries[k]?.name || LEVELS?.countries[k]?.name || k);
+    tip.innerHTML = `<b>${el.dataset.area ? `${esc(el.dataset.area)}, ${country}` : country}</b> ${isNum(v) ? m.fmt(v) : metric === 'm2' ? 'no flat price yet' : 'no data yet'}`;
     tip.style.left = `${e.clientX + 12}px`;
     tip.style.top = `${e.clientY + 12}px`;
     tip.hidden = false;
+  };
+  ['map', 'inset'].forEach(id => {
+    $(id).addEventListener('mousemove', showTip);
+    $(id).addEventListener('mouseleave', () => { tip.hidden = true; });
   });
-  $('map').addEventListener('mouseleave', () => { tip.hidden = true; });
   ['map', 'rank'].forEach(id => $(id).addEventListener('click', e => {
     const k = e.target.closest('[data-code]')?.dataset.code;
     if (k && DATA.countries[k]) select(k);
