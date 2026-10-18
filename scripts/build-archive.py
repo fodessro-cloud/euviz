@@ -65,15 +65,15 @@ PAGE = """<!DOCTYPE html>
   <div class="fh-row">
     <a class="fh-logo" href="/" aria-label="FINILA home">{logo}FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
-      <div class="fh-item"><a href="/companies">Stocks</a><div class="fh-drop"><a href="/companies">All stocks<small>2,400+ European companies</small></a><a href="/groups">Sectors &amp; countries<small>Performance by group</small></a><a href="/map">Market map<small>Whole market at a glance</small></a></div></div>
+      <a href="/companies">Stocks</a>
       <a href="/map">Maps</a>
       <a href="/groups">Groups</a>
       <a href="/insiders">Insiders</a>
       <a href="/shorts">Shorts</a>
-      <div class="fh-item"><a href="/invest">Invest</a><div class="fh-drop"><a href="/invest">Compare investments<small>Stocks, bonds, deposits, gold</small></a><a href="/property">Property prices<small>Real estate by country</small></a><span class="fh-soon">Bonds<small>Coming soon</small></span><span class="fh-soon">Gold<small>Coming soon</small></span></div></div>
+      <a href="/invest">Invest</a>
       <a href="/property">Property</a>
+      <a href="/archiv/" aria-current="page">Archive</a>
     </nav>
-    <a class="fh-side" href="/archiv/" aria-current="page">Archive</a>
   </div>
 </header>
 <script>(function(){{var n=document.querySelector('.fh-nav'),a=n&&n.querySelector('[aria-current]');if(a)n.scrollLeft=a.offsetLeft-n.offsetLeft-16;}})();</script>
