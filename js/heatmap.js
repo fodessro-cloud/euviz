@@ -160,13 +160,20 @@ function renderHeatmap() {
     }
   }
   const total = HM.length, n = shown.length;
-  const known = shown.filter(c => isNum(c.change)).length;
   const day = HM[0] ? new Date(HM[0].priceDate + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
   document.getElementById('hm-note').innerHTML =
     `${num(n, 0)} companies${hmCountry ? ` in ${esc(countryName(hmCountry))}` : ''} with a real price (${day}) and an annual report, worth ${money(shown.reduce((s, c) => s + c.mcap, 0))} together. ` +
-    (hmColor === 'change' && known < n / 2 ? 'The day change appears after the next trading day; until then the boxes are grey, so try another color. ' : '') +
+    (hmColor === 'change' ? (changeShare(shown) < 0.5 ? 'The day change appears after the next trading day; until then the boxes are grey, so try another color. '
+      : 'Grey boxes did not trade today. ') : hmColor !== 'pe' && hmColor !== 'divYield'
+      ? 'Colors from the newest annual report of each company (mostly fiscal 2024 or 2025); revenue growth compares it with the year before. ' : '') +
     `Box size is market value. Click a box to see the company.`;
   hideHover();
+}
+
+// Part of the market value whose companies have a day change.
+function changeShare(list) {
+  const all = list.reduce((s, c) => s + c.mcap, 0);
+  return all ? list.filter(c => isNum(c.change)).reduce((s, c) => s + c.mcap, 0) / all : 0;
 }
 
 function renderLegend() {
@@ -190,7 +197,7 @@ function showHover(t, e) {
     <div class="hm-tip-meta">${esc([c.ticker, countryName(c.country), c.sector].filter(Boolean).join(' · '))}</div>
     <div class="hm-tip-price">€${num(c.price, 2)} <span class="${c.change > 0 ? 'pos' : c.change < 0 ? 'neg' : ''}">${isNum(c.change) ? signed(c.change, 2) : ''}</span></div>
     <table>${row('Market value ≈', money(c.mcap))}${row('P/E', isNum(c.pe) ? num(c.pe) : '—')}${row('Dividend yield', isNum(c.divYield) ? num(c.divYield) + '%' : '—')}
-    ${d.key !== 'pe' && d.key !== 'divYield' && d.key !== 'change' ? row(d.label, isNum(c[d.key]) ? d.fmt(c[d.key], c) : '—') : ''}</table>
+    ${d.key !== 'pe' && d.key !== 'divYield' && d.key !== 'change' ? row(`${d.label}${c.periodEnd ? ` (FY ${c.periodEnd.slice(0, 4)})` : ''}`, isNum(c[d.key]) ? d.fmt(c[d.key], c) : '—') : ''}</table>
     <div class="hm-tip-src">${esc(c.venue)} · ${esc(c.priceDate)}</div>`;
   tip.style.display = 'block';
   const tw = tip.offsetWidth, th = tip.offsetHeight;
@@ -219,8 +226,9 @@ async function initHeatmap() {
   HM_SLUGS = slugs || {};
   if (!cos || !prices) { document.getElementById('hm-note').textContent = 'Could not load company data.'; return; }
   HM = buildCompanies(cos, prices);
-  // Without a day change yet (weekend, or only one trading day so far), start with revenue growth.
-  if (HM.filter(c => isNum(c.change)).length < HM.length / 2) hmColor = 'revenueGrowth';
+  // Start on the day change; only without one yet (only one trading day so far) on revenue growth.
+  // Measured by market value: small firms often trade on no day, the big ones every day.
+  if (changeShare(HM) < 0.5) hmColor = 'revenueGrowth';
 
   const sel = document.getElementById('hm-country');
   const counts = {};
