@@ -16,10 +16,10 @@
   box.querySelector('[data-f=badge]').textContent = `Real price · ${venue} · ${day}${final ? '' : ' · 15 min delayed'}`;
 })();
 
-// Price chart: 1H, 4H and 1D use the minute prices of the last trading day and 1W the half-hourly prices
+// Price chart: 4H and 1D use the minute prices of the last trading day and 1W the half-hourly prices
 // of the last 5 (/js/intraday/<ISIN>.json, times shown in Frankfurt time), the longer ranges the daily
 // closes embedded in the page.
-// 1H is shown first when the minute prices load; moving over the chart shows that price.
+// 1D is shown first when the minute prices load; moving over the chart shows that price.
 (async function () {
   const fig = document.querySelector('.sp-chart');
   if (!fig) return;
@@ -96,5 +96,5 @@
     tip.style.left = Math.min(r.width - tip.offsetWidth, Math.max(0, xy[i][0] / W * r.width - tip.offsetWidth / 2)) + 'px';
   });
   svg.addEventListener('pointerleave', () => { cursor.style.display = 'none'; tip.style.display = 'none'; });
-  draw(usable ? 'i60' : 'd0');
+  draw(usable ? 'i0' : 'd0');
 })();

@@ -3,6 +3,7 @@
 
 // One colour family per kind of rate, light to dark with the length of the period.
 const COLORS = {
+  ecb: '#E0457B',
   eur1m: '#9CC3F5', eur3m: '#5B9BFF', eur6m: '#2A78D6', eur12m: '#14427E',
   gov2y: '#F5B38F', gov5y: '#EB6834', gov10y: '#A8401A',
   aaa10y: '#1BAF7A', corp: '#8E44AD', dep1y: '#C98500',
@@ -24,7 +25,7 @@ function renderNow() {
   document.getElementById('now').innerHTML = D.series.map(s => `<div class="i-tile">
     <div class="i-tile-head"><span class="i-dot" style="background:${COLORS[s.key]}"></span>${esc(s.label)}</div>
     <div class="i-tile-real">${rate(s.latest.value)}</div>
-    <div class="i-tile-sub">${s.latest.date.length === 7 ? 'average in ' : ''}${dNice(s.latest.date)}</div></div>`).join('');
+    <div class="i-tile-sub">${s.latest.since ? 'since ' : s.latest.date.length === 7 ? 'average in ' : ''}${dNice(s.latest.date)}</div></div>`).join('');
 }
 
 function renderChart() {

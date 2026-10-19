@@ -1,7 +1,7 @@
 """Interest rates in the euro: Euribor, government bond yields and term deposit rates on one chart.
 
 Free official sources (ECB Data Portal):
-  FM   Euribor 1, 3, 6 and 12 months, monthly averages since 1999
+  FM   ECB deposit facility rate (the ECB's key rate), Euribor 1, 3, 6 and 12 months, monthly averages since 1999
   YC   euro area government bond yields (all euro area governments, and AAA-rated only),
        2, 5 and 10 years, daily since September 2004
   MIR  rate banks paid on new household deposits fixed for up to 1 year, euro area, monthly
@@ -23,6 +23,7 @@ START = "1999-01"
 
 # key: (label, group, ECB flow/key). Groups share a colour family on the page.
 SERIES = {
+    "ecb": ("ECB deposit rate", "ecb", "FM/B.U2.EUR.4F.KR.DFR.LEV"),
     "eur1m": ("Euribor 1 month", "euribor", "FM/M.U2.EUR.RT.MM.EURIBOR1MD_.HSTA"),
     "eur3m": ("Euribor 3 months", "euribor", "FM/M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA"),
     "eur6m": ("Euribor 6 months", "euribor", "FM/M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA"),
@@ -35,7 +36,7 @@ SERIES = {
     "dep1y": ("Term deposit up to 1 year", "deposit", "MIR/M.U2.B.L22.F.R.A.2250.EUR.N"),
 }
 SOURCES = [
-    ["ECB Data Portal", "https://data.ecb.europa.eu/", "Euribor (monthly averages), euro area government bond yield curve, bank deposit rates"],
+    ["ECB Data Portal", "https://data.ecb.europa.eu/", "ECB deposit facility rate, Euribor (monthly averages), euro area government bond yield curve, bank deposit rates"],
     ["Deutsche Bundesbank", "https://www.bundesbank.de/en/statistics/money-and-capital-markets/interest-rates-and-yields", "yields on corporate bonds of German issuers (non-banks)"],
 ]
 
@@ -78,6 +79,25 @@ def ecb(key):
     return months, {"date": day, "value": round(value, 3)}
 
 
+def ecb_steps(key):
+    """A rate the ECB lists only on the days it changes: the level in force at the end of every month,
+    up to the current month, and the latest change."""
+    text = fetch(f"{ECB}{key}?format=csvdata")
+    changes = sorted((row["TIME_PERIOD"], float(row["OBS_VALUE"])) for row in csv.DictReader(io.StringIO(text)) if row.get("OBS_VALUE"))
+    if not changes:
+        raise RuntimeError("no observations")
+    now = datetime.now(timezone.utc).strftime("%Y-%m")
+    months, j, level = {}, 0, None
+    for m in month_range(START, now):
+        while j < len(changes) and changes[j][0][:7] <= m:
+            level = changes[j][1]
+            j += 1
+        if level is not None:
+            months[m] = level
+    day, value = changes[-1]
+    return months, {"date": day, "value": value, "since": True}
+
+
 def month_range(first, last):
     """Every month from first to last ("YYYY-MM"); a month without data stays empty (None)."""
     y, m = int(first[:4]), int(first[5:])
@@ -95,7 +115,8 @@ def main():
     series, failed = [], []
     for key, (label, group, ecb_key) in SERIES.items():
         try:
-            months, latest = bundesbank(ecb_key[4:]) if ecb_key.startswith("BBK:") else ecb(ecb_key)
+            months, latest = (bundesbank(ecb_key[4:]) if ecb_key.startswith("BBK:")
+                              else ecb_steps(ecb_key) if group == "ecb" else ecb(ecb_key))
             first = min(months)
             series.append({"key": key, "label": label, "group": group, "first": first,
                            "values": [months.get(m) for m in month_range(first, max(months))], "latest": latest})
