@@ -13,7 +13,7 @@ Writes js/prices.js (last price, change against the previous close, day range, v
 TICKER@Country) and keeps data/prices-history.json (ISIN -> {date: close}) so the daily
 change can be computed. Stocks that traded on neither venue keep their illustrative figures.
 """
-import gzip, hashlib, json, os, sys, tempfile, urllib.request
+import gzip, hashlib, json, os, sys, tempfile, time, urllib.error, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -30,7 +30,8 @@ VENUES = [("DETR", "Xetra"), ("DFRA", "Börse Frankfurt")]
 FILE_URL = "https://mfs.deutsche-boerse.com/api/download/"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
 KEEP_DAYS = 400      # about a year and a half of closes: the price chart on every company page
-MAX_MINUTE_FILES = 600   # per venue and run; a trading day has about 900
+MAX_MINUTE_FILES = 70    # per venue and run, a bit more than an hour (a trading day has about 900); when further behind, only the newest
+MINUTE_BUDGET = 600      # seconds per run for minute files, so the job ends inside its 20 minutes
 
 # ISIN of the share class each screener stock (js/data.js) stands for.
 ISINS = {
@@ -66,9 +67,21 @@ ISINS = {
 }
 
 
-def fetch(url, timeout=180):
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
-        return r.read()
+def fetch(url, timeout=180, tries=6):
+    """Download politely: Deutsche Börse answers 429 Too Many Requests when files are fetched back to back."""
+    for n in range(tries):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
+                body = r.read()
+            time.sleep(2.1)   # they allow about 30 downloads a minute
+            return body
+        except urllib.error.HTTPError as e:
+            if e.code != 429 and e.code < 500 or n == tries - 1:
+                raise
+            wait = e.headers.get("Retry-After", "")
+            wait = int(wait) if wait.isdigit() else min(90, 30 * (n + 1))
+            print(f"  {e.code} from {url.rsplit('/', 1)[-1]}, waiting {wait}s")
+            time.sleep(wait)
 
 
 def list_files(venue):
@@ -81,9 +94,9 @@ def file_day(name):
     return name.split("-daily-")[1][:10] if "-daily-" in name else name.split("-posttrade-")[1][:10]
 
 
-def download_summary(name, wanted, bars=False):
+def download_summary(name, wanted, bars=False, tries=6):
     with tempfile.NamedTemporaryFile(suffix=".json.gz") as tmp:
-        tmp.write(fetch(FILE_URL + name))
+        tmp.write(fetch(FILE_URL + name, tries=tries))
         tmp.flush()
         return day_summary(tmp.name, wanted, bars)
 
@@ -220,14 +233,30 @@ def main():
     today = max((file_day(f) for fs in minutes.values() for f in fs), default="")
     if live["day"] != today:
         live = {"day": today, "seen": {}, "agg": {}}
+    started = time.monotonic()
     for venue, label in VENUES:
-        new = [f for f in minutes[venue] if file_day(f) == today and f > live["seen"].get(venue, "")][:MAX_MINUTE_FILES]
+        new = [f for f in minutes[venue] if file_day(f) == today and f > live["seen"].get(venue, "")]
+        if len(new) > MAX_MINUTE_FILES:
+            # Far behind (missed runs): the newest minutes give the current price; the day's
+            # volume and range stay partial until the daily file closes the day.
+            print(f"{label} {today}: {len(new)} minute files waiting, reading the newest {MAX_MINUTE_FILES}")
+            new = new[-MAX_MINUTE_FILES:]
         agg = live["agg"].setdefault(venue, {})
+        done = []
         for f in new:
-            merge(agg, download_summary(f, wanted))
-        if new:
-            live["seen"][venue] = new[-1]
-            print(f"{label} {today}: read {len(new)} new minute files, up to {new[-1]}")
+            if time.monotonic() - started > MINUTE_BUDGET:
+                print(f"{label} {today}: time budget used, the next run continues")
+                break
+            try:
+                merge(agg, download_summary(f, wanted, tries=3))
+            except (urllib.error.URLError, OSError) as e:
+                # Keep what was read; the next run carries on from the last file that came through.
+                print(f"{label} {today}: stopped at {f} ({e}); the next run continues from there")
+                break
+            done.append(f)
+        if done:
+            live["seen"][venue] = done[-1]
+            print(f"{label} {today}: read {len(done)} new minute files, up to {done[-1]}")
     live_rows = pick(live["agg"]) if today else {}
 
     def quote_of(isin):
