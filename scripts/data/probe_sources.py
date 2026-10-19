@@ -185,4 +185,24 @@ def es_notaries():
             print(sc, "FAIL", e)
 
 
-show("Spain notaries and datos.gob.es", es_notaries)
+def bond_yields():
+    ecb = "https://data-api.ecb.europa.eu/service/"
+    for key in ("YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_2Y+SR_5Y+SR_10Y", "YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y+SR_5Y+SR_10Y"):
+        try:
+            t = fetch(f"{ecb}data/{key}?format=csvdata&lastNObservations=2").decode()
+            print(key, "OK"); print("\n".join(l[:200] for l in t.splitlines()[:5]))
+        except Exception as e:  # noqa: BLE001
+            print(key, "FAIL", e)
+    x = fetch(ecb + "dataflow/ECB").decode("utf-8", "replace")
+    for fid, name in re.findall(r'<str:Dataflow[^>]*id="([^"]+)".*?<com:Name[^>]*>([^<]+)</com:Name>', x, re.S):
+        if re.search(r"bond|yield|debt|securit|corporate|spread|cost of", name, re.I):
+            print("FLOW", fid, name)
+    for sid in ("BAMLHE00EHYIEY", "BAMLHE00EHYIOAS"):
+        try:
+            t = fetch(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}").decode()
+            print("FRED", sid, t.splitlines()[:2], t.splitlines()[-2:])
+        except Exception as e:  # noqa: BLE001
+            print("FRED", sid, "FAIL", e)
+
+
+show("Bond yields: ECB yield curve, corporate candidates", bond_yields)
