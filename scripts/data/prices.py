@@ -30,8 +30,8 @@ VENUES = [("DETR", "Xetra"), ("DFRA", "Börse Frankfurt")]
 FILE_URL = "https://mfs.deutsche-boerse.com/api/download/"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
 KEEP_DAYS = 400      # about a year and a half of closes: the price chart on every company page
-MAX_MINUTE_FILES = 150   # per venue and run (a trading day has about 900); when further behind, only the newest
-MINUTE_BUDGET = 480      # seconds per run for minute files, so the job ends well inside its 20 minutes
+MAX_MINUTE_FILES = 70    # per venue and run, a bit more than an hour (a trading day has about 900); when further behind, only the newest
+MINUTE_BUDGET = 600      # seconds per run for minute files, so the job ends inside its 20 minutes
 
 # ISIN of the share class each screener stock (js/data.js) stands for.
 ISINS = {
@@ -73,13 +73,13 @@ def fetch(url, timeout=180, tries=6):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
                 body = r.read()
-            time.sleep(0.3)
+            time.sleep(2.1)   # they allow about 30 downloads a minute
             return body
         except urllib.error.HTTPError as e:
             if e.code != 429 and e.code < 500 or n == tries - 1:
                 raise
             wait = e.headers.get("Retry-After", "")
-            wait = int(wait) if wait.isdigit() else min(60, 5 * 2 ** n)
+            wait = int(wait) if wait.isdigit() else min(90, 30 * (n + 1))
             print(f"  {e.code} from {url.rsplit('/', 1)[-1]}, waiting {wait}s")
             time.sleep(wait)
 
