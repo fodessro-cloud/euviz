@@ -47,7 +47,7 @@ ESTAT = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
 WB_PAGE = "https://www.worldbank.org/en/research/commodity-markets"
 
 SOURCES = [
-    ["ECB Data Portal", "https://data.ecb.europa.eu/", "bank deposit rates, 10-year government bond yields, inflation index to 2025, ECB rate, EURO STOXX 50, exchange rates"],
+    ["ECB Data Portal", "https://data.ecb.europa.eu/", "bank deposit rates, 10-year government bond yields, inflation index to 2025, ECB rate, Euribor, EURO STOXX 50, exchange rates"],
     ["Eurostat", "https://ec.europa.eu/eurostat/web/hicp", "inflation (HICP) and house price index"],
     ["World Bank Pink Sheet", WB_PAGE, "gold price (monthly average)"],
 ]
@@ -287,6 +287,7 @@ def main():
         "house": lambda: {back[g]: fill_months(v) for g, v in estat_multi("prc_hpi_q", f"{geos}&purchase=TOTAL&unit=I15_Q").items()},
         "fx": lambda: ecb_multi("EXR", f"M.{'+'.join(CURRENCIES + ['USD'])}.EUR.SP00.A", area_pos=1),
         "dfr": lambda: ecb_multi("FM", "B.U2.EUR.4F.KR.DFR.LEV"),
+        "euribor": lambda: ecb_multi("FM", "M.U2.EUR.RT.MM.EURIBOR1MD_+EURIBOR3MD_+EURIBOR6MD_+EURIBOR1YD_.HSTA", area_pos=5),
         "stoxx50": lambda: ecb_multi("FM", "M.U2.EUR.DS.EI.DJES50I.HSTA"),
         "gold_usd": lambda: {"W": gold_usd()},
     }
@@ -363,9 +364,20 @@ def main():
         }
     now["dfr"] = last(raw.get("dfr", {}).get("U2"))
 
+    def rates(s):
+        """{month: rate} -> [first month, [rate...]] (rates as they are, not normalised)."""
+        s = contiguous_tail(s)
+        return [min(s), [round(s[m], 3) for m in sorted(s)]] if s else None
+    # Euribor (monthly averages) next to the new 1-year term deposit rates, for the rates chart.
+    names = {"EURIBOR1MD_": "1M", "EURIBOR3MD_": "3M", "EURIBOR6MD_": "6M", "EURIBOR1YD_": "12M"}
+    euribor = {names[k]: rates(v) for k, v in raw.get("euribor", {}).items() if k in names and v}
+    deposits = {code: rates(raw["dep1y"][code]) for code, (_, cur, euro) in COUNTRIES.items()
+                if euro and code in countries and raw.get("dep1y", {}).get(code)}
+
     out = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
         "sources": SOURCES, "failed": failed, "countries": countries, "now": now, "assets": assets,
+        "euribor": euribor, "deposits1y": deposits,
     }
     OUT.write_text(json.dumps(out, separators=(",", ":")))
     print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size // 1024} KB), {len(countries)} countries, failed: {failed or 'none'}")

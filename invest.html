@@ -89,6 +89,31 @@
     </div>
   </section>
 
+  <section class="h-section" id="rates">
+    <div class="h-card i-calc">
+      <div class="i-calc-head">
+        <div>
+          <h2>Euribor and term deposits</h2>
+          <p class="i-sub" id="rates-sub">Euribor is the interest rate at which banks lend to each other. Banks price their term deposits off it, so it shows roughly where deposit rates are heading.</p>
+        </div>
+        <div class="i-calc-inputs">
+          <div class="i-seg" role="group" aria-label="Period" id="rate-years">
+            <button type="button" data-years="1">1 y</button>
+            <button type="button" data-years="5" class="on">5 y</button>
+            <button type="button" data-years="10">10 y</button>
+            <button type="button" data-years="0">All</button>
+          </div>
+        </div>
+      </div>
+      <div class="i-chart-wrap">
+        <div class="i-legend" id="rate-legend"></div>
+        <div class="i-chart" id="rate-chart" role="img" aria-label="Euribor rates and the 1-year term deposit rate over time, in per cent"></div>
+        <div class="i-tip" id="rate-tip" hidden></div>
+      </div>
+      <p class="h-note" id="rate-note"></p>
+    </div>
+  </section>
+
   <section class="h-section">
     <div class="h-section-head">
       <h2>All of Europe side by side</h2>
