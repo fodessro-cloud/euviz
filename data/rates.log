@@ -1,3 +1,4 @@
+ok    ecb       64 months from 1999-01, latest {'date': '2026-09-16', 'value': 2.5}
 ok    eur1m    333 months from 1999-01, latest {'date': '2026-09', 'value': 2.414}
 ok    eur3m    333 months from 1999-01, latest {'date': '2026-09', 'value': 2.635}
 ok    eur6m    333 months from 1999-01, latest {'date': '2026-09', 'value': 2.922}
@@ -8,4 +9,4 @@ ok    gov10y   266 months from 2004-09, latest {'date': '2026-10-16', 'value': 4
 ok    aaa10y   266 months from 2004-09, latest {'date': '2026-10-16', 'value': 3.444}
 ok    corp     333 months from 1999-01, latest {'date': '2026-09', 'value': 4.46}
 ok    dep1y    320 months from 2000-01, latest {'date': '2026-08', 'value': 2.13}
-wrote js/rates.json (19 KB), failed: none
+wrote js/rates.json (20 KB), failed: none
