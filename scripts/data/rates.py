@@ -79,6 +79,25 @@ def ecb(key):
     return months, {"date": day, "value": round(value, 3)}
 
 
+def ecb_steps(key):
+    """A rate the ECB lists only on the days it changes: the level in force at the end of every month,
+    up to the current month, and the latest change."""
+    text = fetch(f"{ECB}{key}?format=csvdata")
+    changes = sorted((row["TIME_PERIOD"], float(row["OBS_VALUE"])) for row in csv.DictReader(io.StringIO(text)) if row.get("OBS_VALUE"))
+    if not changes:
+        raise RuntimeError("no observations")
+    now = datetime.now(timezone.utc).strftime("%Y-%m")
+    months, j, level = {}, 0, None
+    for m in month_range(START, now):
+        while j < len(changes) and changes[j][0][:7] <= m:
+            level = changes[j][1]
+            j += 1
+        if level is not None:
+            months[m] = level
+    day, value = changes[-1]
+    return months, {"date": day, "value": value, "since": True}
+
+
 def month_range(first, last):
     """Every month from first to last ("YYYY-MM"); a month without data stays empty (None)."""
     y, m = int(first[:4]), int(first[5:])
@@ -96,7 +115,8 @@ def main():
     series, failed = [], []
     for key, (label, group, ecb_key) in SERIES.items():
         try:
-            months, latest = bundesbank(ecb_key[4:]) if ecb_key.startswith("BBK:") else ecb(ecb_key)
+            months, latest = (bundesbank(ecb_key[4:]) if ecb_key.startswith("BBK:")
+                              else ecb_steps(ecb_key) if group == "ecb" else ecb(ecb_key))
             first = min(months)
             series.append({"key": key, "label": label, "group": group, "first": first,
                            "values": [months.get(m) for m in month_range(first, max(months))], "latest": latest})
