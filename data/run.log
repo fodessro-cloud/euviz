@@ -171,7 +171,7 @@ FCA FULINS_E_20261017_01of01.zip: 2149 new issuers
 3533 issuers with a report for 2024 or later (13 pages)
 34 reports to read, 3499 cached
 read 34 reports this run
-  ! Wikidata: Invalid control character at: line 183545 column 36 (char 4341524); using the last saved copy
+4904 listed companies with an LEI on Wikidata
 18568 issuers with listed shares (FIRDS); 1926 of them file reports here
 Wikidata by ISIN/LEI: labels for 1629 of 3343 keys
 sector found for 664 of 1672 without a Wikidata industry: {'wikidata': 304, 'bank': 54, 'name': 306}
@@ -183,7 +183,7 @@ by country: GB 529, SE 326, FR 212, NO 142, PL 141, IT 119, DK 118, FI 116, ES 1
 largest 40 by revenue:
 Shell PLC                          GB RDSA     Energy                 2025-12-31 rev€=237760.4 ebitda=None fcf=21948.0 roe=10.2 F=5 1111001-0
 Glencore PLC                       GB GLEN     Materials              2025-12-31 rev€=220521.2 ebitda=None fcf=-290.0 roe=0.9 F=6 1111101-0
-TotalEnergies SE                   FR FP       Energy                 2025-12-31 rev€=179239.2 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
+TotalEnergies SE                   FR TTE      Energy                 2025-12-31 rev€=179239.2 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
 BP P.L.C.                          GB BP       Energy                 2025-12-31 rev€=171535.9 ebitda=30464.0 fcf=11272.0 roe=0.1 F=6 1101011-1
 Stellantis N.V.                    NL STLAM    Consumer Discretionary 2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=3 0001001-1
 Equinor ASA                        NO EQNR     Energy                 2024-12-31 rev€=92449.0 ebitda=40762.0 fcf=7933.0 roe=20.8 F=6 11011-1-1
