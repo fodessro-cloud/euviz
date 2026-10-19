@@ -5,7 +5,7 @@
 const COLORS = {
   eur1m: '#9CC3F5', eur3m: '#5B9BFF', eur6m: '#2A78D6', eur12m: '#14427E',
   gov2y: '#F5B38F', gov5y: '#EB6834', gov10y: '#A8401A',
-  aaa10y: '#1BAF7A', dep1y: '#C98500',
+  aaa10y: '#1BAF7A', corp: '#8E44AD', dep1y: '#C98500',
 };
 let D = null, years = 10;
 const hidden = new Set();
@@ -60,7 +60,7 @@ function renderChart() {
   if (pad.r > 60) {
     const ends = lines.map(a => ({ a, y: y(a.final) })).sort((p, q) => p.y - q.y);
     for (let j = 1; j < ends.length; j++) if (ends[j].y - ends[j - 1].y < 15) ends[j].y = ends[j - 1].y + 15;
-    labels = ends.map(e => `<text x="${W - pad.r + 8}" y="${e.y + 4}" class="lb">${esc(e.a.label.replace('Government bonds', 'Gov.').replace('AAA government bonds', 'AAA gov.').replace(' up to 1 year', ''))}</text>`).join('');
+    labels = ends.map(e => `<text x="${W - pad.r + 8}" y="${e.y + 4}" class="lb">${esc(e.a.label.replace('Government bonds', 'Gov.').replace('AAA government bonds', 'AAA gov.').replace(' up to 1 year', '').replace('Corporate bonds (German firms)', 'Corporate (DE)'))}</text>`).join('');
   }
   el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${grid}
     ${lo < 0 ? `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(0)}" y2="${y(0)}" class="base"/>` : ''}${body}${labels}

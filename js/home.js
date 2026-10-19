@@ -217,7 +217,7 @@ function renderRates(r) {
     return `<li><span><a href="/rates">${esc(s.label)}</a></span><span class="v">${fmt(s.latest.value, 2)}%${ch}</span></li>`;
   };
   document.getElementById('rates-money').innerHTML = ['eur1m', 'eur3m', 'eur6m', 'eur12m', 'dep1y'].map(li).join('');
-  document.getElementById('rates-bonds').innerHTML = ['gov2y', 'gov5y', 'gov10y', 'aaa10y'].map(li).join('');
+  document.getElementById('rates-bonds').innerHTML = ['gov2y', 'gov5y', 'gov10y', 'aaa10y', 'corp'].map(li).join('');
 }
 
 // ── Search: opens the company in the screener ─────
