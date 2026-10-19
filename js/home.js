@@ -204,6 +204,22 @@ function renderProperty(h) {
   document.getElementById('home-down').innerHTML = chg.slice(-3).reverse().map(([k, c]) => li(k, c, c.nominal['5y'])).join('');
 }
 
+// ── Interest rates (js/rates.json) ─
+function renderRates(r) {
+  const box = document.getElementById('rates');
+  if (!r || !r.series || !r.series.length) { box.hidden = true; return; }
+  const by = Object.fromEntries(r.series.map(s => [s.key, s]));
+  const li = k => {
+    const s = by[k]; if (!s) return '';
+    const vals = s.values, last = vals.length - 1, before = vals[last - 12];
+    const chg = isNum(vals[last]) && isNum(before) ? vals[last] - before : null;
+    const ch = isNum(chg) ? ` <small class="${chg > 0 ? 'up' : chg < 0 ? 'down' : ''}">${chg > 0 ? '+' : ''}${fmt(chg, 2)} pp</small>` : '';
+    return `<li><span><a href="/rates">${esc(s.label)}</a></span><span class="v">${fmt(s.latest.value, 2)}%${ch}</span></li>`;
+  };
+  document.getElementById('rates-money').innerHTML = ['eur1m', 'eur3m', 'eur6m', 'eur12m', 'dep1y'].map(li).join('');
+  document.getElementById('rates-bonds').innerHTML = ['gov2y', 'gov5y', 'gov10y', 'aaa10y', 'corp'].map(li).join('');
+}
+
 // ── Search: opens the company in the screener ─────
 function setupSearch() {
   document.getElementById('stock-list').innerHTML = COS.filter(c => isNum(c.mcap)).sort((a, b) => b.mcap - a.mcap)
@@ -218,8 +234,8 @@ function setupSearch() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const [cos, prices, inv, ins, sh, slugs, housing] = await Promise.all(
-    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json', 'js/stock-slugs.json', 'js/housing.json'].map(load));
+  const [cos, prices, inv, ins, sh, slugs, housing, rates] = await Promise.all(
+    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json', 'js/stock-slugs.json', 'js/housing.json', 'js/rates.json'].map(load));
   SLUGS = slugs || {};
   COS = cos ? buildCompanies(cos, prices) : [];
   INV = inv;
@@ -230,6 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderMovers('up');
   renderData(ins, sh);
   renderProperty(housing);
+  renderRates(rates);
   setupSearch();
   document.querySelectorAll('#periods button').forEach(b => b.addEventListener('click', () => renderCompare(Number(b.dataset.years))));
   document.querySelectorAll('#tabs button').forEach(b => b.addEventListener('click', () => renderMovers(b.dataset.tab)));

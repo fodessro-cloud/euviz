@@ -120,3 +120,8 @@
   .i-rank .i-dot { margin-right: 6px; }
   .i-chart-wrap { flex-basis: 100%; }
 }
+
+/* Interest rates page: the legend doubles as on/off switches */
+.r-legend button { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--card); color: var(--text2); font: inherit; font-size: 13px; cursor: pointer; }
+.r-legend button.off { opacity: .45; text-decoration: line-through; }
+.r-legend button i { display: inline-block; width: 16px; height: 3px; border-radius: 2px; }
