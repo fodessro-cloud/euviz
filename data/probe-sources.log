@@ -1,22 +1,16 @@
 
-===== Bond yields: ECB yield curve, corporate candidates
-YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_2Y+SR_5Y+SR_10Y OK
-KEY,FREQ,REF_AREA,CURRENCY,PROVIDER_FM,INSTRUMENT_FM,PROVIDER_FM_ID,DATA_TYPE_FM,TIME_PERIOD,OBS_VALUE,OBS_STATUS,OBS_CONF,OBS_PRE_BREAK,OBS_COM,TIME_FORMAT,BREAKS,COLLECTION,COMPILING_ORG,DISS_ORG,DO
-YC.B.U2.EUR.4F.G_N_C.SV_C_YM.SR_10Y,B,U2,EUR,4F,G_N_C,SV_C_YM,SR_10Y,2026-10-15,4.0003502169,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/s
-YC.B.U2.EUR.4F.G_N_C.SV_C_YM.SR_10Y,B,U2,EUR,4F,G_N_C,SV_C_YM,SR_10Y,2026-10-16,4.0406774734,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/s
-YC.B.U2.EUR.4F.G_N_C.SV_C_YM.SR_2Y,B,U2,EUR,4F,G_N_C,SV_C_YM,SR_2Y,2026-10-15,3.2000472043,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/sta
-YC.B.U2.EUR.4F.G_N_C.SV_C_YM.SR_2Y,B,U2,EUR,4F,G_N_C,SV_C_YM,SR_2Y,2026-10-16,3.2254567542,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/sta
-YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y+SR_5Y+SR_10Y OK
-KEY,FREQ,REF_AREA,CURRENCY,PROVIDER_FM,INSTRUMENT_FM,PROVIDER_FM_ID,DATA_TYPE_FM,TIME_PERIOD,OBS_VALUE,OBS_STATUS,OBS_CONF,OBS_PRE_BREAK,OBS_COM,TIME_FORMAT,BREAKS,COLLECTION,COMPILING_ORG,DISS_ORG,DO
-YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y,B,U2,EUR,4F,G_N_A,SV_C_YM,SR_10Y,2026-10-15,3.390425514,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/st
-YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y,B,U2,EUR,4F,G_N_A,SV_C_YM,SR_10Y,2026-10-16,3.4444646497,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/s
-YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y,B,U2,EUR,4F,G_N_A,SV_C_YM,SR_2Y,2026-10-15,2.9927412165,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/sta
-YC.B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y,B,U2,EUR,4F,G_N_A,SV_C_YM,SR_2Y,2026-10-16,3.0299726083,A,F,,,P1D,,E,,,,,,,,,,,,,,,Technical notes are available at the following link: https://www.ecb.europa.eu/sta
-FLOW SEC Securities
-FLOW SEE Securities exchange - Trading Statistics
-FLOW SESFOD Survey on credit terms and conditions in euro-denominated securities financing and over-the-counter derivatives markets
-FLOW SHS Securities Holding Statistics
-FLOW SST Securities Settlement Statistics
-FLOW YC Financial market data - yield curve
-FRED BAMLHE00EHYIEY ['observation_date,BAMLHE00EHYIEY', '2023-10-20,7.85'] ['2026-10-15,6.55', '2026-10-16,6.50']
-FRED BAMLHE00EHYIOAS ['observation_date,BAMLHE00EHYIOAS', '2023-10-20,4.93'] ['2026-10-15,3.36', '2026-10-16,3.31']
+===== Bundesbank corporate bond yields
+M.I.UMR.RD.EUR..B...R.A._Z._Z.A FAIL HTTP Error 404: Not Found
+D.I.UMR.RD.EUR..B...R.A._Z._Z.A FAIL HTTP Error 404: Not Found
+M.I.UMR..EUR..... OK 11 lines
+﻿"",BBSIS.M.I.UMR.DR.EUR.A.B.A.A.R.A.A._Z._Z.A,BBSIS.M.I.UMR.DR.EUR.A.B.A.A.R.A.A._Z._Z.A_FLAGS,BBSIS.M.I.UMR.DR.EUR.MFISP.B.A.A.R.A.A._Z._Z.A,BBSIS.M.I.UMR.DR.EUR.MFISP.B.A.A.R.A.A._Z._Z.A_FLAGS,BBSIS.M.I.UMR.DR.EUR.MFISX.B.A150.A.R.A.A._Z._Z.A,BBSIS.M.I.UMR.DR.EUR.MFISX.B.A150.A.R.A.A._Z._Z.A_FLAG
+   "",Weighted average maturity of yields on debt securities outstanding /  total / monthly values,,Weighted average maturity of yields on debt securities outstanding / Special purpose credit institutions / monthly values,,Weighted average maturity of yields on d
+   BBK_UNIT_ENG,,,,,,,,,,,,,,,,,,,,,,,,,,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,percent,,perce
+   Comment (in english),Adjustment of the scope of securities included on 1 May 2020. Adjustment of the scope of securities included on 1 May 2020.,,Adjustment of the scope of securities included on 1 May 2020. Adjustment of the scope of securities included on 1 
+   Decimals,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,,2,
+   Time format code,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M,,P1M
+   category,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,,ZRWR,
+   unit,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,Jahre,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Prozent,,,,,,,,Prozent,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+   unit multiplier,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,,One,
+   last update,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:49,,2026-10-01 10:32:
+   2026-09,10.51,,6.54,,6.93,,6.25,,7.02,,6.57,,12.00,,11.49,,3.99,,6.70,,10.53,,23.48,,7.10,,2.45,,2.66,,2.76,,2.36,,1.96,,1.65,,1.44,,1.34,,1.32,,2.52,,2.79,,2.92,,2.54,,2.10,,1.81,,1.65,,1.59,,1.56,,2.51,,2.79,,2.91,,2.51,,2.07,,1.80,,1.65,,1.59,,1.55,,2.53,,2
