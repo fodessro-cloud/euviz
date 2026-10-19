@@ -173,17 +173,17 @@ FCA FULINS_E_20261017_01of01.zip: 2149 new issuers
 read 34 reports this run
 4904 listed companies with an LEI on Wikidata
 18568 issuers with listed shares (FIRDS); 1926 of them file reports here
-Wikidata by ISIN/LEI: labels for 1628 of 3343 keys
-sector found for 662 of 1672 without a Wikidata industry: {'wikidata': 302, 'bank': 54, 'name': 306}
+Wikidata by ISIN/LEI: labels for 1629 of 3343 keys
+sector found for 664 of 1672 without a Wikidata industry: {'wikidata': 304, 'bank': 54, 'name': 306}
 2462 companies with figures, 92 without usable figures
-with ticker: 839, with sector: 1452
+with ticker: 839, with sector: 1454
 with F-score: 1553, F-score 8-9: 84, with dividend cover: 775
 by country: GB 529, SE 326, FR 212, NO 142, PL 141, IT 119, DK 118, FI 116, ES 114, DE 110, NL 103, BE 75, AT 50, CH 50, GR 41, LU 36, MT 27, IE 24, IS 23, HU 20, HR 19, LT 18, CZ 12, PT 7, SI 6, CY 6, SK 6, RO 5, EE 3, LV 3, BG 1
 
 largest 40 by revenue:
 Shell PLC                          GB RDSA     Energy                 2025-12-31 rev€=237168.8 ebitda=None fcf=21948.0 roe=10.2 F=5 1111001-0
 Glencore PLC                       GB GLEN     Materials              2025-12-31 rev€=219972.5 ebitda=None fcf=-290.0 roe=0.9 F=6 1111101-0
-TotalEnergies SE                   FR FP       Energy                 2025-12-31 rev€=178793.2 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
+TotalEnergies SE                   FR TOT      Energy                 2025-12-31 rev€=178793.2 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
 BP P.L.C.                          GB BP       Energy                 2025-12-31 rev€=171109.0 ebitda=30464.0 fcf=11272.0 roe=0.1 F=6 1101011-1
 Stellantis N.V.                    NL STLAM    Consumer Discretionary 2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=3 0001001-1
 Ahold                              NL AD       Consumer Staples       2025-12-28 rev€=92352.0 ebitda=7275.0 fcf=4425.0 roe=15.9 F=7 111110101
