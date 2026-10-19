@@ -13,7 +13,7 @@ Writes js/prices.js (last price, change against the previous close, day range, v
 TICKER@Country) and keeps data/prices-history.json (ISIN -> {date: close}) so the daily
 change can be computed. Stocks that traded on neither venue keep their illustrative figures.
 """
-import gzip, hashlib, json, os, sys, tempfile, urllib.request
+import gzip, hashlib, json, os, sys, tempfile, time, urllib.error, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -66,9 +66,21 @@ ISINS = {
 }
 
 
-def fetch(url, timeout=180):
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
-        return r.read()
+def fetch(url, timeout=180, tries=6):
+    """Download politely: Deutsche Börse answers 429 Too Many Requests when files are fetched back to back."""
+    for n in range(tries):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
+                body = r.read()
+            time.sleep(0.3)
+            return body
+        except urllib.error.HTTPError as e:
+            if e.code != 429 and e.code < 500 or n == tries - 1:
+                raise
+            wait = e.headers.get("Retry-After", "")
+            wait = int(wait) if wait.isdigit() else min(60, 5 * 2 ** n)
+            print(f"  {e.code} from {url.rsplit('/', 1)[-1]}, waiting {wait}s")
+            time.sleep(wait)
 
 
 def list_files(venue):
@@ -223,11 +235,18 @@ def main():
     for venue, label in VENUES:
         new = [f for f in minutes[venue] if file_day(f) == today and f > live["seen"].get(venue, "")][:MAX_MINUTE_FILES]
         agg = live["agg"].setdefault(venue, {})
+        done = []
         for f in new:
-            merge(agg, download_summary(f, wanted))
-        if new:
-            live["seen"][venue] = new[-1]
-            print(f"{label} {today}: read {len(new)} new minute files, up to {new[-1]}")
+            try:
+                merge(agg, download_summary(f, wanted))
+            except (urllib.error.URLError, OSError) as e:
+                # Keep what was read; the next run carries on from the last file that came through.
+                print(f"{label} {today}: stopped at {f} ({e}); the next run continues from there")
+                break
+            done.append(f)
+        if done:
+            live["seen"][venue] = done[-1]
+            print(f"{label} {today}: read {len(done)} new minute files, up to {done[-1]}")
     live_rows = pick(live["agg"]) if today else {}
 
     def quote_of(isin):
