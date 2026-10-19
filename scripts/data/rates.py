@@ -1,7 +1,7 @@
 """Interest rates in the euro: Euribor, government bond yields and term deposit rates on one chart.
 
 Free official sources (ECB Data Portal):
-  FM   Euribor 1, 3, 6 and 12 months, monthly averages since 1999
+  FM   ECB deposit facility rate (the ECB's key rate), Euribor 1, 3, 6 and 12 months, monthly averages since 1999
   YC   euro area government bond yields (all euro area governments, and AAA-rated only),
        2, 5 and 10 years, daily since September 2004
   MIR  rate banks paid on new household deposits fixed for up to 1 year, euro area, monthly
@@ -23,6 +23,7 @@ START = "1999-01"
 
 # key: (label, group, ECB flow/key). Groups share a colour family on the page.
 SERIES = {
+    "ecb": ("ECB deposit rate", "ecb", "FM/B.U2.EUR.4F.KR.DFR.LEV"),
     "eur1m": ("Euribor 1 month", "euribor", "FM/M.U2.EUR.RT.MM.EURIBOR1MD_.HSTA"),
     "eur3m": ("Euribor 3 months", "euribor", "FM/M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA"),
     "eur6m": ("Euribor 6 months", "euribor", "FM/M.U2.EUR.RT.MM.EURIBOR6MD_.HSTA"),
@@ -35,7 +36,7 @@ SERIES = {
     "dep1y": ("Term deposit up to 1 year", "deposit", "MIR/M.U2.B.L22.F.R.A.2250.EUR.N"),
 }
 SOURCES = [
-    ["ECB Data Portal", "https://data.ecb.europa.eu/", "Euribor (monthly averages), euro area government bond yield curve, bank deposit rates"],
+    ["ECB Data Portal", "https://data.ecb.europa.eu/", "ECB deposit facility rate, Euribor (monthly averages), euro area government bond yield curve, bank deposit rates"],
     ["Deutsche Bundesbank", "https://www.bundesbank.de/en/statistics/money-and-capital-markets/interest-rates-and-yields", "yields on corporate bonds of German issuers (non-banks)"],
 ]
 

@@ -3,6 +3,7 @@
 
 // One colour family per kind of rate, light to dark with the length of the period.
 const COLORS = {
+  ecb: '#E0457B',
   eur1m: '#9CC3F5', eur3m: '#5B9BFF', eur6m: '#2A78D6', eur12m: '#14427E',
   gov2y: '#F5B38F', gov5y: '#EB6834', gov10y: '#A8401A',
   aaa10y: '#1BAF7A', corp: '#8E44AD', dep1y: '#C98500',
