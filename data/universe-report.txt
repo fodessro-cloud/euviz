@@ -8,7 +8,7 @@ Shell PLC                          GB RDSA     Energy                 2025-12-31
 Glencore PLC                       GB GLEN     Materials              2025-12-31 rev€=220521.2 ebitda=None fcf=-290.0 roe=0.9 F=6 1111101-0
 TotalEnergies SE                   FR FP       Energy                 2025-12-31 rev€=179239.2 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
 BP P.L.C.                          GB BP       Energy                 2025-12-31 rev€=171535.9 ebitda=30464.0 fcf=11272.0 roe=0.1 F=6 1101011-1
-Stellantis N.V.                    NL STLAM    Consumer Discretionary 2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=3 0001001-1
+Stellantis N.V.                    NL STLAP    Consumer Discretionary 2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=3 0001001-1
 Equinor ASA                        NO EQNR     Energy                 2024-12-31 rev€=92449.0 ebitda=40762.0 fcf=7933.0 roe=20.8 F=6 11011-1-1
 Ahold                              NL AD       Consumer Staples       2025-12-28 rev€=92352.0 ebitda=7275.0 fcf=4425.0 roe=15.9 F=7 111110101
 AXA                                FR CS       Financials             2025-12-31 rev€=91139.0 ebitda=None fcf=None roe=20.8 F=None None
@@ -38,7 +38,7 @@ Telefónica                         ES TEF      Communication          2024-12-3
 Compass Group                      GB CPG      Consumer Staples       2025-09-30 rev€=41042.3 ebitda=None fcf=2474.0 roe=24.4 F=5 1111001-0
 Vodafone Group Public Limited Comp GB VOD      Communication          2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8 F=6 01111-101
 Schneider Electric                 FR SU       Utilities              2025-12-31 rev€=40152.0 ebitda=None fcf=4588.0 roe=17.2 F=6 111100101
-Sainsbury's                        GB SBRY     Consumer Staples       2026-02-28 rev€=39958.4 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
+J Sainsbury                        GB SBRY     Consumer Staples       2026-02-28 rev€=39958.4 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
 GSK PLC                            GB GSK      Healthcare             2025-12-31 rev€=38794.6 ebitda=None fcf=4756.0 roe=34.9 F=9 111111111
 Inditex                            ES ITX      Consumer Discretionary 2025-01-31 rev€=38632.0 ebitda=10728.0 fcf=6616.0 roe=29.8 F=8 111110111
 Imperial Brands                    GB IMB      Consumer Staples       2025-09-30 rev€=38205.6 ebitda=4271.0 fcf=3429.0 roe=42.9 F=6 110101110
