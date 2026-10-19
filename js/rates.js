@@ -24,7 +24,7 @@ function renderNow() {
   document.getElementById('now').innerHTML = D.series.map(s => `<div class="i-tile">
     <div class="i-tile-head"><span class="i-dot" style="background:${COLORS[s.key]}"></span>${esc(s.label)}</div>
     <div class="i-tile-real">${rate(s.latest.value)}</div>
-    <div class="i-tile-sub">${s.key.startsWith('eur') || s.key === 'dep1y' ? 'average in ' : ''}${dNice(s.latest.date)}</div></div>`).join('');
+    <div class="i-tile-sub">${s.latest.date.length === 7 ? 'average in ' : ''}${dNice(s.latest.date)}</div></div>`).join('');
 }
 
 function renderChart() {
