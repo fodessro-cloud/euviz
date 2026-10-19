@@ -41,7 +41,7 @@ jobs:
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/prices-history.json data/prices-state.json data/prices.log js/prices.js js/company-prices.json
+          git add data/prices-history.json data/prices-week.json data/prices-state.json data/prices.log js/prices.js js/company-prices.json
           git diff --cached --quiet || git commit -m "Update Xetra prices [data refresh]"
           git pull --rebase -X theirs || true
           git push

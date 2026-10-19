@@ -16,8 +16,9 @@
   box.querySelector('[data-f=badge]').textContent = `Real price · ${venue} · ${day}${final ? '' : ' · 15 min delayed'}`;
 })();
 
-// Price chart: 1H, 4H and 1D use the minute prices of the last trading day (/js/intraday/<ISIN>.json,
-// times shown in Frankfurt time), the longer ranges the daily closes embedded in the page.
+// Price chart: 1H, 4H and 1D use the minute prices of the last trading day and 1W the half-hourly prices
+// of the last 5 (/js/intraday/<ISIN>.json, times shown in Frankfurt time), the longer ranges the daily
+// closes embedded in the page.
 // 1H is shown first when the minute prices load; moving over the chart shows that price.
 (async function () {
   const fig = document.querySelector('.sp-chart');
@@ -33,12 +34,16 @@
     if (r.ok) intra = await r.json();
   } catch { /* no minute prices: daily ranges only */ }
   // Minute of the day (UTC) -> "15:42" in Frankfurt time.
-  const clock = m => intra && new Date(Date.UTC(...intra.date.split('-').map((v, i) => i === 1 ? v - 1 : +v), 0, m))
+  const clock = (m, d = intra.date) => new Date(Date.UTC(...d.split('-').map((v, i) => i === 1 ? v - 1 : +v), 0, m))
     .toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
+  const weekday = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
   const day = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
   function draw(range) {
-    if (range[0] === 'i') {
+    if (range === 'w') {
+      pts = intra.week.map(([d, m, p]) => [`${weekday(d)} ${clock(m, d)}`, p]);
+      cap[0].textContent = `Last ${new Set(intra.week.map(w => w[0])).size} trading days · ${intra.venue}`;
+    } else if (range[0] === 'i') {
       const bars = intra.bars, mins = +range.slice(1), end = bars[bars.length - 1][0];
       pts = bars.filter(b => !mins || b[0] > end - mins).map(b => [clock(b[0]), b[1]]);
       if (pts.length < 2) pts = bars.slice(-2).map(b => [clock(b[0]), b[1]]);
@@ -66,6 +71,11 @@
 
   const usable = intra && intra.bars && intra.bars.length >= 2;
   if (usable) fig.querySelectorAll('[data-range^="i"]').forEach(b => { b.hidden = false; });
+  // 1W from half-hourly prices once two trading days are in; it replaces the 1W of daily closes.
+  if (usable && intra.week && new Set(intra.week.map(w => w[0])).size >= 2) {
+    fig.querySelectorAll('[data-range="w"]').forEach(b => { b.hidden = false; });
+    fig.querySelectorAll('[data-range="d7"]').forEach(b => b.remove());
+  }
   if (!usable && daily.length < 5) {
     // Nothing to draw yet: a single close, no minute prices.
     fig.querySelector('.sp-chart-ranges').remove(); svg.remove(); fig.querySelector('.sp-chart-axis').remove();
