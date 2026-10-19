@@ -23,6 +23,8 @@ COMPANIES = ROOT / "js" / "companies.json"            # all European issuers wit
 OUT_ALL = ROOT / "js" / "company-prices.json"        # last price per ISIN for those issuers
 HISTORY = ROOT / "data" / "prices-history.json"
 INTRADAY = ROOT / "js" / "intraday"   # minute prices of the last closed day, one file per ISIN
+WEEK = ROOT / "data" / "prices-week.json"        # half-hourly prices of the last 5 trading days, for the 1W chart
+WEEK_DAYS = 5
 STATE = ROOT / "data" / "prices-state.json"      # last closed day + the day in progress
 LIST_URL = "https://mfs.deutsche-boerse.com/api/{}-posttrade"
 # Xetra first; Börse Frankfurt (floor/Specialist trading) fills in shares Xetra does not trade.
@@ -177,7 +179,18 @@ def quote(isin, a, day, final, history):
     }
 
 
-def write_intraday(day, closed):
+def add_week(week, day, closed):
+    """Keep the last trade of every half hour of the closed day next to the 4 days before it."""
+    for isin, a in closed.items():
+        halves = {}
+        for m, (_, p) in sorted(a.get("bars", {}).items()):
+            halves[m // 30] = [m, round(p, 4)]
+        days = week.setdefault(isin, {})
+        days[day] = list(halves.values())
+        week[isin] = dict(sorted(days.items())[-WEEK_DAYS:])
+
+
+def write_intraday(day, closed, week):
     """js/intraday/<ISIN>.json: the last trade of every minute of the closed day, for the 1H/4H/1D charts
     on the company pages. Not kept in git (about 2,000 files a day); prices.yml uploads them."""
     INTRADAY.mkdir(parents=True, exist_ok=True)
@@ -186,7 +199,8 @@ def write_intraday(day, closed):
     for isin, a in closed.items():
         bars = sorted(a.pop("bars", {}).items())
         (INTRADAY / f"{isin}.json").write_text(json.dumps(
-            {"date": day, "venue": a["venue"], "bars": [[m, round(p, 4)] for m, (_, p) in bars]}, separators=(",", ":")))
+            {"date": day, "venue": a["venue"], "bars": [[m, round(p, 4)] for m, (_, p) in bars],
+             "week": [[d, m, p] for d, ps in week.get(isin, {}).items() if d in week["_days"] for m, p in ps]}, separators=(",", ":")))
     print(f"Intraday charts for {day}: {len(closed)} shares")
 
 
@@ -220,7 +234,21 @@ def main():
                 per_venue[venue] = download_summary(daily[venue][day], wanted, bars=True)
                 print(f"Daily {label} file for {day}: {len(per_venue[venue])} of our shares traded")
         closed = {isin: {**a, "day": day} for isin, a in pick(per_venue).items()}
-        write_intraday(day, closed)
+        week = json.loads(WEEK.read_text()) if WEEK.exists() else {}
+        have = set(week.pop("_days", []))
+        # Days still missing from the week (first run, missed runs): read their daily files if still offered.
+        for past in sorted(daily["DETR"])[-WEEK_DAYS:]:
+            if past < day and past not in have:
+                older = {v: download_summary(daily[v][past], wanted, bars=True) for v, _ in VENUES if past in daily[v]}
+                add_week(week, past, pick(older))
+                have.add(past)
+                print(f"Week chart: added {past}")
+        add_week(week, day, closed)
+        have.add(day)
+        week["_days"] = sorted(have)[-WEEK_DAYS:]
+        WEEK.parent.mkdir(exist_ok=True)
+        WEEK.write_text(json.dumps(week, separators=(",", ":"), sort_keys=True))
+        write_intraday(day, closed, week)
         # A share that did not trade that day keeps its last real close.
         final = {"day": day, "asked": asked, "rows": {**final["rows"], **closed}}
         for isin, a in closed.items():

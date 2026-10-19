@@ -159,6 +159,7 @@ def chart(c):
         axis = [esc(pts[0][0]), f'low €{num(lo, 2)} · high €{num(hi, 2)}', esc(pts[-1][0])]
     days = (date.fromisoformat(pts[-1][0]) - date.fromisoformat(pts[0][0])).days if len(pts) >= 2 else 0
     buttons = ''.join(f'<button type="button" data-range="i{m}" hidden>{label}</button>' for label, m in (('1H', 60), ('4H', 240), ('1D', 0)))
+    buttons += '<button type="button" data-range="w" hidden>1W</button>'
     buttons += ''.join(f'<button type="button" data-range="d{d}">{label}</button>'
                        for label, d in (('1W', 7), ('1M', 31), ('3M', 92), ('6M', 183), ('1Y', 366)) if days > d)
     if len(pts) >= 5:
