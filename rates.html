@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINILA — Euribor, government bond yields and deposit rates in the euro</title>
+  <meta name="description" content="Euribor 1, 3, 6 and 12 months, euro area government bond yields and term deposit rates on one chart since 1999. Official ECB data, refreshed daily.">
+  <link rel="icon" href="css/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/invest.css">
+  <link rel="stylesheet" href="css/header.css">
+</head>
+<body>
+
+<header class="fh">
+  <div class="fh-row">
+    <a class="fh-logo" href="/" aria-label="FINILA home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
+    <nav class="fh-nav" aria-label="Main menu">
+      <a href="/companies">Screener</a>
+      <a href="/map">Maps</a>
+      <a href="/groups">Groups</a>
+      <a href="/insiders">Insiders</a>
+      <a href="/shorts">Shorts</a>
+      <a href="/property">Property</a>
+      <a href="/invest">Assets</a>
+      <a href="/rates" aria-current="page">Rates</a>
+      <a href="/archiv/">Archive</a>
+    </nav>
+  </div>
+</header>
+<script>(function(){var n=document.querySelector('.fh-nav'),a=n&&n.querySelector('[aria-current]');if(a)n.scrollLeft=a.offsetLeft-n.offsetLeft-16;})();</script>
+<div class="i-banner">Real data from the European Central Bank, refreshed daily. Not investment advice.</div>
+
+<main class="h-wrap i-main">
+  <section class="i-intro">
+    <div class="h-eyebrow">INTEREST RATES</div>
+    <h1>Euribor, bonds and deposits on one chart</h1>
+    <p>What banks charge each other (Euribor), what euro area governments pay on their bonds and what banks pay on term deposits, month by month since 1999.</p>
+    <span class="i-updated" id="updated"></span>
+  </section>
+
+  <section class="h-section">
+    <div class="h-section-head">
+      <h2>Rates today</h2>
+      <span class="i-sub">Newest value of each rate</span>
+    </div>
+    <div class="i-now" id="now"></div>
+  </section>
+
+  <section class="h-section">
+    <div class="h-card i-calc">
+      <div class="i-calc-head">
+        <div>
+          <h2>How the rates moved</h2>
+          <p class="i-sub">Click a rate in the legend to hide or show it.</p>
+        </div>
+        <div class="i-calc-inputs">
+          <div class="i-seg" role="group" aria-label="Period" id="years">
+            <button type="button" data-years="1">1 y</button>
+            <button type="button" data-years="5">5 y</button>
+            <button type="button" data-years="10" class="on">10 y</button>
+            <button type="button" data-years="20">20 y</button>
+            <button type="button" data-years="0">All</button>
+          </div>
+        </div>
+      </div>
+      <div class="i-chart-wrap">
+        <div class="i-legend r-legend" id="legend"></div>
+        <div class="i-chart" id="chart" role="img" aria-label="Euribor, government bond yields and term deposit rates over time, in per cent"></div>
+        <div class="i-tip" id="tip" hidden></div>
+      </div>
+      <p class="h-note">Monthly averages; the current month is the average so far. Government bond yields start in September 2004.</p>
+    </div>
+  </section>
+
+  <section class="h-section i-split">
+    <div class="h-card i-method">
+      <h2>What the rates mean</h2>
+      <ul>
+        <li><strong>Euribor:</strong> the rate at which banks in the euro area lend to each other for 1, 3, 6 or 12 months. Variable mortgages and many loans follow it, and banks price term deposits off it.</li>
+        <li><strong>Government bonds:</strong> the yield of euro area government bonds with 2, 5 and 10 years left, all euro area governments together (ECB yield curve).</li>
+        <li><strong>AAA government bonds:</strong> the same for the governments with the best credit rating only, such as Germany and the Netherlands.</li>
+        <li><strong>Term deposit:</strong> the average rate banks paid households on new deposits fixed for up to one year in the euro area. The best offers on the market are higher.</li>
+      </ul>
+    </div>
+    <div class="h-card i-method">
+      <h2>Sources</h2>
+      <ul id="sources"></ul>
+      <p class="h-note" id="failed"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="h-footer">
+  <div class="h-wrap h-footer-row">
+    <div class="h-footer-brand">
+      <div class="h-logo small">
+        <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>
+        FINILA
+      </div>
+      <p>Information on FINILA is for education only and is not investment advice.</p>
+    </div>
+    <nav class="h-footer-nav" aria-label="Footer">
+      <a href="/companies">Screener</a>
+      <a href="/invest">Where to put money</a>
+      <a href="/rates">Interest rates</a>
+      <a href="/property">Property prices</a>
+      <a href="/map">Market map</a>
+      <a href="/archiv/">Archive</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/rates.js"></script>
+<script src="js/analytics.js" defer></script>
+</body>
+</html>
