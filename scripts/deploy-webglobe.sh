@@ -72,7 +72,7 @@ fi
 
 echo "== Preparing FINILA"
 mkdir -p "$WORK/site"
-cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/companies.html "$SRC"/insiders.html "$SRC"/shorts.html "$SRC"/invest.html "$SRC"/property.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
+cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/companies.html "$SRC"/insiders.html "$SRC"/shorts.html "$SRC"/invest.html "$SRC"/rates.html "$SRC"/property.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
 cp -r "$SRC/css" "$SRC/js" "$WORK/site/"
 cp "$SRC/robots.txt" "$WORK/site/"
 # One page per company (/stock/<name>), the A-Z list and sitemap.xml, built from the current data.
@@ -90,7 +90,7 @@ grep -q '^# BEGIN FINILA' "$WORK/htaccess.original" || SAVE_WP_HTACCESS=1
 echo "== Uploading"
 cmds="cd '$FTP_DIR'"
 [ "$SAVE_WP_HTACCESS" = 1 ] && cmds="$cmds && put '$WORK/htaccess.original' -o .htaccess-wordpress-zaloha"
-cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose --exclude-glob insiders.json --exclude-glob shorts.json --exclude-glob invest.json --exclude-glob companies.json --exclude-glob fundamentals.js --exclude-glob prices.js --exclude-glob company-prices.json --exclude-glob housing.json --exclude-glob housing-levels.json '$WORK/site' ."
+cmds="$cmds && mirror -R --parallel=4 --no-perms --verbose --exclude-glob insiders.json --exclude-glob shorts.json --exclude-glob invest.json --exclude-glob rates.json --exclude-glob companies.json --exclude-glob fundamentals.js --exclude-glob prices.js --exclude-glob company-prices.json --exclude-glob housing.json --exclude-glob housing-levels.json '$WORK/site' ."
 [ "$ARCHIVE" = 1 ] && cmds="$cmds && mirror -R --parallel=4 --no-perms '$WORK/archiv' archiv"
 # Archive pages rebuilt in the FINILA design (scripts/build-archive.py) replace the
 # WordPress HTML; the images under archiv/wp-content stay as they are.

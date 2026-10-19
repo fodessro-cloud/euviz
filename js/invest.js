@@ -53,7 +53,7 @@ function series(code, key) {
 function render() {
   const c = D.countries[country];
   document.querySelectorAll('#region option').forEach(o => { o.selected = o.value === country; });
-  renderNow(); renderCalc(); renderRates(); renderTable();
+  renderNow(); renderCalc(); renderTable();
 }
 
 // ── Today: nominal and real yield per asset ──────────────────────────────
@@ -176,73 +176,6 @@ const niceStep = s => { const p = Math.pow(10, Math.floor(Math.log10(s))), f = s
 const ret = v => pct(v - amount, Math.abs(v - amount) >= 100 ? 0 : 1);
 const axisPct = v => `${Math.round(v - amount) > 0 ? '+' : ''}${Math.round(v - amount)} %`;
 
-// ── Euribor and term deposits: the rates themselves, in per cent ─────────
-let rateYears = 5;
-function renderRates() {
-  const el = document.getElementById('rate-chart');
-  if (!D.euribor || !Object.keys(D.euribor).length) { document.getElementById('rates').hidden = true; return; }
-  const pal = PALETTE[ASSETS[0].color === PALETTE.light[0] ? 'light' : 'dark'];
-  const dep = D.deposits1y?.[country] ? country : 'U2';
-  const list = ['1M', '3M', '6M', '12M'].filter(k => D.euribor[k]).map((k, j) => ({ label: `Euribor ${k}`, s: D.euribor[k], color: pal[j] }));
-  if (D.deposits1y?.[dep]) list.push({ label: `1-year term deposit, ${D.countries[dep].name}`, s: D.deposits1y[dep], color: pal[5], dep: true });
-  const end = Math.max(...list.map(a => mIdx(a.s[0]) + a.s[1].length - 1));
-  const from = rateYears ? end - rateYears * 12 : Math.min(...list.map(a => mIdx(a.s[0])));
-  list.forEach(a => {
-    const s0 = mIdx(a.s[0]);
-    a.pts = a.s[1].map((v, j) => [s0 + j, v]).filter(p => p[0] >= from);
-    a.final = a.pts.length ? a.pts[a.pts.length - 1][1] : null;
-  });
-  const lines = list.filter(a => a.pts.length);
-  const W = Math.max(300, el.clientWidth), H = W < 520 ? 240 : 300;
-  const pad = { l: 52, r: W < 520 ? 12 : 150, t: 12, b: 28 };
-  const ys = lines.flatMap(a => a.pts.map(p => p[1])).concat([0]);
-  let lo = Math.min(...ys), hi = Math.max(...ys);
-  const span = hi - lo || 1; lo -= span * 0.05; hi += span * 0.05;
-  const x = i => pad.l + (i - from) / Math.max(1, end - from) * (W - pad.l - pad.r);
-  const y = v => pad.t + (hi - v) / (hi - lo) * (H - pad.t - pad.b);
-  const step = niceStep((hi - lo) / 5);
-  let grid = '';
-  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step)
-    grid += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}" class="g"/><text x="${pad.l - 8}" y="${y(v) + 4}" class="ax" text-anchor="end">${+v.toFixed(2)} %</text>`;
-  const yrs = (end - from) / 12, yStep = yrs <= 5 ? 1 : yrs <= 10 ? 2 : 4;
-  for (let yr = Math.ceil((from + 1) / 12); yr * 12 <= end; yr += yStep)
-    grid += `<text x="${x(yr * 12)}" y="${H - 8}" class="ax" text-anchor="middle">${yr}</text>`;
-  if (yrs < 1.5) grid += `<text x="${x(from)}" y="${H - 8}" class="ax">${mNice(mStr(from))}</text>`;
-  const path = a => a.pts.map((p, j) => `${j ? 'L' : 'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join('');
-  const body = lines.map(a => `<path d="${path(a)}" class="ln" stroke="${a.color}"${a.dep ? ' stroke-width="3"' : ''}/>`).join('');
-  let labels = '';
-  if (pad.r > 60) {
-    const ends = lines.map(a => ({ a, y: y(a.final) })).sort((p, q) => p.y - q.y);
-    for (let j = 1; j < ends.length; j++) if (ends[j].y - ends[j - 1].y < 15) ends[j].y = ends[j - 1].y + 15;
-    labels = ends.map(e => `<text x="${W - pad.r + 8}" y="${e.y + 4}" class="lb">${e.a.dep ? 'Term deposit' : e.a.label} ${rate(e.a.final)}</text>`).join('');
-  }
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${grid}
-    ${lo < 0 ? `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(0)}" y2="${y(0)}" class="base"/>` : ''}${body}${labels}
-    <line class="xh" id="rate-xh" y1="${pad.t}" y2="${H - pad.b}" visibility="hidden"/><g id="rate-dots"></g>
-    <rect x="${pad.l}" y="0" width="${W - pad.l - pad.r}" height="${H}" fill="transparent" id="rate-hit"/></svg>`;
-  document.getElementById('rate-legend').innerHTML = lines.map(a => `<span><i style="background:${a.color}"></i>${esc(a.label)}</span>`).join('');
-  document.getElementById('rate-note').textContent = `Monthly averages, latest ${mNice(mStr(end))}. Term deposit = average rate banks paid on new household deposits fixed for up to 1 year${dep === country ? '' : ' (shown for the euro area: Euribor is a euro rate)'}. Source: ECB.`;
-
-  const hit = document.getElementById('rate-hit'), tip = document.getElementById('rate-tip'), xh = document.getElementById('rate-xh'), dots = document.getElementById('rate-dots');
-  const move = ev => {
-    const r = hit.getBoundingClientRect(), px = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
-    const i = Math.round(from + px / r.width * (end - from));
-    if (i < from || i > end) return;
-    const vals = lines.map(a => ({ a, p: a.pts.find(p => p[0] === i) })).filter(v => v.p).sort((p, q) => q.p[1] - p.p[1]);
-    xh.setAttribute('x1', x(i)); xh.setAttribute('x2', x(i)); xh.setAttribute('visibility', 'visible');
-    dots.innerHTML = vals.map(v => `<circle cx="${x(i)}" cy="${y(v.p[1])}" r="4.5" fill="${v.a.color}" class="dt"/>`).join('');
-    tip.innerHTML = `<b>${mNice(mStr(i))}</b>` + vals.map(v => `<div><i style="background:${v.a.color}"></i>${esc(v.a.dep ? 'Term deposit' : v.a.label)}<span>${rate(v.p[1])}</span></div>`).join('');
-    tip.hidden = false;
-    const wrap = el.parentElement.getBoundingClientRect(), tx = r.left - wrap.left + px;
-    tip.style.left = `${Math.min(Math.max(tx + 14, 0), wrap.width - tip.offsetWidth)}px`;
-    if (tx + 14 + tip.offsetWidth > wrap.width) tip.style.left = `${Math.max(0, tx - 14 - tip.offsetWidth)}px`;
-  };
-  const leave = () => { tip.hidden = true; xh.setAttribute('visibility', 'hidden'); dots.innerHTML = ''; };
-  hit.addEventListener('mousemove', move); hit.addEventListener('touchmove', move, { passive: true });
-  hit.addEventListener('touchstart', move, { passive: true });
-  hit.addEventListener('mouseleave', leave); hit.addEventListener('touchend', leave);
-}
-
 // ── All of Europe side by side ──────────────────────────────────────────
 const COLS = [
   { key: 'name', label: 'Country', left: true },
@@ -297,10 +230,7 @@ function setup() {
     e.preventDefault(); country = tr.dataset.c; save(); render();
     document.getElementById('calc').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
-  document.querySelectorAll('#rate-years button').forEach(b => b.addEventListener('click', () => {
-    rateYears = +b.dataset.years; document.querySelectorAll('#rate-years button').forEach(x => x.classList.toggle('on', x === b)); renderRates();
-  }));
-  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { renderCalc(); renderRates(); }, 150); });
+  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(renderCalc, 150); });
   document.getElementById('updated').textContent = `Data updated ${D.updated.slice(0, 10)}`;
   document.getElementById('sources').innerHTML = D.sources.map(([n, u, what]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a>: ${esc(what)}</li>`).join('');
 }
