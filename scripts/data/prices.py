@@ -30,7 +30,8 @@ VENUES = [("DETR", "Xetra"), ("DFRA", "Börse Frankfurt")]
 FILE_URL = "https://mfs.deutsche-boerse.com/api/download/"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; FINILA data refresh; +https://www.finila.com)"}
 KEEP_DAYS = 400      # about a year and a half of closes: the price chart on every company page
-MAX_MINUTE_FILES = 600   # per venue and run; a trading day has about 900
+MAX_MINUTE_FILES = 150   # per venue and run (a trading day has about 900); when further behind, only the newest
+MINUTE_BUDGET = 480      # seconds per run for minute files, so the job ends well inside its 20 minutes
 
 # ISIN of the share class each screener stock (js/data.js) stands for.
 ISINS = {
@@ -93,9 +94,9 @@ def file_day(name):
     return name.split("-daily-")[1][:10] if "-daily-" in name else name.split("-posttrade-")[1][:10]
 
 
-def download_summary(name, wanted, bars=False):
+def download_summary(name, wanted, bars=False, tries=6):
     with tempfile.NamedTemporaryFile(suffix=".json.gz") as tmp:
-        tmp.write(fetch(FILE_URL + name))
+        tmp.write(fetch(FILE_URL + name, tries=tries))
         tmp.flush()
         return day_summary(tmp.name, wanted, bars)
 
@@ -232,13 +233,22 @@ def main():
     today = max((file_day(f) for fs in minutes.values() for f in fs), default="")
     if live["day"] != today:
         live = {"day": today, "seen": {}, "agg": {}}
+    started = time.monotonic()
     for venue, label in VENUES:
-        new = [f for f in minutes[venue] if file_day(f) == today and f > live["seen"].get(venue, "")][:MAX_MINUTE_FILES]
+        new = [f for f in minutes[venue] if file_day(f) == today and f > live["seen"].get(venue, "")]
+        if len(new) > MAX_MINUTE_FILES:
+            # Far behind (missed runs): the newest minutes give the current price; the day's
+            # volume and range stay partial until the daily file closes the day.
+            print(f"{label} {today}: {len(new)} minute files waiting, reading the newest {MAX_MINUTE_FILES}")
+            new = new[-MAX_MINUTE_FILES:]
         agg = live["agg"].setdefault(venue, {})
         done = []
         for f in new:
+            if time.monotonic() - started > MINUTE_BUDGET:
+                print(f"{label} {today}: time budget used, the next run continues")
+                break
             try:
-                merge(agg, download_summary(f, wanted))
+                merge(agg, download_summary(f, wanted, tries=3))
             except (urllib.error.URLError, OSError) as e:
                 # Keep what was read; the next run carries on from the last file that came through.
                 print(f"{label} {today}: stopped at {f} ({e}); the next run continues from there")
