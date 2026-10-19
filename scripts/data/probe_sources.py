@@ -206,16 +206,13 @@ def bond_yields():
 
 
 def bundesbank_corporate():
-    base = "https://api.statistiken.bundesbank.de/rest/data/BBSIS/"
-    for key in ("M.I.UMR.RD.EUR..B...R.A._Z._Z.A", "D.I.UMR.RD.EUR..B...R.A._Z._Z.A", "M.I.UMR..EUR....."):
-        try:
-            t = fetch(f"{base}{key}?format=csv&lang=en&lastNObservations=1").decode("utf-8", "replace")
-            lines = t.splitlines()
-            print(key, "OK", len(lines), "lines"); print(lines[0][:300])
-            for l in lines[1:80]:
-                print("  ", l[:260])
-        except Exception as e:  # noqa: BLE001
-            print(key, "FAIL", e)
+    import csv as _csv
+    t = fetch("https://api.statistiken.bundesbank.de/rest/data/BBSIS/M.I.UMR..EUR.....?format=csv&lang=en&lastNObservations=1").decode("utf-8-sig", "replace")
+    rows = list(_csv.reader(io.StringIO(t)))
+    keys, titles, last = rows[0], rows[1], rows[-1]
+    for k, ti, v in zip(keys, titles, last):
+        if k and not k.endswith("_FLAGS"):
+            print(f"{k} | {ti[:170]} | {v}")
 
 
 show("Bundesbank corporate bond yields", bundesbank_corporate)
