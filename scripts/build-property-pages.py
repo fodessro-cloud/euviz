@@ -220,7 +220,7 @@ def country_page(code, c, lv, data, levels, header, footer, links):
       <div class="i-calc-head"><div><h2>Home prices in {esc(name)}</h2>
         <p class="i-sub">Change since {esc(quarter(start))}, all homes: flats and houses together</p></div></div>
       <div class="i-chart-wrap">{svg}</div>
-      <p class="h-note">Compare with deposits, bonds, stocks and gold on <a href="/invest">Where to put money</a>.</p>
+      <p class="h-note">Compare with deposits, bonds, stocks and gold on <a href="/assets">Where to put money</a>.</p>
     </div>
   </section>
 {regions}{standing}

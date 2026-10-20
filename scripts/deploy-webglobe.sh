@@ -72,7 +72,7 @@ fi
 
 echo "== Preparing FINILA"
 mkdir -p "$WORK/site"
-cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/companies.html "$SRC"/insiders.html "$SRC"/shorts.html "$SRC"/invest.html "$SRC"/rates.html "$SRC"/property.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
+cp "$SRC"/index.html "$SRC"/screener.html "$SRC"/insiders.html "$SRC"/shorts.html "$SRC"/assets.html "$SRC"/rates.html "$SRC"/property.html "$SRC"/map.html "$SRC"/groups.html "$WORK/site/"
 cp -r "$SRC/css" "$SRC/js" "$WORK/site/"
 cp "$SRC/robots.txt" "$WORK/site/"
 # One page per company (/stock/<name>), the A-Z list and sitemap.xml, built from the current data.

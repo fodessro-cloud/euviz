@@ -103,8 +103,8 @@ function toggleGroupDetail(name) {
 }
 
 function openGroupStock(ticker) {
-  // redirect to screener with modal
-  window.open(`/screener?stock=${ticker}`, '_blank');
+  // opens the screener filtered to this ticker
+  window.open(`/screener?q=${encodeURIComponent(ticker)}`, '_blank');
 }
 
 function onGroupSortClick(key) {
