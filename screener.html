@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FINILA — European Stock Screener</title>
+  <title>Stock Screener — 2,400+ European stocks | FINILA</title>
+  <meta name="description" content="Free stock screener for 2,400+ European stocks: filter by revenue, profit, cash flow, debt and returns, read from their official annual reports.">
   <link rel="icon" href="css/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/header.css">
@@ -12,54 +13,39 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="fh">
   <div class="fh-row">
     <a class="fh-logo" href="/" aria-label="FINILA home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
-      <a href="/companies">Screener</a>
+      <a href="/screener" aria-current="page">Screener</a>
       <a href="/map">Maps</a>
       <a href="/groups">Groups</a>
       <a href="/insiders">Insiders</a>
       <a href="/shorts">Shorts</a>
       <a href="/property">Property</a>
       <a href="/rates">Rates</a>
-      <a href="/invest">Assets</a>
+      <a href="/assets">Assets</a>
       <a href="/archiv/">Archive</a>
     </nav>
   </div>
 </header>
 <script>(function(){var n=document.querySelector('.fh-nav'),a=n&&n.querySelector('[aria-current]');if(a)n.scrollLeft=a.offsetLeft-n.offsetLeft-16;})();</script>
-<div class="demo-banner" style="background:#FFF4D6;color:#6B4A00;font-size:12px;text-align:center;padding:5px 12px;border-bottom:1px solid #F0D58A;flex-shrink:0;">FINILA preview: figures on this page are illustrative, not real market data. Not investment advice.</div>
+<div class="real-banner">Real data from each company’s official annual report (ESEF) via filings.xbrl.org (companies not there yet, such as German ones, are listed with price and signals only), joined with insider trades and funds’ short positions from the regulators. Share prices are real, from Deutsche Börse (Xetra, Börse Frankfurt); market value, P/E and dividend yield are estimates from them. Not investment advice.</div>
 
-<!-- INDICES BAR -->
-<div class="indices-bar" id="indices-bar"></div>
-
-
-<!-- OVERVIEW STATS -->
-<div class="overview-bar" id="overview-bar"></div>
-
-<!-- MAIN LAYOUT -->
 <div class="page-wrap">
   <div class="page-content">
-
-    <!-- FILTER SIDEBAR -->
     <aside class="filter-sidebar">
       <h3>Filters</h3>
-      <div id="filter-panel"></div>
+      <div id="co-filters"></div>
       <div class="filter-actions">
-        <button class="btn btn-secondary" onclick="resetFilters()">Reset</button>
+        <button class="btn btn-secondary" id="co-reset" type="button">Reset</button>
       </div>
     </aside>
 
-    <!-- SCREENER TABLE AREA -->
     <div class="screener-main">
       <div class="screener-toolbar">
-        <span class="result-count" id="result-count">Loading…</span>
-        <div style="display:flex;gap:6px;align-items:center;">
-          <span style="font-size:11px;color:var(--text2)">Columns:</span>
-          <button class="btn btn-secondary" style="font-size:10.5px;" onclick="toggleColumns()">Customize</button>
-        </div>
+        <span class="result-count" id="co-count">Loading…</span>
+        <input id="co-search" class="co-search" type="search" placeholder="Search company, ticker or country" aria-label="Search companies">
       </div>
       <div class="table-wrap">
         <table id="screener-table"></table>
@@ -69,63 +55,11 @@
   </div>
 </div>
 
-<!-- STOCK DETAIL MODAL -->
 <div id="stock-modal">
   <div class="modal-box" id="modal-content"></div>
 </div>
 
-<script src="js/data.js"></script>
-<script src="js/prices.js"></script>
-<script src="js/live-prices.js"></script>
-<script src="js/fundamentals.js"></script>
-<script src="js/app.js"></script>
-<script src="js/screener.js"></script>
-<script>
-
-  // Overview stats
-  function renderOverview() {
-    const bar = document.getElementById('overview-bar');
-    if (!bar) return;
-    const total = STOCKS.reduce((s, x) => s + x.marketCap, 0);
-    const gainers = STOCKS.filter(s => s.change > 0).length;
-    const losers  = STOCKS.filter(s => s.change < 0).length;
-    const avgChange = (STOCKS.reduce((s,x)=>s+x.change,0)/STOCKS.length).toFixed(2);
-    const sign = avgChange >= 0 ? '+' : '';
-
-    bar.innerHTML = `
-      <div class="overview-card">
-        <div class="overview-label">Total Market Cap</div>
-        <div class="overview-val">${formatMarketCap(total)}</div>
-        <div class="overview-sub" style="color:var(--text2)">EU Markets</div>
-      </div>
-      <div class="overview-card">
-        <div class="overview-label">Stocks Covered</div>
-        <div class="overview-val">${STOCKS.length}</div>
-        <div class="overview-sub" style="color:var(--text2)">${[...new Set(STOCKS.map(s=>s.country))].length} Countries</div>
-      </div>
-      <div class="overview-card">
-        <div class="overview-label">Avg. Change</div>
-        <div class="overview-val ${avgChange >= 0 ? 'pos' : 'neg'}">${sign}${avgChange}%</div>
-        <div class="overview-sub" style="color:var(--text2)">Today</div>
-      </div>
-      <div class="overview-card">
-        <div class="overview-label">Gainers / Losers</div>
-        <div class="overview-val"><span class="pos">${gainers}</span> / <span class="neg">${losers}</span></div>
-        <div class="overview-sub" style="color:var(--text2)">Out of ${STOCKS.length}</div>
-      </div>
-      <div class="overview-card">
-        <div class="overview-label">Largest Cap</div>
-        <div class="overview-val" style="font-size:13px;">${STOCKS.sort((a,b)=>b.marketCap-a.marketCap)[0].ticker}</div>
-        <div class="overview-sub" style="color:var(--text2)">${formatMarketCap(STOCKS[0].marketCap)}</div>
-      </div>
-    `;
-  }
-  renderOverview();
-
-  function toggleColumns() {
-    // placeholder for column chooser
-  }
-</script>
+<script src="js/companies.js"></script>
 <script src="js/analytics.js" defer></script>
 </body>
 </html>

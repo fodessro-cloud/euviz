@@ -12,11 +12,14 @@ RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]
 # Clean addresses for the FINILA pages: /screener shows screener.html, and the
 # old /screener.html and /index.html addresses redirect to /screener and /.
 # A new page needs its name added to both lists.
+# Pages that moved keep their old address forever as a 301 redirect (query strings carry over).
+RewriteRule ^companies(\.html)?$ /screener [R=301,L]
+RewriteRule ^invest(\.html)?$ /assets [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+index\.html[\s?]
 RewriteRule ^index\.html$ / [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+(screener|companies|insiders|shorts|invest|rates|property|map|groups)\.html[\s?]
-RewriteRule ^(screener|companies|insiders|shorts|invest|rates|property|map|groups)\.html$ /$1 [R=301,L]
-RewriteRule ^(screener|companies|insiders|shorts|invest|rates|property|map|groups)$ $1.html [L]
+RewriteCond %{THE_REQUEST} \s/+(screener|insiders|shorts|assets|rates|property|map|groups)\.html[\s?]
+RewriteRule ^(screener|insiders|shorts|assets|rates|property|map|groups)\.html$ /$1 [R=301,L]
+RewriteRule ^(screener|insiders|shorts|assets|rates|property|map|groups)$ $1.html [L]
 
 # Company pages: /stock/asml-holding shows stock/asml-holding.html, /stock/ is the A-Z list.
 RewriteCond %{THE_REQUEST} \s/+stock/index\.html[\s?]

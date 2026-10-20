@@ -5,7 +5,7 @@ Reads js/companies.json, js/company-prices.json, js/insiders.json and js/shorts.
   <out>/stock/<slug>.html   one page per company, the figures written into the HTML
   <out>/stock/index.html    an A-Z list of all companies, linked from every page
   <out>/sitemap.xml         every FINILA page for Google and Bing
-  <out>/js/stock-slugs.json {lei: slug}, used by /companies and the homepage to link the pages
+  <out>/js/stock-slugs.json {lei: slug}, used by /screener and the homepage to link the pages
 Prices on a page are those of the build; js/stock-page.js refreshes them from company-prices.json.
 
     python3 scripts/build-stock-pages.py [source dir] [output dir]   (both default to the repo root)
@@ -23,7 +23,7 @@ SITE = 'https://www.finila.com'
 SRC = Path(sys.argv[1] if len(sys.argv) > 1 else '.')
 OUT = Path(sys.argv[2] if len(sys.argv) > 2 else SRC)
 # Pages listed in the sitemap besides the company pages.
-PAGES = ['', 'companies', 'insiders', 'shorts', 'invest', 'property', 'map', 'groups', 'stock/']
+PAGES = ['', 'screener', 'map', 'groups', 'insiders', 'shorts', 'property', 'rates', 'assets', 'stock/']
 
 COUNTRIES = {
     'AT': 'Austria', 'BE': 'Belgium', 'BG': 'Bulgaria', 'CH': 'Switzerland', 'CY': 'Cyprus', 'CZ': 'Czechia',
@@ -246,14 +246,14 @@ HEADER = '''<header class="fh">
   <div class="fh-row">
     <a class="fh-logo" href="/" aria-label="FINILA home"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="6" width="12" height="52" rx="2" fill="#0F1B33"/><rect x="24" y="6" width="32" height="12" rx="2" fill="#F2B33D"/><rect x="24" y="24" width="22" height="12" rx="2" fill="#5B9BFF"/><rect x="24" y="42" width="12" height="12" rx="2" fill="#2C3A5A"/></svg>FINILA</a>
     <nav class="fh-nav" aria-label="Main menu">
-      <a href="/companies" aria-current="page">Screener</a>
+      <a href="/screener" aria-current="page">Screener</a>
       <a href="/map">Maps</a>
       <a href="/groups">Groups</a>
       <a href="/insiders">Insiders</a>
       <a href="/shorts">Shorts</a>
       <a href="/property">Property</a>
       <a href="/rates">Rates</a>
-      <a href="/invest">Assets</a>
+      <a href="/assets">Assets</a>
       <a href="/archiv/">Archive</a>
     </nav>
   </div>
@@ -290,7 +290,7 @@ def head(title, description, canonical, extra=''):
 
 FOOTER = '''<footer class="sp-foot">
   <p>FINILA shows figures read automatically from official sources. They can contain errors and are not investment advice.</p>
-  <p><a href="/stock/">All companies A-Z</a> · <a href="/companies">Stock screener</a> · <a href="/insiders">Insider trades</a> · <a href="/shorts">Short positions</a> · <a href="/invest">Where to put money</a> · <a href="/property">Property prices</a></p>
+  <p><a href="/stock/">All companies A-Z</a> · <a href="/screener">Stock screener</a> · <a href="/insiders">Insider trades</a> · <a href="/shorts">Short positions</a> · <a href="/assets">Where to put money</a> · <a href="/property">Property prices</a></p>
 </footer>
 '''
 
@@ -450,7 +450,7 @@ def page(c, peers, updated):
       {fin}
       <div class="modal-report-src">{"" if listed_only else src + ". "}Prices: Deutsche Börse delayed data. Market value is estimated from net income / EPS. Figures are read automatically and can contain errors; check the report before relying on them. Page updated {esc(updated)}.</div>
     </div>
-    <p class="sp-cta"><a class="btn btn-primary" href="/companies?lei={esc(c["lei"])}">Compare in the stock screener</a></p>
+    <p class="sp-cta"><a class="btn btn-primary" href="/screener?lei={esc(c["lei"])}">Compare in the stock screener</a></p>
   </article>
   {events_html(c)}
   {f'<section class="sp-peers"><h2>{peer_title}</h2><ul>{peer_html}</ul></section>' if peer_html else ''}
@@ -478,7 +478,7 @@ def index_page(rows, updated):
     return head(title, desc, f'{SITE}/stock/') + f'''
 <main class="sp-wrap">
   <h1 class="sp-title">All companies A-Z</h1>
-  <p class="sp-intro">{len(rows):,} European listed companies. Updated {esc(updated)}. To filter and sort them, use the <a href="/companies">stock screener</a>.</p>
+  <p class="sp-intro">{len(rows):,} European listed companies. Updated {esc(updated)}. To filter and sort them, use the <a href="/screener">stock screener</a>.</p>
   <p class="sp-letters">{nav}</p>
   {body}
 </main>

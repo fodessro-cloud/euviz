@@ -10,13 +10,13 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 const bnEur = v => isNum(v) ? `€${fmt(v / 1000, v >= 100000 ? 0 : 1)}B` : '—';
 // Each company has its own page (/stock/<name>, built by scripts/build-stock-pages.py); the screener is the fallback.
 let SLUGS = {};
-const coLink = c => SLUGS[c.lei] ? `/stock/${SLUGS[c.lei]}` : `/companies?lei=${encodeURIComponent(c.lei)}`;
+const coLink = c => SLUGS[c.lei] ? `/stock/${SLUGS[c.lei]}` : `/screener?lei=${encodeURIComponent(c.lei)}`;
 const load = async url => { try { return await (await fetch(url, { cache: 'no-cache' })).json(); } catch { return null; } };
 
 let COS = [];
 
 // Companies with their last price. Market value, P/E and dividend yield are estimated the same
-// way as on /companies (js/companies.js): shares = net income / EPS, implausible values dropped.
+// way as on /screener (js/companies.js): shares = net income / EPS, implausible values dropped.
 function buildCompanies(cos, prices) {
   const list = cos.rows.map(r => Object.fromEntries(cos.fields.map((f, i) => [f, r[i]])));
   if (!prices) return list;
@@ -52,7 +52,7 @@ function renderMarket(inv) {
   ].filter(c => isNum(c[1]?.value));
   const val = (o, change) => change ? pct(o.value) : `${fmt(o.value)}%`;
   document.getElementById('index-cards').innerHTML = cards.map(([name, o, sub, change]) =>
-    `<a href="/invest"><span class="name">${name}</span>
+    `<a href="/assets"><span class="name">${name}</span>
       <span class="val ${change ? dir(o.value) : ''}">${val(o, change)}</span><span class="chg">${sub}</span></a>`).join('');
   const big = COS.filter(c => isNum(c.mcap) && isNum(c.price)).sort((a, b) => b.mcap - a.mcap).slice(0, 12);
   document.getElementById('ticker').innerHTML = cards.map(([name, o, , change]) =>
@@ -82,7 +82,7 @@ function renderSectorMap() {
     .sort((a, b) => b.cap - a.cap).slice(0, 14);
   const sizes = ['big', 'big', 'mid', 'mid', 'mid'];
   document.getElementById('sector-map').innerHTML = sectors.map((s, i) =>
-    `<a class="${sizes[i] || 'sm'} ${s.change < 0 ? 'neg' : ''}" href="/companies" style="background:${tileColor(s.change)}">
+    `<a class="${sizes[i] || 'sm'} ${s.change < 0 ? 'neg' : ''}" href="/screener" style="background:${tileColor(s.change)}">
       ${esc(s.name)}<span>${isNum(s.change) ? pct(s.change) : bnEur(s.cap)}</span></a>`).join('');
   if (!sectors.some(s => isNum(s.change)))
     document.getElementById('map-note').textContent = 'Market value by sector. The daily change appears after the next trading day.';
@@ -109,7 +109,7 @@ function renderPresets() {
     return `<article class="h-card h-preset" id="preset-${p.id}">
       <div><h3>${p.title}</h3><p class="rule">${p.rule}</p></div>
       <ul>${rows}</ul>
-      <a class="more" href="/companies">All ${hits.length} results in the screener</a>
+      <a class="more" href="/screener">All ${hits.length} results in the screener</a>
     </article>`;
   }).join('');
   document.querySelectorAll('[data-preset]').forEach(chip => chip.addEventListener('click', () => {
@@ -227,9 +227,9 @@ function setupSearch() {
   document.querySelector('.h-search').addEventListener('submit', e => {
     e.preventDefault();
     const q = document.getElementById('q').value.trim().toLowerCase();
-    if (!q) { location.href = '/companies'; return; }
+    if (!q) { location.href = '/screener'; return; }
     const hit = COS.find(c => (c.ticker || '').toLowerCase() === q || c.name.toLowerCase() === q);
-    location.href = hit ? coLink(hit) : `/companies?q=${encodeURIComponent(q)}`;
+    location.href = hit ? coLink(hit) : `/screener?q=${encodeURIComponent(q)}`;
   });
 }
 
