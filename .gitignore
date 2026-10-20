@@ -5,4 +5,5 @@ __pycache__/
 /sitemap.xml
 /js/stock-slugs.json
 /js/intraday/
+/data/live-bars.json
 build/

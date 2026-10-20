@@ -69,6 +69,9 @@
     fig.querySelectorAll('[data-range]').forEach(b => b.classList.toggle('active', b.dataset.range === range));
   }
 
+  // The page holds the closes up to when it was built; today's price so far ends the daily line.
+  if (intra && intra.bars && intra.bars.length && (!daily.length || intra.date > daily[daily.length - 1][0]))
+    daily.push([intra.date, intra.bars[intra.bars.length - 1][1]]);
   const usable = intra && intra.bars && intra.bars.length >= 2;
   if (usable) fig.querySelectorAll('[data-range^="i"]').forEach(b => { b.hidden = false; });
   // 1W from half-hourly prices once two trading days are in; it replaces the 1W of daily closes.

@@ -26,6 +26,8 @@ INTRADAY = ROOT / "js" / "intraday"   # minute prices of the last closed day, on
 WEEK = ROOT / "data" / "prices-week.json"        # half-hourly prices of the last 5 trading days, for the 1W chart
 WEEK_DAYS = 5
 STATE = ROOT / "data" / "prices-state.json"      # last closed day + the day in progress
+# Minute prices of the day in progress, per venue (not in git: prices.yml keeps it in the Actions cache).
+LIVE_BARS = ROOT / "data" / "live-bars.json"
 LIST_URL = "https://mfs.deutsche-boerse.com/api/{}-posttrade"
 # Xetra first; Börse Frankfurt (floor/Specialist trading) fills in shares Xetra does not trade.
 VENUES = [("DETR", "Xetra"), ("DFRA", "Börse Frankfurt")]
@@ -204,6 +206,27 @@ def write_intraday(day, closed, week):
     print(f"Intraday charts for {day}: {len(closed)} shares")
 
 
+def write_live_intraday(day, rows, bars, week):
+    """During the trading day: js/intraday/<ISIN>.json from today's minute prices so far, with today's
+    half hours added to the week. Shares that have not traded today keep the closed day's file online."""
+    INTRADAY.mkdir(parents=True, exist_ok=True)
+    past = [d for d in week.get("_days", []) if d < day][-(WEEK_DAYS - 1):]
+    n = 0
+    for isin, a in rows.items():
+        mins = bars.get(a["venue_code"], {}).get(isin)
+        if not mins:
+            continue
+        series = sorted((int(m), round(p, 4)) for m, (_, p) in mins.items())
+        halves = {}
+        for m, p in series:
+            halves[m // 30] = [m, p]
+        weekly = [[d, m, p] for d in past for m, p in week.get(isin, {}).get(d, [])] + [[day, m, p] for m, p in halves.values()]
+        (INTRADAY / f"{isin}.json").write_text(json.dumps(
+            {"date": day, "venue": a["venue"], "bars": [[m, p] for m, p in series], "week": weekly}, separators=(",", ":")))
+        n += 1
+    print(f"Intraday charts for {day} (trading day in progress): {n} shares")
+
+
 def pick(per_venue):
     """One aggregate per ISIN: Xetra where it traded, otherwise Börse Frankfurt."""
     rows = {}
@@ -261,6 +284,12 @@ def main():
     today = max((file_day(f) for fs in minutes.values() for f in fs), default="")
     if live["day"] != today:
         live = {"day": today, "seen": {}, "agg": {}}
+    try:
+        bars = json.loads(LIVE_BARS.read_text())
+    except (OSError, ValueError):
+        bars = {}
+    if bars.get("day") != today:
+        bars = {"day": today, "venues": {}}
     started = time.monotonic()
     for venue, label in VENUES:
         new = [f for f in minutes[venue] if file_day(f) == today and f > live["seen"].get(venue, "")]
@@ -270,13 +299,20 @@ def main():
             print(f"{label} {today}: {len(new)} minute files waiting, reading the newest {MAX_MINUTE_FILES}")
             new = new[-MAX_MINUTE_FILES:]
         agg = live["agg"].setdefault(venue, {})
+        vbars = bars["venues"].setdefault(venue, {})
         done = []
         for f in new:
             if time.monotonic() - started > MINUTE_BUDGET:
                 print(f"{label} {today}: time budget used, the next run continues")
                 break
             try:
-                merge(agg, download_summary(f, wanted, tries=3))
+                batch = download_summary(f, wanted, bars=True, tries=3)
+                for isin, b in batch.items():
+                    mins = vbars.setdefault(isin, {})
+                    for m, (ts, p) in b.pop("bars").items():
+                        if str(m) not in mins or ts >= mins[str(m)][0]:
+                            mins[str(m)] = [ts, p]
+                merge(agg, batch)
             except (urllib.error.URLError, OSError) as e:
                 # Keep what was read; the next run carries on from the last file that came through.
                 print(f"{label} {today}: stopped at {f} ({e}); the next run continues from there")
@@ -286,6 +322,12 @@ def main():
             live["seen"][venue] = done[-1]
             print(f"{label} {today}: read {len(done)} new minute files, up to {done[-1]}")
     live_rows = pick(live["agg"]) if today else {}
+    if today:
+        LIVE_BARS.parent.mkdir(exist_ok=True)
+        LIVE_BARS.write_text(json.dumps(bars, separators=(",", ":")))
+        codes = {label: venue for venue, label in VENUES}
+        week = json.loads(WEEK.read_text()) if WEEK.exists() else {}
+        write_live_intraday(today, {i: {**a, "venue_code": codes[a["venue"]]} for i, a in live_rows.items()}, bars["venues"], week)
 
     def quote_of(isin):
         a = live_rows.get(isin) or final["rows"].get(isin)
