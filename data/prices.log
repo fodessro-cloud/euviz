@@ -1,23 +1,25 @@
-Xetra 2026-10-20: 142 minute files waiting, reading the newest 70
-Xetra 2026-10-20: read 70 new minute files, up to DETR-posttrade-2026-10-20T09_48.json.gz
-Börse Frankfurt 2026-10-20: 122 minute files waiting, reading the newest 70
-Börse Frankfurt 2026-10-20: read 70 new minute files, up to DFRA-posttrade-2026-10-20T09_48.json.gz
+Xetra 2026-10-20: 445 minute files waiting, reading the newest 70
+Xetra 2026-10-20: stopped at DETR-posttrade-2026-10-20T16_11.json.gz (HTTP Error 400: Bad Request); the next run continues from there
+Xetra 2026-10-20: read 7 new minute files, up to DETR-posttrade-2026-10-20T16_10.json.gz
+Börse Frankfurt 2026-10-20: 445 minute files waiting, reading the newest 70
+Börse Frankfurt 2026-10-20: read 70 new minute files, up to DFRA-posttrade-2026-10-20T17_13.json.gz
+Intraday charts for 2026-10-20 (trading day in progress): 24 shares
 Fundamentals issuers with a price: 1942 of 2461
 Prices for 74 of 77 stocks (closed day 2026-10-19, day in progress 2026-10-20)
   no trades on Xetra or Frankfurt: UNA@Netherlands, ROG@Switzerland, ULVR@UK
-  SAP@Germany          DE0007164600 Xetra            2026-10-20 09:48     200.75 trades   1926 change -0.42
+  SAP@Germany          DE0007164600 Xetra            2026-10-20 16:06     202.15 trades   1927 change 0.27
   SIE@Germany          DE0007236101 Xetra            2026-10-20 09:48      256.5 trades   3334 change -3.12
-  ALV@Germany          DE0008404005 Xetra            2026-10-20 09:48      425.0 trades    598 change -0.05
+  ALV@Germany          DE0008404005 Xetra            2026-10-20 16:07      431.3 trades    600 change 1.43
   BASF@Germany         DE000BASF111 Xetra            2026-10-20 09:47      52.43 trades    446 change -0.1
   BMW@Germany          DE0005190003 Xetra            2026-10-20 09:47       56.7 trades    487 change 0.32
   MBG@Germany          DE0007100000 Xetra            2026-10-20 09:48      40.69 trades   1205 change 0.21
-  DTE@Germany          DE0005557508 Xetra            2026-10-20 09:48      25.65 trades    712 change 0.27
+  DTE@Germany          DE0005557508 Xetra            2026-10-20 16:05      25.75 trades    714 change 0.66
   DBK@Germany          DE0005140008 Xetra            2026-10-20 09:48       27.9 trades    938 change -1.12
-  BAYN@Germany         DE000BAY0017 Xetra            2026-10-20 09:48      43.52 trades    414 change 0.32
+  BAYN@Germany         DE000BAY0017 Xetra            2026-10-20 16:08      43.64 trades    416 change 0.6
   VOW3@Germany         DE0007664039 Xetra            2026-10-20 09:48      69.24 trades    457 change 0.26
   IFX@Germany          DE0006231004 Xetra            2026-10-20 09:48      51.06 trades   1588 change -1.79
   ADS@Germany          DE000A1EWWW0 Xetra            2026-10-20 09:48      158.2 trades    386 change 0.67
-  MUV2@Germany         DE0008430026 Xetra            2026-10-20 09:48      542.6 trades    359 change 0.0
+  MUV2@Germany         DE0008430026 Xetra            2026-10-20 16:08      546.4 trades    361 change 0.7
   HEN3@Germany         DE0006048432 Xetra            2026-10-20 09:48      78.28 trades    138 change -0.23
   RWE@Germany          DE0007037129 Xetra            2026-10-20 09:48       57.2 trades    510 change 0.0
   CON@Germany          DE0005439004 Xetra            2026-10-20 09:47       68.4 trades    127 change -0.64
@@ -49,7 +51,7 @@ Prices for 74 of 77 stocks (closed day 2026-10-19, day in progress 2026-10-20)
   AZN@UK               GB0009895292 Börse Frankfurt  2026-10-19 17:40      149.8 trades     10 change 1.56
   HSBA@UK              GB0005405286 Xetra            2026-10-20 09:38     16.428 trades     23 change -1.61
   BP@UK                GB0007980591 Xetra            2026-10-20 09:44      7.379 trades    172 change 0.72
-  GLEN@UK              JE00B4T3BW64 Börse Frankfurt  2026-10-20 09:12        6.6 trades      2 change -2.08
+  GLEN@UK              JE00B4T3BW64 Börse Frankfurt  2026-10-20 16:09       6.56 trades      3 change -2.67
   RIO@UK               GB0007188757 Xetra            2026-10-20 09:48      77.98 trades    131 change -2.28
   GSK@UK               GB00BN7SWP63 Xetra            2026-10-20 09:43      22.18 trades     19 change -0.09
   DGE@UK               GB0002374006 Xetra            2026-10-20 09:48      20.99 trades     15 change 0.43
