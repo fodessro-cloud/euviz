@@ -7,6 +7,9 @@ on:
   schedule:
     - cron: '15 5 * * *'      # 05:15 UTC: official closes from the previous trading day's daily file
     - cron: '20 7-17 * * 1-5' # hourly while Xetra trades (09:00-17:30 CET), prices 15 minutes late
+    # GitHub often starts scheduled runs late or drops them (2026-10-20: nothing before 10:00 UTC), so a
+    # second slot each half hour; a run with no new minute files only re-reads what is there.
+    - cron: '50 6-16 * * 1-5'
   workflow_dispatch:
     inputs:
       redo_day:
