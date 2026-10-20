@@ -260,7 +260,7 @@ async function initHeatmap() {
     if (!t) return hideHover();
     const touch = e.pointerType ? e.pointerType !== 'mouse' : matchMedia('(hover: none)').matches;
     if (touch && hmPinned !== t.c) { showHover(t, e); hmPinned = t.c; return; }
-    location.href = HM_SLUGS[t.c.lei] ? `/stock/${HM_SLUGS[t.c.lei]}` : `/companies?lei=${encodeURIComponent(t.c.lei)}`;
+    location.href = HM_SLUGS[t.c.lei] ? `/stock/${HM_SLUGS[t.c.lei]}` : `/screener?lei=${encodeURIComponent(t.c.lei)}`;
   });
   window.addEventListener('scroll', () => { if (hmPinned) hideHover(); }, { passive: true });
   let timer;
