@@ -33,6 +33,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      # Today's minute prices so far (data/live-bars.json, too big for git) carry over between runs here.
+      - uses: actions/cache@v4
+        with:
+          path: data/live-bars.json
+          key: live-bars-${{ github.run_id }}
+          restore-keys: live-bars-
       - name: Read Xetra and Frankfurt prices
         env:
           PRICES_REDO_DAY: ${{ inputs.redo_day && '1' || '0' }}
@@ -48,7 +54,7 @@ jobs:
           git diff --cached --quiet || git commit -m "Update Xetra prices [data refresh]"
           git pull --rebase -X theirs || true
           git push
-      # Minute prices of the closed day (js/intraday/, not in git) exist only in this job, so they go up from here.
+      # Minute prices of the closed day or the day in progress (js/intraday/, not in git) exist only in this job, so they go up from here.
       - name: Upload intraday charts
         if: github.ref == 'refs/heads/main' && hashFiles('js/intraday/*.json') != ''
         env:
