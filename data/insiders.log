@@ -1,9 +1,8 @@
-  2026-08-21..2026-09-05: 709 rows
-  2026-09-06..2026-09-20: 652 rows
-  2026-09-21..2026-10-05: 629 rows
-  2026-10-06..2026-10-20: 374 rows
+  2026-08-22..2026-09-06: 668 rows
+  2026-09-07..2026-09-21: 693 rows
+  2026-09-22..2026-10-21: 949 rows
   unmapped columns: ['Notifier', 'Details of amendment']
-2364 transactions; natures: [('Acquisition', 1377), ('Disposal', 398), ('Subscription', 169), ('Allotment', 133), ('Exercise decrease', 91), ('Exercise increase', 83), ('Exchange increase', 29), ('Exchange decrease', 15), ('Internal transaction – Disposal', 9), ('Internal transaction – Acquisition', 9), ('Gift received', 8), ('Conversion decrease', 6)]
+2310 transactions; natures: [('Acquisition', 1341), ('Disposal', 389), ('Subscription', 164), ('Allotment', 133), ('Exercise decrease', 89), ('Exercise increase', 81), ('Exchange increase', 29), ('Exchange decrease', 15), ('Internal transaction – Disposal', 9), ('Internal transaction – Acquisition', 9), ('Gift received', 8), ('Conversion decrease', 6)]
 {"published": "2026-10-20", "issuer": "Investor AB", "lei": "549300VEBQPHRZBKUX38", "person": "Daniel Nodhäll", "position": "Other member of the company's administrative, management or supervisory body", "associated": "", "amendment": "", "initial": "Yes", "optionProgramme": "", "nature": "Disposal", "instrumentType": "Share", "instrument": "Investor AB ser. B", "isin": "SE0015811963", "date": "2026-10-20", "volume": 11796.0, "unit": "Quantity", "price": 418.0, "currency": "SEK", "venue": "NASDAQ STOCKHOLM AB", "status": "Current", "valueEur": 443291, "signal": true}
 {"published": "2026-10-20", "issuer": "Investor AB", "lei": "549300VEBQPHRZBKUX38", "person": "Daniel Nodhäll", "position": "Other member of the company's administrative, management or supervisory body", "associated": "", "amendment": "", "initial": "Yes", "optionProgramme": "", "nature": "Acquisition", "instrumentType": "Share", "instrument": "Investor AB ser. A", "isin": "SE0015811955", "date": "2026-10-20", "volume": 11000.0, "unit": "Quantity", "price": 410.0, "currency": "SEK", "venue": "NASDAQ STOCKHOLM AB", "status": "Current", "valueEur": 405466, "signal": true}
 {"published": "2026-10-20", "issuer": "Investor AB", "lei": "549300VEBQPHRZBKUX38", "person": "Daniel Nodhäll", "position": "Other member of the company's administrative, management or supervisory body", "associated": "", "amendment": "", "initial": "Yes", "optionProgramme": "", "nature": "Disposal", "instrumentType": "Share", "instrument": "Investor AB ser. B", "isin": "SE0015811963", "date": "2026-10-19", "volume": 10852.0, "unit": "Quantity", "price": 415.0, "currency": "SEK", "venue": "NASDAQ STOCKHOLM AB", "status": "Current", "valueEur": 404889, "signal": true}
