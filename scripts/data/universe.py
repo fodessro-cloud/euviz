@@ -139,7 +139,7 @@ def wikidata():
         lei = b["lei"]["value"]
         w = out.setdefault(lei, {"name": b["itemLabel"]["value"], "tickers": [], "industries": set()})
         if "ticker" in b:
-            # Delisted lines (Shell's RDSA) go last, so the current ticker wins.
+            # Delisted lines go last, so the current ticker wins (renames without an end date: RENAMED).
             w["tickers"].append((b["ticker"]["value"], b.get("exLabel", {}).get("value", ""), "end" in b))
         if "indLabel" in b:
             w["industries"].add(b["indLabel"]["value"])
@@ -256,17 +256,24 @@ HOME_EXCHANGE = {
 FOREIGN = re.compile(r"New York|NASDAQ(?! (Stockholm|Copenhagen|Helsinki|Iceland|Riga|Tallinn|Vilnius))|OTC|Over-the-counter|Pink|Tokyo|Toronto", re.I)
 
 
+# Wikidata keeps old tickers after a rename, mostly without an end date, next to the new one.
+# Old -> new, used only when the company's listings include the new ticker (checked 2026-10-21).
+RENAMED = {"RDSA": "SHEL", "RDSB": "SHEL", "TOT": "TTE", "FP": "TTE", "DAI": "MBG", "BELG": "PROX",
+           "DPW": "DHL", "SPD": "FRAS", "SLA": "ABDN", "888": "EVOK", "COM": "CBK", "THQN B": "EMBRACER",
+           "AQU": "GGS", "LVC": "TXT"}
+
+
 def pick_ticker(tickers, country):
     tickers = sorted(tickers, key=lambda t: len(t) > 2 and bool(t[2]))
     tickers = [(t[0], t[1]) for t in tickers]
+    names = {t for t, _ in tickers}
     home = HOME_EXCHANGE.get(country)
-    for t, ex in tickers:
-        if home and re.search(home, ex, re.I):
-            return t, ex
-    for t, ex in tickers:
-        if not FOREIGN.search(ex):
-            return t, ex
-    return None, None
+    picked = next(((t, ex) for t, ex in tickers if home and re.search(home, ex, re.I)), None) \
+        or next(((t, ex) for t, ex in tickers if not FOREIGN.search(ex)), None)
+    if not picked:
+        return None, None
+    t, ex = picked
+    return (RENAMED[t] if RENAMED.get(t) in names else t), ex
 
 
 def tidy(name):
