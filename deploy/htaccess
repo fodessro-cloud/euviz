@@ -5,6 +5,17 @@ DirectoryIndex index.html
 RewriteEngine On
 RewriteBase /
 
+# One address for the whole site: finila.com goes to www.finila.com (Google indexes one copy).
+RewriteCond %{HTTP_HOST} ^finila\.com$ [NC]
+RewriteRule ^(.*)$ https://www.finila.com/$1 [R=301,L]
+
+# Temporary check of how the server reports HTTPS, read before adding an http -> https redirect.
+RewriteCond %{HTTPS} =on
+RewriteRule ^https-probe$ https-probe-on.txt [L]
+RewriteCond %{HTTP:X-Forwarded-Proto} =https
+RewriteRule ^https-probe$ https-probe-xfp.txt [L]
+RewriteRule ^https-probe$ https-probe-off.txt [L]
+
 # The old WordPress no longer runs: its PHP, admin and leftover folders are closed.
 RewriteRule \.php$ - [F,L]
 RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]
