@@ -89,3 +89,39 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_DIR: ${{ vars.FTP_DIR || '/' }}
         run: scripts/upload-data.sh
+
+  # GitHub often starts scheduled runs hours late or drops them (2026-10-20 and 21: no morning runs at
+  # all). So every run on main starts the next one itself (Lub agreed, 2026-10-21): about an hour later
+  # while Xetra trades, 05:15 UTC for the morning data (morning.yml), and a relay run at least every
+  # 6 hours in between, because a job may wait at most 6 hours. A newer run cancels the waiting one,
+  # so there is only ever one chain however the runs start.
+  next:
+    needs: upload
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    permissions:
+      actions: write
+    concurrency:
+      group: prices-next
+      cancel-in-progress: true
+    steps:
+      - name: Wait, then start the next run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          now=$(date -u +%s); day=$(date -u +%F); wd=$(date -u +%u)
+          at() { date -u -d "$1 $2" +%s; }
+          next=$(( now + 300 * 60 )); what=prices.yml               # relay within the 6-hour limit
+          for d in "$day" "$(date -u -d tomorrow +%F)"; do
+            t=$(at "$d" 05:15); [ "$t" -gt $(( now + 300 )) ] && [ "$t" -lt "$next" ] && { next=$t; what=morning.yml; }
+          done
+          if [ "$wd" -le 5 ]; then                                   # hourly while Xetra trades
+            t=$(( now + 45 * 60 )); open=$(at "$day" 07:20); close=$(at "$day" 17:20)
+            [ "$t" -lt "$open" ] && t=$open
+            [ "$t" -le "$close" ] && [ "$t" -lt "$next" ] && { next=$t; what=prices.yml; }
+          fi
+          echo "Next: $what at $(date -u -d @$next '+%F %H:%M') UTC."
+          sleep $(( next - now ))
+          gh workflow run "$what" --ref main

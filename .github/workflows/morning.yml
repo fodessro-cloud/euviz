@@ -1,0 +1,44 @@
+name: Ranné dáta FINILA (05:15 UTC)
+
+# The morning data jobs one after another, so their uploads never cancel each other in the shared
+# finila-webglobe lock. Started by the chain in prices.yml (GitHub's own schedule often comes hours
+# late); the cron is a backup. The prices run started here keeps the chain going.
+on:
+  schedule:
+    - cron: '15 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+concurrency:
+  group: morning
+  cancel-in-progress: false
+
+jobs:
+  morning:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - name: Run the morning data jobs in turn
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          failed=""
+          for w in refresh-data.yml invest.yml housing.yml rates.yml housing-levels.yml prices.yml stock-pages.yml; do
+            before=$(gh run list --workflow "$w" --limit 1 --json databaseId --jq '.[0].databaseId // 0')
+            gh workflow run "$w" --ref main
+            id=$before
+            for i in $(seq 1 30); do sleep 10; id=$(gh run list --workflow "$w" --limit 1 --json databaseId --jq '.[0].databaseId // 0'); [ "$id" != "$before" ] && break; done
+            [ "$id" = "$before" ] && { echo "::warning::$w did not start"; failed="$failed $w"; continue; }
+            # prices.yml keeps its chain job waiting for hours, so only its upload is waited for.
+            if [ "$w" = prices.yml ]; then
+              for i in $(seq 1 120); do sleep 20; s=$(gh api "repos/$GH_REPO/actions/runs/$id/jobs" --jq '[.jobs[]|select(.name=="upload")|.status][0] // ""'); [ "$s" = completed ] && break; done
+            else
+              gh run watch "$id" --exit-status >/dev/null 2>&1 || failed="$failed $w"
+            fi
+            echo "$w: run $id done"
+          done
+          [ -z "$failed" ] || { echo "::error::Failed:$failed"; exit 1; }
