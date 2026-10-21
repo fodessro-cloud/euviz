@@ -197,3 +197,4 @@ h1, h2, h3, p { margin: 0; }
 .h-data .h-list li span { margin: 0; }
 .h-data .h-list .v { font-family: var(--mono); color: var(--text); white-space: nowrap; }
 .h-bar .val small { display: block; font-size: 12px; color: var(--muted); }
+.h-footer-nav .h-li { vertical-align: -3px; margin-right: 6px; }
