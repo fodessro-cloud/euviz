@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderMarket(inv);
   renderSectorMap();
   renderPresets();
-  renderCompare(10);
+  renderCompare(15);
   renderMovers('up');
   renderData(ins, sh);
   renderProperty(housing);
