@@ -127,7 +127,7 @@ h1, h2, h3, p { margin: 0; }
 .h-preset li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
 .h-preset li a { color: var(--text); }
 .h-preset li .nm { color: var(--muted); font-family: 'IBM Plex Sans', sans-serif; margin-left: 6px; }
-.h-preset li .metric { color: var(--amber); white-space: nowrap; }
+.h-preset li .metric { color: var(--text2); white-space: nowrap; }
 .h-preset .more { font-size: 15px; font-weight: 500; margin-top: auto; }
 .h-preset.flash { border-color: var(--amber); }
 
@@ -153,6 +153,8 @@ h1, h2, h3, p { margin: 0; }
 /* ── Movers + data ──────────────────────────── */
 .h-split { display: flex; flex-wrap: wrap; gap: 24px; }
 .h-movers { flex: 3 1 560px; min-width: 0; }
+.h-top-left .h-movers { flex: 0 0 auto; }
+.h-top-left .h-movers td, .h-top-left .h-movers th { padding-top: 7px; padding-bottom: 7px; }
 .h-data { flex: 2 1 320px; min-width: 0; }
 .h-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
 .h-tabs button { border: 0; font-size: 14px; padding: 0 14px; color: var(--text2); }
@@ -200,7 +202,7 @@ h1, h2, h3, p { margin: 0; }
 }
 
 /* ── Real-data banner + FINILA Data lists ─────── */
-.h-real-banner { background: var(--real-bg); color: var(--real-text); border-bottom: 1px solid var(--real-line); font-size: 13px; text-align: center; padding: 6px 16px; }
+.h-real-banner { color: var(--muted); font-size: 12px; text-align: center; padding: 6px 16px; }
 .h-data-h { font-size: 15px; font-weight: 600; margin: 4px 0 8px; display: flex; justify-content: space-between; }
 .h-data-h a { font-size: 14px; font-weight: 500; }
 .h-data .h-list { margin-bottom: 16px; gap: 6px; }

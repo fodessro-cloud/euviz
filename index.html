@@ -64,8 +64,22 @@
         <a href="#filtre" data-preset="dividend">Covered dividends</a>
         <a href="#filtre" data-preset="cash">Cash machines</a>
       </div>
-      <div class="h-cards-head"><h3>Investments compared</h3><a href="/assets">All assets</a></div>
-      <div class="h-index-cards" id="index-cards"></div>
+      <div class="h-card h-movers">
+        <div class="h-card-head">
+          <h2>Today on the market</h2>
+          <div class="h-tabs" role="tablist" aria-label="Market movers" id="tabs">
+            <button type="button" role="tab" data-tab="up" class="on" aria-selected="true">Top gainers</button>
+            <button type="button" role="tab" data-tab="down" aria-selected="false">Top losers</button>
+            <button type="button" role="tab" data-tab="big" aria-selected="false">Largest</button>
+          </div>
+        </div>
+        <div class="h-table-wrap">
+          <table>
+            <thead><tr><th>Ticker</th><th>Company</th><th>Country</th><th class="r">Price €</th><th class="r">Change</th><th class="r">P/E</th></tr></thead>
+            <tbody id="movers"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <div class="h-card h-map">
@@ -86,27 +100,30 @@
     <div class="h-presets" id="presets"></div>
   </section>
 
-  <section class="h-section" id="porovnanie">
-    <div class="h-card h-compare">
-      <div class="h-compare-intro">
-        <div class="h-eyebrow">COMPARE INVESTMENTS</div>
-        <h2>What did each investment return?</h2>
-        <p>Total return of stocks, gold, property, bonds and deposits in the euro area, and how much value cash lost to inflation.</p>
-        <div class="h-periods" role="group" aria-label="Period" id="periods">
-          <button type="button" data-years="5">5 years</button>
-          <button type="button" data-years="10" class="on">10 years</button>
-          <button type="button" data-years="20">20 years</button>
-        </div>
-        <a class="h-compare-more" href="/assets">Real returns for every European country &rarr;</a>
+  <section class="h-section" id="finila-data">
+    <div class="h-section-head">
+      <h2>FINILA Data</h2>
+    </div>
+    <div class="h-split">
+      <div class="h-card h-data">
+        <div class="h-card-head"><h2>Managers buying their own shares</h2></div>
+        <h3 class="h-data-h">Largest recent buys <a href="/insiders">All</a></h3>
+        <ul class="h-list" id="insider-list"></ul>
       </div>
-      <div class="h-compare-bars">
-        <div id="compare"></div>
-        <p class="h-note" id="compare-note">Euro area, from the ECB, Eurostat and the World Bank. Past performance does not guarantee future results.</p>
+      <div class="h-card h-data">
+        <div class="h-card-head"><h2>Most shorted by funds</h2></div>
+        <h3 class="h-data-h">Share of the company sold short <a href="/shorts">All</a></h3>
+        <ul class="h-list" id="short-list"></ul>
       </div>
     </div>
   </section>
 
-  <section class="h-section h-split" id="property">
+  <section class="h-section" id="property">
+    <div class="h-section-head">
+      <h2>Property</h2>
+      <a href="/property">All countries</a>
+    </div>
+    <div class="h-split">
     <div class="h-card h-data">
       <div class="h-card-head">
         <h2>Where homes look cheap or expensive</h2>
@@ -127,9 +144,15 @@
       <ul class="h-list" id="home-down"></ul>
       <p class="h-note">House price index, all dwellings, in local currency (Eurostat).</p>
     </div>
+    </div>
   </section>
 
-  <section class="h-section h-split" id="rates">
+  <section class="h-section" id="rates">
+    <div class="h-section-head">
+      <h2>Rates and bonds</h2>
+      <a href="/rates">All rates</a>
+    </div>
+    <div class="h-split">
     <div class="h-card h-data">
       <div class="h-card-head">
         <h2>Interest rates today</h2>
@@ -146,33 +169,26 @@
       <ul class="h-list" id="rates-bonds"></ul>
       <p class="h-note">Euro area governments (ECB), corporate bonds of German firms (Bundesbank); change against a year earlier.</p>
     </div>
+    </div>
   </section>
 
-  <section class="h-section h-split">
-    <div class="h-card h-movers">
-      <div class="h-card-head">
-        <h2>Today on the market</h2>
-        <div class="h-tabs" role="tablist" aria-label="Market movers" id="tabs">
-          <button type="button" role="tab" data-tab="up" class="on" aria-selected="true">Top gainers</button>
-          <button type="button" role="tab" data-tab="down" aria-selected="false">Top losers</button>
-          <button type="button" role="tab" data-tab="big" aria-selected="false">Largest</button>
+  <section class="h-section" id="porovnanie">
+    <div class="h-card h-compare">
+      <div class="h-compare-intro">
+        <div class="h-eyebrow">COMPARE INVESTMENTS</div>
+        <h2>What did each investment return?</h2>
+        <p>Total return of stocks, gold, property, bonds and deposits in the euro area, and how much value cash lost to inflation.</p>
+        <div class="h-periods" role="group" aria-label="Period" id="periods">
+          <button type="button" data-years="5">5 years</button>
+          <button type="button" data-years="10" class="on">10 years</button>
+          <button type="button" data-years="20">20 years</button>
         </div>
+        <a class="h-compare-more" href="/assets">Real returns for every European country &rarr;</a>
       </div>
-      <div class="h-table-wrap">
-        <table>
-          <thead><tr><th>Ticker</th><th>Company</th><th>Country</th><th class="r">Price €</th><th class="r">Change</th><th class="r">P/E</th></tr></thead>
-          <tbody id="movers"></tbody>
-        </table>
+      <div class="h-compare-bars">
+        <div id="compare"></div>
+        <p class="h-note" id="compare-note">Euro area, from the ECB, Eurostat and the World Bank. Past performance does not guarantee future results.</p>
       </div>
-    </div>
-    <div class="h-card h-data">
-      <div class="h-card-head">
-        <h2>FINILA Data</h2>
-      </div>
-      <h3 class="h-data-h">Managers buying their own shares <a href="/insiders">All</a></h3>
-      <ul class="h-list" id="insider-list"></ul>
-      <h3 class="h-data-h">Most shorted by funds <a href="/shorts">All</a></h3>
-      <ul class="h-list" id="short-list"></ul>
     </div>
   </section>
 
