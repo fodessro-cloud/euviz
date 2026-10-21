@@ -291,6 +291,7 @@ def head(title, description, canonical, extra=''):
 FOOTER = '''<footer class="sp-foot">
   <p>FINILA shows figures read automatically from official sources. They can contain errors and are not investment advice.</p>
   <p><a href="/stock/">All companies A-Z</a> · <a href="/screener">Stock screener</a> · <a href="/insiders">Insider trades</a> · <a href="/shorts">Short positions</a> · <a href="/assets">Where to put money</a> · <a href="/property">Property prices</a></p>
+  <p>Contact: <a href="mailto:info@finila.com">info@finila.com</a></p>
 </footer>
 '''
 
