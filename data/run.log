@@ -169,9 +169,9 @@ ESMA FULINS_E_20261017_02of02.zip: 0 new issuers
 FCA FULINS_E_20261017_01of01.zip: 2149 new issuers
 18568 issuers with listed shares
 3894 issuers with a report for 2024 or later (14 pages)
-38 reports to read, 3856 cached
-read 38 reports this run
-4905 listed companies with an LEI on Wikidata
+35 reports to read, 3859 cached
+read 35 reports this run
+  ! Wikidata: HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132); using the last saved copy
 18568 issuers with listed shares (FIRDS); 2208 of them file reports here
 Wikidata by ISIN/LEI: labels for 1769 of 3697 keys
 sector found for 752 of 1849 without a Wikidata industry: {'wikidata': 345, 'bank': 65, 'name': 342}
