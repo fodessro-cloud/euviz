@@ -169,14 +169,8 @@ ESMA FULINS_E_20261017_02of02.zip: 0 new issuers
 FCA FULINS_E_20261017_01of01.zip: 2149 new issuers
 18568 issuers with listed shares
 3894 issuers with a report for 2024 or later (14 pages)
-208 reports to read, 3686 cached
-  ! https://filings.xbrl.org/529900N96EOVRB114D28/2022-12-31/ESEF/DK/0/529900N96EOVRB114D28-2022-12-31-en.json: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)>
-  ! https://filings.xbrl.org/549300GKFG0RYRRQ1414/2025-12-31/ESEF/NO/0/dnbbankasa-2025-12-31-1-nb.json: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)>
-  ! https://filings.xbrl.org/222100AIF0CBCY80AH62/2025-12-31/ESEF/NO/0/222100AIF0CBCY80AH62-2025-12-31-0-en.json: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)>
-  ! https://filings.xbrl.org/529900N96EOVRB114D28/2022-09-30/ESEF/DK/0/529900N96EOVRB114D28-2022-09-30-en.json: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)>
-  ! https://filings.xbrl.org/5967007LIEEXZXFGWW36/2025-12-31/ESEF/NO/0/5967007LIEEXZXFGWW36-2025-12-31-1-en.json: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)>
-  read 200 reports
-read 208 reports this run
+38 reports to read, 3856 cached
+read 38 reports this run
 4905 listed companies with an LEI on Wikidata
 18568 issuers with listed shares (FIRDS); 2208 of them file reports here
 Wikidata by ISIN/LEI: labels for 1769 of 3697 keys
@@ -189,7 +183,7 @@ by country: GB 559, SE 328, FR 237, IT 166, NO 154, PL 141, FI 132, DK 122, ES 1
 largest 40 by revenue:
 Shell PLC                          GB RDSA     Energy                 2025-12-31 rev€=237569.9 ebitda=None fcf=21948.0 roe=10.2 F=5 1111001-0
 Glencore PLC                       GB GLEN     Materials              2025-12-31 rev€=220344.5 ebitda=None fcf=-290.0 roe=0.9 F=6 1111101-0
-TotalEnergies SE                   FR TOT      Energy                 2025-12-31 rev€=179095.6 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
+TotalEnergies SE                   FR FP       Energy                 2025-12-31 rev€=179095.6 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
 BP P.L.C.                          GB BP       Energy                 2025-12-31 rev€=171398.4 ebitda=30464.0 fcf=11272.0 roe=0.1 F=6 1101011-1
 Stellantis N.V.                    NL STLAM    Consumer Discretionary 2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=3 0001001-1
 Equinor ASA                        NO EQNR     Energy                 2025-12-31 rev€=94767.7 ebitda=37670.0 fcf=5977.0 roe=12.5 F=5 11010-1-1
