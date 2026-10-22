@@ -30,7 +30,7 @@ function applyTheme() {
 
 // Every line starts at 100, so the value minus 100 is the total return in per cent.
 const amount = 100;
-let D = null, country = 'U2', years = 10, sortKey = 'name', sortDir = 1;
+let D = null, country = 'U2', years = 15, sortKey = 'name', sortDir = 1;
 
 const isNum = v => typeof v === 'number' && isFinite(v);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));

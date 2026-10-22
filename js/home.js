@@ -43,21 +43,29 @@ function buildCompanies(cos, prices) {
 function renderMarket(inv) {
   const n = inv?.now?.c?.U2 || {}, dfr = inv?.now?.dfr;
   const cards = [
-    ['Stocks · EURO STOXX 50', n.stocks_12m, '12 months, incl. dividends', true],
-    ['Gold', n.gold_12m, '12 months, in EUR', true],
-    ['Property · euro area', n.house_12m, '12 months, house prices', true],
-    ['Inflation · euro area', n.inflation, 'a year', false],
-    ['ECB deposit rate', dfr, '', false],
-    ['10-year govt bond', n.bond10, 'euro area yield', false],
+    ['Stocks · EURO STOXX 50', n.stocks_12m, 'Last 12 months, incl. dividends', true],
+    ['Gold', n.gold_12m, 'Last 12 months, in EUR', true],
+    ['Property · euro area', n.house_12m, 'House prices, last 12 months', true],
+    ['Inflation · euro area', n.inflation, 'Prices, last 12 months', false],
+    ['ECB deposit rate', dfr, 'Per year', false],
+    ['10-year govt bond', n.bond10, 'Euro area yield, per year', false],
   ].filter(c => isNum(c[1]?.value));
   const val = (o, change) => change ? pct(o.value) : `${fmt(o.value)}%`;
-  document.getElementById('index-cards').innerHTML = cards.map(([name, o, sub, change]) =>
+  const month = m => { const d = /^(\d{4})-(\d{2})/.exec(m || ''); return d ? new Date(Date.UTC(+d[1], +d[2] - 1)).toLocaleString('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' }) : ''; };
+  const cardsEl = document.getElementById('index-cards');
+  if (cardsEl) cardsEl.innerHTML = cards.map(([name, o, sub, change]) =>
     `<a href="/assets"><span class="name">${name}</span>
-      <span class="val ${change ? dir(o.value) : ''}">${val(o, change)}</span><span class="chg">${sub}</span></a>`).join('');
-  const big = COS.filter(c => isNum(c.mcap) && isNum(c.price)).sort((a, b) => b.mcap - a.mcap).slice(0, 12);
-  document.getElementById('ticker').innerHTML = cards.map(([name, o, , change]) =>
-    `<span><span class="name">${name.split(' · ')[0]}</span>${val(o, change)}</span>`).join('') +
-    big.map(c => `<span><span class="name">${esc(c.ticker || c.name)}</span>€${fmt(c.price)}${isNum(c.change) ? `<span class="chg ${dir(c.change)}">${pct(c.change)}</span>` : ''}</span>`).join('');
+      <span class="val ${change ? dir(o.value) : ''}">${val(o, change)}</span><span class="sub">${sub}</span><span class="when">${month(o.month)}</span></a>`).join('');
+  // Ticker: only what moves today, like the market map: Europe as a whole, then the largest companies.
+  const priced = COS.filter(c => isNum(c.mcap) && isNum(c.change));
+  const cap = priced.reduce((a, c) => a + c.mcap, 0);
+  const europe = cap ? priced.reduce((a, c) => a + c.mcap * c.change, 0) / cap : null;
+  const big = priced.sort((a, b) => b.mcap - a.mcap).slice(0, 20);
+  const items = (isNum(europe) ? `<span><span class="name">Europe today</span><span class="${dir(europe)}">${pct(europe)}</span></span>` : '') +
+    big.map(c => `<a href="${coLink(c)}"><span class="name">${esc(c.ticker || c.name)}</span>€${fmt(c.price)}<span class="chg ${dir(c.change)}">${pct(c.change)}</span></a>`).join('');
+  const row = document.getElementById('ticker');
+  // The row is written twice so the scrolling loop has no gap; the copy is hidden from screen readers.
+  row.innerHTML = items ? `<div class="h-ticker-set">${items}</div><div class="h-ticker-set" aria-hidden="true">${items}</div>` : '';
 }
 
 // ── Sector map: daily change weighted by market value ─
@@ -122,7 +130,7 @@ function renderPresets() {
 // ── Total and yearly return over 5/10/20 years, euro area (same data as /invest) ─
 const ASSETS = [['stocks', 'Stocks (EURO STOXX 50)'], ['gold', 'Gold'], ['house', 'Property'], ['bonds', 'Government bonds'],
   ['deposit', 'Term deposit'], ['savings', 'Savings account'], ['cash', 'Cash after inflation']];
-const BAR_COLORS = ['#1F6FEB', '#D99A1E', '#8B5CF6', '#0EA5B7', '#5B9BFF', '#7A8AA6', '#D23B3B'];
+
 const mIdx = m => +m.slice(0, 4) * 12 + +m.slice(5, 7) - 1;
 let INV = null;
 function series(key) {
@@ -136,13 +144,13 @@ function renderCompare(years) {
   const prices = series('prices'), infl = prices && grow(prices);
   const rows = ASSETS.map(([k, label], i) => {
     const g = k === 'cash' ? (infl ? 1 / infl : null) : (series(k) && grow(series(k)));
-    return g ? { label, total: (g - 1) * 100, year: (Math.pow(g, 1 / years) - 1) * 100, color: BAR_COLORS[i] } : null;
+    return g ? { label, total: (g - 1) * 100, year: (Math.pow(g, 1 / years) - 1) * 100, color: null } : null;
   }).filter(Boolean).sort((a, b) => b.total - a.total);
   // Bars start at the largest loss, so a negative return still shows as a (short) bar.
   const lo = Math.min(0, ...rows.map(r => r.total)), hi = Math.max(...rows.map(r => r.total));
   document.getElementById('compare').innerHTML = rows.map(r =>
     `<div class="h-bar"><span class="label">${r.label}</span>
-      <div class="track"><div class="fill" style="width:${Math.max(4, Math.round((r.total - lo) / (hi - lo || 1) * 100))}%;background:${r.color}"></div></div>
+      <div class="track"><div class="fill" style="width:${Math.max(4, Math.round((r.total - lo) / (hi - lo || 1) * 100))}%;background:${r.total >= 0 ? 'var(--blue)' : 'var(--down)'}"></div></div>
       <span class="val ${dir(r.total)}">${pct1(r.total)}<small>${pct1(r.year)} a year</small></span></div>`
   ).join('') || '<p class="h-note">Could not load the comparison.</p>';
   document.querySelectorAll('#periods button').forEach(b => b.classList.toggle('on', Number(b.dataset.years) === years));
@@ -242,7 +250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderMarket(inv);
   renderSectorMap();
   renderPresets();
-  renderCompare(10);
+  renderCompare(15);
   renderMovers('up');
   renderData(ins, sh);
   renderProperty(housing);
