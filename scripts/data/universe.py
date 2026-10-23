@@ -292,7 +292,7 @@ FIELDS = ["lei", "isin", "name", "country", "ticker", "exchange", "mic", "sector
 
 
 def add_shares(rows, listed):
-    """Shares in issue from data/shares.json (German companies have no reports on filings.xbrl.org,
+    """Shares in issue from data/shares.json (German and Swiss companies have no reports on filings.xbrl.org,
     so without it they have no market value and drop off the maps). Adds the companies the file
     names that are not on the list yet (Wikidata lists no ticker for them, Porsche has no FIRDS row)."""
     path = ROOT / "data/shares.json"
@@ -318,6 +318,24 @@ def add_shares(rows, listed):
             # Checked by hand, so they beat Wikidata (Siemens filed under Utilities, BMW still as BMW3).
             r.update({f: k[f] for f in ("name", "ticker", "sector") if k.get(f)})
     return sum(1 for r in rows if r.get("shares"))
+
+
+def apply_fixes(rows):
+    """Hand-checked sector, name and ticker by ISIN (data/fixes.json) over what Wikidata and the
+    name rules give (LVMH filed under Consumer Staples, Rolls-Royce under Energy), and companies left
+    off. Returns the rows to keep and how many were fixed."""
+    path = ROOT / "data/fixes.json"
+    if not path.exists():
+        return rows, 0
+    fix = json.loads(path.read_text())
+    rows = [r for r in rows if r["lei"] not in fix.get("drop", {})]
+    n = 0
+    for r in rows:
+        f = fix["rows"].get(r.get("isin") or "")
+        if f:
+            r.update({k: f[k] for k in ("name", "ticker", "sector") if f.get(k)})
+            n += 1
+    return rows, n
 
 
 def main():
@@ -406,6 +424,8 @@ def main():
             r["sector"] = sector_by_name(r["name"])
             via["name"] += 1
     log(f"sector found for {sum(via.values())} of {len(missing)} without a Wikidata industry: {via}")
+    rows, fixed = apply_fixes(rows)
+    log(f"hand-checked fixes for {fixed} companies (data/fixes.json)")
     rows.sort(key=lambda r: -(r.get("revenueEur") or 0))
     out = {"updated": date.today().isoformat(), "fields": FIELDS,
            "rows": [[r.get(k) for k in FIELDS] for r in rows]}
