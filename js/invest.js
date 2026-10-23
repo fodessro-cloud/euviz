@@ -30,8 +30,8 @@ function where(key) {
 // One short line at the end of each chart line: what, then where ("Property SK"); the legend and
 // the table carry the full text.
 function short(a) {
-  const area = country === 'U2' ? 'Eurozone' : country;
-  return { stocks: 'Stocks Eurozone', us: 'Stocks US', bonds: `Bonds ${area}`, house: `Property ${area}`, gold: 'Gold',
+  const area = country === 'U2' ? 'EU' : country;
+  return { stocks: 'Stocks EU', us: 'Stocks US', bonds: `Bonds ${area}`, house: `Property ${area}`, gold: 'Gold',
     deposit: `Deposit ${area}`, savings: `Savings ${area}`, prices: `Prices ${area}` }[a.key] || a.label;
 }
 function applyTheme() {
