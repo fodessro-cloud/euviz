@@ -19,6 +19,14 @@ const ASSETS = [
 ];
 const PRICES = { key: 'prices', label: 'Prices (inflation)' };
 const CASH = { key: 'cash', label: 'Cash at home' };
+// What each line measures and for which area, so nobody reads euro-area stocks as the chosen country's.
+function where(key) {
+  const n = D.countries[country].name;
+  return { stocks: 'EURO STOXX 50, euro area', bonds: `${n}, 10-year`, house: `${n}, house prices`,
+    gold: 'world price', deposit: `${n}, bank average`, savings: `${n}, bank average`,
+    prices: `${n}, consumer prices`, cash: 'no interest' }[key] || '';
+}
+const short = a => a.key === 'prices' ? 'Prices' : a.label;
 function applyTheme() {
   const css = getComputedStyle(document.body);
   const [r, g, b] = (css.backgroundColor.match(/\d+/g) || [0, 0, 0]).map(Number);
@@ -63,12 +71,12 @@ function renderNow() {
     ? `Inflation in ${esc(c.name)}: <b>${rate(infl, 1)}</b> a year (${mNice(n.inflation.month)})${c.euro && D.now.dfr ? ` · ECB deposit rate ${rate(D.now.dfr.value)}` : ''}`
     : '';
   const cards = [
-    ['savings', 'Savings account', n.savings, 'average rate on overnight deposits'],
-    ['deposit', 'Term deposit', n.deposit1y, 'new deposits up to 1 year'],
-    ['bonds', 'Government bond', n.bond10, '10-year yield'],
-    ['stocks', 'Stocks', n.stocks_12m, 'EURO STOXX 50 incl. dividends, last 12 months'],
-    ['gold', 'Gold', n.gold_12m, 'last 12 months'],
-    ['house', 'Property', n.house_12m, 'house prices, last 12 months'],
+    ['savings', 'Savings account', n.savings, `${esc(c.name)}, average rate on overnight deposits`],
+    ['deposit', 'Term deposit', n.deposit1y, `${esc(c.name)}, new deposits up to 1 year`],
+    ['bonds', 'Government bond', n.bond10, `${esc(c.name)}, 10-year yield`],
+    ['stocks', 'Stocks', n.stocks_12m, 'EURO STOXX 50 (euro area) incl. dividends, last 12 months'],
+    ['gold', 'Gold', n.gold_12m, `world price in ${c.cur}, last 12 months`],
+    ['house', 'Property', n.house_12m, `${esc(c.name)} house prices, last 12 months`],
   ];
   const color = k => ASSETS.find(a => a.key === k).color;
   document.getElementById('now').innerHTML = cards.map(([k, label, o, sub]) => {
@@ -108,11 +116,11 @@ function renderCalc() {
   const real = a => infl ? (Math.pow(a.final / amount / Math.pow(infl, yrs(a.lastM) / yrs(to)), 1 / yrs(a.lastM)) - 1) * 100 : null;
   rows.sort((a, b) => b.final - a.final);
   document.getElementById('rank').innerHTML = rows.map(a => `<tr>
-      <td><span class="i-dot" style="background:${a.color}"></span>${a.label}${a.lastM < to ? `<span class="i-note"> to ${mNice(mStr(a.lastM))}</span>` : ''}</td>
+      <td><span class="i-dot" style="background:${a.color}"></span>${a.label}${a.lastM < to ? `<span class="i-note"> to ${mNice(mStr(a.lastM))}</span>` : ''}<span class="i-where">${esc(where(a.key))}</span></td>
       <td class="r m ${cls(a.final - amount)}">${ret(a.final)}</td>
       <td class="r m ${cls(pa(a))}">${pct(pa(a))}</td>
       <td class="r m ${cls(real(a))}">${pct(real(a))}</td></tr>`).join('')
-    + (prices ? `<tr class="i-prices"><td><span class="i-dash"></span>Prices rose (inflation)</td><td class="r m">${ret(prices.final)}</td><td class="r m">${pct((Math.pow(infl, 1 / yrs(prices.lastM)) - 1) * 100)}</td><td class="r m"></td></tr>` : '');
+    + (prices ? `<tr class="i-prices"><td><span class="i-dash"></span>Prices rose (inflation)<span class="i-where">${esc(where('prices'))}</span></td><td class="r m">${ret(prices.final)}</td><td class="r m">${pct((Math.pow(infl, 1 / yrs(prices.lastM)) - 1) * 100)}</td><td class="r m"></td></tr>` : '');
   const missing = ASSETS.filter(a => !list.some(l => l.key === a.key)).map(a => a.label.toLowerCase());
   document.getElementById('calc-missing').textContent = missing.length
     ? `No data for ${c.name} over ${years} years: ${missing.join(', ')}.` : '';
@@ -122,7 +130,7 @@ function renderCalc() {
 function drawChart(list, from, to) {
   const el = document.getElementById('chart');
   const W = Math.max(300, el.clientWidth), H = W < 520 ? 260 : 340;
-  const pad = { l: 64, r: W < 520 ? 12 : 128, t: 12, b: 28 };
+  const pad = { l: 64, r: W < 520 ? 12 : 168, t: 12, b: 28 };
   const lines = [...list.filter(a => a.key !== 'prices'), ...list.filter(a => a.key === 'prices')];
   const ys = lines.flatMap(a => a.pts.map(p => p[1])).concat([amount]);
   let lo = Math.min(...ys), hi = Math.max(...ys);
@@ -142,15 +150,19 @@ function drawChart(list, from, to) {
   let labels = '';
   if (pad.r > 60) {
     const ends = lines.map(a => ({ a, y: y(a.final) })).sort((p, q) => p.y - q.y);
-    for (let j = 1; j < ends.length; j++) if (ends[j].y - ends[j - 1].y < 15) ends[j].y = ends[j - 1].y + 15;
-    labels = ends.map(e => `<text x="${W - pad.r + 8}" y="${e.y + 4}" class="lb">${e.a.key === 'prices' ? 'Prices' : e.a.label}</text>`).join('');
+    // Two lines each: the asset, then what it measures and where.
+    for (let j = 1; j < ends.length; j++) if (ends[j].y - ends[j - 1].y < 28) ends[j].y = ends[j - 1].y + 28;
+    const bottom = H - pad.b - 8;  // then back up from the bottom edge where the stack ran past it
+    if (ends.length && ends[ends.length - 1].y > bottom) ends[ends.length - 1].y = bottom;
+    for (let j = ends.length - 2; j >= 0; j--) if (ends[j + 1].y - ends[j].y < 28) ends[j].y = ends[j + 1].y - 28;
+    labels = ends.map(e => `<text x="${W - pad.r + 8}" y="${e.y + 1}" class="lb">${short(e.a)}<tspan x="${W - pad.r + 8}" dy="13" class="lw">${esc(where(e.a.key))}</tspan></text>`).join('');
   }
   el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${grid}
     <line x1="${pad.l}" x2="${W - pad.r}" y1="${y(amount)}" y2="${y(amount)}" class="base"/>${body}${labels}
     <line class="xh" id="xh" y1="${pad.t}" y2="${H - pad.b}" visibility="hidden"/><g id="dots"></g>
     <rect x="${pad.l}" y="0" width="${W - pad.l - pad.r}" height="${H}" fill="transparent" id="hit"/></svg>`;
   document.getElementById('legend').innerHTML = lines.map(a =>
-    `<span><i class="${a.key === 'prices' ? 'dash' : ''}" style="background:${a.color}"></i>${a.label}</span>`).join('')
+    `<span><i class="${a.key === 'prices' ? 'dash' : ''}" style="background:${a.color}"></i>${a.label} <em>${esc(where(a.key))}</em></span>`).join('')
     + `<span><i class="base"></i>0 % (no gain)</span>`;
 
   const hit = document.getElementById('hit'), tip = document.getElementById('tip'), xh = document.getElementById('xh'), dots = document.getElementById('dots');
@@ -161,7 +173,7 @@ function drawChart(list, from, to) {
     const vals = lines.map(a => ({ a, p: a.pts.find(p => p[0] === i) })).filter(v => v.p).sort((p, q) => q.p[1] - p.p[1]);
     xh.setAttribute('x1', x(i)); xh.setAttribute('x2', x(i)); xh.setAttribute('visibility', 'visible');
     dots.innerHTML = vals.map(v => `<circle cx="${x(i)}" cy="${y(v.p[1])}" r="4.5" fill="${v.a.color}" class="dt"/>`).join('');
-    tip.innerHTML = `<b>${mNice(mStr(i))}</b>` + vals.map(v => `<div><i style="background:${v.a.color}"></i>${v.a.key === 'prices' ? 'Prices' : v.a.label}<span>${ret(v.p[1])}</span></div>`).join('');
+    tip.innerHTML = `<b>${mNice(mStr(i))}</b>` + vals.map(v => `<div><i style="background:${v.a.color}"></i>${short(v.a)} <em>${esc(where(v.a.key))}</em><span>${ret(v.p[1])}</span></div>`).join('');
     tip.hidden = false;
     const wrap = el.parentElement.getBoundingClientRect(), tx = r.left - wrap.left + px;
     tip.style.left = `${Math.min(Math.max(tx + 14, 0), wrap.width - tip.offsetWidth)}px`;
