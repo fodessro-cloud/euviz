@@ -6,7 +6,7 @@ Reports already read are cached in data/cache/universe.json, so a daily run only
 downloads new reports. Writes js/companies.json (served to the site) and
 data/universe-report.txt.
 """
-import json, os, re, sys, time, urllib.parse
+import json, math, os, re, sys, time, urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
@@ -320,6 +320,60 @@ def add_shares(rows, listed):
     return sum(1 for r in rows if r.get("shares"))
 
 
+def fix_eps_scale(rows):
+    """Some filers tag earnings per share in cents or thousands (3i in pence, Logista 2,130 instead of
+    2.13), which turns market value and P/E into nonsense. Against today's price, an EPS that gives an
+    impossible P/E and price-to-sales is moved by powers of ten to the believable value nearest a
+    typical one; a loss, or a profit with no believable scale, loses its EPS. Returns counts."""
+    path = ROOT / "js/company-prices.json"
+    if not path.exists():
+        return 0, 0
+    prices = json.loads(path.read_text())["rows"]
+    fixed = dropped = 0
+    for r in rows:
+        price = (prices.get(r.get("isin") or "") or [None])[0]
+        eps, ni = r.get("eps"), r.get("netIncome")
+        if not price or not eps or not ni or eps * ni <= 0:
+            continue
+        fx = r["revenueEur"] / r["revenue"] if r.get("revenueEur") and r.get("revenue") else 1 if r.get("currency") == "EUR" else None
+        if not fx:
+            continue
+        rev = r["revenueEur"] if (r.get("revenueEur") or 0) > 50 else None
+
+        def fit(f):
+            """How far (in decades) from typical values the EPS times f puts P/E and price-to-sales;
+            None when either is impossible. Both must hold, so a real one-off gain (P/E 0.8,
+            ordinary price-to-sales) is left alone."""
+            d = 0
+            if eps > 0:
+                pe = price / (eps * f * fx)
+                if not 2 <= pe <= 300:
+                    return None
+                d += abs(math.log10(pe / 15))
+            if rev:
+                ps = price * ni / (eps * f) / rev
+                if not 0.01 <= ps <= 100:
+                    return None
+                d += abs(math.log10(ps / 1.5))
+            return d
+        pe = price / (eps * fx) if eps > 0 else None
+        ps = price * ni / eps / rev if rev else None
+        wrong = (ps is not None and not 0.003 <= ps <= 300) and (pe is None or not 0.8 <= pe <= 1000) \
+            or ps is None and pe is not None and not 0.2 <= pe <= 5000 \
+            or pe is not None and pe < 0.5   # a P/E under 0.5 is never real; often EPS in cents
+        if not wrong:
+            continue
+        # A loss tests against price-to-sales alone, too loose to pick a scale: drop it instead.
+        options = [(fit(10 ** k), k) for k in range(-6, 7) if k and fit(10 ** k) is not None] if eps > 0 else []
+        if options:
+            r["eps"] = eps * 10 ** min(options)[1]
+            fixed += 1
+        else:
+            r["eps"] = None
+            dropped += 1
+    return fixed, dropped
+
+
 def apply_fixes(rows):
     """Hand-checked sector, name and ticker by ISIN (data/fixes.json) over what Wikidata and the
     name rules give (LVMH filed under Consumer Staples, Rolls-Royce under Energy), and companies left
@@ -424,6 +478,7 @@ def main():
             r["sector"] = sector_by_name(r["name"])
             via["name"] += 1
     log(f"sector found for {sum(via.values())} of {len(missing)} without a Wikidata industry: {via}")
+    log("earnings per share moved by powers of ten for %d companies, dropped for %d (checked against the price)" % fix_eps_scale(rows))
     rows, fixed = apply_fixes(rows)
     log(f"hand-checked fixes for {fixed} companies (data/fixes.json)")
     rows.sort(key=lambda r: -(r.get("revenueEur") or 0))

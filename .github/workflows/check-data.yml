@@ -1,0 +1,57 @@
+name: Kontrola dát a stránok
+
+# Tests what visitors see on www.finila.com twice a day: the data files (stale prices, market values
+# off by a unit, duplicate companies, big companies with no sector, sources that stopped) and the
+# pages themselves (script errors, files that do not load, "NaN" in the text). A red run means a
+# visitor could meet a broken number; data/check-report.txt says what and where.
+on:
+  schedule:
+    - cron: '40 7 * * *'    # after the morning data jobs
+    - cron: '40 15 * * 1-5' # afternoon, prices during trading
+  push:
+    branches: [claude/project-thread-ms2i2k]
+    paths: ['scripts/data/check_data.py', 'scripts/check-pages.cjs', '.github/workflows/check-data.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-data
+  cancel-in-progress: true
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check the data files on the live site
+        env:
+          CHECK_LIVE: '1'
+        run: python scripts/data/check_data.py
+      - name: Keep the report
+        if: always() && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "finila-data-bot"
+          git config user.email "finila-data-bot@users.noreply.github.com"
+          git add data/check-report.txt
+          git diff --cached --quiet || git commit -m "Data check report [data refresh]"
+          git pull --rebase -X theirs || true
+          git push
+
+  pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install a headless browser
+        run: npm install --no-save playwright@1.47.2 && npx playwright install --with-deps chromium
+      - name: Open the pages like a visitor
+        run: node scripts/check-pages.cjs https://www.finila.com
