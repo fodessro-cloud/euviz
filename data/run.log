@@ -169,21 +169,21 @@ ESMA FULINS_E_20261017_02of02.zip: 0 new issuers
 FCA FULINS_E_20261017_01of01.zip: 2149 new issuers
 18568 issuers with listed shares
 3929 issuers with a report for 2024 or later (14 pages)
-65 reports to read, 3864 cached
-read 65 reports this run
-  ! Wikidata: HTTP Error 429: Aggressively rate-limiting to 1 req / min - this rule was created during active wdqs outage (797a132); using the last saved copy
+35 reports to read, 3894 cached
+read 35 reports this run
+4906 listed companies with an LEI on Wikidata
 18568 issuers with listed shares (FIRDS); 2230 of them file reports here
-Wikidata by ISIN/LEI: labels for 1785 of 3739 keys
-sector found for 764 of 1870 without a Wikidata industry: {'wikidata': 353, 'bank': 65, 'name': 346}
-2660 companies with figures, 186 without usable figures
+Wikidata by ISIN/LEI: labels for 1787 of 3741 keys
+sector found for 764 of 1871 without a Wikidata industry: {'wikidata': 353, 'bank': 65, 'name': 346}
+2661 companies with figures, 186 without usable figures
 with ticker: 839, with sector: 1554
 with F-score: 1802, F-score 8-9: 93, with dividend cover: 885
-by country: GB 559, SE 328, FR 237, IT 166, NO 154, PL 141, FI 132, DK 122, ES 121, NL 112, DE 110, BE 84, AT 54, CH 52, GR 41, LU 37, PT 28, MT 27, IE 26, IS 24, HU 20, LT 20, HR 19, CZ 12, SI 10, CY 6, SK 6, RO 5, EE 3, LV 3, BG 1
+by country: GB 559, SE 328, FR 237, IT 166, NO 154, PL 141, FI 132, DK 122, ES 121, NL 112, DE 110, BE 84, AT 54, CH 52, GR 41, LU 37, PT 28, IE 27, MT 27, IS 24, HU 20, LT 20, HR 19, CZ 12, SI 10, CY 6, SK 6, RO 5, EE 3, LV 3, BG 1
 
 largest 40 by revenue:
 Shell PLC                          GB RDSA     Energy                 2025-12-31 rev€=238184.7 ebitda=None fcf=21948.0 roe=10.2 F=5 1111001-0
 Glencore PLC                       GB GLEN     Materials              2025-12-31 rev€=220914.8 ebitda=None fcf=-290.0 roe=0.9 F=6 1111101-0
-TotalEnergies SE                   FR FP       Energy                 2025-12-31 rev€=179559.1 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
+TotalEnergies SE                   FR TOT      Energy                 2025-12-31 rev€=179559.1 ebitda=None fcf=10390.0 roe=11.4 F=4 1101001-0
 BP P.L.C.                          GB BP       Energy                 2025-12-31 rev€=171842.0 ebitda=30464.0 fcf=11272.0 roe=0.1 F=6 1101011-1
 Stellantis N.V.                    NL STLAM    Consumer Discretionary 2025-12-31 rev€=153508.0 ebitda=-19273.0 fcf=None roe=-41.8 F=3 0001001-1
 Equinor ASA                        NO EQNR     Energy                 2025-12-31 rev€=95012.9 ebitda=37670.0 fcf=5977.0 roe=12.5 F=5 11010-1-1
@@ -217,7 +217,7 @@ Novo Nordisk A/S                   DK NOVO     Healthcare             2025-12-31
 Compass Group                      GB CPG      Consumer Staples       2025-09-30 rev€=41115.6 ebitda=None fcf=2474.0 roe=24.4 F=5 1111001-0
 Vodafone Group Public Limited Comp GB VOD      Communication          2026-03-31 rev€=40461.0 ebitda=None fcf=6973.0 roe=-0.8 F=6 01111-101
 Orange                             FR ORA      Communication          2024-12-31 rev€=40260.0 ebitda=None fcf=None roe=7.4 F=7 1111011-1
-J Sainsbury                        GB SBRY     Consumer Staples       2026-02-28 rev€=40165.9 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
+Sainsbury's                        GB SBRY     Consumer Staples       2026-02-28 rev€=40165.9 ebitda=1096.0 fcf=931.0 roe=6.4 F=6 111100101
 Schneider Electric                 FR SU       Utilities              2025-12-31 rev€=40152.0 ebitda=None fcf=4588.0 roe=17.2 F=6 111100101
 Inditex                            ES ITX      Consumer Discretionary 2026-01-31 rev€=39864.0 ebitda=11267.0 fcf=6520.0 roe=30.5 F=8 111110111
 GSK PLC                            GB GSK      Healthcare             2025-12-31 rev€=38996.1 ebitda=None fcf=4756.0 roe=34.9 F=9 111111111
