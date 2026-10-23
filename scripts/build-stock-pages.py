@@ -105,21 +105,22 @@ def companies():
         if not q:
             continue
         c.update(price=q[pi['price']], change=q[pi['change']], priceVenue=q[pi['venue']], priceDate=q[pi['date']])
-        # Same estimate as js/companies.js: shares = net income / EPS, skipped when the units look mismatched.
+        # Same estimate as js/companies.js: shares in issue where known, else net income / EPS,
+        # skipped when the units look mismatched.
         rev, rev_eur, eps, ni = c.get('revenue'), c.get('revenueEur'), c.get('eps'), c.get('netIncome')
         fx = rev_eur / rev if is_num(rev_eur) and is_num(rev) and rev else 1 if c.get('currency') == 'EUR' else None
-        shares = ni / eps if is_num(eps) and is_num(ni) and eps * ni > 0 else None
-        if not fx or not shares:
+        shares = c['shares'] if is_num(c.get('shares')) else ni / eps if fx and is_num(eps) and is_num(ni) and eps * ni > 0 else None
+        if not shares:
             continue
         mcap = c['price'] * shares
-        pe = c['price'] / (eps * fx) if eps > 0 else None
+        pe = c['price'] / (eps * fx) if fx and is_num(eps) and eps > 0 else None
         ps = mcap / rev_eur if is_num(rev_eur) and rev_eur > 0 else None
         if (pe is not None and not 1 <= pe <= 150) or (ps is not None and not 0.02 <= ps <= 60):
             continue
         c['mcap'] = mcap
         if pe is not None:
             c['pe'] = pe
-        if is_num(c.get('dividendsPaid')) and c['dividendsPaid'] > 0:
+        if fx and is_num(c.get('dividendsPaid')) and c['dividendsPaid'] > 0:
             y = c['dividendsPaid'] * fx / mcap * 100
             if y < 25:
                 c['divYield'] = y

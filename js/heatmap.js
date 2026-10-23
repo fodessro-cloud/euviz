@@ -1,5 +1,5 @@
-// FINILA market map: every European company with a real price (js/company-prices.json) and an
-// annual report (js/companies.json). Box size = estimated market value, color = the chosen figure.
+// FINILA market map: every European company with a real price (js/company-prices.json) and a
+// market value (js/companies.json: annual report, or shares in issue for German companies). Box size = estimated market value, color = the chosen figure.
 
 let HM = [], hmGroupBy = 'sector', hmColor = 'change', hmCountry = '', hmTiles = [], hmPinned = null;
 
@@ -65,7 +65,8 @@ function squarify(items, rect) {
   return out;
 }
 
-// Same estimate as the Stocks page: shares = net income / EPS; absurd P/E or price/sales means mismatched units.
+// Same estimate as the Stocks page: shares in issue where known, else net income / EPS; absurd P/E or
+// price/sales means mismatched units.
 function buildCompanies(cos, prices) {
   const ix = f => prices.fields.indexOf(f);
   const [iPrice, iChange, iVenue, iDate] = ['price', 'change', 'venue', 'date'].map(ix);
@@ -76,14 +77,14 @@ function buildCompanies(cos, prices) {
     if (!q) continue;
     Object.assign(c, { price: q[iPrice], change: q[iChange], venue: q[iVenue], priceDate: q[iDate] });
     const fx = isNum(c.revenueEur) && isNum(c.revenue) && c.revenue ? c.revenueEur / c.revenue : c.currency === 'EUR' ? 1 : null;
-    const shares = isNum(c.eps) && isNum(c.netIncome) && c.eps * c.netIncome > 0 ? c.netIncome / c.eps : null;
-    if (!fx || !shares || !isNum(c.price)) continue;
-    const mcap = c.price * shares, pe = c.eps > 0 ? c.price / (c.eps * fx) : null;
+    const shares = isNum(c.shares) ? c.shares : isNum(c.eps) && isNum(c.netIncome) && c.eps * c.netIncome > 0 && fx ? c.netIncome / c.eps : null;
+    if (!shares || !isNum(c.price)) continue;
+    const mcap = c.price * shares, pe = fx && c.eps > 0 ? c.price / (c.eps * fx) : null;
     const ps = isNum(c.revenueEur) && c.revenueEur > 0 ? mcap / c.revenueEur : null;
     if ((pe !== null && (pe < 1 || pe > 150)) || (ps !== null && (ps < 0.02 || ps > 60))) continue;
     c.mcap = mcap;
     if (pe !== null) c.pe = pe;
-    if (c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; c.divYield = y < 25 ? y : null; } else c.divYield = 0;
+    if (fx && c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; c.divYield = y < 25 ? y : null; } else c.divYield = fx ? 0 : null;
     if (isNum(c.fscore)) { c.fscoreKnown = (c.fscoreTests || '').replace(/-/g, '').length; c.quality = c.fscoreKnown ? c.fscore / c.fscoreKnown : null; }
     c.label = c.ticker || c.name.split(/\s+/)[0];
     c.group = { sector: c.sector || OTHER, country: countryName(c.country) };
@@ -162,10 +163,10 @@ function renderHeatmap() {
   const total = HM.length, n = shown.length;
   const day = HM[0] ? new Date(HM[0].priceDate + 'T12:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
   document.getElementById('hm-note').innerHTML =
-    `${num(n, 0)} companies${hmCountry ? ` in ${esc(countryName(hmCountry))}` : ''} with a real price (${day}) and an annual report, worth ${money(shown.reduce((s, c) => s + c.mcap, 0))} together. ` +
+    `${num(n, 0)} companies${hmCountry ? ` in ${esc(countryName(hmCountry))}` : ''} with a real price (${day}) and a known market value, worth ${money(shown.reduce((s, c) => s + c.mcap, 0))} together. ` +
     (hmColor === 'change' ? (changeShare(shown) < 0.5 ? 'The day change appears after the next trading day; until then the boxes are grey, so try another color. '
       : 'Grey boxes did not trade today. ') : hmColor !== 'pe' && hmColor !== 'divYield'
-      ? 'Colors from the newest annual report of each company (mostly fiscal 2024 or 2025); revenue growth compares it with the year before. ' : '') +
+      ? 'Colors from the newest annual report of each company (mostly fiscal 2024 or 2025); revenue growth compares it with the year before. Grey boxes have no report figures yet (most German companies). ' : '') +
     `Box size is market value. Click a box to see the company.`;
   hideHover();
 }

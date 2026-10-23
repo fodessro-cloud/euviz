@@ -288,7 +288,36 @@ FIELDS = ["lei", "isin", "name", "country", "ticker", "exchange", "mic", "sector
           "revenueEur", "revenue", "ebitda", "operatingProfit", "netIncome", "operatingCashFlow", "capex", "fcf",
           "dividendsPaid", "equity", "assets", "cash", "debt", "netDebt", "eps", "roe", "ebitdaMargin",
           "operatingMargin", "netMargin", "fcfMargin", "netDebtToEbitda", "revenueGrowth", "netIncomeGrowth",
-          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source", "origin"]
+          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source", "origin", "shares"]
+
+
+def add_shares(rows, listed):
+    """Shares in issue from data/shares.json (German companies have no reports on filings.xbrl.org,
+    so without it they have no market value and drop off the maps). Adds the companies the file
+    names that are not on the list yet (Wikidata lists no ticker for them, Porsche has no FIRDS row)."""
+    path = ROOT / "data/shares.json"
+    if not path.exists():
+        return 0
+    known = json.loads(path.read_text())["rows"]
+    by_isin = {r["isin"]: r for r in rows if r.get("isin")}
+    lei_of = {l["isin"]: lei for lei, l in listed.items()}
+    have = {r["lei"] for r in rows}
+    for isin, k in known.items():
+        r = by_isin.get(isin)
+        if not r and k.get("name"):
+            lei = k.get("lei") or lei_of.get(isin)
+            if not lei or lei in have:
+                continue
+            l = listed.get(lei, {})
+            r = {"lei": lei, "isin": isin, "name": k["name"], "country": isin[:2], "ticker": k.get("ticker"),
+                 "exchange": "Xetra", "mic": (l.get("mics") or ["XETR"])[0], "sector": k.get("sector"), "origin": "listing"}
+            rows.append(r)
+            have.add(lei)
+        if r:
+            r["shares"] = round(k["shares"] / 1e6, 6)   # millions, the unit of the report figures
+            # Checked by hand, so they beat Wikidata (Siemens filed under Utilities, BMW still as BMW3).
+            r.update({f: k[f] for f in ("name", "ticker", "sector") if k.get(f)})
+    return sum(1 for r in rows if r.get("shares"))
 
 
 def main():
@@ -361,6 +390,7 @@ def main():
                      "country": l["isin"][:2], "mic": (l.get("mics") or [None])[0], "ticker": ticker,
                      "exchange": exchange, "sector": sector_of(w.get("industries", [])),
                      "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "origin": "listing"})
+    log(f"shares in issue for {add_shares(rows, listed)} companies (data/shares.json)")
     missing = [r for r in rows if not r["sector"]]
     extra = wikidata_extra({r["isin"] for r in missing if r["isin"]}, {r["lei"] for r in missing})
     via = {"wikidata": 0, "bank": 0, "name": 0}
