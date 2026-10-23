@@ -129,7 +129,7 @@ function renderPresets() {
 }
 
 // ── Total and yearly return over 5/10/20 years, euro area (same data as /invest) ─
-const ASSETS = [['stocks', 'Stocks (EURO STOXX 50)'], ['gold', 'Gold'], ['house', 'Property'], ['bonds', 'Government bonds'],
+const ASSETS = [['stocks', 'Stocks (EURO STOXX 50)'], ['us', 'US stocks (S&P 500)'], ['gold', 'Gold'], ['house', 'Property'], ['bonds', 'Government bonds'],
   ['deposit', 'Term deposit'], ['savings', 'Savings account'], ['cash', 'Cash after inflation']];
 
 const mIdx = m => +m.slice(0, 4) * 12 + +m.slice(5, 7) - 1;
