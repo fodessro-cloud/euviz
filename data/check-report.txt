@@ -1,0 +1,59 @@
+FINILA data check 2026-10-23 19:07 UTC (live site)
+0 errors, 54 warnings
+
+WARNING Volvo Cars (SE0021628898): price moved -25.2% on 2026-10-23 (check it is real news, not a data error).
+WARNING Prosus N.V. (NL0013654783): newest annual report ends 2024-03-31, older than two years.
+WARNING Embracer Group (SE0023615885): newest annual report ends 2024-03-31, older than two years.
+WARNING Addtech AB (SE0014781795): newest annual report ends 2024-03-31, older than two years.
+WARNING CPI Property Group (LU0251710041): newest annual report ends 2023-12-31, older than two years.
+WARNING Elekta AB (publ) (SE0000163628): newest annual report ends 2024-04-30, older than two years.
+WARNING Zealand Pharma (DK0060257814): revenue growth 14,599% looks like a unit change between reports.
+WARNING Systemair Aktiebolag (SE0016609499): newest annual report ends 2024-04-30, older than two years.
+WARNING Rusta AB (publ) (SE0020848356): newest annual report ends 2024-04-30, older than two years.
+WARNING Clas Ohlson (SE0000584948): newest annual report ends 2024-04-30, older than two years.
+WARNING Lagercrantz Group Aktiebolag (SE0014990966): newest annual report ends 2024-03-31, older than two years.
+WARNING Reinet Investments S.C.A. (LU0383812293): newest annual report ends 2024-03-31, older than two years.
+WARNING Sectra (SE0022419784): newest annual report ends 2024-04-30, older than two years.
+WARNING Verimatrix (FR0010291245): P/E 0.27 is impossible (price 0.216, EPS 0.9 USD).
+WARNING Hydrogenpro ASA (NO0010892359): P/E 0.09 is impossible (price 0.0232, EPS 2.64 NOK).
+WARNING GVS S.P.A. (IT0005411209): €94B company has no sector, falls into 'Other' on the maps.
+WARNING Cabka N.V. (NL00150000S7): €49B company has no sector, falls into 'Other' on the maps.
+WARNING Newcap Holding A/S (DK0064983373): €9B company has no sector, falls into 'Other' on the maps.
+WARNING Amper, S.A. (ES0109260291): €6B company has no sector, falls into 'Other' on the maps.
+WARNING Allfunds Group PLC (GB00BNTJ3546): €6B company has no sector, falls into 'Other' on the maps.
+WARNING Temenos Group (CH0012453913): €6B company has no sector, falls into 'Other' on the maps.
+WARNING ELIS (FR0012435121): €5B company has no sector, falls into 'Other' on the maps.
+WARNING British Land (GB0001367019): €5B company has no sector, falls into 'Other' on the maps.
+WARNING Reply S.P.A. (IT0005282865): €5B company has no sector, falls into 'Other' on the maps.
+WARNING Persimmon plc (GB0006825383): €5B company has no sector, falls into 'Other' on the maps.
+WARNING Aalberts N.V. (NL0000852564): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Holmen Aktiebolag (SE0011090018): €4B company has no sector, falls into 'Other' on the maps.
+WARNING RS Group plc (GB0003096442): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Warehouses De Pauw (BE0974349814): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Man Group PLC (JE00BJ1DLW90): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Flughafen Wien AG (AT00000VIE62): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Lagercrantz Group Aktiebolag (SE0014990966): €4B company has no sector, falls into 'Other' on the maps.
+WARNING AAK AB (Publ) (SE0011337708): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Deme Group (BE0974413453): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Vallourec (FR0013506730): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Soitec (FR0013227113): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Berkeley Group Holdings (GB00BP0RGD03): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Arcadis N.V. (NL0006237562): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Française des jeux (FR0013451333): €4B company has no sector, falls into 'Other' on the maps.
+WARNING ΓΕΚ Τερνα Α.Ε. (GRS145003000): €4B company has no sector, falls into 'Other' on the maps.
+WARNING Fluidra S.A. (ES0137650018): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Loomis AB (SE0014504817): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Taylor Wimpey (GB0008782301): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Banijay Group N.V. (NL0015000X07): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Unifiedpost Group (BE0974371032): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Eurazeo (FR0000121121): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Vidrala SA (ES0183746314): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Ocado Group PLC (GB00B3MBS747): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Brembo N.V. (NL0015001KT6): €3B company has no sector, falls into 'Other' on the maps.
+WARNING Bellway P L C (GB0000904986): €3B company has no sector, falls into 'Other' on the maps.
+WARNING DOF Group ASA (NO0012851874): €3B company has no sector, falls into 'Other' on the maps.
+WARNING 15 share counts in data/shares.json are older than 200 days: time for the quarterly refresh.
+WARNING 2 daily closes jump more than 2x (share split or wrong line); first: DE000A1YC996 2026-10-16 0.02 -> 2026-10-19 0.001; GB00BQVVS097 2026-10-19 0.0005 -> 2026-10-20 0.0045.
+WARNING js/housing-levels.json: sources that failed last run (old values kept): FI.
+NOTE    2745 companies, 2100 with a price, 1623 with a market value; newest price 2026-10-23.
+NOTE    Priced but no market value (no report figures, no shares count): PL 84, GB 79, SE 65, FR 27, NO 26, IT 25, DK 14, IE 12, BE 9, CH 8, NL 8, CZ 7.
