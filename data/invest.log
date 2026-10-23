@@ -9,9 +9,10 @@ ok    house      30 series,   7161 months, newest 2026-05
 ok    fx         11 series,   3554 months, newest 2026-09
 ok    dfr         1 series,     64 months, newest 2026-09
 ok    stoxx50     1 series,    333 months, newest 2026-09
+ok    sp500       1 series,    333 months, newest 2026-09
 ok    gold_usd    1 series,    333 months, newest 2026-09
 skip  GB: no recent inflation data
-wrote js/invest.json (333 KB), 31 countries, failed: none
+wrote js/invest.json (357 KB), 31 countries, failed: none
   U2 infl {'month': '2026-09', 'value': 3.8} dep {'month': '2026-08', 'value': 2.13} bond {'month': '2026-09', 'value': 3.928} house {'month': '2026-05', 'value': 3.84} assets ['bonds', 'deposit', 'house', 'prices', 'savings']
   AT infl {'month': '2026-09', 'value': 3.6} dep {'month': '2026-08', 'value': 2.15} bond {'month': '2026-09', 'value': 3.687} house {'month': '2026-05', 'value': 5.07} assets ['bonds', 'deposit', 'house', 'prices', 'savings']
   BE infl {'month': '2026-09', 'value': 4.5} dep {'month': '2026-08', 'value': 2.14} bond {'month': '2026-09', 'value': 4.12} house {'month': '2026-05', 'value': 2.13} assets ['bonds', 'deposit', 'house', 'prices', 'savings']
