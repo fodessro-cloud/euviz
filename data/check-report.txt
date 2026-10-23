@@ -1,4 +1,4 @@
-FINILA data check 2026-10-23 19:07 UTC (live site)
+FINILA data check 2026-10-23 19:26 UTC (live site)
 0 errors, 54 warnings
 
 WARNING Volvo Cars (SE0021628898): price moved -25.2% on 2026-10-23 (check it is real news, not a data error).
