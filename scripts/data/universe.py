@@ -359,7 +359,8 @@ def fix_eps_scale(rows):
         pe = price / (eps * fx) if eps > 0 else None
         ps = price * ni / eps / rev if rev else None
         wrong = (ps is not None and not 0.003 <= ps <= 300) and (pe is None or not 0.8 <= pe <= 1000) \
-            or ps is None and pe is not None and not 0.2 <= pe <= 5000
+            or ps is None and pe is not None and not 0.2 <= pe <= 5000 \
+            or pe is not None and pe < 0.5   # a P/E under 0.5 is never real; often EPS in cents
         if not wrong:
             continue
         # A loss tests against price-to-sales alone, too loose to pick a scale: drop it instead.
