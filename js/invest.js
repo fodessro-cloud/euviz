@@ -6,11 +6,12 @@
 // dark page, the light steps on a light one (picked from the page background, so a theme change
 // in the shared CSS carries over).
 const PALETTE = {
-  dark:  ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#3fa63f'],
-  light: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300'],
+  dark:  ['#3987e5', '#9b72e0', '#d95926', '#199e70', '#c98500', '#d55181', '#3fa63f'],
+  light: ['#2a78d6', '#7f56c9', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300'],
 };
 const ASSETS = [
-  { key: 'stocks',  label: 'Stocks' },  // EURO STOXX 50 incl. estimated dividends
+  { key: 'stocks',  label: 'Euro-area stocks' },  // EURO STOXX 50 incl. estimated dividends
+  { key: 'us',      label: 'US stocks' },         // S&P 500 in the local currency, for comparison
   { key: 'bonds',   label: 'Government bonds' },
   { key: 'house',   label: 'Property' },
   { key: 'gold',    label: 'Gold' },
@@ -22,11 +23,17 @@ const CASH = { key: 'cash', label: 'Cash at home' };
 // What each line measures and for which area, so nobody reads euro-area stocks as the chosen country's.
 function where(key) {
   const n = D.countries[country].name;
-  return { stocks: 'EURO STOXX 50, euro area', bonds: `${n}, 10-year`, house: `${n}, house prices`,
+  return { stocks: 'EURO STOXX 50', us: `S&P 500, in ${D.countries[country].cur}`, bonds: `${n}, 10-year`, house: `${n}, house prices`,
     gold: 'world price', deposit: `${n}, bank average`, savings: `${n}, bank average`,
     prices: `${n}, consumer prices`, cash: 'no interest' }[key] || '';
 }
-const short = a => a.key === 'prices' ? 'Prices' : a.label;
+// One short line at the end of each chart line: what, then where ("Property SK"); the legend and
+// the table carry the full text.
+function short(a) {
+  const area = country === 'U2' ? 'Eurozone' : country;
+  return { stocks: 'Stocks Eurozone', us: 'Stocks US', bonds: `Bonds ${area}`, house: `Property ${area}`, gold: 'Gold',
+    deposit: `Deposit ${area}`, savings: `Savings ${area}`, prices: `Prices ${area}` }[a.key] || a.label;
+}
 function applyTheme() {
   const css = getComputedStyle(document.body);
   const [r, g, b] = (css.backgroundColor.match(/\d+/g) || [0, 0, 0]).map(Number);
@@ -74,7 +81,8 @@ function renderNow() {
     ['savings', 'Savings account', n.savings, `${esc(c.name)}, average rate on overnight deposits`],
     ['deposit', 'Term deposit', n.deposit1y, `${esc(c.name)}, new deposits up to 1 year`],
     ['bonds', 'Government bond', n.bond10, `${esc(c.name)}, 10-year yield`],
-    ['stocks', 'Stocks', n.stocks_12m, 'EURO STOXX 50 (euro area) incl. dividends, last 12 months'],
+    ['stocks', 'Euro-area stocks', n.stocks_12m, 'EURO STOXX 50 incl. dividends, last 12 months'],
+    ['us', 'US stocks', n.us_12m, `S&P 500 in ${c.cur} incl. dividends, last 12 months`],
     ['gold', 'Gold', n.gold_12m, `world price in ${c.cur}, last 12 months`],
     ['house', 'Property', n.house_12m, `${esc(c.name)} house prices, last 12 months`],
   ];
@@ -84,7 +92,7 @@ function renderNow() {
     return `<div class="i-tile">
       <div class="i-tile-head"><span class="i-dot" style="background:${color(k)}"></span>${label}</div>
       <div class="i-tile-real ${cls(real)}">${isNum(real) ? pct(real) : '—'}<span>real</span></div>
-      <div class="i-tile-nom">${isNum(v) ? `${k === 'stocks' || k === 'gold' || k === 'house' ? pct(v) : rate(v)} before inflation` : 'no data for this country'}</div>
+      <div class="i-tile-nom">${isNum(v) ? `${k === 'stocks' || k === 'us' || k === 'gold' || k === 'house' ? pct(v) : rate(v)} before inflation` : 'no data for this country'}</div>
       <div class="i-tile-sub">${sub}${o?.month ? `, ${mNice(o.month)}` : ''}</div>
     </div>`;
   }).join('');
@@ -130,7 +138,7 @@ function renderCalc() {
 function drawChart(list, from, to) {
   const el = document.getElementById('chart');
   const W = Math.max(300, el.clientWidth), H = W < 520 ? 260 : 340;
-  const pad = { l: 64, r: W < 520 ? 12 : 168, t: 12, b: 28 };
+  const pad = { l: 64, r: W < 520 ? 12 : 128, t: 12, b: 28 };
   const lines = [...list.filter(a => a.key !== 'prices'), ...list.filter(a => a.key === 'prices')];
   const ys = lines.flatMap(a => a.pts.map(p => p[1])).concat([amount]);
   let lo = Math.min(...ys), hi = Math.max(...ys);
@@ -150,12 +158,11 @@ function drawChart(list, from, to) {
   let labels = '';
   if (pad.r > 60) {
     const ends = lines.map(a => ({ a, y: y(a.final) })).sort((p, q) => p.y - q.y);
-    // Two lines each: the asset, then what it measures and where.
-    for (let j = 1; j < ends.length; j++) if (ends[j].y - ends[j - 1].y < 28) ends[j].y = ends[j - 1].y + 28;
+    for (let j = 1; j < ends.length; j++) if (ends[j].y - ends[j - 1].y < 16) ends[j].y = ends[j - 1].y + 16;
     const bottom = H - pad.b - 8;  // then back up from the bottom edge where the stack ran past it
     if (ends.length && ends[ends.length - 1].y > bottom) ends[ends.length - 1].y = bottom;
-    for (let j = ends.length - 2; j >= 0; j--) if (ends[j + 1].y - ends[j].y < 28) ends[j].y = ends[j + 1].y - 28;
-    labels = ends.map(e => `<text x="${W - pad.r + 8}" y="${e.y + 1}" class="lb">${short(e.a)}<tspan x="${W - pad.r + 8}" dy="13" class="lw">${esc(where(e.a.key))}</tspan></text>`).join('');
+    for (let j = ends.length - 2; j >= 0; j--) if (ends[j + 1].y - ends[j].y < 16) ends[j].y = ends[j + 1].y - 16;
+    labels = ends.map(e => `<text x="${W - pad.r + 8}" y="${e.y + 4}" class="lb">${esc(short(e.a))}</text>`).join('');
   }
   el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${grid}
     <line x1="${pad.l}" x2="${W - pad.r}" y1="${y(amount)}" y2="${y(amount)}" class="base"/>${body}${labels}
@@ -173,7 +180,7 @@ function drawChart(list, from, to) {
     const vals = lines.map(a => ({ a, p: a.pts.find(p => p[0] === i) })).filter(v => v.p).sort((p, q) => q.p[1] - p.p[1]);
     xh.setAttribute('x1', x(i)); xh.setAttribute('x2', x(i)); xh.setAttribute('visibility', 'visible');
     dots.innerHTML = vals.map(v => `<circle cx="${x(i)}" cy="${y(v.p[1])}" r="4.5" fill="${v.a.color}" class="dt"/>`).join('');
-    tip.innerHTML = `<b>${mNice(mStr(i))}</b>` + vals.map(v => `<div><i style="background:${v.a.color}"></i>${short(v.a)} <em>${esc(where(v.a.key))}</em><span>${ret(v.p[1])}</span></div>`).join('');
+    tip.innerHTML = `<b>${mNice(mStr(i))}</b>` + vals.map(v => `<div><i style="background:${v.a.color}"></i>${esc(short(v.a))}<span>${ret(v.p[1])}</span></div>`).join('');
     tip.hidden = false;
     const wrap = el.parentElement.getBoundingClientRect(), tx = r.left - wrap.left + px;
     tip.style.left = `${Math.min(Math.max(tx + 14, 0), wrap.width - tip.offsetWidth)}px`;

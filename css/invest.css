@@ -32,7 +32,7 @@
 .i-seg button.on { background: var(--blue); border-color: var(--blue); color: var(--on-blue, #06101F); }
 
 /* Today tiles */
-.i-now { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.i-now { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
 .i-tile { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
 .i-tile-head { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--text2); }
 .i-tile-real { font-family: var(--mono); font-size: 26px; font-weight: 600; margin-top: 6px; }
@@ -57,7 +57,6 @@
 .i-chart .base { stroke: var(--line2); stroke-width: 1.5; stroke-dasharray: 2 4; }
 .i-chart .ax { fill: var(--muted); font: 12px var(--mono); }
 .i-chart .lb { fill: var(--text2); font: 500 12.5px 'IBM Plex Sans', sans-serif; }
-.i-chart .lw { fill: var(--muted); font: 400 11px 'IBM Plex Sans', sans-serif; }
 .i-chart .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .i-chart .ln.dash { stroke-dasharray: 6 5; }
 .i-chart .xh { stroke: var(--line2); stroke-width: 1; }
