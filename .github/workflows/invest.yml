@@ -7,7 +7,7 @@ on:
   schedule:
     - cron: '10 5 * * *'
   push:
-    branches: [claude/project-thread-wlsy64]
+    branches: [claude/project-thread-wlsy64, claude/project-thread-ms2i2k]
     paths: ['scripts/data/invest*.py', '.github/workflows/invest.yml']
   workflow_dispatch:
 

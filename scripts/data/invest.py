@@ -2,7 +2,7 @@
 
 Free official sources, monthly:
   ECB Data Portal  bank deposit rates (MIR), 10-year government bond yields (IRS), HICP index up to
-                   2025, ECB deposit facility rate, EURO STOXX 50 index, euro exchange rates
+                   2025, ECB deposit facility rate, EURO STOXX 50 and S&P 500 indices, euro exchange rates
   Eurostat         HICP annual inflation (COICOP 2018 series, from 2026), house price index (quarterly)
   World Bank       gold price (Pink Sheet, monthly averages)
 Writes js/invest.json: per country a "wealth index" per asset (what 1 unit of local currency became),
@@ -23,6 +23,10 @@ START = "1999-01"
 # EURO STOXX 50 is a price index; dividends (paid out by its companies at roughly 3 % a year over
 # the long run) are added as a flat estimate so stocks are compared on the same footing as interest.
 DIVIDEND_YIELD = 0.03
+# The S&P 500 (US stocks, for comparison) pays less out: about 2 % a year over the long run.
+US_DIVIDEND_YIELD = 0.02
+# ECB keys tried in turn for the S&P 500 (Datastream series in the ECB's financial markets data).
+SP500_KEYS = ["M.US.USD.DS.EI.S_PCOMP.HSTA", "M.US.USD.DS.EI.SPCOMP.HSTA"]
 
 # code: (name, currency, euro member). U2 = euro area as a whole.
 COUNTRIES = {
@@ -47,7 +51,7 @@ ESTAT = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"
 WB_PAGE = "https://www.worldbank.org/en/research/commodity-markets"
 
 SOURCES = [
-    ["ECB Data Portal", "https://data.ecb.europa.eu/", "bank deposit rates, 10-year government bond yields, inflation index to 2025, ECB rate, EURO STOXX 50, exchange rates"],
+    ["ECB Data Portal", "https://data.ecb.europa.eu/", "bank deposit rates, 10-year government bond yields, inflation index to 2025, ECB rate, EURO STOXX 50, S&P 500, exchange rates"],
     ["Eurostat", "https://ec.europa.eu/eurostat/web/hicp", "inflation (HICP) and house price index"],
     ["World Bank Pink Sheet", WB_PAGE, "gold price (monthly average)"],
 ]
@@ -256,6 +260,19 @@ def contiguous_tail(s):
     return {m: s[m] for m in ms[start:]}
 
 
+def sp500():
+    """S&P 500 monthly averages in USD, {"US": {month: value}}, from the first ECB key that answers."""
+    last = None
+    for key in SP500_KEYS:
+        try:
+            got = ecb_multi("FM", key)
+            if got.get("US"):
+                return got
+        except Exception as e:  # noqa: BLE001 - try the next key
+            last = e
+    raise RuntimeError(f"no S&P 500 series at the ECB ({last})")
+
+
 def pack(s, digits=4):
     """{month: v} -> [first month, [v...]] normalised to 1 at the first month."""
     s = contiguous_tail({m: v for m, v in s.items() if m >= START})
@@ -288,6 +305,7 @@ def main():
         "fx": lambda: ecb_multi("EXR", f"M.{'+'.join(CURRENCIES + ['USD'])}.EUR.SP00.A", area_pos=1),
         "dfr": lambda: ecb_multi("FM", "B.U2.EUR.4F.KR.DFR.LEV"),
         "stoxx50": lambda: ecb_multi("FM", "M.U2.EUR.DS.EI.DJES50I.HSTA"),
+        "sp500": lambda: sp500(),
         "gold_usd": lambda: {"W": gold_usd()},
     }
     for name, job in jobs.items():
@@ -308,6 +326,9 @@ def main():
     first = min(stoxx_price) if stoxx_price else None
     stoxx = {m: v * (1 + DIVIDEND_YIELD / 12) ** (midx(m) - midx(first)) for m, v in stoxx_price.items()}
     gold = {m: v / usd[m] for m, v in raw.get("gold_usd", {}).get("W", {}).items() if m in usd} if usd else {}
+    sp_price = {m: v / usd[m] for m, v in raw.get("sp500", {}).get("US", {}).items() if m in usd} if usd else {}
+    sp_first = min(sp_price) if sp_price else None
+    us = {m: v * (1 + US_DIVIDEND_YIELD / 12) ** (midx(m) - midx(sp_first)) for m, v in sp_price.items()}
     if not usd:
         try:  # gold needs EUR/USD, fetched only when gold is
             usd = ecb_multi("EXR", "M.USD.EUR.SP00.A").get("USD", {})
@@ -323,7 +344,7 @@ def main():
 
     assets, now, countries = {}, {"c": {}}, {}
     for c in ["EUR"] + CURRENCIES:
-        a = {"stocks": pack(in_cur(stoxx, c)), "gold": pack(in_cur(gold, c))}
+        a = {"stocks": pack(in_cur(stoxx, c)), "us": pack(in_cur(us, c)), "gold": pack(in_cur(gold, c))}
         assets[c] = {k: v for k, v in a.items() if v}
 
     def last(s):
@@ -359,7 +380,7 @@ def main():
         now["c"][code] = {
             "inflation": last(infl), "deposit1y": last(g("dep1y")), "savings": last(g("depon")),
             "bond10": last(g("bond10")), "house_12m": yoy(g("house")),
-            "stocks_12m": yoy(in_cur(stoxx, cur)), "gold_12m": yoy(in_cur(gold, cur)),
+            "stocks_12m": yoy(in_cur(stoxx, cur)), "us_12m": yoy(in_cur(us, cur)), "gold_12m": yoy(in_cur(gold, cur)),
         }
     now["dfr"] = last(raw.get("dfr", {}).get("U2"))
 
