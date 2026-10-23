@@ -1,0 +1,514 @@
+{
+ "note": "Hand-checked fixes by ISIN that beat what Wikidata and the name rules give: sector, name, ticker. 'drop' lists LEIs left off the list, with the reason.",
+ "drop": {
+  "743700ATXLT0MFCHXT16": "WithSecure: taken private and delisted in 2025; FIRDS still shows it under F-Secure's ISIN FI4000519236"
+ },
+ "rows": {
+  "AT0000730007": {
+   "sector": "Industrials",
+   "name": "Andritz"
+  },
+  "AT0000746409": {
+   "sector": "Utilities",
+   "name": "Verbund"
+  },
+  "BE0003797140": {
+   "sector": "Financials"
+  },
+  "BE0003810273": {
+   "sector": "Communication"
+  },
+  "BE0974259880": {
+   "sector": "Consumer Discretionary"
+  },
+  "CH1216478797": {
+   "sector": "Materials"
+  },
+  "CY0200352116": {
+   "sector": "Energy"
+  },
+  "DK0010201102": {
+   "sector": "Industrials"
+  },
+  "DK0060094928": {
+   "sector": "Utilities"
+  },
+  "DK0060252690": {
+   "sector": "Consumer Discretionary"
+  },
+  "DK0060542181": {
+   "sector": "Industrials",
+   "name": "ISS"
+  },
+  "DK0061539921": {
+   "sector": "Industrials",
+   "name": "Vestas"
+  },
+  "ES0105027009": {
+   "sector": "Industrials",
+   "name": "Logista"
+  },
+  "ES0105046017": {
+   "sector": "Industrials",
+   "name": "Aena"
+  },
+  "ES0105563003": {
+   "sector": "Utilities",
+   "name": "Acciona Energía"
+  },
+  "ES0127797019": {
+   "sector": "Utilities",
+   "name": "EDP Renewables"
+  },
+  "ES0130670112": {
+   "sector": "Utilities",
+   "name": "Endesa"
+  },
+  "ES0177542018": {
+   "sector": "Industrials"
+  },
+  "FI0009000681": {
+   "sector": "Technology",
+   "name": "Nokia"
+  },
+  "FI0009005961": {
+   "sector": "Materials"
+  },
+  "FI0009007132": {
+   "sector": "Utilities"
+  },
+  "FI4000074984": {
+   "sector": "Industrials"
+  },
+  "FR0000039299": {
+   "sector": "Industrials"
+  },
+  "FR0000044448": {
+   "sector": "Industrials"
+  },
+  "FR0000044471": {
+   "sector": "Healthcare",
+   "name": "Ramsay Santé"
+  },
+  "FR0000051807": {
+   "sector": "Industrials"
+  },
+  "FR0000052292": {
+   "sector": "Consumer Discretionary"
+  },
+  "FR0000120073": {
+   "sector": "Materials"
+  },
+  "FR0000120404": {
+   "sector": "Consumer Discretionary"
+  },
+  "FR0000121014": {
+   "sector": "Consumer Discretionary",
+   "name": "LVMH"
+  },
+  "FR0000121204": {
+   "sector": "Financials"
+  },
+  "FR0000121220": {
+   "sector": "Consumer Discretionary"
+  },
+  "FR0000121329": {
+   "sector": "Industrials",
+   "name": "Thales"
+  },
+  "FR0000121667": {
+   "sector": "Healthcare"
+  },
+  "FR0000121709": {
+   "sector": "Consumer Discretionary",
+   "name": "SEB"
+  },
+  "FR0000121972": {
+   "sector": "Industrials"
+  },
+  "FR0006174348": {
+   "sector": "Industrials"
+  },
+  "FR0010208488": {
+   "sector": "Utilities"
+  },
+  "FR0010307819": {
+   "sector": "Industrials"
+  },
+  "FR0010340141": {
+   "sector": "Industrials"
+  },
+  "FR0010386334": {
+   "sector": "Healthcare",
+   "name": "Clariane"
+  },
+  "FR0010908533": {
+   "sector": "Financials"
+  },
+  "FR0011476928": {
+   "sector": "Consumer Discretionary"
+  },
+  "FR0011726835": {
+   "sector": "Energy"
+  },
+  "FR0011950732": {
+   "sector": "Consumer Discretionary"
+  },
+  "FR0012757854": {
+   "sector": "Industrials",
+   "name": "Spie"
+  },
+  "FR0013258662": {
+   "sector": "Financials",
+   "name": "Ayvens"
+  },
+  "FR0013326246": {
+   "sector": "Real Estate"
+  },
+  "FR0014000MR3": {
+   "sector": "Healthcare"
+  },
+  "FR001400J770": {
+   "sector": "Industrials"
+  },
+  "FR001400NLM4": {
+   "sector": "Healthcare"
+  },
+  "GB0000536739": {
+   "sector": "Industrials",
+   "name": "Ashtead"
+  },
+  "GB0000811801": {
+   "sector": "Consumer Discretionary",
+   "name": "Barratt Redrow"
+  },
+  "GB0001826634": {
+   "sector": "Industrials",
+   "name": "Diploma"
+  },
+  "GB0004052071": {
+   "sector": "Technology",
+   "name": "Halma"
+  },
+  "GB0004161021": {
+   "sector": "Industrials",
+   "name": "Hays"
+  },
+  "GB0004657408": {
+   "sector": "Industrials",
+   "name": "Mitie"
+  },
+  "GB0004915632": {
+   "sector": "Industrials",
+   "name": "Kier Group"
+  },
+  "GB0006776081": {
+   "sector": "Consumer Discretionary"
+  },
+  "GB0007188757": {
+   "sector": "Materials"
+  },
+  "GB0007908733": {
+   "sector": "Utilities",
+   "name": "SSE"
+  },
+  "GB0007973794": {
+   "sector": "Industrials"
+  },
+  "GB0009465807": {
+   "sector": "Industrials"
+  },
+  "GB0009697037": {
+   "sector": "Industrials"
+  },
+  "GB0031215220": {
+   "sector": "Consumer Discretionary"
+  },
+  "GB0031638363": {
+   "sector": "Industrials",
+   "name": "Intertek"
+  },
+  "GB0032089863": {
+   "sector": "Consumer Discretionary",
+   "name": "Next"
+  },
+  "GB0033195214": {
+   "sector": "Consumer Discretionary",
+   "name": "Kingfisher"
+  },
+  "GB00B0744B38": {
+   "sector": "Industrials",
+   "name": "Bunzl"
+  },
+  "GB00B082RF11": {
+   "sector": "Industrials",
+   "name": "Rentokil Initial"
+  },
+  "GB00B19NLV48": {
+   "sector": "Industrials",
+   "name": "Experian"
+  },
+  "GB00B1FH8J72": {
+   "sector": "Utilities"
+  },
+  "GB00B1QH8P22": {
+   "sector": "Consumer Discretionary"
+  },
+  "GB00B1WY2338": {
+   "sector": "Industrials"
+  },
+  "GB00B1YW4409": {
+   "sector": "Financials",
+   "name": "3i Group"
+  },
+  "GB00B2863827": {
+   "sector": "Healthcare"
+  },
+  "GB00B2B0DG97": {
+   "sector": "Industrials",
+   "name": "Relx"
+  },
+  "GB00B4Y7R145": {
+   "sector": "Consumer Discretionary",
+   "name": "Currys"
+  },
+  "GB00B5ZN1N88": {
+   "sector": "Real Estate",
+   "name": "Segro"
+  },
+  "GB00B63H8491": {
+   "sector": "Industrials",
+   "name": "Rolls-Royce"
+  },
+  "GB00BD3VFW73": {
+   "sector": "Healthcare",
+   "name": "Convatec"
+  },
+  "GB00BD6K4575": {
+   "sector": "Consumer Discretionary"
+  },
+  "GB00BDVZYZ77": {
+   "sector": "Industrials"
+  },
+  "GB00BHJYC057": {
+   "sector": "Consumer Discretionary"
+  },
+  "GB00BK9RKT01": {
+   "sector": "Industrials"
+  },
+  "GB00BM8Q5M07": {
+   "sector": "Consumer Discretionary",
+   "name": "JD Sports Fashion"
+  },
+  "GB00BMBVGQ36": {
+   "sector": "Energy",
+   "name": "Harbour Energy",
+   "ticker": "HBR"
+  },
+  "GB00BMX86B70": {
+   "sector": "Consumer Staples",
+   "name": "Haleon"
+  },
+  "GB00BSZBP530": {
+   "sector": "Consumer Staples",
+   "name": "Reckitt"
+  },
+  "GB00BTQGS779": {
+   "sector": "Industrials"
+  },
+  "GB00BVYVFW23": {
+   "sector": "Communication",
+   "name": "Auto Trader"
+  },
+  "GB00BWFGQN14": {
+   "sector": "Industrials",
+   "name": "Spirax"
+  },
+  "GRS434003000": {
+   "sector": "Utilities"
+  },
+  "HU0000153937": {
+   "sector": "Energy",
+   "name": "MOL"
+  },
+  "IE0002424939": {
+   "sector": "Industrials",
+   "name": "DCC"
+  },
+  "IM00B5VQMV65": {
+   "sector": "Consumer Discretionary",
+   "name": "Entain",
+   "ticker": "ENT"
+  },
+  "IT0001250932": {
+   "sector": "Utilities",
+   "name": "Hera"
+  },
+  "IT0003027817": {
+   "sector": "Utilities",
+   "name": "Iren"
+  },
+  "IT0003128367": {
+   "sector": "Utilities",
+   "name": "Enel"
+  },
+  "IT0003153415": {
+   "sector": "Utilities"
+  },
+  "IT0004931058": {
+   "sector": "Industrials",
+   "name": "Maire"
+  },
+  "IT0005278236": {
+   "sector": "Consumer Discretionary",
+   "name": "Pirelli"
+  },
+  "IT0005599938": {
+   "sector": "Industrials",
+   "name": "Fincantieri"
+  },
+  "JE00B8KF9B49": {
+   "sector": "Communication",
+   "name": "WPP"
+  },
+  "JE00BVSYJW51": {
+   "sector": "Consumer Discretionary",
+   "name": "B&M European Value Retail"
+  },
+  "LU2237380790": {
+   "sector": "Consumer Discretionary",
+   "name": "Allegro"
+  },
+  "LU2598331598": {
+   "sector": "Energy",
+   "name": "Tenaris"
+  },
+  "LU2910446546": {
+   "sector": "Consumer Staples",
+   "name": "Zabka"
+  },
+  "NL0000008977": {
+   "sector": "Consumer Staples"
+  },
+  "NL0000009538": {
+   "sector": "Healthcare",
+   "name": "Philips"
+  },
+  "NL0000379121": {
+   "sector": "Industrials"
+  },
+  "NL0009432491": {
+   "sector": "Energy"
+  },
+  "NL0010801007": {
+   "sector": "Industrials",
+   "name": "IMCD"
+  },
+  "NL0011821392": {
+   "sector": "Industrials",
+   "name": "Signify"
+  },
+  "NL0012866412": {
+   "sector": "Technology",
+   "name": "BE Semiconductor"
+  },
+  "NL0014332678": {
+   "sector": "Consumer Staples",
+   "name": "JDE Peet's"
+  },
+  "NL00150006R6": {
+   "sector": "Real Estate"
+  },
+  "NL0015000LU4": {
+   "sector": "Industrials"
+  },
+  "NL0015001FS8": {
+   "sector": "Industrials"
+  },
+  "NL0015002MS2": {
+   "sector": "Consumer Staples",
+   "name": "The Magnum Ice Cream Company"
+  },
+  "NO0003054108": {
+   "sector": "Consumer Staples"
+  },
+  "NO0003733800": {
+   "sector": "Consumer Staples"
+  },
+  "NO0005052605": {
+   "sector": "Materials"
+  },
+  "NO0010310956": {
+   "sector": "Consumer Staples",
+   "name": "SalMar"
+  },
+  "NO0013536151": {
+   "sector": "Industrials"
+  },
+  "PTSON0AM0001": {
+   "sector": "Consumer Staples",
+   "name": "Sonae"
+  },
+  "SE0000106270": {
+   "sector": "Consumer Discretionary"
+  },
+  "SE0000108656": {
+   "sector": "Technology"
+  },
+  "SE0000114837": {
+   "sector": "Industrials",
+   "name": "Trelleborg"
+  },
+  "SE0000115446": {
+   "sector": "Industrials"
+  },
+  "SE0000163594": {
+   "sector": "Industrials",
+   "name": "Securitas"
+  },
+  "SE0000667891": {
+   "sector": "Industrials",
+   "name": "Sandvik"
+  },
+  "SE0001515552": {
+   "sector": "Industrials",
+   "name": "Indutrade"
+  },
+  "SE0009922164": {
+   "sector": "Consumer Staples",
+   "name": "Essity"
+  },
+  "SE0015658109": {
+   "sector": "Industrials",
+   "name": "Epiroc"
+  },
+  "SE0015949201": {
+   "sector": "Industrials",
+   "name": "Lifco"
+  },
+  "SE0015949748": {
+   "sector": "Industrials",
+   "name": "Beijer Ref"
+  },
+  "SE0015961909": {
+   "sector": "Technology",
+   "name": "Hexagon"
+  },
+  "SE0015988019": {
+   "sector": "Industrials",
+   "name": "NIBE"
+  },
+  "SE0020050417": {
+   "sector": "Materials",
+   "name": "Boliden"
+  },
+  "SE0022419784": {
+   "sector": "Healthcare",
+   "name": "Sectra"
+  },
+  "SI0031102120": {
+   "sector": "Healthcare",
+   "name": "Krka"
+  }
+ }
+}

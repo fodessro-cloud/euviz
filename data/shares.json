@@ -1,6 +1,272 @@
 {
- "note": "Shares in issue per company (all share classes together), for market value = shares x price where no annual report figures exist (German companies). From the companies' own voting-rights notices (§ 41 WpHG) or share pages where found, else the share count comdirect/onvista show. name/ticker/sector replace what Wikidata gives (and name new companies). Check quarterly.",
+ "note": "Shares in issue per company (all share classes together), for market value = shares x price where no annual report figures exist (German and Swiss companies). From the companies' own voting-rights notices (§ 41 WpHG) or share pages where found, else the share count comdirect/onvista show. name/ticker/sector replace what Wikidata gives (and name new companies). Check quarterly.",
  "rows": {
+  "CH0002178181": {
+   "shares": 100000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0002178181",
+   "name": "Stadler Rail",
+   "ticker": "SRAIL",
+   "sector": "Industrials"
+  },
+  "CH0008742519": {
+   "shares": 51800000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0008742519",
+   "name": "Swisscom",
+   "ticker": "SCMN",
+   "sector": "Communication"
+  },
+  "CH0009002962": {
+   "shares": 5480000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0009002962",
+   "name": "Barry Callebaut",
+   "ticker": "BARN",
+   "sector": "Consumer Staples"
+  },
+  "CH0010645932": {
+   "shares": 9230000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0010645932",
+   "name": "Givaudan",
+   "ticker": "GIVN",
+   "sector": "Materials"
+  },
+  "CH0011075394": {
+   "shares": 147150000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0011075394",
+   "name": "Zurich Insurance",
+   "ticker": "ZURN",
+   "sector": "Financials"
+  },
+  "CH0011178255": {
+   "shares": 10270000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0011178255",
+   "name": "TX Group",
+   "ticker": "TXGN",
+   "sector": "Communication"
+  },
+  "CH0012005267": {
+   "shares": 1830000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012005267",
+   "name": "Novartis",
+   "ticker": "NOVN",
+   "sector": "Healthcare"
+  },
+  "CH0012032113": {
+   "shares": 862560000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012032113",
+   "name": "Roche",
+   "ticker": "ROG",
+   "sector": "Healthcare",
+   "how": "160,000,000 bearer shares + 702,562,700 non-voting equity securities (Genussscheine), both trade at about the same price; Roche annual report"
+  },
+  "CH0012100191": {
+   "shares": 12720000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012100191",
+   "name": "Tecan",
+   "ticker": "TECN",
+   "sector": "Healthcare"
+  },
+  "CH0012138605": {
+   "shares": 172420000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012138605",
+   "name": "Adecco",
+   "ticker": "ADEN",
+   "sector": "Industrials"
+  },
+  "CH0012142631": {
+   "shares": 328880000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012142631",
+   "name": "Clariant",
+   "ticker": "CLN",
+   "sector": "Materials"
+  },
+  "CH0012214059": {
+   "shares": 553120000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012214059",
+   "name": "Holcim",
+   "ticker": "HOLN",
+   "sector": "Materials"
+  },
+  "CH0012221716": {
+   "shares": 1820000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012221716",
+   "name": "ABB",
+   "ticker": "ABBN",
+   "sector": "Industrials"
+  },
+  "CH0012255151": {
+   "shares": 52310000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0012255151",
+   "name": "Swatch Group",
+   "ticker": "UHR",
+   "sector": "Consumer Discretionary",
+   "how": "bearer-share equivalent: 28.94M bearer + 116.86M registered shares at one fifth of a bearer share each"
+  },
+  "CH0013841017": {
+   "shares": 69840000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0013841017",
+   "name": "Lonza",
+   "ticker": "LONN",
+   "sector": "Healthcare"
+  },
+  "CH0019396990": {
+   "shares": 12130000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0019396990",
+   "name": "Ypsomed",
+   "ticker": "YPSN",
+   "sector": "Healthcare"
+  },
+  "CH0023405456": {
+   "shares": 136980000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0023405456",
+   "name": "Avolta",
+   "ticker": "AVOL",
+   "sector": "Consumer Discretionary"
+  },
+  "CH0025238863": {
+   "shares": 118760000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0025238863",
+   "name": "Kuehne + Nagel",
+   "ticker": "KNIN",
+   "sector": "Industrials"
+  },
+  "CH0025751329": {
+   "shares": 138930000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0025751329",
+   "name": "Logitech",
+   "ticker": "LOGN",
+   "sector": "Technology"
+  },
+  "CH0030170408": {
+   "shares": 31800000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0030170408",
+   "name": "Geberit",
+   "ticker": "GEBN",
+   "sector": "Industrials"
+  },
+  "CH0038388911": {
+   "shares": 33860000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0038388911",
+   "name": "Sulzer",
+   "ticker": "SUN",
+   "sector": "Industrials"
+  },
+  "CH0038863350": {
+   "shares": 2530000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0038863350",
+   "name": "Nestlé",
+   "ticker": "NESN",
+   "sector": "Consumer Staples"
+  },
+  "CH0126881561": {
+   "shares": 294920000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0126881561",
+   "name": "Swiss Re",
+   "ticker": "SREN",
+   "sector": "Financials"
+  },
+  "CH0210483332": {
+   "shares": 515300000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0210483332",
+   "name": "Richemont",
+   "ticker": "CFR",
+   "sector": "Consumer Discretionary"
+  },
+  "CH0244767585": {
+   "shares": 3060000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0244767585",
+   "name": "UBS",
+   "ticker": "UBSG",
+   "sector": "Financials"
+  },
+  "CH0418792922": {
+   "shares": 160440000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0418792922",
+   "name": "Sika",
+   "ticker": "SIKA",
+   "sector": "Materials"
+  },
+  "CH0432492467": {
+   "shares": 482100000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH0432492467",
+   "name": "Alcon",
+   "ticker": "ALC",
+   "sector": "Healthcare"
+  },
+  "CH1169360919": {
+   "shares": 93960000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH1169360919",
+   "name": "Accelleron",
+   "ticker": "ACLN",
+   "sector": "Industrials"
+  },
+  "CH1175448666": {
+   "shares": 159450000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH1175448666",
+   "name": "Straumann",
+   "ticker": "STMN",
+   "sector": "Healthcare"
+  },
+  "CH1256740924": {
+   "shares": 197600000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH1256740924",
+   "name": "SGS",
+   "ticker": "SGSN",
+   "sector": "Industrials"
+  },
+  "CH1263676327": {
+   "shares": 25660000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH1263676327",
+   "name": "Romande Energie",
+   "ticker": "REHN",
+   "sector": "Utilities"
+  },
+  "CH1485899350": {
+   "shares": 71590000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH1485899350",
+   "name": "Banque Cantonale de Genève",
+   "ticker": "BCGE",
+   "sector": "Financials"
+  },
+  "CH1486524122": {
+   "shares": 41590000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/CH1486524122",
+   "name": "dormakaba",
+   "ticker": "DOKA",
+   "sector": "Industrials"
+  },
   "DE0005089031": {
    "shares": 172840000,
    "asOf": "2026-10-23",
