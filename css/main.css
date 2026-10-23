@@ -494,6 +494,16 @@ a:hover { text-decoration: underline; }
   gap: 14px;
 }
 .groups-toolbar label { font-size: 11px; color: var(--text2); font-weight: 600; text-transform: uppercase; }
+.groups-note { margin-left: auto; font-size: 11px; color: var(--text2); }
+.groups-scroll { overflow: auto; height: calc(100vh - 42px - 30px - 44px); }
+.group-top { font-size: 10.5px; color: var(--text2); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
+.group-of { color: var(--text2); }
+.group-more { margin-top: 10px; font-size: 11px; color: var(--text2); }
+a.mini-card { color: inherit; text-decoration: none; }
+@media (max-width: 700px) {
+  .groups-toolbar { flex-wrap: wrap; }
+  .groups-note { margin-left: 0; width: 100%; }
+}
 
 #groups-table {
   width: 100%;
