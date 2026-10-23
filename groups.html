@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FINILA — Groups</title>
+  <title>FINILA — European stocks by sector and country</title>
   <link rel="canonical" href="https://www.finila.com/groups">
+  <meta name="description" content="European listed companies grouped by sector or country: market value, day change, P/E, dividend yield, margins and growth from real prices and annual reports.">
   <link rel="icon" href="css/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/header.css">
@@ -29,47 +30,38 @@
   </div>
 </header>
 <script>(function(){var n=document.querySelector('.fh-nav'),a=n&&n.querySelector('[aria-current]');if(a)n.scrollLeft=a.offsetLeft-n.offsetLeft-16;})();</script>
-<div class="demo-banner" style="background:#FFF4D6;color:#6B4A00;font-size:12px;text-align:center;padding:5px 12px;border-bottom:1px solid #F0D58A;flex-shrink:0;">FINILA preview: figures on this page are illustrative, not real market data. Not investment advice.</div>
-
-<div class="indices-bar" id="indices-bar"></div>
+<div class="real-banner">Real data: share prices from Deutsche Börse (15 minutes delayed), company figures from annual reports. Market value is estimated from the annual report or the shares in issue. Not investment advice.</div>
 
 <!-- GROUPS TOOLBAR -->
 <div class="groups-toolbar">
-  <label>Group By</label>
-  <button class="hm-btn active" data-group-by="sector">Sector</button>
-  <button class="hm-btn" data-group-by="country">Country</button>
-  <button class="hm-btn" data-group-by="exchange">Exchange</button>
-  <button class="hm-btn" data-group-by="industry">Industry</button>
-  <span style="margin-left:auto;font-size:11px;color:var(--text2)">Click a row to expand stocks</span>
+  <label>Group by</label>
+  <button class="hm-btn active" type="button" data-group-by="sector">Sector</button>
+  <button class="hm-btn" type="button" data-group-by="country">Country</button>
+  <span class="groups-note" id="groups-note">Loading companies…</span>
 </div>
 
 <!-- TABLE -->
-<div style="overflow:auto;height:calc(100vh - 42px - 36px - 30px - 44px);">
+<div class="groups-scroll">
   <table id="groups-table">
     <thead>
       <tr>
-        <th onclick="onGroupSortClick('name')">#</th>
-        <th onclick="onGroupSortClick('name')">Group</th>
-        <th onclick="onGroupSortClick('count')">#Stocks</th>
-        <th onclick="onGroupSortClick('marketCap')">Mkt Cap</th>
-        <th onclick="onGroupSortClick('avgChange')">Avg Chg%</th>
-        <th onclick="onGroupSortClick('avgPE')">Avg P/E</th>
-        <th onclick="onGroupSortClick('avgDividend')">Avg Div%</th>
-        <th onclick="onGroupSortClick('avgROE')">Avg ROE</th>
-        <th onclick="onGroupSortClick('avgRevGrowth')">Rev Growth</th>
-        <th onclick="onGroupSortClick('avgMargin')">Net Margin</th>
-        <th onclick="onGroupSortClick('avgBeta')">Avg Beta</th>
-        <th>Adv/Dec</th>
+        <th>#</th>
+        <th data-sort="name">Group</th>
+        <th data-sort="count" title="Companies with a market value / all listed companies we know">Companies</th>
+        <th data-sort="mcap">Market value</th>
+        <th data-sort="change" title="Weighted by market value">Day change</th>
+        <th data-sort="pe" title="Median of the companies with a profit">P/E</th>
+        <th data-sort="divYield" title="Dividends paid / market value, whole group">Dividend</th>
+        <th data-sort="roe" title="Median">ROE</th>
+        <th data-sort="revenueGrowth" title="Median, last annual report">Revenue growth</th>
+        <th data-sort="netMargin" title="Median">Net margin</th>
+        <th>Up / down today</th>
       </tr>
     </thead>
     <tbody id="groups-tbody"></tbody>
   </table>
 </div>
 
-<script src="js/data.js"></script>
-<script src="js/prices.js"></script>
-<script src="js/live-prices.js"></script>
-<script src="js/app.js"></script>
 <script src="js/groups.js"></script>
 <script src="js/analytics.js" defer></script>
 </body>
