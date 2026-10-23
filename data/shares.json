@@ -1,0 +1,1440 @@
+{
+ "note": "Shares in issue per company (all share classes together), for market value = shares x price where no annual report figures exist (German companies). From the companies' own voting-rights notices (§ 41 WpHG) or share pages where found, else the share count comdirect/onvista show. name/ticker/sector replace what Wikidata gives (and name new companies). Check quarterly.",
+ "rows": {
+  "DE0005089031": {
+   "shares": 172840000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005089031",
+   "name": "United Internet",
+   "ticker": "UTDI",
+   "sector": "Communication"
+  },
+  "DE0005093108": {
+   "shares": 5430000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005093108",
+   "name": "Amadeus Fire",
+   "ticker": "AAD",
+   "sector": "Industrials"
+  },
+  "DE0005103006": {
+   "shares": 52050000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005103006",
+   "name": "Adtran Networks",
+   "ticker": "ADV",
+   "sector": "Technology"
+  },
+  "DE0005104400": {
+   "shares": 15910000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005104400",
+   "name": "Atoss Software",
+   "ticker": "AOF",
+   "sector": "Technology"
+  },
+  "DE0005140008": {
+   "shares": 1910578977,
+   "asOf": "2026-10-15",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-deutsche-bank-ag-deutsch-559948.html",
+   "name": "Deutsche Bank",
+   "ticker": "DBK",
+   "sector": "Financials"
+  },
+  "DE0005146807": {
+   "shares": 14630000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005146807",
+   "name": "Delticom",
+   "ticker": "DEX",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0005158703": {
+   "shares": 126000000,
+   "asOf": "2026-03-24",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-bechtle-ag-deutsch-513560.html",
+   "name": "Bechtle",
+   "ticker": "BC8",
+   "sector": "Technology"
+  },
+  "DE0005190003": {
+   "shares": 615810431,
+   "asOf": "2026-06-30",
+   "source": "https://www.pressetext.com/news/veroeffentlichung-gem-50-abs-1-nr-1-wphg-umwandlung-saemtlicher-vorzugsaktien-sowie-umstellung-der-boersennotierung.html",
+   "name": "BMW",
+   "ticker": "BMW",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0005200000": {
+   "shares": 238000000,
+   "asOf": "2026-09-01",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-gesamtstimmrechtsmitteilung-beiersdorf-aktiengesellschaft-deutsch-548459.html",
+   "name": "Beiersdorf",
+   "ticker": "BEI",
+   "sector": "Consumer Staples"
+  },
+  "DE0005220008": {
+   "shares": 324410000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005220008",
+   "name": "EnBW",
+   "ticker": "EBK",
+   "sector": "Utilities"
+  },
+  "DE0005313506": {
+   "shares": 13880000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005313506",
+   "name": "Energiekontor",
+   "ticker": "EKT",
+   "sector": "Utilities"
+  },
+  "DE0005313704": {
+   "shares": 89440570,
+   "asOf": "2026-02-01",
+   "source": "https://www.zeiss.com/content/dam/med-ag/investor-relations/financial-calendar/annual-general-meeting/2026/9_afx2026_hv-to.pdf",
+   "name": "Carl Zeiss Meditec",
+   "ticker": "AFX",
+   "sector": "Healthcare"
+  },
+  "DE0005403901": {
+   "shares": 6740000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005403901",
+   "name": "Cewe",
+   "ticker": "CWC",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0005419105": {
+   "shares": 27700000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005419105",
+   "name": "Cancom",
+   "ticker": "COK",
+   "sector": "Technology"
+  },
+  "DE0005439004": {
+   "shares": 200005983,
+   "asOf": "2026-07-03",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-continental-ag-deutsch-537227.html",
+   "name": "Continental",
+   "ticker": "CON",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0005470306": {
+   "shares": 96000000,
+   "asOf": "2025-05-21",
+   "source": "https://ir-api.eqs.com//media/document/e92676ce-7aa3-4877-b4a9-254d7dcb4e73/assets/Satzung_der_CTS_Eventim_AG_Co_KGaA_210525.pdf",
+   "name": "CTS Eventim",
+   "ticker": "EVD",
+   "sector": "Communication"
+  },
+  "DE0005470405": {
+   "shares": 86350000,
+   "asOf": "2026-10-23",
+   "source": "https://www.onvista.de/aktien/DE0005470405",
+   "name": "Lanxess",
+   "ticker": "LXS",
+   "sector": "Materials"
+  },
+  "DE0005493092": {
+   "shares": 110380000,
+   "asOf": "2026-10-23",
+   "source": "https://www.onvista.de/aktien/DE0005493092",
+   "name": "Borussia Dortmund",
+   "ticker": "BVB",
+   "sector": "Communication"
+  },
+  "DE0005493365": {
+   "shares": 6620000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005493365",
+   "name": "Hypoport",
+   "ticker": "HYQ",
+   "sector": "Financials"
+  },
+  "DE0005545503": {
+   "shares": 211920000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005545503",
+   "name": "1&1",
+   "ticker": "1U1",
+   "sector": "Communication"
+  },
+  "DE0005550602": {
+   "shares": 18760000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005550602",
+   "name": "Drägerwerk",
+   "ticker": "DRW3",
+   "sector": "Healthcare"
+  },
+  "DE0005552004": {
+   "shares": 1150000000,
+   "asOf": "2026-10-08",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-dhl-ag-deutsch-558055.html",
+   "name": "DHL Group",
+   "ticker": "DHL",
+   "sector": "Industrials"
+  },
+  "DE0005557508": {
+   "shares": 4849778057,
+   "asOf": "2026-04-21",
+   "source": "https://www.telekom.com/resource/blob/1104168/643e7ffae57ff8cc1fb9c9bfd3e1494f/dl-gesamtstimmrechte-26-04-21-data.pdf",
+   "name": "Deutsche Telekom",
+   "ticker": "DTE",
+   "sector": "Communication"
+  },
+  "DE0005659700": {
+   "shares": 62580000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005659700",
+   "name": "Eckert & Ziegler",
+   "ticker": "EUZ",
+   "sector": "Healthcare"
+  },
+  "DE0005664809": {
+   "shares": 177590000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005664809",
+   "name": "Evotec",
+   "ticker": "EVT",
+   "sector": "Healthcare"
+  },
+  "DE0005677108": {
+   "shares": 17160000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005677108",
+   "name": "Elmos Semiconductor",
+   "ticker": "ELG",
+   "sector": "Technology"
+  },
+  "DE0005759807": {
+   "shares": 10970000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005759807",
+   "name": "init innovation in traffic systems",
+   "ticker": "IXX",
+   "sector": "Technology"
+  },
+  "DE0005772206": {
+   "shares": 83860000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005772206",
+   "name": "Fielmann",
+   "ticker": "FIE",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0005773303": {
+   "shares": 92468704,
+   "asOf": "2026-04-29",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-fraport-ag-frankfurt-airport-services-worldwide-deutsch-525545.html",
+   "name": "Fraport",
+   "ticker": "FRA",
+   "sector": "Industrials"
+  },
+  "DE0005785802": {
+   "shares": 268564630,
+   "asOf": "2026-05-21",
+   "source": "https://goldesel.de/aktien/news/fresenius-medical-care-meldet-26856-mio-stimmrechte-eigenaktien-update-fur-anleger",
+   "name": "Fresenius Medical Care",
+   "ticker": "FME",
+   "sector": "Healthcare"
+  },
+  "DE0005800601": {
+   "shares": 25560000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0005800601",
+   "name": "GFT Technologies",
+   "ticker": "GFT",
+   "sector": "Technology"
+  },
+  "DE0005810055": {
+   "shares": 184200000,
+   "asOf": "2026-09-14",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-deutsche-boerse-ag-deutsch-557891.html",
+   "name": "Deutsche Börse",
+   "ticker": "DB1",
+   "sector": "Financials"
+  },
+  "DE0005909006": {
+   "shares": 37606372,
+   "asOf": "2026-05-22",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-bilfinger-se-deutsch-528699.html",
+   "name": "Bilfinger",
+   "ticker": "GBF",
+   "sector": "Industrials"
+  },
+  "DE0006047004": {
+   "shares": 176365065,
+   "asOf": "2026-09-01",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-heidelberg-materials-ag-deutsch-549666.html",
+   "name": "Heidelberg Materials",
+   "ticker": "HEI",
+   "sector": "Materials"
+  },
+  "DE0006048408": {
+   "shares": 437958750,
+   "asOf": "2025-12-31",
+   "source": "https://www.henkel.de/resource/blob/2131818/4998b624e9a2509cd1d17b03b916aee9/data/2026-08-06-henkel-investor-fact-sheet-de.pdf",
+   "name": "Henkel",
+   "ticker": "HEN3",
+   "sector": "Consumer Staples"
+  },
+  "DE0006062144": {
+   "shares": 207640000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006062144",
+   "name": "Covestro",
+   "ticker": "1COV",
+   "sector": "Materials"
+  },
+  "DE0006070006": {
+   "shares": 75250000,
+   "asOf": "2026-10-23",
+   "source": "https://www.onvista.de/aktien/DE0006070006",
+   "name": "Hochtief",
+   "ticker": "HOT",
+   "sector": "Industrials"
+  },
+  "DE0006083405": {
+   "shares": 15940000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006083405",
+   "name": "Hornbach Holding",
+   "ticker": "HBH",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0006200108": {
+   "shares": 24900000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006200108",
+   "name": "Indus Holding",
+   "ticker": "INH",
+   "sector": "Industrials"
+  },
+  "DE0006202005": {
+   "shares": 54990000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006202005",
+   "name": "Salzgitter",
+   "ticker": "SZG",
+   "sector": "Materials"
+  },
+  "DE0006219934": {
+   "shares": 102000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.jungheinrich.com/en/investor-relations/about-our-share/faq-164038",
+   "name": "Jungheinrich",
+   "ticker": "JUN3",
+   "sector": "Industrials",
+   "lei": "529900PHZORTU6FSXE73"
+  },
+  "DE0006223407": {
+   "shares": 58900000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006223407",
+   "name": "ProCredit Holding",
+   "ticker": "PCZ",
+   "sector": "Financials"
+  },
+  "DE0006231004": {
+   "shares": 1305921137,
+   "asOf": "2025-07-22",
+   "source": "https://www.boerse.de/nachrichten/EQS-PVR-Infineon-Technologies-AG-Release-according-to-Article-40-Section-1-of-the-WpHG-the-German-Securities-Trading-Act-with-the-objective-of-Europe-wide-distribution/37681103",
+   "name": "Infineon Technologies",
+   "ticker": "IFX",
+   "sector": "Technology"
+  },
+  "DE0006286560": {
+   "shares": 14250000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006286560",
+   "name": "OVB Holding",
+   "ticker": "O4B",
+   "sector": "Financials"
+  },
+  "DE0006292006": {
+   "shares": 1732865,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006292006",
+   "name": "KSB",
+   "ticker": "KSB3",
+   "sector": "Industrials"
+  },
+  "DE0006305006": {
+   "shares": 167900000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006305006",
+   "name": "Deutz",
+   "ticker": "DEZ",
+   "sector": "Industrials"
+  },
+  "DE0006335003": {
+   "shares": 31593072,
+   "asOf": "2026-06-29",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-krones-ag-deutsch-534993.html",
+   "name": "Krones",
+   "ticker": "KRN",
+   "sector": "Industrials"
+  },
+  "DE0006450000": {
+   "shares": 24500000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006450000",
+   "name": "LPKF Laser & Electronics",
+   "ticker": "LPK",
+   "sector": "Technology"
+  },
+  "DE0006452907": {
+   "shares": 115490000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006452907",
+   "name": "Nemetschek",
+   "ticker": "NEM",
+   "sector": "Technology"
+  },
+  "DE0006569908": {
+   "shares": 109220000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006569908",
+   "name": "MLP",
+   "ticker": "MLP",
+   "sector": "Financials"
+  },
+  "DE0006599905": {
+   "shares": 434777878,
+   "asOf": "2026-07-21",
+   "source": "https://www.emdgroup.com/en/investors/shares-and-bonds.html",
+   "name": "Merck KGaA",
+   "ticker": "MRK",
+   "sector": "Healthcare"
+  },
+  "DE0006602006": {
+   "shares": 162801664,
+   "asOf": "2026-06-12",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-gea-group-aktiengesellschaft-deutsch-532285.html",
+   "name": "GEA Group",
+   "ticker": "G1A",
+   "sector": "Industrials"
+  },
+  "DE0006766504": {
+   "shares": 44956723,
+   "asOf": "2026-10-01",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-aurubis-ag-deutsch-556722.html",
+   "name": "Aurubis",
+   "ticker": "NDA",
+   "sector": "Materials"
+  },
+  "DE0006916604": {
+   "shares": 9870000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006916604",
+   "name": "Pfeiffer Vacuum",
+   "ticker": "PFV",
+   "sector": "Industrials"
+  },
+  "DE0006969603": {
+   "shares": 147210000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0006969603",
+   "name": "Puma",
+   "ticker": "PUM",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0007010803": {
+   "shares": 11370000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007010803",
+   "name": "Rational",
+   "ticker": "RAA",
+   "sector": "Industrials"
+  },
+  "DE0007030009": {
+   "shares": 46663521,
+   "asOf": "2026-04-30",
+   "source": "https://www.it-boltwise.de/?p=1844675",
+   "name": "Rheinmetall",
+   "ticker": "RHM",
+   "sector": "Industrials"
+  },
+  "DE0007037129": {
+   "shares": 779985169,
+   "asOf": "2026-10-07",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-rwe-aktiengesellschaft-deutsch-557837.html",
+   "name": "RWE",
+   "ticker": "RWE",
+   "sector": "Utilities"
+  },
+  "DE0007074007": {
+   "shares": 33000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007074007",
+   "name": "KWS Saat",
+   "ticker": "KWS",
+   "sector": "Consumer Staples"
+  },
+  "DE0007100000": {
+   "shares": 962903703,
+   "asOf": "2026-05-14",
+   "source": "https://www.onvista.de/news/2026/05-18-eqs-pvr-mercedes-benz-group-ag-veroeffentlichung-ueber-erwerb-oder-veraeusserung-eigener-aktien-nach-40-abs-1-satz-2-wphg-0-37-26512880",
+   "name": "Mercedes-Benz Group",
+   "ticker": "MBG",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0007164600": {
+   "shares": 1228504232,
+   "asOf": "2026-08-11",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-sap-se-deutsch-545296.html",
+   "name": "SAP",
+   "ticker": "SAP",
+   "sector": "Technology"
+  },
+  "DE0007165607": {
+   "shares": 74880000,
+   "asOf": "2026-10-23",
+   "source": "https://www.sartorius.com/en/company-de/sartorius-ag-investor-relations-de/shares-de",
+   "name": "Sartorius",
+   "ticker": "SRT3",
+   "sector": "Healthcare"
+  },
+  "DE0007193500": {
+   "shares": 16520000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007193500",
+   "name": "Koenig & Bauer",
+   "ticker": "SKB",
+   "sector": "Industrials"
+  },
+  "DE0007231326": {
+   "shares": 46940000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007231326",
+   "name": "Sixt",
+   "ticker": "SIX2",
+   "sector": "Industrials"
+  },
+  "DE0007236101": {
+   "shares": 782000000,
+   "asOf": "2026-06-18",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-siemens-aktiengesellschaft-deutsch-533231.html",
+   "name": "Siemens",
+   "ticker": "SIE",
+   "sector": "Industrials"
+  },
+  "DE0007257503": {
+   "shares": 485220000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007257503",
+   "name": "Ceconomy",
+   "ticker": "CEC",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0007276503": {
+   "shares": 6470000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007276503",
+   "name": "Secunet Security Networks",
+   "ticker": "YSN",
+   "sector": "Technology"
+  },
+  "DE0007297004": {
+   "shares": 204180000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007297004",
+   "name": "Südzucker",
+   "ticker": "SZU",
+   "sector": "Consumer Staples"
+  },
+  "DE0007314007": {
+   "shares": 304340000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007314007",
+   "name": "Heidelberger Druckmaschinen",
+   "ticker": "HDD",
+   "sector": "Industrials"
+  },
+  "DE0007446007": {
+   "shares": 64040000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007446007",
+   "name": "Takkt",
+   "ticker": "TTK",
+   "sector": "Industrials"
+  },
+  "DE0007448508": {
+   "shares": 17360000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007448508",
+   "name": "IVU Traffic Technologies",
+   "ticker": "IVU",
+   "sector": "Technology"
+  },
+  "DE0007461006": {
+   "shares": 20720000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007461006",
+   "name": "PVA TePla",
+   "ticker": "TPE",
+   "sector": "Technology"
+  },
+  "DE0007474041": {
+   "shares": 3550000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007474041",
+   "name": "Paul Hartmann",
+   "ticker": "PHH2",
+   "sector": "Healthcare"
+  },
+  "DE0007480204": {
+   "shares": 75740000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007480204",
+   "name": "Deutsche EuroShop",
+   "ticker": "DEQ",
+   "sector": "Real Estate"
+  },
+  "DE0007493991": {
+   "shares": 55160000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007493991",
+   "name": "Ströer",
+   "ticker": "SAX",
+   "sector": "Communication"
+  },
+  "DE0007500001": {
+   "shares": 622530000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007500001",
+   "name": "thyssenkrupp",
+   "ticker": "TKA",
+   "sector": "Materials"
+  },
+  "DE0007568578": {
+   "shares": 17400000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007568578",
+   "name": "SFC Energy",
+   "ticker": "F3C",
+   "sector": "Energy"
+  },
+  "DE0007664005": {
+   "shares": 501295263,
+   "asOf": "2025-12-31",
+   "source": "https://www.volkswagen-group.com/de/basisdaten-16024",
+   "name": "Volkswagen",
+   "ticker": "VOW3",
+   "sector": "Consumer Discretionary"
+  },
+  "DE0007667107": {
+   "shares": 19320000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0007667107",
+   "name": "Vossloh",
+   "ticker": "VOS",
+   "sector": "Industrials"
+  },
+  "DE0008019001": {
+   "shares": 134470000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0008019001",
+   "name": "Deutsche Pfandbriefbank",
+   "ticker": "PBB",
+   "sector": "Financials"
+  },
+  "DE0008051004": {
+   "shares": 93540000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0008051004",
+   "name": "Wüstenrot & Württembergische",
+   "ticker": "WUW",
+   "sector": "Financials"
+  },
+  "DE0008148206": {
+   "shares": 7780000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0008148206",
+   "name": "Merkur Privatbank",
+   "ticker": "MBK",
+   "sector": "Financials"
+  },
+  "DE0008232125": {
+   "shares": 1199282895,
+   "asOf": "2026-04-01",
+   "source": "https://investor-relations.lufthansagroup.com/fileadmin/downloads/de/hauptversammlung/2026/Gesamtstimmrechte-DE.pdf",
+   "name": "Lufthansa",
+   "ticker": "LHA",
+   "sector": "Industrials"
+  },
+  "DE0008303504": {
+   "shares": 190270000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE0008303504",
+   "name": "TAG Immobilien",
+   "ticker": "TEG",
+   "sector": "Real Estate"
+  },
+  "DE0008402215": {
+   "shares": 120597134,
+   "asOf": "2021-09-16",
+   "source": "https://www.boerse-online.de/dpa-afx/dgap-stimmrechte-hannover-rueck-se-deutsch-124246.html",
+   "name": "Hannover Rück",
+   "ticker": "HNR1",
+   "sector": "Financials"
+  },
+  "DE0008404005": {
+   "shares": 380418897,
+   "asOf": "2026-06-03",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-allianz-se-deutsch-530480.html",
+   "name": "Allianz",
+   "ticker": "ALV",
+   "sector": "Financials"
+  },
+  "DE0008430026": {
+   "shares": 126970119,
+   "asOf": "2026-10-01",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-stimmrechtemuenchenerrueckversicherungs-gesellschaftaktiengesellschaftinmuenchendeutsch-556752.html",
+   "name": "Munich Re",
+   "ticker": "MUV2",
+   "sector": "Financials"
+  },
+  "DE000A0D6554": {
+   "shares": 236880000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0D6554",
+   "name": "Nordex",
+   "ticker": "NDX1",
+   "sector": "Industrials"
+  },
+  "DE000A0D9PT0": {
+   "shares": 53909160,
+   "asOf": "2026-04-30",
+   "source": "https://www.mtu.de/fileadmin/DE/5_Investoren/Aktionaersstruktur/2026_Stimmrechtsmitteilungen/2026_04_30_Morgan_Stanley.pdf",
+   "name": "MTU Aero Engines",
+   "ticker": "MTX",
+   "sector": "Industrials"
+  },
+  "DE000A0DJ6J9": {
+   "shares": 34700000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0DJ6J9",
+   "name": "SMA Solar Technology",
+   "ticker": "S92",
+   "sector": "Technology"
+  },
+  "DE000A0ETBQ4": {
+   "shares": 5200000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0ETBQ4",
+   "name": "MBB",
+   "ticker": "MBB",
+   "sector": "Industrials"
+  },
+  "DE000A0HL8N9": {
+   "shares": 17940000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0HL8N9",
+   "name": "2G Energy",
+   "ticker": "2GB",
+   "sector": "Industrials"
+  },
+  "DE000A0HN5C6": {
+   "shares": 396930000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0HN5C6",
+   "name": "Deutsche Wohnen",
+   "ticker": "DWNI",
+   "sector": "Real Estate"
+  },
+  "DE000A0JBPG2": {
+   "shares": 76600000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0JBPG2",
+   "name": "PNE",
+   "ticker": "PNE3",
+   "sector": "Utilities"
+  },
+  "DE000A0JL9W6": {
+   "shares": 64010000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0JL9W6",
+   "name": "Verbio",
+   "ticker": "VBK",
+   "sector": "Energy"
+  },
+  "DE000A0LD6E6": {
+   "shares": 34540000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0LD6E6",
+   "name": "Gerresheimer",
+   "ticker": "GXI",
+   "sector": "Healthcare"
+  },
+  "DE000A0LR936": {
+   "shares": 14080000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0LR936",
+   "name": "Steico",
+   "ticker": "ST5",
+   "sector": "Materials"
+  },
+  "DE000A0S8488": {
+   "shares": 72510000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0S8488",
+   "name": "Hamburger Hafen und Logistik",
+   "ticker": "HHFA",
+   "sector": "Industrials"
+  },
+  "DE000A0WMPJ6": {
+   "shares": 113456120,
+   "asOf": "2026-09-30",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-aixtron-se-deutsch-556195.html",
+   "name": "Aixtron",
+   "ticker": "AIXA",
+   "sector": "Technology"
+  },
+  "DE000A0Z23Q5": {
+   "shares": 6410000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A0Z23Q5",
+   "name": "Adesso",
+   "ticker": "ADN1",
+   "sector": "Technology"
+  },
+  "DE000A0Z2ZZ5": {
+   "shares": 118900598,
+   "asOf": "2023-09-29",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-stimmrechte-freenet-ag-deutsch-319182.html",
+   "name": "freenet",
+   "ticker": "FNTN",
+   "sector": "Communication"
+  },
+  "DE000A12DM80": {
+   "shares": 72000000,
+   "asOf": "2026-08-27",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-gesamtstimmrechtsmitteilungscout24sedeutsch-547510.html",
+   "name": "Scout24",
+   "ticker": "G24",
+   "sector": "Communication"
+  },
+  "DE000A13SX22": {
+   "shares": 111110000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A13SX22",
+   "name": "Hella",
+   "ticker": "HLE",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A161408": {
+   "shares": 159000000,
+   "asOf": "2026-06-18",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-hellofresh-se-deutsch-533011.html",
+   "name": "HelloFresh",
+   "ticker": "HFG",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A161N30": {
+   "shares": 44180000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A161N30",
+   "name": "Grenke",
+   "ticker": "GLJ",
+   "sector": "Financials"
+  },
+  "DE000A1DAHH0": {
+   "shares": 144385372,
+   "asOf": "2026-07-23",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-brenntag-se-deutsch-540899.html",
+   "name": "Brenntag",
+   "ticker": "BNR",
+   "sector": "Industrials"
+  },
+  "DE000A1EWVY8": {
+   "shares": 17670000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A1EWVY8",
+   "name": "Formycon",
+   "ticker": "FYB",
+   "sector": "Healthcare"
+  },
+  "DE000A1EWWW0": {
+   "shares": 174000000,
+   "asOf": "2026-09-11",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-stimmrechte-adidas-ag-deutsch-551386.html",
+   "name": "Adidas",
+   "ticker": "ADS",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A1H8BV3": {
+   "shares": 19370000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A1H8BV3",
+   "name": "Norma Group",
+   "ticker": "NOEJ",
+   "sector": "Industrials"
+  },
+  "DE000A1K0235": {
+   "shares": 19120000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A1K0235",
+   "name": "SUSS MicroTec",
+   "ticker": "SMHN",
+   "sector": "Technology"
+  },
+  "DE000A1ML7J1": {
+   "shares": 848458878,
+   "asOf": "2026-09-30",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-gesamtstimmrechtsmitteilungvonoviasedeutsch-555139.html",
+   "name": "Vonovia",
+   "ticker": "VNA",
+   "sector": "Real Estate"
+  },
+  "DE000A1MMCC8": {
+   "shares": 24510000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A1MMCC8",
+   "name": "Medios",
+   "ticker": "ILM1",
+   "sector": "Healthcare"
+  },
+  "DE000A1PHFF7": {
+   "shares": 69016167,
+   "asOf": "2026-08-12",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-hugo-boss-ag-deutsch-546855.html",
+   "name": "Hugo Boss",
+   "ticker": "BOSS",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A1TNUT7": {
+   "shares": 17240000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A1TNUT7",
+   "name": "Deutsche Beteiligungs",
+   "ticker": "DBAN",
+   "sector": "Financials"
+  },
+  "DE000A255F11": {
+   "shares": 20000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A255F11",
+   "name": "Friedrich Vorwerk",
+   "ticker": "VH2",
+   "sector": "Industrials"
+  },
+  "DE000A288904": {
+   "shares": 51730000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A288904",
+   "name": "CompuGroup Medical",
+   "ticker": "COP",
+   "sector": "Healthcare"
+  },
+  "DE000A2E4K43": {
+   "shares": 306492017,
+   "asOf": "2026-08-24",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-delivery-hero-se-deutsch-548202.html",
+   "name": "Delivery Hero",
+   "ticker": "DHER",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A2GS5D8": {
+   "shares": 49540000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2GS5D8",
+   "name": "Dermapharm",
+   "ticker": "DMP",
+   "sector": "Healthcare"
+  },
+  "DE000A2LQ884": {
+   "shares": 221510000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2LQ884",
+   "name": "Auto1 Group",
+   "ticker": "AG1",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A2N4H07": {
+   "shares": 17400000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2N4H07",
+   "name": "Westwing",
+   "ticker": "WEW",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A2NB601": {
+   "shares": 57240000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2NB601",
+   "name": "Jenoptik",
+   "ticker": "JEN",
+   "sector": "Technology"
+  },
+  "DE000A2NB650": {
+   "shares": 25620000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2NB650",
+   "name": "Mutares",
+   "ticker": "MUX",
+   "sector": "Financials"
+  },
+  "DE000A2NBX80": {
+   "shares": 43320000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2NBX80",
+   "name": "Instone Real Estate",
+   "ticker": "INS",
+   "sector": "Real Estate"
+  },
+  "DE000A2YN504": {
+   "shares": 10380000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2YN504",
+   "name": "Knaus Tabbert",
+   "ticker": "KTA",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A2YN900": {
+   "shares": 157790000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A2YN900",
+   "name": "TeamViewer",
+   "ticker": "TMV",
+   "sector": "Technology"
+  },
+  "DE000A3CQ7F4": {
+   "shares": 44170000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A3CQ7F4",
+   "name": "Bike24",
+   "ticker": "BIKE",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A3CSAE2": {
+   "shares": 34310000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A3CSAE2",
+   "name": "Mister Spex",
+   "ticker": "MRX",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000A3DRAE2": {
+   "shares": 5470000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A3DRAE2",
+   "name": "SMT Scharf",
+   "ticker": "S188",
+   "sector": "Industrials"
+  },
+  "DE000A3E00M1": {
+   "shares": 134950000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A3E00M1",
+   "name": "IONOS",
+   "ticker": "IOS",
+   "sector": "Technology"
+  },
+  "DE000A3E5D56": {
+   "shares": 131000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A3E5D64",
+   "name": "Fuchs",
+   "ticker": "FPE",
+   "sector": "Materials"
+  },
+  "DE000A3ENQ51": {
+   "shares": 150610000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A3ENQ51",
+   "name": "Schott Pharma",
+   "ticker": "1SXP",
+   "sector": "Healthcare"
+  },
+  "DE000A3H2200": {
+   "shares": 12380000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A3H2200",
+   "name": "Nagarro",
+   "ticker": "NA9",
+   "sector": "Technology"
+  },
+  "DE000A40ZUV2": {
+   "shares": 10040000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A40ZUV2",
+   "name": "Ascory Bank",
+   "ticker": "VGB",
+   "sector": "Financials"
+  },
+  "DE000A41YDG0": {
+   "shares": 24920000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A41YDG0",
+   "name": "q.beyond",
+   "ticker": "QBY",
+   "sector": "Technology"
+  },
+  "DE000A41YFQ4": {
+   "shares": 5250000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A41YFQ4",
+   "name": "11 88 0 Solutions",
+   "ticker": "TGT",
+   "sector": "Communication"
+  },
+  "DE000A41YHG1": {
+   "shares": 10120000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000A41YHG1",
+   "name": "Alzchem",
+   "ticker": "ACT",
+   "sector": "Materials"
+  },
+  "DE000AUM0V10": {
+   "shares": 100050000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000AUM0V10",
+   "name": "Aumovio",
+   "ticker": "AMV",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000BASF111": {
+   "shares": 892522164,
+   "asOf": "2025-04-23",
+   "source": "https://www.boerse-express.com/news/articles/eqs-stimmrechte-basf-se-deutsch-779896",
+   "name": "BASF",
+   "ticker": "BAS",
+   "sector": "Materials"
+  },
+  "DE000BAY0017": {
+   "shares": 982424082,
+   "asOf": "2026-06-05",
+   "source": "https://www.onvista.de/news/2026/06-10-eqs-pvr-bayer-aktiengesellschaft-veroeffentlichung-gemaess-40-abs-1-wphg-mit-dem-ziel-der-europaweiten-verbreitung-0-37-26520474",
+   "name": "Bayer",
+   "ticker": "BAYN",
+   "sector": "Healthcare"
+  },
+  "DE000BCK2223": {
+   "shares": 63990000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000BCK2223",
+   "name": "Ottobock",
+   "ticker": "OBCK",
+   "sector": "Healthcare"
+  },
+  "DE000CBK1001": {
+   "shares": 1080847095,
+   "asOf": "2026-08-19",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-gesamtstimmrechtsmitteilung-commerzbank-aktiengesellschaft-deutsch-546381.html",
+   "name": "Commerzbank",
+   "ticker": "CBK",
+   "sector": "Financials"
+  },
+  "DE000DTR0CK8": {
+   "shares": 765600399,
+   "asOf": "2025-11-04",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-stimmrechte-daimler-truck-holding-ag-deutsch-481590.html",
+   "name": "Daimler Truck",
+   "ticker": "DTG",
+   "sector": "Industrials"
+  },
+  "DE000DWS1007": {
+   "shares": 200000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000DWS1007",
+   "name": "DWS Group",
+   "ticker": "DWS",
+   "sector": "Financials"
+  },
+  "DE000ENAG999": {
+   "shares": 2641318800,
+   "asOf": "2021-01-12",
+   "source": "https://www.boerse-online.de/dpa-afx/dgap-stimmrechte-eon-se-deutsch-57640.html",
+   "name": "E.ON",
+   "ticker": "EOAN",
+   "sector": "Utilities"
+  },
+  "DE000ENER6Y0": {
+   "shares": 861104914,
+   "asOf": "2026-07-07",
+   "source": "https://www.pressetext.com/news/20260710024",
+   "name": "Siemens Energy",
+   "ticker": "ENR",
+   "sector": "Industrials"
+  },
+  "DE000EVNK013": {
+   "shares": 466000000,
+   "asOf": "2026-02-26",
+   "source": "https://www.hauptversammlung.de/fileadmin/public/user_upload/Evonik_TO26.pdf",
+   "name": "Evonik Industries",
+   "ticker": "EVK",
+   "sector": "Materials"
+  },
+  "DE000FRE5EN2": {
+   "shares": 563237277,
+   "asOf": "2026-06-02",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-fresenius-se-co-kgaa-deutsch-529392.html",
+   "name": "Fresenius",
+   "ticker": "FRE",
+   "sector": "Healthcare"
+  },
+  "DE000FTG1111": {
+   "shares": 109100000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000FTG1111",
+   "name": "flatexDEGIRO",
+   "ticker": "FTK",
+   "sector": "Financials"
+  },
+  "DE000HAG0005": {
+   "shares": 115500000,
+   "asOf": "2026-08-07",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-stimmrechtehensoldtagdeutsch-544464.html",
+   "name": "Hensoldt",
+   "ticker": "HAG",
+   "sector": "Industrials"
+  },
+  "DE000HLAG475": {
+   "shares": 175760000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000HLAG475",
+   "name": "Hapag-Lloyd",
+   "ticker": "HLAG",
+   "sector": "Industrials"
+  },
+  "DE000JST4000": {
+   "shares": 16390000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000JST4000",
+   "name": "Jost Werke",
+   "ticker": "JST",
+   "sector": "Industrials"
+  },
+  "DE000KBX1006": {
+   "shares": 161200000,
+   "asOf": "2026-06-18",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-knorr-bremse-aktiengesellschaft-deutsch-533489.html",
+   "name": "Knorr-Bremse",
+   "ticker": "KBX",
+   "sector": "Industrials"
+  },
+  "DE000KGX8881": {
+   "shares": 131198647,
+   "asOf": "2026-08-13",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-kion-group-ag-deutsch-544812.html",
+   "name": "KION Group",
+   "ticker": "KGX",
+   "sector": "Industrials"
+  },
+  "DE000KSAG888": {
+   "shares": 179100000,
+   "asOf": "2026-10-19",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-ks-aktiengesellschaft-deutsch-559289.html",
+   "name": "K+S",
+   "ticker": "SDF",
+   "sector": "Materials"
+  },
+  "DE000LEG1110": {
+   "shares": 76848472,
+   "asOf": "2026-10-07",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-leg-immobilien-se-deutsch-557712.html",
+   "name": "LEG Immobilien",
+   "ticker": "LEG",
+   "sector": "Real Estate"
+  },
+  "DE000LS1LUS9": {
+   "shares": 9440000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000LS1LUS9",
+   "name": "Lang & Schwarz",
+   "ticker": "LUS1",
+   "sector": "Financials"
+  },
+  "DE000NCA0001": {
+   "shares": 126310000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000NCA0001",
+   "name": "thyssenkrupp nucera",
+   "ticker": "NCH2",
+   "sector": "Industrials"
+  },
+  "DE000PAG9113": {
+   "shares": 911000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000PAG9113",
+   "name": "Porsche",
+   "ticker": "P911",
+   "sector": "Consumer Discretionary",
+   "lei": "529900EWEX125AULXI58"
+  },
+  "DE000PAH0038": {
+   "shares": 306250000,
+   "asOf": "2021-03-03",
+   "source": "https://porsche-se.com/mitteilungen/pressemitteilungen/pdf/news/detail/News/porsche-automobil-holding-se-wird-in-den-mdax-aufgenommen",
+   "name": "Porsche Automobil Holding",
+   "ticker": "PAH3",
+   "sector": "Financials",
+   "lei": "52990053Z17ZYM1KFV27"
+  },
+  "DE000PAT1AG3": {
+   "shares": 86580000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000PAT1AG3",
+   "name": "Patrizia",
+   "ticker": "PAT",
+   "sector": "Real Estate"
+  },
+  "DE000PFSE253": {
+   "shares": 18200000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000PFSE253",
+   "name": "Pfisterer",
+   "ticker": "PFSE",
+   "sector": "Industrials"
+  },
+  "DE000PSM7770": {
+   "shares": 232810000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000PSM7770",
+   "name": "ProSiebenSat.1 Media",
+   "ticker": "PSM",
+   "sector": "Communication"
+  },
+  "DE000RENK730": {
+   "shares": 100000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000RENK730",
+   "name": "Renk",
+   "ticker": "R3NK",
+   "sector": "Industrials"
+  },
+  "DE000SAFH001": {
+   "shares": 45030000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000SAFH001",
+   "name": "SAF-Holland",
+   "ticker": "SFQ",
+   "sector": "Industrials"
+  },
+  "DE000SHA0100": {
+   "shares": 944880000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000SHA0100",
+   "name": "Schaeffler",
+   "ticker": "SHA0",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000SHL1006": {
+   "shares": 1128000000,
+   "asOf": "2025-12-01",
+   "source": "https://www.onvista.de/news/2025/12-01-eqs-pvr-siemens-healthineers-ag-veroeffentlichung-gemaess-40-abs-1-wphg-mit-dem-ziel-der-europaweiten-verbreitung-0-37-26455618",
+   "name": "Siemens Healthineers",
+   "ticker": "SHL",
+   "sector": "Healthcare"
+  },
+  "DE000SPG1003": {
+   "shares": 198890000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000SPG1003",
+   "name": "Springer Nature",
+   "ticker": "SPG",
+   "sector": "Communication"
+  },
+  "DE000STAB1L8": {
+   "shares": 24700000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000STAB1L8",
+   "name": "Stabilus",
+   "ticker": "STM",
+   "sector": "Industrials"
+  },
+  "DE000STRA555": {
+   "shares": 12160000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000STRA555",
+   "name": "Stratec",
+   "ticker": "SBS",
+   "sector": "Healthcare"
+  },
+  "DE000SYM9999": {
+   "shares": 139772054,
+   "asOf": "2026-10-14",
+   "source": "https://www.boerse-online.de/dpa-afx/eqs-stimmrechte-symrise-ag-deutsch-559173.html",
+   "name": "Symrise",
+   "ticker": "SY1",
+   "sector": "Materials"
+  },
+  "DE000TKMS001": {
+   "shares": 63520000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000TKMS001",
+   "name": "TKMS",
+   "ticker": "TKMS",
+   "sector": "Industrials"
+  },
+  "DE000TLX1005": {
+   "shares": 258230000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000TLX1005",
+   "name": "Talanx",
+   "ticker": "TLX",
+   "sector": "Financials"
+  },
+  "DE000TRAT0N7": {
+   "shares": 500000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000TRAT0N7",
+   "name": "Traton",
+   "ticker": "8TRA",
+   "sector": "Industrials"
+  },
+  "DE000TUAG505": {
+   "shares": 507430000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000TUAG505",
+   "name": "TUI",
+   "ticker": "TUI1",
+   "sector": "Consumer Discretionary"
+  },
+  "DE000UNSE026": {
+   "shares": 416480000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000UNSE026",
+   "name": "Uniper",
+   "ticker": "UN01",
+   "sector": "Utilities"
+  },
+  "DE000WACK012": {
+   "shares": 68020000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000WACK012",
+   "name": "Wacker Neuson",
+   "ticker": "WAC",
+   "sector": "Industrials"
+  },
+  "DE000WAF3001": {
+   "shares": 33000000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000WAF3001",
+   "name": "Siltronic",
+   "ticker": "WAF",
+   "sector": "Technology"
+  },
+  "DE000WCH8881": {
+   "shares": 49680000,
+   "asOf": "2026-10-23",
+   "source": "https://www.comdirect.de/inf/aktien/DE000WCH8881",
+   "name": "Wacker Chemie",
+   "ticker": "WCH",
+   "sector": "Materials"
+  },
+  "DE000ZAL1111": {
+   "shares": 250250213,
+   "asOf": "2026-08-31",
+   "source": "https://www.deraktionaer.de/nachricht/eqs-gesamtstimmrechtsmitteilungzalandosedeutsch-548129.html",
+   "name": "Zalando",
+   "ticker": "ZAL",
+   "sector": "Consumer Discretionary"
+  }
+ }
+}

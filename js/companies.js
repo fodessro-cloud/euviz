@@ -3,7 +3,7 @@
 
 const PAGE = 50;
 let COMPANIES = [], UPDATED = '', PRICES_DAY = '', SLUGS = {};
-let sortKey = 'revenueEur', sortDir = -1, page = 1, query = '';
+let sortKey = 'mcap', sortDir = -1, page = 1, query = '';
 const filters = {};
 
 const isNum = v => typeof v === 'number' && isFinite(v);
@@ -249,8 +249,9 @@ async function addSignals() {
 }
 
 // Last price from Deutsche Börse's free delayed data (js/company-prices.json, by ISIN, in EUR).
-// Market value uses shares = net income / EPS from the annual report, so it is an estimate;
-// values that point to mismatched units in the report (absurd P/E or price/sales) are left out.
+// Market value uses the shares in issue where known (data/shares.json, German companies), else
+// shares = net income / EPS from the annual report, so it is an estimate; values that point to
+// mismatched units in the report (absurd P/E or price/sales) are left out.
 async function addPrices() {
   let data;
   try { data = await (await fetch('js/company-prices.json', { cache: 'no-cache' })).json(); } catch { return; }
@@ -261,14 +262,14 @@ async function addPrices() {
     if (!q) return;
     Object.assign(c, { price: q[iPrice], change: q[iChange], priceVenue: q[iVenue], priceDate: q[iDate] });
     const fx = isNum(c.revenueEur) && isNum(c.revenue) && c.revenue ? c.revenueEur / c.revenue : c.currency === 'EUR' ? 1 : null;
-    const shares = isNum(c.eps) && isNum(c.netIncome) && c.eps * c.netIncome > 0 ? c.netIncome / c.eps : null;
-    if (!fx || !shares) return;
-    const mcap = c.price * shares, pe = c.eps > 0 ? c.price / (c.eps * fx) : null;
+    const shares = isNum(c.shares) ? c.shares : isNum(c.eps) && isNum(c.netIncome) && c.eps * c.netIncome > 0 && fx ? c.netIncome / c.eps : null;
+    if (!shares) return;
+    const mcap = c.price * shares, pe = fx && c.eps > 0 ? c.price / (c.eps * fx) : null;
     const ps = isNum(c.revenueEur) && c.revenueEur > 0 ? mcap / c.revenueEur : null;
     if ((pe !== null && (pe < 1 || pe > 150)) || (ps !== null && (ps < 0.02 || ps > 60))) return;
     c.mcap = mcap;
     if (pe !== null) c.pe = pe;
-    if (c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; if (y < 25) c.divYield = y; }
+    if (fx && c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; if (y < 25) c.divYield = y; }
   });
 }
 

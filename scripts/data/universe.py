@@ -139,7 +139,7 @@ def wikidata():
         lei = b["lei"]["value"]
         w = out.setdefault(lei, {"name": b["itemLabel"]["value"], "tickers": [], "industries": set()})
         if "ticker" in b:
-            # Delisted lines (Shell's RDSA) go last, so the current ticker wins.
+            # Delisted lines go last, so the current ticker wins (renames without an end date: RENAMED).
             w["tickers"].append((b["ticker"]["value"], b.get("exLabel", {}).get("value", ""), "end" in b))
         if "indLabel" in b:
             w["industries"].add(b["indLabel"]["value"])
@@ -256,17 +256,24 @@ HOME_EXCHANGE = {
 FOREIGN = re.compile(r"New York|NASDAQ(?! (Stockholm|Copenhagen|Helsinki|Iceland|Riga|Tallinn|Vilnius))|OTC|Over-the-counter|Pink|Tokyo|Toronto", re.I)
 
 
+# Wikidata keeps old tickers after a rename, mostly without an end date, next to the new one.
+# Old -> new, used only when the company's listings include the new ticker (checked 2026-10-21).
+RENAMED = {"RDSA": "SHEL", "RDSB": "SHEL", "TOT": "TTE", "FP": "TTE", "DAI": "MBG", "BELG": "PROX",
+           "DPW": "DHL", "SPD": "FRAS", "SLA": "ABDN", "888": "EVOK", "COM": "CBK", "THQN B": "EMBRACER",
+           "AQU": "GGS", "LVC": "TXT"}
+
+
 def pick_ticker(tickers, country):
     tickers = sorted(tickers, key=lambda t: len(t) > 2 and bool(t[2]))
     tickers = [(t[0], t[1]) for t in tickers]
+    names = {t for t, _ in tickers}
     home = HOME_EXCHANGE.get(country)
-    for t, ex in tickers:
-        if home and re.search(home, ex, re.I):
-            return t, ex
-    for t, ex in tickers:
-        if not FOREIGN.search(ex):
-            return t, ex
-    return None, None
+    picked = next(((t, ex) for t, ex in tickers if home and re.search(home, ex, re.I)), None) \
+        or next(((t, ex) for t, ex in tickers if not FOREIGN.search(ex)), None)
+    if not picked:
+        return None, None
+    t, ex = picked
+    return (RENAMED[t] if RENAMED.get(t) in names else t), ex
 
 
 def tidy(name):
@@ -281,7 +288,36 @@ FIELDS = ["lei", "isin", "name", "country", "ticker", "exchange", "mic", "sector
           "revenueEur", "revenue", "ebitda", "operatingProfit", "netIncome", "operatingCashFlow", "capex", "fcf",
           "dividendsPaid", "equity", "assets", "cash", "debt", "netDebt", "eps", "roe", "ebitdaMargin",
           "operatingMargin", "netMargin", "fcfMargin", "netDebtToEbitda", "revenueGrowth", "netIncomeGrowth",
-          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source", "origin"]
+          "fscore", "fscoreTests", "payoutFcf", "payoutNet", "financial", "source", "origin", "shares"]
+
+
+def add_shares(rows, listed):
+    """Shares in issue from data/shares.json (German companies have no reports on filings.xbrl.org,
+    so without it they have no market value and drop off the maps). Adds the companies the file
+    names that are not on the list yet (Wikidata lists no ticker for them, Porsche has no FIRDS row)."""
+    path = ROOT / "data/shares.json"
+    if not path.exists():
+        return 0
+    known = json.loads(path.read_text())["rows"]
+    by_isin = {r["isin"]: r for r in rows if r.get("isin")}
+    lei_of = {l["isin"]: lei for lei, l in listed.items()}
+    have = {r["lei"] for r in rows}
+    for isin, k in known.items():
+        r = by_isin.get(isin)
+        if not r and k.get("name"):
+            lei = k.get("lei") or lei_of.get(isin)
+            if not lei or lei in have:
+                continue
+            l = listed.get(lei, {})
+            r = {"lei": lei, "isin": isin, "name": k["name"], "country": isin[:2], "ticker": k.get("ticker"),
+                 "exchange": "Xetra", "mic": (l.get("mics") or ["XETR"])[0], "sector": k.get("sector"), "origin": "listing"}
+            rows.append(r)
+            have.add(lei)
+        if r:
+            r["shares"] = round(k["shares"] / 1e6, 6)   # millions, the unit of the report figures
+            # Checked by hand, so they beat Wikidata (Siemens filed under Utilities, BMW still as BMW3).
+            r.update({f: k[f] for f in ("name", "ticker", "sector") if k.get(f)})
+    return sum(1 for r in rows if r.get("shares"))
 
 
 def main():
@@ -354,6 +390,7 @@ def main():
                      "country": l["isin"][:2], "mic": (l.get("mics") or [None])[0], "ticker": ticker,
                      "exchange": exchange, "sector": sector_of(w.get("industries", [])),
                      "industry": ", ".join(sorted(w.get("industries", [])))[:60] or None, "origin": "listing"})
+    log(f"shares in issue for {add_shares(rows, listed)} companies (data/shares.json)")
     missing = [r for r in rows if not r["sector"]]
     extra = wikidata_extra({r["isin"] for r in missing if r["isin"]}, {r["lei"] for r in missing})
     via = {"wikidata": 0, "bank": 0, "name": 0}

@@ -16,7 +16,8 @@ const load = async url => { try { return await (await fetch(url, { cache: 'no-ca
 let COS = [];
 
 // Companies with their last price. Market value, P/E and dividend yield are estimated the same
-// way as on /screener (js/companies.js): shares = net income / EPS, implausible values dropped.
+// way as on /screener (js/companies.js): shares in issue where known, else net income / EPS,
+// implausible values dropped.
 function buildCompanies(cos, prices) {
   const list = cos.rows.map(r => Object.fromEntries(cos.fields.map((f, i) => [f, r[i]])));
   if (!prices) return list;
@@ -27,14 +28,14 @@ function buildCompanies(cos, prices) {
     if (!q) return;
     c.price = q[iP]; c.change = q[iC];
     const fx = isNum(c.revenueEur) && isNum(c.revenue) && c.revenue ? c.revenueEur / c.revenue : c.currency === 'EUR' ? 1 : null;
-    const shares = isNum(c.eps) && Math.abs(c.eps) >= 0.01 && isNum(c.netIncome) && c.eps * c.netIncome > 0 ? c.netIncome / c.eps : null;
-    if (!fx || !shares) return;
-    const mcap = c.price * shares, pe = c.eps > 0 ? c.price / (c.eps * fx) : null;
+    const shares = isNum(c.shares) ? c.shares : isNum(c.eps) && Math.abs(c.eps) >= 0.01 && isNum(c.netIncome) && c.eps * c.netIncome > 0 && fx ? c.netIncome / c.eps : null;
+    if (!shares) return;
+    const mcap = c.price * shares, pe = fx && c.eps > 0 ? c.price / (c.eps * fx) : null;
     const ps = isNum(c.revenueEur) && c.revenueEur > 0 ? mcap / c.revenueEur : null;
     if ((pe !== null && (pe < 1 || pe > 150)) || (ps !== null && (ps < 0.02 || ps > 60))) return;
     c.mcap = mcap;
     if (pe !== null) c.pe = pe;
-    if (c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; if (y < 25) c.divYield = y; }
+    if (fx && c.dividendsPaid > 0) { const y = c.dividendsPaid * fx / mcap * 100; if (y < 25) c.divYield = y; }
   });
   return list;
 }
