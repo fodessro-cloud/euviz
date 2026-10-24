@@ -276,6 +276,10 @@ def head(title, description, canonical, extra=''):
   <meta property="og:title" content="{esc(title)}">
   <meta property="og:description" content="{esc(description)}">
   <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="https://www.finila.com/css/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/css/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/header.css">

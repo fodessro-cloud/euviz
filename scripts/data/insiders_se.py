@@ -124,6 +124,17 @@ def main():
     (ROOT / "js/insiders.json").write_text(json.dumps(
         {"updated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"), "source": "Finansinspektionen (Sweden)",
          "days": DAYS, "rows": out}, ensure_ascii=False, separators=(",", ":")))
+    # Small summary for the homepage card, so it does not download the whole register.
+    buys = {}
+    for t in out:
+        if t["signal"] and t.get("nature") == "Acquisition" and (t.get("valueEur") or 0) > 0:
+            b = buys.setdefault(t["issuer"], {"issuer": t["issuer"], "v": 0, "people": set()})
+            b["v"] += t["valueEur"]
+            b["people"].add(t.get("person"))
+    top = sorted(buys.values(), key=lambda b: -b["v"])[:8]
+    (ROOT / "js/insiders-home.json").write_text(json.dumps(
+        {"buys": [{"issuer": b["issuer"], "v": b["v"], "people": len(b["people"])} for b in top]},
+        ensure_ascii=False, separators=(",", ":")))
     natures = {}
     for t in out:
         natures[t.get("nature")] = natures.get(t.get("nature"), 0) + 1
