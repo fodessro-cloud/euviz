@@ -95,6 +95,7 @@ function results() {
 }
 
 function render() {
+  urlWriteFilters(FILTERS, filters, f => f.options, { q: query.trim() });
   const list = results();
   const pages = Math.max(1, Math.ceil(list.length / PAGE));
   page = Math.min(page, pages);
@@ -127,6 +128,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderTop();
   query = new URLSearchParams(location.search).get('q') || '';
   document.getElementById('co-search').value = query;
+  urlReadFilters(FILTERS, filters, f => f.options);
   render();
 
   const search = document.getElementById('co-search');

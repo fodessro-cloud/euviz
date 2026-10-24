@@ -70,6 +70,8 @@ function render() {
   document.querySelectorAll('#region option').forEach(o => { o.selected = o.value === country; });
   renderNow(); renderCalc(); renderTable();
 }
+// /assets?country=SK&years=5: the chosen country and period, so a copied link opens the same view.
+function syncUrl() { urlSet({ country: country === 'U2' ? null : country, years: years === 15 ? null : years }); }
 
 // ── Today: nominal and real yield per asset ──────────────────────────────
 function renderNow() {
@@ -113,6 +115,7 @@ function paths() {
 }
 
 function renderCalc() {
+  syncUrl();
   const c = D.countries[country], { list, from, to } = paths();
   document.getElementById('calc-title').textContent = `How much did each investment return over ${years} year${years > 1 ? 's' : ''}?`;
   document.getElementById('calc-sub').textContent = list.length ? `${c.name}, ${mNice(mStr(from))} to ${mNice(mStr(to))}, in ${c.cur}` : '';
@@ -259,7 +262,9 @@ fetch('js/invest.json', { cache: 'no-cache' }).then(r => r.json()).then(d => {
   D = d;
   applyTheme();
   let saved = null; try { saved = localStorage.getItem('finila-invest-country'); } catch (e) { /* private mode */ }
-  const hash = location.hash.slice(1).toUpperCase();
-  country = D.countries[hash] ? hash : D.countries[saved] ? saved : 'U2';
+  const asked = (urlParam('country') || location.hash.slice(1)).toUpperCase();
+  country = D.countries[asked] ? asked : D.countries[saved] ? saved : 'U2';
+  const askedYears = urlParam('years') || '';   // read before the first render rewrites the address
   setup(); render();
+  document.querySelector(`#years [data-years="${CSS.escape(askedYears)}"]`)?.click();
 }).catch(() => { document.getElementById('now').innerHTML = '<p class="i-sub">Data could not be loaded. Please try again later.</p>'; });

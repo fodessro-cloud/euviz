@@ -243,18 +243,20 @@ async function initHeatmap() {
   const asked = (new URLSearchParams(location.search).get('country') || '').trim().toLowerCase();
   const code = Object.keys(counts).find(k => k.toLowerCase() === asked || countryName(k).toLowerCase() === asked);
   if (code) { hmCountry = code; sel.value = code; }
-  sel.addEventListener('change', () => {
-    hmCountry = sel.value; renderHeatmap();
-    const url = new URL(location.href);
-    if (hmCountry) url.searchParams.set('country', hmCountry); else url.searchParams.delete('country');
-    history.replaceState(null, '', url);
-  });
+  // Country, colour and grouping go into the address (/map?country=SI&color=pe&group=country), so a copied link opens the same map.
+  const defColor = hmColor;
+  const syncUrl = () => urlSet({ country: hmCountry, color: hmColor === defColor ? null : hmColor, group: hmGroupBy === 'sector' ? null : hmGroupBy });
+  sel.addEventListener('change', () => { hmCountry = sel.value; renderHeatmap(); syncUrl(); });
   document.querySelectorAll('[data-hm-group]').forEach(b => b.addEventListener('click', () => {
-    hmGroupBy = b.dataset.hmGroup; setActive('[data-hm-group]', b); renderHeatmap();
+    hmGroupBy = b.dataset.hmGroup; setActive('[data-hm-group]', b); renderHeatmap(); syncUrl();
   }));
   document.querySelectorAll('[data-hm-color]').forEach(b => b.addEventListener('click', () => {
-    hmColor = b.dataset.hmColor; setActive('[data-hm-color]', b); renderLegend(); renderHeatmap();
+    hmColor = b.dataset.hmColor; setActive('[data-hm-color]', b); renderLegend(); renderHeatmap(); syncUrl();
   }));
+  const askedColor = document.querySelector(`[data-hm-color="${CSS.escape(urlParam('color') || '')}"]`);
+  if (askedColor) { hmColor = askedColor.dataset.hmColor; setActive('[data-hm-color]', askedColor); }
+  const askedGroup = document.querySelector(`[data-hm-group="${CSS.escape(urlParam('group') || '')}"]`);
+  if (askedGroup) { hmGroupBy = askedGroup.dataset.hmGroup; setActive('[data-hm-group]', askedGroup); }
 
   const canvas = document.getElementById('heatmap-canvas');
   canvas.addEventListener('pointermove', e => {
