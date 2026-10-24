@@ -219,7 +219,9 @@ function select(k) {
   renderAll();
 }
 
-function renderAll() { renderNow(); renderChart(); renderTable(); renderMap(); renderSide(); }
+function renderAll() { renderNow(); renderChart(); renderTable(); renderMap(); renderSide(); syncUrl(); }
+// /property?country=SK&years=5&view=m2: the chosen country, chart period and map view, so a copied link opens the same view.
+function syncUrl() { urlSet({ country: code === EU ? null : code, c: null, years: years === 10 ? null : years, view: metric === 'val' ? null : metric }); }
 
 async function init() {
   try {
@@ -234,7 +236,8 @@ async function init() {
   if (LEVELS) LEVELS.countries = Object.fromEntries(Object.entries(LEVELS.countries).filter(([, l]) => l.type === 'flats'));
   Object.entries(LEVELS?.countries || {}).forEach(([k, l]) => { if (DATA.countries[k]) DATA.countries[k].m2 = l.eur; });
   const params = new URLSearchParams(location.search);
-  if (DATA.countries[params.get('c')]) code = params.get('c');
+  const askedCode = (params.get('country') || params.get('c') || '').toUpperCase();
+  if (DATA.countries[askedCode]) code = askedCode;
   else if (!DATA.countries[code]) code = Object.keys(DATA.countries)[0];
   $('region').innerHTML = Object.entries(DATA.countries).sort((a, b) => (b[1].agg ? 1 : 0) - (a[1].agg ? 1 : 0) || a[1].name.localeCompare(b[1].name))
     .map(([k, c]) => `<option value="${k}" ${k === code ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
@@ -247,7 +250,7 @@ async function init() {
     if (!b) return;
     years = Number(b.dataset.years);
     $('years').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
-    renderChart();
+    renderChart(); syncUrl();
   });
   $('eu-head').addEventListener('click', e => {
     const th = e.target.closest('[data-sort]');
@@ -281,6 +284,7 @@ async function init() {
     $('metric').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
     renderMap();
     renderSide();
+    syncUrl();
   });
   const tip = document.createElement('div');
   tip.className = 'p-tip';
@@ -320,6 +324,8 @@ async function init() {
     .map(c => `<a href="/property/${slug(c.name)}">${esc(c.name)}</a>`).join('');
   renderValue();
   renderAll();
+  $('years').querySelector(`[data-years="${CSS.escape(params.get('years') || '')}"]`)?.click();
+  $('metric').querySelector(`[data-metric="${CSS.escape(params.get('view') || '')}"]`)?.click();
 }
 
 init();

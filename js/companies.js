@@ -134,6 +134,7 @@ function results() {
 }
 
 function render() {
+  urlWriteFilters(FILTERS, filters, f => f.opts, { q: query.trim() });
   const list = results();
   const pages = Math.max(1, Math.ceil(list.length / PAGE));
   page = Math.min(page, pages);
@@ -296,6 +297,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(location.search);
   query = params.get('q') || '';
   document.getElementById('co-search').value = query;
+  urlReadFilters(FILTERS, filters, f => f.opts);
   render();
   if (params.get('lei')) openCompany(params.get('lei'));
 

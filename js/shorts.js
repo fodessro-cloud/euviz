@@ -120,6 +120,7 @@ function results() {
 }
 
 function render() {
+  urlWriteFilters(FILTERS.filter(f => !f.view), filters, f => f.options, { q: query.trim(), view: view === 'positions' ? 'positions' : null });
   const list = results(), cols = COLUMNS[view];
   const pages = Math.max(1, Math.ceil(list.length / PAGE));
   page = Math.min(page, pages);
@@ -171,7 +172,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   query = new URLSearchParams(location.search).get('q') || '';
   const search = document.getElementById('co-search');
   search.value = query;
-  render();
+  urlReadFilters(FILTERS.filter(f => !f.view), filters, f => f.options);
+  if (urlParam('view') === 'positions') { document.getElementById('f-view').value = '1'; setView('positions'); } else render();
 
   search.addEventListener('input', e => { query = e.target.value; page = 1; render(); });
   document.getElementById('ins-top').addEventListener('click', e => {

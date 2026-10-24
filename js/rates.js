@@ -29,6 +29,8 @@ function renderNow() {
 }
 
 function renderChart() {
+  // /rates?years=5&hide=e1m,e3m: the chosen period and the lines switched off, so a copied link opens the same chart.
+  urlSet({ years: years === 10 ? null : years, hide: [...hidden].join(',') });
   const el = document.getElementById('chart');
   const all = D.series.map(s => ({ ...s, color: COLORS[s.key], s0: mIdx(s.first) }));
   const end = Math.max(...all.map(a => a.s0 + a.values.length - 1));
@@ -105,5 +107,10 @@ function setup() {
 }
 
 fetch('js/rates.json', { cache: 'no-cache' }).then(r => r.json()).then(d => {
-  D = d; setup(); renderNow(); renderChart();
+  D = d; setup(); renderNow();
+  const askedYears = urlParam('years') || '';   // read before the first render rewrites the address
+  (urlParam('hide') || '').split(',').filter(k => D.series.some(s => s.key === k)).forEach(k => hidden.add(k));
+  if (hidden.size === D.series.length) hidden.clear();
+  renderChart();
+  document.querySelector(`#years [data-years="${CSS.escape(askedYears)}"]`)?.click();
 }).catch(() => { document.getElementById('now').innerHTML = '<p class="i-sub">Data could not be loaded. Please try again later.</p>'; });
