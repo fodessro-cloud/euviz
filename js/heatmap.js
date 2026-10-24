@@ -239,7 +239,16 @@ async function initHeatmap() {
   document.getElementById('hm-colors').innerHTML = COLORS
     .map(c => `<button class="hm-btn${c.key === hmColor ? ' active' : ''}" type="button" data-hm-color="${c.key}">${c.label}</button>`).join('');
 
-  sel.addEventListener('change', () => { hmCountry = sel.value; renderHeatmap(); });
+  // /map?country=SI (or ?country=Slovenia) opens on one country, and choosing one updates the address, so it can be shared.
+  const asked = (new URLSearchParams(location.search).get('country') || '').trim().toLowerCase();
+  const code = Object.keys(counts).find(k => k.toLowerCase() === asked || countryName(k).toLowerCase() === asked);
+  if (code) { hmCountry = code; sel.value = code; }
+  sel.addEventListener('change', () => {
+    hmCountry = sel.value; renderHeatmap();
+    const url = new URL(location.href);
+    if (hmCountry) url.searchParams.set('country', hmCountry); else url.searchParams.delete('country');
+    history.replaceState(null, '', url);
+  });
   document.querySelectorAll('[data-hm-group]').forEach(b => b.addEventListener('click', () => {
     hmGroupBy = b.dataset.hmGroup; setActive('[data-hm-group]', b); renderHeatmap();
   }));

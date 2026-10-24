@@ -11,6 +11,20 @@ RewriteCond %{HTTP_HOST} ^finila\.com$ [NC,OR]
 RewriteCond %{HTTPS} !=on
 RewriteRule ^(.*)$ https://www.finila.com/$1 [R=301,L]
 
+# Smaller downloads: pages, scripts and data files are sent compressed (the big JSON files shrink about 4 times).
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript text/javascript application/json image/svg+xml application/xml
+</IfModule>
+# Images and fonts rarely change, so browsers may keep them for a month; pages, scripts and data are checked every visit.
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/png "access plus 30 days"
+ExpiresByType image/jpeg "access plus 30 days"
+ExpiresByType image/svg+xml "access plus 30 days"
+ExpiresByType image/x-icon "access plus 30 days"
+ExpiresByType font/woff2 "access plus 30 days"
+</IfModule>
+
 # The old WordPress no longer runs: its PHP, admin and leftover folders are closed.
 RewriteRule \.php$ - [F,L]
 RewriteRule ^(wp-admin|wp-includes|backup|logs|tmp)(/|$) - [F,L]

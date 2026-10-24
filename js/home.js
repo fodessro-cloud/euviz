@@ -1,5 +1,5 @@
 // FINILA homepage: every block shows real data from the subpages' data files
-// (js/companies.json + js/company-prices.json, js/invest.json, js/insiders.json, js/shorts.json).
+// (js/companies.json + js/company-prices.json, js/invest.json, js/insiders-home.json, js/shorts.json).
 
 const fmt = (n, d = 2) => Number(n).toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
 const isNum = v => typeof v === 'number' && isFinite(v);
@@ -181,15 +181,9 @@ function renderMovers(tab) {
 // ── FINILA Data: insider buying and fund short positions ─
 function renderData(ins, sh) {
   const eur = v => v >= 1e6 ? `€${fmt(v / 1e6, 1)}M` : `€${fmt(v / 1e3, 0)}k`;
-  const buys = {};
-  // A real buy on an exchange. Older insiders.json files have no `signal`, so the same rule is applied here.
-  const isBuy = t => 'signal' in t ? t.signal === true
-    : t.status === 'Current' && t.nature === 'Acquisition' && t.instrumentType === 'Share' && t.isin
-      && t.venue && !/outside a trading venue/i.test(t.venue);
-  (ins?.rows || []).filter(t => isBuy(t) && t.valueEur > 0)
-    .forEach(t => { const b = buys[t.issuer] || (buys[t.issuer] = { v: 0, people: new Set() }); b.v += t.valueEur; b.people.add(t.person); });
-  document.getElementById('insider-list').innerHTML = Object.entries(buys).sort((a, b) => b[1].v - a[1].v).slice(0, 4)
-    .map(([name, b]) => `<li><span><a href="/insiders?q=${encodeURIComponent(name)}">${esc(name)}</a> · ${b.people.size} ${b.people.size === 1 ? 'person' : 'people'}</span><span class="v">${eur(b.v)}</span></li>`).join('')
+  // js/insiders-home.json: the largest buys, already added up per company by scripts/data/insiders_se.py.
+  document.getElementById('insider-list').innerHTML = (ins?.buys || []).slice(0, 4)
+    .map(b => `<li><span><a href="/insiders?q=${encodeURIComponent(b.issuer)}">${esc(b.issuer)}</a> · ${b.people} ${b.people === 1 ? 'person' : 'people'}</span><span class="v">${eur(b.v)}</span></li>`).join('')
     || '<li><span>No data right now</span></li>';
   const shorts = {};
   (sh?.positions || []).forEach(p => { const s = shorts[p.isin] || (shorts[p.isin] = { name: p.issuer, pct: 0 }); s.pct += p.pct; });
@@ -244,7 +238,7 @@ function setupSearch() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const [cos, prices, inv, ins, sh, slugs, housing, rates] = await Promise.all(
-    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders.json', 'js/shorts.json', 'js/stock-slugs.json', 'js/housing.json', 'js/rates.json'].map(load));
+    ['js/companies.json', 'js/company-prices.json', 'js/invest.json', 'js/insiders-home.json', 'js/shorts.json', 'js/stock-slugs.json', 'js/housing.json', 'js/rates.json'].map(load));
   SLUGS = slugs || {};
   COS = cos ? buildCompanies(cos, prices) : [];
   INV = inv;

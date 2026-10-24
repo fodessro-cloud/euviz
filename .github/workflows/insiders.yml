@@ -37,7 +37,7 @@ jobs:
         run: |
           git config user.name "finila-data-bot"
           git config user.email "finila-data-bot@users.noreply.github.com"
-          git add data/insiders.log js/insiders.json 2>/dev/null || true
+          git add data/insiders.log js/insiders.json js/insiders-home.json 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -m "Update insider transactions [data refresh]"
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
